@@ -1,0 +1,21 @@
+{
+  "name": "registry-api",
+  "version": "1.0.0",
+  "description": "API for platform services registry",
+  "scripts": {
+    "start": "nodemon --exec babel-node -- ./src/index.js"
+  },
+  "dependencies": {
+    "apollo-server-core": "^3.6.4",
+    "apollo-server-express": "^3.6.4",
+    "express": "^4.17.3",
+    "graphql": "^16.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.7",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}
