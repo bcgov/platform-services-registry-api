@@ -6,10 +6,13 @@
     "start": "nodemon --exec babel-node -- ./src/index.js"
   },
   "dependencies": {
+    "apollo-datasource-mongodb": "^0.5.2",
     "apollo-server-core": "^3.6.4",
     "apollo-server-express": "^3.6.4",
     "express": "^4.17.3",
-    "graphql": "^16.3.0"
+    "graphql": "^16.3.0",
+    "graphql-scalars": "^1.15.0",
+    "mongodb": "^4.4.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
