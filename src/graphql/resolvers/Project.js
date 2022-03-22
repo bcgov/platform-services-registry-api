@@ -1,10 +1,10 @@
-import Users from "../../dataSources/Users"
-
 const Project = {
-  id: ({_id}) => _id.toString(),
-  productOwner: ({productOwnerId}) => Users.getById(productOwnerId),
-  technicalLeads: ({technicalLeadsIds}) => Users.getAllByIds(technicalLeadsIds),
+  id: ({ _id }) => _id.toString(),
+  productOwner: ({ productOwnerUserId }, _, { dataSources: { users } }) =>
+    users.getById(productOwnerUserId),
+  technicalLeads: ({ technicalLeadsUserIds }, _, { dataSources: { users } }) =>
+    users.getByIds(technicalLeadsUserIds),
   //requestHistory: ({requestIds}) => Requests.getAllByIds(requestIds)
-}
+};
 
-export default Project
+export default Project;

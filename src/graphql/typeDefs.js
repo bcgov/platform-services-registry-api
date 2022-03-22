@@ -24,7 +24,7 @@ const typeDefs = gql`
   }
 
   enum Environment {
-    PROD
+    PRODUCTION
     TEST
     DEV
     TOOLS
@@ -66,8 +66,8 @@ const typeDefs = gql`
   input CreateProjectInput {
     name: String!
     description: String!
-    productOwner: ID!
-    technicalLeads: [ID!]!
+    productOwnerUserId: ID!
+    technicalLeadsUserIds: [ID!]
     ministry: Ministry!
     cluster: Cluster!
   }
@@ -80,10 +80,10 @@ const typeDefs = gql`
     technicalLeads: [ID]
     ministry: Ministry
     cluster: Cluster
-    productionNamespace: Namespace
-    testNamespace: Namespace
-    developmentNamespace: Namespace
-    toolsNamespace: Namespace
+    # productionNamespace: Namespace
+    # testNamespace: Namespace
+    # developmentNamespace: Namespace
+    # toolsNamespace: Namespace
   }
 
   type Request {
@@ -111,7 +111,8 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
-    projects: [Project!]
+    projectOwner: [Project!]
+    technicalLead: [Project!]
     created: DateTime!
     ministry: Ministry
   }
@@ -134,6 +135,9 @@ const typeDefs = gql`
     hello: String
     users: [User!]!
     user(id: ID!): User
+    usersByIds(ids: [ID!]!): [User!]!
+    project(projectId: ID!): Project!
+    projects: [Project!]!
   }
 
   type Mutation {

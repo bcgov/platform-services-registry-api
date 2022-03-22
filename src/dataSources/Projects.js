@@ -9,7 +9,8 @@ export default class Projects extends MongoDataSource {
     return this.collection.find().toArray()
   }
 
-  create(project) {
-    return this.collection.insertOne(project)
+  async create(project) {
+    const { insertedId } = await this.collection.insertOne(project)
+    return this.findOneById(insertedId)
   }
 }

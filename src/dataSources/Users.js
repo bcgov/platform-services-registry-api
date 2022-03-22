@@ -1,20 +1,24 @@
 import { MongoDataSource } from 'apollo-datasource-mongodb'
 
 export default class Users extends MongoDataSource {
-  getById(userId) {
-    return this.findOneById(userId)
+  getById(id) {
+    return this.findOneById(id)
   }
 
   getAll() {
     return this.collection.find().toArray()
   }
 
-  getAllByIds(ids) {
+  getByIds(ids) {
     return this.collection.findManyByIds(ids)
   }
 
-  create(user) {
-    this.collection.insertOne(user)
-    return user
+  updateById(id, updateProp) {
+    this.collection.updateOne({_id: id}, { $set:  updateProp})
+  }
+
+  async create(user) {
+    const { insertedId } = await this.collection.insertOne(user)
+    return this.findOneById(insertedId)
   }
 }

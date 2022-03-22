@@ -1,5 +1,5 @@
 const Environment = {
-    PROD: "production",
+    PRODUCTION: "production",
     TEST: "test",
     DEV: "development",
     TOOLS: "tools",

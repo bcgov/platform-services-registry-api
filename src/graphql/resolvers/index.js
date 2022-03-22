@@ -1,5 +1,6 @@
 import { GraphQLDateTime } from "graphql-scalars";
-import {users, user} from "./Query/Users"
+import {users, user, usersByIds} from "./Query/Users"
+import {project, projects} from "./Query/Projects"
 import createProject from "./Mutation/CreateProject";
 import createUser from "./Mutation/CreateUser"
 import Project from "./Project";
@@ -11,7 +12,10 @@ import ProjectStatus from "./scalar/ProjectStatus";
 const resolvers = {
   Query: {
     users,
-    user
+    user,
+    usersByIds,
+    project,
+    projects
   },
   Mutation: {
     createUser,

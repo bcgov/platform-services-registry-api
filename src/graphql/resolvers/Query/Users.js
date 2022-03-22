@@ -6,4 +6,8 @@ function user(_, { id }, { dataSources: { users } }) {
   return users.getById(id)
 }
 
-export { users, user };
+function usersByIds(_, {ids}, { dataSources: { users } }) {
+  return users.getByIds(ids)
+}
+
+export { users, usersByIds, user };
