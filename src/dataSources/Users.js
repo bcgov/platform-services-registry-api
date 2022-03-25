@@ -1,6 +1,7 @@
 import { MongoDataSource } from 'apollo-datasource-mongodb'
 
 export default class Users extends MongoDataSource {
+ 
   getById(id) {
     return this.findOneById(id)
   }
@@ -13,8 +14,28 @@ export default class Users extends MongoDataSource {
     return this.collection.findManyByIds(ids)
   }
 
-  updateById(id, updateProp) {
-    this.collection.updateOne({_id: id}, { $set:  updateProp})
+  addElementToArrayById(id, {arrayProperty, element}) {
+    this.collection.updateOne(
+      {_id: id},
+      { $addToSet:  {[arrayProperty]: element}})
+  }
+
+  addElementToArraysByIds(ids, {arrayProperty, element}) {
+    this.collection.updateOne(
+      {_id: { $in: ids }},
+      { $addToSet:  {[arrayProperty]: element}},
+      {multi: true})
+  }
+
+  addElementsToArrayById(id, {arrayProperty, elements}) {
+    this.collection.updateOne(
+      {_id: id},
+      { $addToSet:  {[arrayProperty]: {$each: elements}}})
+  }
+
+  updatePropertyById(id, updateProperty) {
+    this.collection.updateOne({_id: id},
+    { $set:  updateProperty})
   }
 
   async create(user) {

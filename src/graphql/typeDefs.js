@@ -50,6 +50,7 @@ const typeDefs = gql`
     name: String!
     archived: Boolean!
     created: DateTime!
+    cretedBy: User!
     description: String!
     status: ProjectStatus!
     productOwner: User!
@@ -66,6 +67,7 @@ const typeDefs = gql`
   input CreateProjectInput {
     name: String!
     description: String!
+    createdBy: ID!
     productOwnerUserId: ID!
     technicalLeadsUserIds: [ID!]
     ministry: Ministry!

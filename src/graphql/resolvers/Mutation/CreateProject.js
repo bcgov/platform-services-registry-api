@@ -10,14 +10,17 @@ function createProject(_, { input }, { dataSources: { projects, users } }) {
     snapshotQuota: "test-snapshot-quota",
   };
 
+  const productionNamespace = {
+    environment: Environment.PRODUCTION,
+    ...defaultNamespace,
+  };
+  const testNamespace = { environment: Environment.TEST, ...defaultNamespace };
+
   const defaultProperties = {
     archived: false,
     created: new Date(),
-    productionNamespace: {
-      environment: Environment.PRODUCTION,
-      ...defaultNamespace,
-    },
-    testNamespace: { environment: Environment.TEST, ...defaultNamespace },
+    productionNamespace,
+    testNamespace,
     developmentNamespace: {
       environment: Environment.PROD,
       ...defaultNamespace,
@@ -27,11 +30,17 @@ function createProject(_, { input }, { dataSources: { projects, users } }) {
     status: ProjectStatus.SUBMITTED,
   };
 
-  // Find owner and technical lead user documents and add prject id to the document
-  users.updateById(id, updateProp)
-  // addToSet (mongo)
+  const project = projects.create({ ...input, ...defaultProperties });
 
-  return projects.create({ ...input, ...defaultProperties });
+  // Find owner and technical lead user documents and add project id
+  users.addElementToArrayById(input.productOwnerUserId, {
+    [projectOwner]: project._id,
+  });
+  users.addElementToArraysByIds(input.technicalLeadsUserIds, {
+    [technicalLead]: project._id,
+  });
+
+  return project;
 }
 
 export default createProject;

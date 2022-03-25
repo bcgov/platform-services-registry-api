@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "API for platform services registry",
   "scripts": {
-    "start": "nodemon --exec babel-node -- ./src/index.js"
+    "start": "nodemon --exec babel-node -- ./src/index.js",
+    "test": "jest"
   },
   "dependencies": {
+    "@shelf/jest-mongodb": "^2.2.1",
     "apollo-datasource-mongodb": "^0.5.2",
     "apollo-server-core": "^3.6.4",
     "apollo-server-express": "^3.6.4",
@@ -19,6 +21,7 @@
     "@babel/core": "^7.17.7",
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15"
   }
 }
