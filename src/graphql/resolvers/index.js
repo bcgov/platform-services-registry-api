@@ -1,15 +1,21 @@
 import { GraphQLDateTime } from "graphql-scalars";
-import {users, user, usersByIds} from "./Query/Users"
-import {privateCloudProjects, privateCloudProject, publicCloudProjects, publicCloudProject, projects} from "./Query/Projects"
+import { users, user, usersByIds } from "./Query/Users";
+import {
+  privateCloudProjects,
+  privateCloudProject,
+  publicCloudProjects,
+  publicCloudProject,
+  projects,
+} from "./Query/Projects";
 import createPrivateCloudProject from "./Mutation/CreatePrivateCloudProject";
-import createUser from "./Mutation/CreateUser"
+import createUser from "./Mutation/CreateUser";
 import PrivateCloudProject from "./PrivateCloudProject";
-import User from "./User"
-import Project from "./Project"
+import User from "./User";
+import Project from "./Project";
 import Ministry from "./scalar/Ministry";
 import Environment from "./scalar/Environment";
 import ProjectStatus from "./scalar/ProjectStatus";
-import Platform from "./scalar/Platform"
+import Platform from "./scalar/Platform";
 
 const resolvers = {
   Query: {
@@ -20,11 +26,11 @@ const resolvers = {
     privateCloudProject,
     publicCloudProjects,
     publicCloudProject,
-    projects
+    projects,
   },
   Mutation: {
     createUser,
-    createPrivateCloudProject
+    createPrivateCloudProject,
   },
   PrivateCloudProject,
   User,
@@ -33,7 +39,7 @@ const resolvers = {
   Project,
   Ministry,
   Environment,
-  Platform
+  Platform,
 };
 
 export default resolvers;

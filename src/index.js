@@ -7,7 +7,6 @@ import resolvers from "./graphql/resolvers";
 import { MongoClient } from "mongodb";
 import MongoHelpers from "./dataSources/MongoHelpers";
 
-
 async function startApolloServer(typeDefs, resolvers) {
   const client = new MongoClient("mongodb://localhost:27017/test");
   client.connect();
@@ -17,11 +16,15 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    dataSources: () => ({ 
+    dataSources: () => ({
       users: new MongoHelpers(client.db().collection("users")),
-      privateCloudProjects: new MongoHelpers(client.db().collection("privateCloudProjects")),
-      publicCloudProjects: new MongoHelpers(client.db().collection("publicCloudProjects")),
-      namespace: new MongoHelpers(client.db().collection("namespace"))
+      privateCloudProjects: new MongoHelpers(
+        client.db().collection("privateCloudProjects")
+      ),
+      publicCloudProjects: new MongoHelpers(
+        client.db().collection("publicCloudProjects")
+      ),
+      namespace: new MongoHelpers(client.db().collection("namespace")),
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });

@@ -1,6 +1,6 @@
 const Ministry = {
   AGRICULTURE: "Ministry of Agriculture",
-  HEALTH: "Ministry of Health"
-}
+  HEALTH: "Ministry of Health",
+};
 
-export default Ministry
+export default Ministry;

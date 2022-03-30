@@ -1,8 +1,8 @@
 const Environment = {
-    PRODUCTION: "production",
-    TEST: "test",
-    DEV: "development",
-    TOOLS: "tools",
-  }
+  PRODUCTION: "production",
+  TEST: "test",
+  DEV: "development",
+  TOOLS: "tools",
+};
 
-export default Environment
+export default Environment;

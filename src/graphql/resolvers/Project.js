@@ -1,17 +1,15 @@
 const Project = {
   __resolveType(project) {
-
-    if(project.cluster) {
-      return "PrivateCloudProject"
+    if (project.cluster) {
+      return "PrivateCloudProject";
     }
 
-    if(project.platform) {
-      return "PublicCloudProject"
+    if (project.platform) {
+      return "PublicCloudProject";
     }
 
-    return null
+    return null;
+  },
+};
 
-  }
-}
-
-export default Project
+export default Project;

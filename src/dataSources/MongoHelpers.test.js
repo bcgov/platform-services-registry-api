@@ -69,13 +69,12 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should insert an element to an array in a document", async () => {
-
     const testProjectId = "testProjectOneId";
     const result = await users.addElementToDocumentArray(oamarId, {
       projectOwner: testProjectId,
     });
 
-    const user = await users.collection.find({_id: oamarId}).toArray()
+    const user = await users.collection.find({ _id: oamarId }).toArray();
 
     expect(result.acknowledged).toBe(true);
     expect(user[0]["projectOwner"]).toEqual([testProjectId]);
@@ -83,14 +82,21 @@ describe("Mongo Helpers", () => {
 
   it("Should insert an element to an array in many documents by id", async () => {
     const testProjectId = "testProjectTwoId";
-    const { acknowledged } = await users.addElementToManyDocumentsArray([billyId, oamarId], {
-      technicalLeads: testProjectId,
-    });
+    const { acknowledged } = await users.addElementToManyDocumentsArray(
+      [billyId, oamarId],
+      {
+        technicalLeads: testProjectId,
+      }
+    );
 
-    const allUsers = await users.collection.find(({_id: {$in: [oamarId, billyId]}})).toArray()
+    const allUsers = await users.collection
+      .find({ _id: { $in: [oamarId, billyId] } })
+      .toArray();
 
     expect(acknowledged).toBe(true);
-    expect(allUsers.map(user => user.technicalLeads)).toEqual([[testProjectId], [testProjectId]]);
-  })
-}); 
-
+    expect(allUsers.map((user) => user.technicalLeads)).toEqual([
+      [testProjectId],
+      [testProjectId],
+    ]);
+  });
+});

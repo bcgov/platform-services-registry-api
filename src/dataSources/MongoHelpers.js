@@ -1,7 +1,6 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 
 export default class MongoHelpers extends MongoDataSource {
-
   getAll() {
     return this.collection.find().toArray();
   }

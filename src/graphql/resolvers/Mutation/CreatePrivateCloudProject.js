@@ -51,13 +51,16 @@ async function createPrivateCloudProject(
     projectOwner: project._id,
   });
 
-  console.log(input.technicalLeadsUserIds.map(id => ObjectId(id)))
+  console.log(input.technicalLeadsUserIds.map((id) => ObjectId(id)));
 
-  const result = await users.addElementToManyDocumentsArray(input.technicalLeadsUserIds.map(id => ObjectId(id)), {
-    technicalLead: project._id,
-  });
+  const result = await users.addElementToManyDocumentsArray(
+    input.technicalLeadsUserIds.map((id) => ObjectId(id)),
+    {
+      technicalLead: project._id,
+    }
+  );
 
-  console.log(result)
+  console.log(result);
 
   return project;
 }
