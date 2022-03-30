@@ -36,6 +36,11 @@ const typeDefs = gql`
     DELETE
   }
 
+  enum Platform {
+    GOOGLE
+    AWS
+  }
+
   type Namespace {
     name: String!
     environment: Environment!
@@ -45,12 +50,39 @@ const typeDefs = gql`
     snapshotQuota: String!
   }
 
-  type Project {
+  interface Project {
     id: ID!
     name: String!
     archived: Boolean!
     created: DateTime!
-    cretedBy: User!
+    createdBy: User!
+    description: String!
+    status: ProjectStatus!
+    productOwner: User!
+    technicalLeads: [User]!
+    ministry: Ministry!
+  }
+
+  type PublicCloudProject implements Project {
+    id: ID!
+    name: String!
+    archived: Boolean!
+    created: DateTime!
+    createdBy: User!
+    description: String!
+    status: ProjectStatus!
+    productOwner: User!
+    technicalLeads: [User]!
+    ministry: Ministry!
+    platform: Platform!
+  }
+
+  type PrivateCloudProject implements Project {
+    id: ID!
+    name: String!
+    archived: Boolean!
+    created: DateTime!
+    createdBy: User!
     description: String!
     status: ProjectStatus!
     productOwner: User!
@@ -64,7 +96,7 @@ const typeDefs = gql`
     requestHistory: [Request]!
   }
 
-  input CreateProjectInput {
+  input CreatePrivateCloudProjectInput {
     name: String!
     description: String!
     createdBy: ID!
@@ -138,14 +170,19 @@ const typeDefs = gql`
     users: [User!]!
     user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
-    project(projectId: ID!): Project!
     projects: [Project!]!
+    privateCloudProjects: [PrivateCloudProject!]!
+    privateCloudProject(projectId: ID!): PrivateCloudProject!
+    publicCloudProjects: [PublicCloudProject!]!
+    publicCloudProject(projectId: ID!): PublicCloudProject
   }
 
   type Mutation {
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
-    createProject(input: CreateProjectInput!): Project!
+    createPrivateCloudProject(
+      input: CreatePrivateCloudProjectInput!
+    ): PrivateCloudProject!
   }
 `;
 

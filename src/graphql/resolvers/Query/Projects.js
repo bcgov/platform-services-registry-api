@@ -1,9 +1,21 @@
-function projects(_, __, { dataSources: { projects } }) {
-  return projects.getAll();
+function privateCloudProjects(_, __, { dataSources: { privateCloudProjects } }) {
+  return privateCloudProjects.getAll();
 }
 
-function project(_, { id }, { dataSources: { projects } }) {
-  return projects.getById(id)
+function privateCloudProject(_, { id }, { dataSources: { privateCloudProjects } }) {
+  return privateCloudProjects.findOneById(id)
 }
 
-export { projects, project };
+function publicCloudProjects(_, __, { dataSources: { publicCloudProjects } }) {
+  return publicCloudProjects.getAll();
+}
+
+function publicCloudProject(_, { id }, { dataSources: { publicCloudProjects } }) {
+  return publicCloudProjects.findOneById(id)
+}
+
+async function projects(_, __, { dataSources: { publicCloudProjects, privateCloudProjects } }) {
+  return [...await privateCloudProjects.getAll(), ...await publicCloudProjects.getAll()]
+}
+
+export { privateCloudProjects, privateCloudProject, publicCloudProjects, publicCloudProject, projects };

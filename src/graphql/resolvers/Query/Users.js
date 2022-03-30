@@ -3,11 +3,11 @@ function users(_, __, { dataSources: { users } }) {
 }
 
 function user(_, { id }, { dataSources: { users } }) {
-  return users.getById(id)
+  return users.findOneById(id)
 }
 
 function usersByIds(_, {ids}, { dataSources: { users } }) {
-  return users.getByIds(ids)
+  return users.findManyByIds(ids)
 }
 
 export { users, usersByIds, user };

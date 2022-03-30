@@ -1,6 +1,15 @@
 const User = {
-  id: ({_id}) => _id.toString(),
-  // projects: ({projectIds}, _, ) => // will get the array of project id's and look up the corresponding projects in the database
-}
+  id: ({ _id }) => _id.toString(),
+  projectOwner: (
+    { projectOwner },
+    _,
+    { dataSources: { privateCloudProjects } }
+  ) => privateCloudProjects.findManyByIds(projectOwner),
+  technicalLead: (
+    { technicalLead },
+    _,
+    { dataSources: { privateCloudProjects } }
+  ) => privateCloudProjects.findManyByIds(technicalLead),
+};
 
-export default User
+export default User;

@@ -1,10 +1,17 @@
 const Project = {
-  id: ({ _id }) => _id.toString(),
-  productOwner: ({ productOwnerUserId }, _, { dataSources: { users } }) =>
-    users.getById(productOwnerUserId),
-  technicalLeads: ({ technicalLeadsUserIds }, _, { dataSources: { users } }) =>
-    users.getByIds(technicalLeadsUserIds),
-  //requestHistory: ({requestIds}) => Requests.getAllByIds(requestIds)
-};
+  __resolveType(project) {
 
-export default Project;
+    if(project.cluster) {
+      return "PrivateCloudProject"
+    }
+
+    if(project.platform) {
+      return "PublicCloudProject"
+    }
+
+    return null
+
+  }
+}
+
+export default Project
