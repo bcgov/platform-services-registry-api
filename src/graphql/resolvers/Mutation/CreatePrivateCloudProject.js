@@ -48,7 +48,7 @@ async function createPrivateCloudProject(
     active: true,
     created: project.created,
     updated: null,
-    project: project._id,
+    project: null,
     requestedProject: project._id
   })
 
