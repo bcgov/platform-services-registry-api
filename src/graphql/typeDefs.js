@@ -171,7 +171,7 @@ const typeDefs = gql`
     active: Boolean!
     created: DateTime!
     updated: DateTime
-    project: Project!
+    project: Project
     requestedProject: Project!
   }
 
@@ -225,7 +225,6 @@ const typeDefs = gql`
     privateCloudRequest(requestId: ID!): Request!
     publicCloudRequests: [Request!]!
     publicCloudRequest(requestId: ID!): Request!
-
   }
 
   type Mutation {

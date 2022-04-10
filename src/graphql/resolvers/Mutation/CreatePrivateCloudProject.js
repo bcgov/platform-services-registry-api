@@ -8,7 +8,7 @@ const { ObjectId } = require("mongodb");
 async function createPrivateCloudProject(
   _,
   { input },
-  { dataSources: { users, privateCloudProjects, privateCloudRequests } }
+  { dataSources: { users, privateCloudRequestedProjects, privateCloudRequests } }
 ) {
 
   // TODO: Configure mongo to either accept or reject all of the following writes
@@ -17,7 +17,7 @@ async function createPrivateCloudProject(
   // to be done first)
 
   // Create Project
-  const project = await privateCloudProjects.create({
+  const project = await privateCloudRequestedProjects.create({
     createdBy: ObjectId("6252a2cf0398c45563421354"), // Get user ID from auth header
     archived: false,
     created: new Date(),

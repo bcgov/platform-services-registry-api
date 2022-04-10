@@ -30,6 +30,12 @@ async function startApolloServer(typeDefs, resolvers) {
       ),
       publicCloudRequests: new MongoHelpers(
         client.db().collection("publicCloudRequests")
+      ),
+      privateCloudRequestedProjects: new MongoHelpers(
+        client.db().collection("privateCloudRequests")
+      ),
+      publicCloudRequestedProjects: new MongoHelpers(
+        client.db().collection("publicCloudRequests")
       )
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
