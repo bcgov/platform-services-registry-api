@@ -1,3 +1,4 @@
+require("dotenv").config();
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import express from "express";
@@ -8,7 +9,7 @@ import { MongoClient } from "mongodb";
 import MongoHelpers from "./dataSources/MongoHelpers";
 
 async function startApolloServer(typeDefs, resolvers) {
-  const client = new MongoClient("mongodb://localhost:27017/test");
+  const client = new MongoClient(process.env.MONGO_URI);
   client.connect();
 
   const app = express();
@@ -24,7 +25,12 @@ async function startApolloServer(typeDefs, resolvers) {
       publicCloudProjects: new MongoHelpers(
         client.db().collection("publicCloudProjects")
       ),
-      namespace: new MongoHelpers(client.db().collection("namespace")),
+      privateCloudRequests: new MongoHelpers(
+        client.db().collection("privateCloudRequests")
+      ),
+      publicCloudRequests: new MongoHelpers(
+        client.db().collection("publicCloudRequests")
+      )
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });

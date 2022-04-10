@@ -2,11 +2,15 @@ const PrivateCloudProject = {
   id: ({ _id }) => _id.toString(),
   createdBy: ({ createdBy }, _, { dataSources: { users } }) =>
     users.findOneById(createdBy),
-  productOwner: ({ productOwnerUserId }, _, { dataSources: { users } }) =>
-    users.findOneById(productOwnerUserId),
-  technicalLeads: ({ technicalLeadsUserIds }, _, { dataSources: { users } }) =>
-    users.findManyByIds(technicalLeadsUserIds),
-  //requestHistory: ({requestIds}) => Requests.getAllByIds(requestIds)
+  projectOwner: ({ projectOwner }, _, { dataSources: { users } }) =>
+    users.findOneById(projectOwner),
+  technicalLeads: ({ technicalLeads }, _, { dataSources: { users } }) =>
+    users.findManyByIds(technicalLeads),
+  requestHistory: (
+    { requestHistory },
+    _,
+    { dataSources: { privateCloudRequests } }
+  ) => privateCloudRequests.findManyByIds(requestHistory),
 };
 
 export default PrivateCloudProject;

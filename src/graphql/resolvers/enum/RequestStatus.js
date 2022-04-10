@@ -1,4 +1,4 @@
-const ProjectStatus = {
+const RequestStatus = {
   DRAFT: "draft",
   SUBMITTED: "submitted",
   PENDING_APROVAL: "pending-approval",
@@ -7,4 +7,4 @@ const ProjectStatus = {
   REJECTED: "rejected",
 };
 
-export default ProjectStatus;
+export default RequestStatus;

@@ -7,15 +7,26 @@ import {
   publicCloudProject,
   projects,
 } from "./Query/Projects";
+import {
+  privateCloudRequests,
+  privateCloudRequest,
+  publicCloudRequests,
+  publicCloudRequest,
+  requests,
+} from "./Query/Requests";
 import createPrivateCloudProject from "./Mutation/CreatePrivateCloudProject";
 import createUser from "./Mutation/CreateUser";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
-import Ministry from "./scalar/Ministry";
-import Environment from "./scalar/Environment";
-import ProjectStatus from "./scalar/ProjectStatus";
-import Platform from "./scalar/Platform";
+import Request from "./Request";
+import Ministry from "./enum/Ministry";
+import Environment from "./enum/Environment";
+import RequestStatus from "./enum/RequestStatus";
+import ProjectStatus from "./enum/ProjectStatus";
+import RequestType from "./enum/RequestType";
+import PublicCloudPlatform from "./enum/PublicCloudPlatform";
+import Platform from "./enum/Platform";
 
 const resolvers = {
   Query: {
@@ -27,6 +38,11 @@ const resolvers = {
     publicCloudProjects,
     publicCloudProject,
     projects,
+    privateCloudRequests,
+    privateCloudRequest,
+    publicCloudRequests,
+    publicCloudRequest,
+    requests,
   },
   Mutation: {
     createUser,
@@ -37,9 +53,13 @@ const resolvers = {
   DateTime: GraphQLDateTime,
   ProjectStatus,
   Project,
+  Request,
+  RequestStatus,
+  RequestType,
   Ministry,
   Environment,
-  Platform,
+  PublicCloudPlatform,
+  Platform
 };
 
 export default resolvers;

@@ -3,7 +3,9 @@ function createUser(_, { input }, { dataSources: { users } }) {
     ...input,
     archived: false,
     created: new Date(),
-    projects: [],
+    projectOwner: [],
+    technicalLead: [],
+    lastSeen: new Date(),
   });
 }
 
