@@ -1,6 +1,15 @@
 require("dotenv").config();
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+import { configureKeycloak } from "./auth/config"
+import {
+  KeycloakContext,
+  KeycloakTypeDefs,
+  KeycloakSchemaDirectives,
+} from "keycloak-connect-graphql";
+const cors = require("cors");
+import { applyDirectiveTransformers } from "./auth/transformers";
 import express from "express";
 import http from "http";
 import typeDefs from "./graphql/typeDefs";
@@ -9,13 +18,32 @@ import { MongoClient } from "mongodb";
 import MongoHelpers from "./dataSources/MongoHelpers";
 
 async function startApolloServer(typeDefs, resolvers) {
+
   const client = new MongoClient(process.env.MONGO_URI);
   client.connect();
 
+  let schema = makeExecutableSchema({
+    typeDefs: [KeycloakTypeDefs, typeDefs],
+    resolvers
+  });
+
+  schema = applyDirectiveTransformers(schema);
+
   const app = express();
   const httpServer = http.createServer(app);
+
+  const graphqlPath = '/graphql'
+
+  const { keycloak } = configureKeycloak(app, graphqlPath)
+
+  app.use("https://studio.apollographql.com/sandbox/explorer", keycloak.protect())
+  app.use(cors({
+    origin: "*",
+  }));
+
   const server = new ApolloServer({
-    typeDefs,
+    schema,
+    schemaDirectives: KeycloakSchemaDirectives,
     resolvers,
     dataSources: () => ({
       users: new MongoHelpers(client.db().collection("users")),
@@ -36,8 +64,14 @@ async function startApolloServer(typeDefs, resolvers) {
       ),
       publicCloudRequestedProjects: new MongoHelpers(
         client.db().collection("publicCloudRequestedProjects")
-      )
+      ),
     }),
+    context: ({ req }) => {
+      return {
+        kauth: new KeycloakContext({ req }, keycloak) 
+      }
+      
+    },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
   await server.start();

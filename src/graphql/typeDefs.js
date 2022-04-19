@@ -194,6 +194,10 @@ const typeDefs = gql`
     ministry: Ministry
   }
 
+  input SignUpInput {
+    ministry: Ministry
+  }
+
   input CreateUserInput {
     firstName: String!
     lastName: String!
@@ -201,19 +205,22 @@ const typeDefs = gql`
     ministry: Ministry
   }
 
-  input UpdateUserInput {
+  input UpdateUserInput { 
     firstName: String
     lastName: String
     email: EmailAddress
     archived: Boolean
     lastSeen: DateTime
+    projectOwner: [ID!],
+    technicalLead: [ID!],
   }
 
   type Query {
-    users: [User!]!
+    users: [User!]! @auth
     user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
 
+    # This should all require admin privileges 
     projects: [Project!]!
     privateCloudProjects: [PrivateCloudProject!]!
     privateCloudProject(projectId: ID!): PrivateCloudProject!
@@ -225,13 +232,22 @@ const typeDefs = gql`
     privateCloudRequest(requestId: ID!): Request!
     publicCloudRequests: [Request!]!
     publicCloudRequest(requestId: ID!): Request!
+
+    # Need to implement the above but for a user
+
+    # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
 
   type Mutation {
+    signUp(input: SignUpInput!): User!
+
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
+
     createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request!
     updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput): Request!
+
+
   }
 `;
 

@@ -1,0 +1,13 @@
+{
+  "realm": "devhub",
+  "auth-server-url": "https://dev.oidc.gov.bc.ca/auth/",
+  "ssl-required": "external",
+  "resource": "registry-api",
+  "verify-token-audience": true,
+  "credentials": {
+    "secret": "340d6a0d-a9c5-46bf-b63c-0bef1373b5e6"
+  },
+  "enable-cors": true,
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}
