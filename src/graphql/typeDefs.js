@@ -176,7 +176,7 @@ const typeDefs = gql`
   }
 
   type Profile {
-    email: String
+    email: EmailAddress!
     id: ID!
     user: User!
   }
@@ -216,9 +216,10 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User!]! @auth
+    users: [User!]! @hasRole(role: "test")
     user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
+    me: User
 
     # This should all require admin privileges 
     projects: [Project!]!

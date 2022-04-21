@@ -17,6 +17,8 @@
     "graphql": "^16.3.0",
     "graphql-scalars": "^1.15.0",
     "graphql-tools": "^8.2.7",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.5",
     "keycloak-connect": "^17.0.1",
     "keycloak-connect-graphql": "^0.7.0",
     "mongodb": "^4.4.1"

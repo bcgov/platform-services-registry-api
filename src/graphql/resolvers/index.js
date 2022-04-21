@@ -1,5 +1,5 @@
 import { GraphQLDateTime } from "graphql-scalars";
-import { users, user, usersByIds } from "./Query/Users";
+import { users, user, usersByIds, me } from "./Query/Users";
 import {
   privateCloudProjects,
   privateCloudProject,
@@ -33,6 +33,7 @@ const resolvers = {
     users,
     user,
     usersByIds,
+    me,
     privateCloudProjects,
     privateCloudProject,
     publicCloudProjects,
