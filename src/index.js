@@ -25,6 +25,7 @@ async function startApolloServer(typeDefs, resolvers) {
   schema = applyDirectiveTransformers(schema);
 
   const app = express();
+
   const graphqlPath = "/graphql";
   const { keycloak } = configureKeycloak(app, graphqlPath);
 
@@ -32,8 +33,11 @@ async function startApolloServer(typeDefs, resolvers) {
 
   // app.use("https://studio.apollographql.com/sandbox/explorer", keycloak.protect())
   // app.use(cors({
-  //   origin: "*",
+  //   origin: "https://studio.apollographql.com",
+  //   credentials: true
   // }));
+
+  // process.env.__dev__ && app.set('trust proxy', 1);
 
   const httpServer = http.createServer(app);
 
@@ -61,11 +65,12 @@ async function startApolloServer(typeDefs, resolvers) {
         client.db().collection("publicCloudRequestedProjects")
       ),
     }),
-    context: ({ req }) => ({
-      kauth: new KeycloakContext({ req }, keycloak),
-    }),
+    context: ({ req }) => {
+      return { kauth: new KeycloakContext({ req }, keycloak) };
+    },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+
   await server.start();
   server.applyMiddleware({ app });
   await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
