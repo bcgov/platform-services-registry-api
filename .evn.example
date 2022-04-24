@@ -1,3 +1,0 @@
-MONGO_URI="mongodb://localhost:27017/registry"
-AUTH0_DOMAIN="https://your-ss0-domain/auth/"
-API_IDENTIFIER="registry-api"
