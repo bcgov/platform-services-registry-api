@@ -1,15 +1,25 @@
 const User = {
   id: ({ _id }) => _id.toString(),
-  projectOwner: (
-    { projectOwner },
+  projectOwnerPrivateCloud: (
+    { projectOwnerPrivateCloud },
     _,
     { dataSources: { privateCloudProjects } }
-  ) => privateCloudProjects.findManyByIds(projectOwner),
-  technicalLead: (
-    { technicalLead },
+  ) => privateCloudProjects.findManyByIds(projectOwnerPrivateCloud),
+  technicalLeadPrivateCloud: (
+    { technicalLeadPrivateCloud },
     _,
     { dataSources: { privateCloudProjects } }
-  ) => privateCloudProjects.findManyByIds(technicalLead),
+  ) => privateCloudProjects.findManyByIds(technicalLeadPrivateCloud),
+  projectOwnerPublicCloud: (
+    { projectOwnerPublicCloud },
+    _,
+    { dataSources: { publicCloudProjects } }
+  ) => publicCloudProjects.findManyByIds(projectOwnerPublicCloud),
+  technicalLeadPublicCloud: (
+    { technicalLeadPublicCloud },
+    _,
+    { dataSources: { publicCloudProjects } }
+  ) => publicCloudProjects.findManyByIds(technicalLeadPublicCloud),
 };
 
 export default User;

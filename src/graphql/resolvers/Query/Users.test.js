@@ -1,0 +1,114 @@
+const { MongoClient } = require("mongodb");
+import MongoHelpers from "../../../dataSources/MongoHelpers"
+import { mockUserAlex, mockUserBilly, mockUserOamar } from "../../../testHelpers/TestConstants";
+import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
+import typeDefs from "../../typeDefs";
+import resolvers from "../../resolvers";
+
+
+
+// describe("Mongo Helpers", () => {
+//   let connection;
+//   let db;
+//   let oamarId;
+//   let billyId;
+//   let users;
+
+//   beforeAll(async () => {
+//     connection = await MongoClient.connect(global.__MONGO_URI__, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+
+//     db = await connection.db(global.__MONGO_DB_NAME__);
+//     users = new MongoHelpers(db.collection("users"));
+//     users.initialize();
+
+//     const oamar = await users.collection.insertOne(mockUserOamar);
+//     oamarId = oamar.insertedId;
+
+//     const billy = await users.collection.insertOne(mockUserBilly);
+//     billyId = billy.insertedId;
+
+
+//   let schema = makeExecutableSchema({
+//     typeDefs: [KeycloakTypeDefs, typeDefs],
+//     resolvers,
+//   });
+
+//   schema = applyDirectiveTransformers(schema);
+
+//     const server = new ApolloServer({
+//       schema,
+//       resolvers,
+//       dataSources: () => ({
+//         users,
+//       }),
+//       context: ({ req }) => ({
+//         kauth: new KeycloakContext({ req }, keycloak) 
+//       }),
+//       plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+//     });
+//   });
+
+//   afterAll(async () => {
+//     await connection.close();
+//   });
+
+//   test("Data Source with Collection", async () => {
+//     const user = await users.findOneById(oamarId);
+
+//     expect(user.firstName).toBe("Oamar");
+//     expect(user.id).toBeUndefined();
+//   });
+
+//   it("Should get all users in the collection", async () => {
+//     const allUsers = await users.getAll();
+
+//     expect(allUsers.map((user) => user._id)).toEqual([oamarId, billyId]);
+//   });
+
+//   it("Should get users by id's", async () => {
+//     const allUsers = await users.findManyByIds([oamarId, billyId]);
+
+//     expect(allUsers.map((user) => user._id)).toEqual([oamarId, billyId]);
+//   });
+
+//   it("Should insert a user into collection and return the user", async () => {
+//     const insertedUser = await users.create(mockUserAlex);
+
+//     expect(insertedUser).toEqual(mockUserAlex);
+//   });
+
+//   it("Should insert an element to an array in a document", async () => {
+//     const testProjectId = "testProjectOneId";
+//     const result = await users.addElementToDocumentArray(oamarId, {
+//       projectOwner: testProjectId,
+//     });
+
+//     const user = await users.collection.find({ _id: oamarId }).toArray();
+
+//     expect(result.acknowledged).toBe(true);
+//     expect(user[0]["projectOwner"]).toEqual([testProjectId]);
+//   });
+
+//   it("Should insert an element to an array in many documents by id", async () => {
+//     const testProjectId = "testProjectTwoId";
+//     const { acknowledged } = await users.addElementToManyDocumentsArray(
+//       [billyId, oamarId],
+//       {
+//         technicalLeads: testProjectId,
+//       }
+//     );
+
+//     const allUsers = await users.collection
+//       .find({ _id: { $in: [oamarId, billyId] } })
+//       .toArray();
+
+//     expect(acknowledged).toBe(true);
+//     expect(allUsers.map((user) => user.technicalLeads)).toEqual([
+//       [testProjectId],
+//       [testProjectId],
+//     ]);
+//   });
+// });

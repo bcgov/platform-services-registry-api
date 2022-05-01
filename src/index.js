@@ -1,10 +1,9 @@
 require("dotenv").config();
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
-const { makeExecutableSchema } = require("@graphql-tools/schema");
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { configureKeycloak } from "./auth/config";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
-const cors = require("cors");
 import { applyDirectiveTransformers } from "./auth/transformers";
 import express from "express";
 import http from "http";
@@ -28,16 +27,6 @@ async function startApolloServer(typeDefs, resolvers) {
 
   const graphqlPath = "/graphql";
   const { keycloak } = configureKeycloak(app, graphqlPath);
-
-  //app.use(graphqlPath, keycloak.protect())
-
-  // app.use("https://studio.apollographql.com/sandbox/explorer", keycloak.protect())
-  // app.use(cors({
-  //   origin: "https://studio.apollographql.com",
-  //   credentials: true
-  // }));
-
-  // process.env.__dev__ && app.set('trust proxy', 1);
 
   const httpServer = http.createServer(app);
 
@@ -65,9 +54,9 @@ async function startApolloServer(typeDefs, resolvers) {
         client.db().collection("publicCloudRequestedProjects")
       ),
     }),
-    context: ({ req }) => {
-      return { kauth: new KeycloakContext({ req }, keycloak) };
-    },
+    context: ({ req }) => ({
+     kauth: new KeycloakContext({ req }, keycloak)
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 

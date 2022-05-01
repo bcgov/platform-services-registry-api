@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 import MongoHelpers from "./MongoHelpers";
-import { mockUserAlex, mockUserBilly, mockUserOamar } from "./TestConstants";
+import { mockUserAlex, mockUserBilly, mockUserOamar } from "../testHelpers/TestConstants";
 
 describe("MongoDataSource", () => {
   it("sets up caching functions", () => {

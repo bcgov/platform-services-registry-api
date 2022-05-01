@@ -1,4 +1,4 @@
-function users(_, __, { dataSources: { users }, kauth }) {
+function users(_, __, { dataSources: { users } }) {
   return users.getAll();
 }
 

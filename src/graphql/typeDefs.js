@@ -188,13 +188,11 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
-    projectOwner: [Project]!
-    technicalLead: [Project]!
+    projectOwnerPrivateCloud: [Project]!
+    technicalLeadPrivateCloud: [Project]!
+    projectOwnerPublicCloud: [Project]!
+    technicalLeadPublicCloud: [Project]!
     created: DateTime!
-    ministry: Ministry
-  }
-
-  input SignUpInput {
     ministry: Ministry
   }
 
@@ -202,6 +200,12 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     email: EmailAddress!
+    ministry: Ministry
+  }
+
+  input SignUpInput {
+    firstName: String!
+    lastName: String!
     ministry: Ministry
   }
 
@@ -219,7 +223,7 @@ const typeDefs = gql`
     users: [User!]! @auth
     user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
-    me: User
+    me: User @auth
 
     # This should all require admin privileges 
     projects: [Project!]!
@@ -235,17 +239,25 @@ const typeDefs = gql`
     publicCloudRequest(requestId: ID!): Request!
 
     # Need to implement the above but for a user
+    userProjects: [Project!]!
+    userPrivateCloudProjects: [PrivateCloudProject!]!
+    userPrivateCloudProject(projectId: ID!): PrivateCloudProject!
+
+    userRequests: [Request!]!
+    userPrivateCloudRequests: [Request!]!
+    userPrivateCloudRequest(requestId: ID!): Request!
+
 
     # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
 
   type Mutation {
-    signUp(input: SignUpInput!): User!
+    signUp(input: SignUpInput!): User! @auth
 
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
-    createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request!
+    createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request! @auth
     updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput): Request!
 
 

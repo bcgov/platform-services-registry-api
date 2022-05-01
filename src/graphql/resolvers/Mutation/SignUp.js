@@ -1,7 +1,10 @@
-function createUser(_, { input }, { dataSources: { users } }) {
-  // Need to verify that input.email does not already exist
+function signUp (_, { input }, { dataSources: { users }, kauth }) {
+
+  const { email } = kauth.accessToken.content;
+  
   return users.create({
     ...input,
+    email: email,
     archived: false,
     created: new Date(),
     projectOwnerPrivateCloud: [],
@@ -12,4 +15,4 @@ function createUser(_, { input }, { dataSources: { users } }) {
   });
 }
 
-export default createUser;
+export default signUp;
