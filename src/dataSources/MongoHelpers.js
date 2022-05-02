@@ -27,8 +27,8 @@ export default class MongoHelpers extends MongoDataSource {
     );
   }
 
-  updatePropertyById(id, updateProperty) {
-    this.collection.updateOne({ _id: id }, { $set: updateProperty });
+  updateFieldsById(id, data) {
+    return this.collection.updateOne({ _id: id }, { $set: data });
   }
 
   async create(user) {

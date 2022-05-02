@@ -11,12 +11,14 @@ const typeDefs = gql`
   }
 
   enum RequestStatus {
-    DRAFT
-    SUBMITTED
-    PENDING_APROVAL
-    PROVISIONING
-    PROVISIONED
+    PENDING_DECISION
+    APPROVED
     REJECTED
+  }
+
+  enum RequestDecision {
+    APPROVE
+    REJECT
   }
 
   enum RequestType {
@@ -175,10 +177,9 @@ const typeDefs = gql`
     requestedProject: Project!
   }
 
-  type Profile {
-    email: EmailAddress!
-    id: ID!
-    user: User!
+  type MakeRequestDecisionInput {
+    dicision: RequestDecision!
+    request: ID!
   }
 
   type User {
@@ -257,6 +258,9 @@ const typeDefs = gql`
 
     createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request! @auth
     updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput): Request!
+
+    makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): Request!
+
   }
 `;
 

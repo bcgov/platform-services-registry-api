@@ -32,7 +32,7 @@ async function createPrivateCloudProject(
   const [projectOwner] = await users.findByFields({ email: input.projectOwner });
   const technicalLeads = await users.findManyByFieldValues("email",  input.technicalLeads);
 
-  // Create Project
+  // Create Requested Project
   const project = await privateCloudRequestedProjects.create({
     ...input,
     createdBy: user._id,

@@ -28,6 +28,7 @@ import ProjectStatus from "./enum/ProjectStatus";
 import RequestType from "./enum/RequestType";
 import PublicCloudPlatform from "./enum/PublicCloudPlatform";
 import Platform from "./enum/Platform";
+import RequestDecision from "./enum/RequestDecision";
 
 const resolvers = {
   Query: {
@@ -47,9 +48,9 @@ const resolvers = {
     requests,
   },
   Mutation: {
+    signUp,
     createUser,
     createPrivateCloudProject,
-    signUp
   },
   PrivateCloudProject,
   User,
@@ -62,7 +63,8 @@ const resolvers = {
   Ministry,
   Environment,
   PublicCloudPlatform,
-  Platform
+  Platform,
+  RequestDecision
 };
 
 export default resolvers;
