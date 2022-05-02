@@ -1,6 +1,16 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 
 export default class MongoHelpers extends MongoDataSource {
+
+  // Inherited methods 
+  // findOneById(id, options)
+  // findManyByIds(ids, options)
+  // findByFields(fields, options)
+
+  findManyByFieldValues(field, values) {
+    return this.collection.find( { [field]: { $in: values } }).toArray()
+  }
+
   getAll() {
     return this.collection.find().toArray();
   }

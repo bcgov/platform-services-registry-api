@@ -1,6 +1,10 @@
 const { MongoClient } = require("mongodb");
 import MongoHelpers from "./MongoHelpers";
-import { mockUserAlex, mockUserBilly, mockUserOamar } from "../testHelpers/TestConstants";
+import {
+  mockUserAlex,
+  mockUserBilly,
+  mockUserOamar,
+} from "../testHelpers/TestConstants";
 
 describe("MongoDataSource", () => {
   it("sets up caching functions", () => {
@@ -98,5 +102,13 @@ describe("Mongo Helpers", () => {
       [testProjectId],
       [testProjectId],
     ]);
+  });
+
+  it("Should find all documents with a specified field name for corresponding specified values", async () => {
+    const allUsers = await users.findManyByFieldValues("email", [
+      "oamarkanji@registry.com",
+      "billyli@registry.com",
+    ]);
+    expect(allUsers.map((user) => user._id)).toEqual([oamarId, billyId]);
   });
 });

@@ -10,9 +10,10 @@ function usersByIds(_, { ids }, { dataSources: { users } }) {
   return users.findManyByIds(ids);
 }
 
-function me(_, __, { dataSources: { users }, kauth }) {
+async function me(_, __, { dataSources: { users }, kauth }) {
   const { email } = kauth.accessToken.content;
-  return users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email })
+  return user;
 }
 
 export { users, usersByIds, user, me };

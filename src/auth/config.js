@@ -5,7 +5,21 @@ const Keycloak = require('keycloak-connect')
 
 function configureKeycloak(app, graphqlPath) {
 
-  const keycloakConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keycloak.json')))
+  // const keycloakConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keycloak.json')))
+  
+  const keycloakConfig = {
+    "realm": process.env.AUTH_RELM,
+    "auth-server-url": process.env.AUTH_SERVER_URL,
+    "ssl-required": "external",
+    "resource": process.env.AUTH_RESOURCE,
+    "verify-token-audience": true,
+    "credentials": {
+      "secret": process.env.AUTH_SECRET
+    },
+    "use-resource-role-mappings": true,
+    "confidential-port": 0,
+    "policy-enforcer": {}
+  }
 
   const memoryStore = new session.MemoryStore()
 

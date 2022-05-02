@@ -116,8 +116,8 @@ const typeDefs = gql`
   input CreatePrivateCloudProjectInput {
     name: String!
     description: String!
-    projectOwner: ID!
-    technicalLeads: [ID!]
+    projectOwner: EmailAddress!
+    technicalLeads: [EmailAddress!]!
     ministry: Ministry!
     cluster: Cluster!
     productionCpuQuota: String ="test-cpu-quota"
@@ -188,10 +188,8 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
-    projectOwnerPrivateCloud: [Project]!
-    technicalLeadPrivateCloud: [Project]!
-    projectOwnerPublicCloud: [Project]!
-    technicalLeadPublicCloud: [Project]!
+    projectOwner: [Project]!
+    technicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
   }
@@ -221,7 +219,7 @@ const typeDefs = gql`
 
   type Query {
     users: [User!]! @auth
-    user(id: ID!): User
+    user(id: ID!): User 
     usersByIds(ids: [ID!]!): [User!]!
     me: User @auth
 
@@ -247,20 +245,18 @@ const typeDefs = gql`
     userPrivateCloudRequests: [Request!]!
     userPrivateCloudRequest(requestId: ID!): Request!
 
-
     # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
 
   type Mutation {
     signUp(input: SignUpInput!): User! @auth
+    # userUpdateSelf()
 
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
     createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request! @auth
     updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput): Request!
-
-
   }
 `;
 

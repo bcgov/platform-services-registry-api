@@ -3,8 +3,6 @@ import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 
-const { ObjectId } = require("mongodb");
-
 async function createPrivateCloudProject(
   _,
   { input },
@@ -18,30 +16,45 @@ async function createPrivateCloudProject(
   // that project creation was rejected. (Might need to do sequentially as create project needs
   // to be done first)
 
-  const { email } = kauth.accessToken.content;
+  const { email, resource_access } = kauth.accessToken.content;
+  const { roles } = resource_access[process.env.AUTH_RESOURCE];
+
+  if (
+    !roles.includes("admin") &&
+    ![input.projectOwner, ...input.technicalLeads].includes(email)
+  ) {
+    throw new Error(
+      "User must assign themselves as the project owner or a technical lead"
+    );
+  }
+
   const [user] = await users.findByFields({ email });
+  const [projectOwner] = await users.findByFields({ email: input.projectOwner });
+  const technicalLeads = await users.findManyByFieldValues("email",  input.technicalLeads);
 
   // Create Project
   const project = await privateCloudRequestedProjects.create({
+    ...input,
     createdBy: user._id,
     archived: false,
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
-    ...input,
+    projectOwner: projectOwner._id,
+    technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
   // Find project owner and add the project id
-  await users.addElementToDocumentArray(ObjectId(input.projectOwner), {
-    projectOwnerPrivateCloud: project._id,
+  await users.addElementToDocumentArray(projectOwner._id, {
+    projectOwner: project._id,
   });
 
   // Find technical leads and add the project id
   if (input?.technicalLeads) {
     await users.addElementToManyDocumentsArray(
-      input.technicalLeads.map((id) => ObjectId(id)),
+      technicalLeads.map(({ _id }) => _id),
       {
-        technicalLeadPrivateCloud: project._id,
+        technicalLead: project._id,
       }
     );
   }
