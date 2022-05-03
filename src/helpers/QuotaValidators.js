@@ -1,4 +1,4 @@
-const isValidQuotaString = (dataString) => {
+export const isValidQuotaString = (dataString) => {
   try {
       const splitstring = dataString.split('-');
 
@@ -43,25 +43,11 @@ const isValidQuotaString = (dataString) => {
       }
 
   } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
   }
 
   return true;
 };
 
-console.log(isValidQuotaString("cpu-request-4-limit-8"));
-console.log(isValidQuotaString("memory-request-16-limit-32"));
-console.log(isValidQuotaString("storage-64"));
-console.log(isValidQuotaString("snapshot-5"));
-
-console.log(isValidQuotaString("some nonsense"));
-console.log(isValidQuotaString("cpu-request-1-limit-16"));
-console.log(isValidQuotaString("memory-request-16-limit-16"));
-console.log(isValidQuotaString("storage-abc"));
-console.log(isValidQuotaString("snapshot-420"));
-
-// const datastring = $`CPU:cpu-request-4-limit-8
-// Memory:memory-request-16-limit-32
-// Storage:storage-64
-// Snapshot:snapshot-5`;
+export default isValidQuotaString;
