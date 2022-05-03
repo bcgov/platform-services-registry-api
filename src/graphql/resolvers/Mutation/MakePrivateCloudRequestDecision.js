@@ -23,7 +23,9 @@ function makePrivateCloudRequestDecision(
     const requestedProject = privateCloudRequestedProjects.findOneById(request.requestedProject)
 
     //provision requested project
+
+    return {}
   }
 }
 
-export default createUser;
+export default makePrivateCloudRequestDecision;

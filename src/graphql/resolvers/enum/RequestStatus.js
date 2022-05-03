@@ -1,9 +1,6 @@
 const RequestStatus = {
-  DRAFT: "draft",
-  SUBMITTED: "submitted",
-  PENDING_APROVAL: "pending-approval",
-  PROVISIONING: "provisioning",
-  PROVISIONED: "provisioned",
+  PENDING_DECISION: "pending-decision",
+  APPROVED: "approved",
   REJECTED: "rejected",
 };
 

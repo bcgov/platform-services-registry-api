@@ -177,7 +177,7 @@ const typeDefs = gql`
     requestedProject: Project!
   }
 
-  type MakeRequestDecisionInput {
+  input MakeRequestDecisionInput {
     dicision: RequestDecision!
     request: ID!
   }
@@ -256,8 +256,8 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
-    createPrivateCloudProject(input: CreatePrivateCloudProjectInput): Request! @auth
-    updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput): Request!
+    createPrivateCloudProject(input: CreatePrivateCloudProjectInput!): Request! @auth
+    updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput!): Request!
 
     makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): Request!
 
