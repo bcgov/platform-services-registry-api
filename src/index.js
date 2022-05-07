@@ -54,9 +54,9 @@ async function startApolloServer(typeDefs, resolvers) {
         client.db().collection("publicCloudRequestedProjects")
       ),
     }),
-    context: ({ req }) => ({
-     kauth: new KeycloakContext({ req }, keycloak)
-    }),
+    context: ({ req }) => {
+      return ({kauth: new KeycloakContext({ req }, keycloak)})
+    },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 

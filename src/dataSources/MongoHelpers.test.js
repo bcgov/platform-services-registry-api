@@ -44,6 +44,7 @@ describe("Mongo Helpers", () => {
   });
 
   afterAll(async () => {
+    await db.dropDatabase();
     await connection.close();
   });
 
@@ -119,8 +120,6 @@ describe("Mongo Helpers", () => {
     });
 
     const user = await users.findOneById(oamarId);
-    console.log(acknowledged)
-    console.log(user)
     expect(acknowledged).toBe(true);
     // expect(user.email).toEqual("a.kanji@gamil.com")
     // expect(user.firstName).toEqual("Aahil")
