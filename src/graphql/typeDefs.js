@@ -140,12 +140,15 @@ const typeDefs = gql`
     toolsSnapshotQuota: String = "test-snapshot-quota"
   }
 
-  input UpdatePrivateCloudProjectInput {
-    projectName: String
-    projectDescription: String
-    projectOwner: ID
-    technicalLeads: [ID!]
+  input UpdatePrivateCloudProjectMetaDataInput {
+    name: String
+    description: String
+    projectOwner: EmailAddress
+    technicalLeads: [EmailAddress!]
     ministry: Ministry
+  }
+
+  input UpdatePrivateCloudProjectQuotaInput {
     cluster: Cluster
     productionCpuQuota: String
     productionMemoryQuota: String
@@ -168,11 +171,12 @@ const typeDefs = gql`
   type Request {
     id: ID!
     createdBy: User!
+    decisionMaker: User
     type: RequestType!
     status: RequestStatus!
     active: Boolean!
     created: DateTime!
-    updated: DateTime
+    decisionDate: DateTime
     project: Project
     requestedProject: Project!
   }
@@ -256,11 +260,10 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
+
     createPrivateCloudProject(input: CreatePrivateCloudProjectInput!): Request! @auth
-    updatePrivateCloudProject(input: UpdatePrivateCloudProjectInput!): Request!
-
+    updatePrivateCloudProject(id: ID!, metaData: UpdatePrivateCloudProjectMetaDataInput, quota: UpdatePrivateCloudProjectQuotaInput!): Request!
     makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): Request!
-
   }
 `;
 

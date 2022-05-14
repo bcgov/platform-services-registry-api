@@ -17,6 +17,7 @@ import {
 import createPrivateCloudProject from "./Mutation/CreatePrivateCloudProject";
 import createUser from "./Mutation/CreateUser";
 import signUp from "./Mutation/SignUp";
+import updatePrivateCloudProject from "./Mutation/UpdatePrivateCloudProject";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
@@ -51,6 +52,7 @@ const resolvers = {
     signUp,
     createUser,
     createPrivateCloudProject,
+    updatePrivateCloudProject
   },
   PrivateCloudProject,
   User,

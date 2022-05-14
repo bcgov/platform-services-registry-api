@@ -38,21 +38,15 @@ async function startApolloServer(typeDefs, resolvers) {
       privateCloudProjects: new MongoHelpers(
         client.db().collection("privateCloudProjects")
       ),
-      publicCloudProjects: new MongoHelpers(
-        client.db().collection("publicCloudProjects")
+      privateCloudRequests: new MongoHelpers(
+        client.db().collection("privateCloudActiveRequests")
       ),
       privateCloudRequests: new MongoHelpers(
         client.db().collection("privateCloudRequests")
       ),
-      publicCloudRequests: new MongoHelpers(
-        client.db().collection("publicCloudRequests")
-      ),
       privateCloudRequestedProjects: new MongoHelpers(
         client.db().collection("privateCloudRequestedProjects")
-      ),
-      publicCloudRequestedProjects: new MongoHelpers(
-        client.db().collection("publicCloudRequestedProjects")
-      ),
+      )
     }),
     context: ({ req }) => {
       return ({kauth: new KeycloakContext({ req }, keycloak)})

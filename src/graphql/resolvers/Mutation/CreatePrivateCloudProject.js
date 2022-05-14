@@ -24,7 +24,7 @@ async function createPrivateCloudProject(
     ![input.projectOwner, ...input.technicalLeads].includes(email)
   ) {
     throw new Error(
-      "User must assign themselves as the project owner or a technical lead"
+      "User must assing themselves as a project owner or technical lead "
     );
   }
 
@@ -33,7 +33,7 @@ async function createPrivateCloudProject(
   const technicalLeads = await users.findManyByFieldValues("email",  input.technicalLeads);
 
   // Create Requested Project
-  const project = await privateCloudRequestedProjects.create({
+  const requestedProject = await privateCloudRequestedProjects.create({
     ...input,
     createdBy: user._id,
     archived: false,
@@ -46,7 +46,7 @@ async function createPrivateCloudProject(
 
   // Find project owner and add the project id
   await users.addElementToDocumentArray(projectOwner._id, {
-    projectOwner: project._id,
+    projectOwner: requestedProject._id,
   });
 
   // Find technical leads and add the project id
@@ -54,22 +54,22 @@ async function createPrivateCloudProject(
     await users.addElementToManyDocumentsArray(
       technicalLeads.map(({ _id }) => _id),
       {
-        technicalLead: project._id,
+        technicalLead: requestedProject._id,
       }
     );
   }
 
   // Create Request
   const request = await privateCloudRequests.create({
-    createdBy: project.createdBy,
-    status: RequestStatus.SUBMITTED,
+    createdBy: requestedProject.createdBy,
+    status: RequestStatus.PENDING_DECISION,
     type: RequestType.CREATE,
     platform: Platform.PRIVATE_CLOUD,
     active: true,
-    created: project.created,
-    updated: null,
+    created: requestedProject.created,
+    decisionDate: null,
     project: null,
-    requestedProject: project._id,
+    requestedProject: requestedProject._id,
   });
 
   return request;

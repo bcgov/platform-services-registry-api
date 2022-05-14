@@ -55,6 +55,11 @@ describe("Mongo Helpers", () => {
     expect(user.id).toBeUndefined();
   });
 
+  it("Should return undefined if document does not exist, async", async () => {
+    const user = await users.findOneById("123")
+    expect(user).toBeUndefined();
+  });
+
   it("Should get all users in the collection", async () => {
     const allUsers = await users.getAll();
 

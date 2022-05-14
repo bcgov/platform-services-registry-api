@@ -4,27 +4,33 @@ import RequestStatus from "../enum/RequestStatus";
 function makePrivateCloudRequestDecision(
   _,
   { input },
-  { dataSources: { privateCloudRequests, privateCloudRequestedProjects } }
+  {
+    dataSources: { privateCloudRequests },
+    kauth,
+  }
 ) {
+
+  const { email } = kauth.accessToken.content;
+  const [user] = await users.findByFields({ email });
 
   if (input.RequestDecision === RequestDecision.REJECT) {
     privateCloudRequests.updateFieldsById(input.request, {
       status: RequestStatus.REJECTED,
-      updated: new Date(),
-      active: false
+      decisionDate: new Date(),
+      active: false,
+      decisionMaker: user._id
     });
-  } else if(input.RequestDecision === RequestDecision.APPROVE) {
+  } else if (input.RequestDecision === RequestDecision.APPROVE) {
     privateCloudRequests.updateFieldsById(input.request, {
       status: RequestStatus.PROVISIONING,
-      updated: new Date(),
+      decisionDate: new Date(),
+      decisionMaker: user._id
     });
 
-    const request = privateCloudRequests.findOneById(input.request)
-    const requestedProject = privateCloudRequestedProjects.findOneById(request.requestedProject)
+    // provision requested project, the provision controller will create the project and set the requeted project
+    // to the project in the request
 
-    //provision requested project
-
-    return {}
+    return {};
   }
 }
 

@@ -22,7 +22,8 @@
     "jwks-rsa": "^2.0.5",
     "keycloak-connect": "^17.0.1",
     "keycloak-connect-graphql": "^0.7.0",
-    "mongodb": "^4.4.1"
+    "mongodb": "^4.4.1",
+    "nats": "^2.6.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
