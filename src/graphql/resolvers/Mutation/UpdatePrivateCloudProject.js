@@ -1,4 +1,3 @@
-import ProjectStatus from "../enum/ProjectStatus";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
@@ -27,7 +26,10 @@ async function updatePrivateCloudProject(
 
   const [user] = await users.findByFields({ email });
 
-  const project = privateCloudProjects.findOneById(id);
+  const project = await privateCloudProjects.findOneById(id);
+
+  console.log("PROJECT")
+  console.log(project)
 
   if (project === undefined) {
     throw new Error("Project does not exist");
@@ -60,8 +62,8 @@ async function updatePrivateCloudProject(
   try {
     if (
       !roles.includes("admin") &&
-      "projectOwner" in requestedProjectInput &&
-      requestedProjectInput.projectOwner !== email
+      "projectOwner" in metaData &&
+      metaData.projectOwner !== email
     ) {
       throw new Error("Only the project owner can set a new project owner");
     }
