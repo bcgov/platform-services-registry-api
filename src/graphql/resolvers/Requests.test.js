@@ -1,10 +1,11 @@
-require('dotenv').config()
+require("dotenv").config();
 const { ApolloServer, gql } = require("apollo-server");
 const { MongoClient } = require("mongodb");
 import MongoHelpers from "../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { applyDirectiveTransformers } from "../../auth/transformers";
+const { ObjectId } = require("mongodb");
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
@@ -13,6 +14,7 @@ describe("Mongo Helpers", () => {
   let server;
   let connection;
   let db;
+  let collections;
 
   beforeAll(async () => {
     connection = await MongoClient.connect(global.__MONGO_URI__, {
@@ -21,6 +23,22 @@ describe("Mongo Helpers", () => {
     });
 
     db = await connection.db(global.__MONGO_DB_NAME__);
+
+    collections = {
+      users: new MongoHelpers(db.collection("users")),
+      privateCloudProjects: new MongoHelpers(
+        db.collection("privateCloudProjects")
+      ),
+      privateCloudRequestedProjects: new MongoHelpers(
+        db.collection("privateCloudRequestedProjects")
+      ),
+      privateCloudRequests: new MongoHelpers(
+        db.collection("privateCloudActiveRequests")
+      ),
+      privateCloudActiveRequests: new MongoHelpers(
+        db.collection("privateCloudRequests")
+      ),
+    };
 
     let schema = makeExecutableSchema({
       typeDefs: [KeycloakTypeDefs, typeDefs],
@@ -54,21 +72,7 @@ describe("Mongo Helpers", () => {
     server = new ApolloServer({
       schema,
       resolvers,
-      dataSources: () => ({
-        users: new MongoHelpers(db.collection("users")),
-        privateCloudProjects: new MongoHelpers(
-          db.collection("privateCloudProjects")
-        ),
-        privateCloudRequests: new MongoHelpers(
-          db.collection("privateCloudActiveRequests")
-        ),
-        privateCloudActiveRequests: new MongoHelpers(
-          db.collection("privateCloudRequests")
-        ),
-        privateCloudRequestedProjects: new MongoHelpers(
-          db.collection("privateCloudRequestedProjects")
-        ),
-      }),
+      dataSources: () => collections,
       context: () => {
         return { kauth: new KeycloakContext({ req }) };
       },
@@ -132,8 +136,26 @@ describe("Mongo Helpers", () => {
         },
       },
     });
-    
+
+    const { id, requestedProject } = result.data?.createPrivateCloudProject;
+
     expect(result.errors).toBeUndefined();
-    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe("Oamar");
+    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe(
+      "Oamar"
+    );
+    expect(
+      await collections.privateCloudActiveRequests.findOneById(id)
+    ).toHaveProperty("_id", ObjectId(id));
+    expect(
+      await collections.privateCloudRequests.findOneById(id)
+    ).toBeUndefined();
+    expect(
+      await collections.privateCloudRequestedProjects.findOneById(
+        requestedProject.id
+      )
+    ).toHaveProperty("name", "Test Project");
+    expect(
+      await collections.privateCloudProjects.findOneById(id)
+    ).toBeUndefined();
   });
 });
