@@ -14,6 +14,7 @@ function makePrivateCloudRequestDecision(
   const [user] = await users.findByFields({ email });
 
   if (input.RequestDecision === RequestDecision.REJECT) {
+    // Update fields and move to privateCloudReuests (from activePrivateCloudRequests)
     const request = await privateCloudRequests.updateFieldsById(input.request, {
       status: RequestStatus.REJECTED,
       decisionDate: new Date(),
@@ -23,12 +24,11 @@ function makePrivateCloudRequestDecision(
 
     return request
   } else if (input.RequestDecision === RequestDecision.APPROVE) {
-
-
     // *** Provision ***
     // wait for nats confirmation acknowledgment, return request if it works otherwise throw error 
 
     // Update successful request after nats such that the request will not be created if nats does not work
+    // active private cloud requests
     const request = await privateCloudRequests.updateFieldsById(input.request, {
       status: RequestStatus.PROVISIONING,
       decisionDate: new Date(),
@@ -37,11 +37,6 @@ function makePrivateCloudRequestDecision(
     });
 
     return request
-    // provision requested project, the provision controller will create the project and set the requeted project
-    // to the project in the request
-
-    return {}; // Maybe return the request decision i.e rejected or provisioning 
-
   }
 }
 

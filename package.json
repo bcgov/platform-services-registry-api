@@ -4,7 +4,7 @@
   "description": "API for platform services registry",
   "scripts": {
     "start": "nodemon --exec babel-node -- ./src/index.js",
-    "test": "jest",
+    "test": "node -r dotenv/config $(which jest)",
     "prettier": "prettier --write 'src/**/*.js'"
   },
   "dependencies": {
@@ -31,7 +31,7 @@
     "@babel/node": "^7.16.8",
     "@babel/preset-env": "^7.16.11",
     "@shelf/jest-mongodb": "^2.2.1",
-    "dotenv": "^16.0.0",
+    "dotenv": "^16.0.1",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.1"

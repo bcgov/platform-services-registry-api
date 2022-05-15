@@ -19,15 +19,15 @@ const Request = {
     }
   },
   requestedProject: (
-    { project, platform },
+    { requestedProject, platform },
     _,
     { dataSources: { privateCloudRequestedProjects, publicCloudRequestedProjects } }
   ) => {
     switch (platform) {
       case Platform.PRIVATE_CLOUD:
-        return privateCloudRequestedProjects.findOneById(project);
+        return privateCloudRequestedProjects.findOneById(requestedProject);
       case Platform.PUBLIC_CLOUD:
-        return publicCloudRequestedProjects.findOneById(project);
+        return publicCloudRequestedProjects.findOneById(requestedProject);
       default:
         return null;
     }

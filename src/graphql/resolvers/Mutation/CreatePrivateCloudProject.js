@@ -7,17 +7,14 @@ async function createPrivateCloudProject(
   _,
   { input },
   {
-    dataSources: { users, privateCloudRequestedProjects, privateCloudRequests },
+    dataSources: { users, privateCloudRequestedProjects, privateCloudActiveRequests },
     kauth,
   }
 ) {
-  // TODO: Configure mongo to either accept or reject all of the following writes
-  // (so that partial writes are avoided in case of an error). Then return error stating
-  // that project creation was rejected. (Might need to do sequentially as create project needs
-  // to be done first)
 
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access[process.env.AUTH_RESOURCE];
+  const [user] = await users.findByFields({ email });
 
   if (
     !roles.includes("admin") &&
@@ -28,11 +25,9 @@ async function createPrivateCloudProject(
     );
   }
 
-  const [user] = await users.findByFields({ email });
   const [projectOwner] = await users.findByFields({ email: input.projectOwner });
   const technicalLeads = await users.findManyByFieldValues("email",  input.technicalLeads);
 
-  // Create Requested Project
   const requestedProject = await privateCloudRequestedProjects.create({
     ...input,
     createdBy: user._id,
@@ -59,8 +54,7 @@ async function createPrivateCloudProject(
     );
   }
 
-  // Create Request
-  const request = await privateCloudRequests.create({
+  const request = await privateCloudActiveRequests.create({
     createdBy: requestedProject.createdBy,
     status: RequestStatus.PENDING_DECISION,
     type: RequestType.CREATE,

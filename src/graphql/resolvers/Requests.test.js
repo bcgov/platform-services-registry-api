@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { ApolloServer, gql } = require("apollo-server");
 const { MongoClient } = require("mongodb");
 import MongoHelpers from "../../dataSources/MongoHelpers";
@@ -21,9 +22,6 @@ describe("Mongo Helpers", () => {
 
     db = await connection.db(global.__MONGO_DB_NAME__);
 
-    const users = new MongoHelpers(db.collection("users"));
-    // users.initialize();
-
     let schema = makeExecutableSchema({
       typeDefs: [KeycloakTypeDefs, typeDefs],
       resolvers,
@@ -41,6 +39,7 @@ describe("Mongo Helpers", () => {
             token: "abc",
             content: {
               email: "oamar.kanji@gov.bc.ca",
+              firstName: "Oamar",
               resource_access: {
                 "registry-api": {
                   roles: ["admin"],
@@ -56,7 +55,19 @@ describe("Mongo Helpers", () => {
       schema,
       resolvers,
       dataSources: () => ({
-        users,
+        users: new MongoHelpers(db.collection("users")),
+        privateCloudProjects: new MongoHelpers(
+          db.collection("privateCloudProjects")
+        ),
+        privateCloudRequests: new MongoHelpers(
+          db.collection("privateCloudActiveRequests")
+        ),
+        privateCloudActiveRequests: new MongoHelpers(
+          db.collection("privateCloudRequests")
+        ),
+        privateCloudRequestedProjects: new MongoHelpers(
+          db.collection("privateCloudRequestedProjects")
+        ),
       }),
       context: () => {
         return { kauth: new KeycloakContext({ req }) };
@@ -93,20 +104,36 @@ describe("Mongo Helpers", () => {
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
-  it("It should get the logged in user", async () => {
+  it("Should create a new project request", async () => {
     const result = await server.executeOperation({
-      query: `query Me {
-        me {
+      query: `mutation CreatePrivateCloudProject($input: CreatePrivateCloudProjectInput!) {
+        createPrivateCloudProject(input: $input) {
           id
-          firstName
-          lastName
-          email
+          createdBy {
+            id
+            firstName
+          }
+          requestedProject {
+            ... on PrivateCloudProject {
+              id
+              name
+            }
+          }
         }
       }`,
+      variables: {
+        input: {
+          name: "Test Project",
+          description: "Some test project",
+          ministry: "AGRICULTURE",
+          cluster: "SILVER",
+          projectOwner: "oamar.kanji@gov.bc.ca",
+          technicalLeads: [],
+        },
+      },
     });
-
+    
     expect(result.errors).toBeUndefined();
-    expect(result.data?.me.firstName).toBe("Oamar");
-    expect(result.data?.me.email).toBe("oamar.kanji@gov.bc.ca");
+    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe("Oamar");
   });
 });

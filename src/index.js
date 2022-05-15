@@ -38,7 +38,7 @@ async function startApolloServer(typeDefs, resolvers) {
       privateCloudProjects: new MongoHelpers(
         client.db().collection("privateCloudProjects")
       ),
-      privateCloudRequests: new MongoHelpers(
+      privateCloudActiveRequests: new MongoHelpers(
         client.db().collection("privateCloudActiveRequests")
       ),
       privateCloudRequests: new MongoHelpers(

@@ -28,9 +28,6 @@ async function updatePrivateCloudProject(
 
   const project = await privateCloudProjects.findOneById(id);
 
-  console.log("PROJECT")
-  console.log(project)
-
   if (project === undefined) {
     throw new Error("Project does not exist");
   }
@@ -85,6 +82,7 @@ async function updatePrivateCloudProject(
     throw error;
   }
 
+  // If there is no requested quota change, we do not need admin aproval and can proceede to provision 
   if (Object.keys(quota).length === 0) {
     const request = await privateCloudActiveRequests.create({
       ...requestBody,
@@ -94,6 +92,7 @@ async function updatePrivateCloudProject(
     return request;
 
     // *** PROVISON ***
+    // request variable from above to provision
   } else {
     const request = await privateCloudActiveRequests.create({
       ...requestBody,
