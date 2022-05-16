@@ -1,4 +1,8 @@
-function privateCloudRequests(_, __, { dataSources: { privateCloudRequests } }) {
+function privateCloudRequests(
+  _,
+  __,
+  { dataSources: { privateCloudRequests } }
+) {
   return privateCloudRequests.getAll();
 }
 

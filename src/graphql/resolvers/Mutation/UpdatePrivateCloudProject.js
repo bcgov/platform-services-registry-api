@@ -82,7 +82,7 @@ async function updatePrivateCloudProject(
     throw error;
   }
 
-  // If there is no requested quota change, we do not need admin aproval and can proceede to provision 
+  // If there is no requested quota change, we do not need admin aproval and can proceede to provision
   if (Object.keys(quota).length === 0) {
     const request = await privateCloudActiveRequests.create({
       ...requestBody,

@@ -46,10 +46,10 @@ async function startApolloServer(typeDefs, resolvers) {
       ),
       privateCloudRequestedProjects: new MongoHelpers(
         client.db().collection("privateCloudRequestedProjects")
-      )
+      ),
     }),
     context: ({ req }) => {
-      return ({kauth: new KeycloakContext({ req }, keycloak)})
+      return { kauth: new KeycloakContext({ req }, keycloak) };
     },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });

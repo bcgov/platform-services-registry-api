@@ -9,12 +9,14 @@ const { ObjectId } = require("mongodb");
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
+import { users } from "./Query/Users";
 
 describe("Mongo Helpers", () => {
   let server;
   let connection;
   let db;
   let collections;
+  let requestId;
 
   beforeAll(async () => {
     connection = await MongoClient.connect(global.__MONGO_URI__, {
@@ -138,6 +140,63 @@ describe("Mongo Helpers", () => {
     });
 
     const { id, requestedProject } = result.data?.createPrivateCloudProject;
+
+    // Will be used in subsequent tests
+    requestId = id;
+
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe(
+      "Oamar"
+    );
+    expect(
+      await collections.privateCloudActiveRequests.findOneById(id)
+    ).toHaveProperty("_id", ObjectId(id));
+    expect(
+      await collections.privateCloudRequests.findOneById(id)
+    ).toBeUndefined();
+    expect(
+      await collections.privateCloudRequestedProjects.findOneById(
+        requestedProject.id
+      )
+    ).toHaveProperty("name", "Test Project");
+    expect(
+      await collections.privateCloudProjects.findOneById(id)
+    ).toBeUndefined();
+  });
+
+  it("Should approve a create project request", async () => {
+    const result = await server.executeOperation({
+      query: `mutation CreatePrivateCloudProject($input: CreatePrivateCloudProjectInput!) {
+        createPrivateCloudProject(input: $input) {
+          id
+          createdBy {
+            id
+            firstName
+          }
+          requestedProject {
+            ... on PrivateCloudProject {
+              id
+              name
+            }
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          name: "Test Project",
+          description: "Some test project",
+          ministry: "AGRICULTURE",
+          cluster: "SILVER",
+          projectOwner: "oamar.kanji@gov.bc.ca",
+          technicalLeads: [],
+        },
+      },
+    });
+
+    const { id, requestedProject } = result.data?.createPrivateCloudProject;
+
+    // Will be used in subsequent tests
+    requestId = id;
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe(

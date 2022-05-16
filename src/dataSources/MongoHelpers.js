@@ -1,14 +1,13 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 
 export default class MongoHelpers extends MongoDataSource {
-
-  // Inherited methods 
+  // Inherited methods
   // findOneById(id, options)
   // findManyByIds(ids, options)
   // findByFields(fields, options)
 
   findManyByFieldValues(field, values) {
-    return this.collection.find( { [field]: { $in: values } }).toArray()
+    return this.collection.find({ [field]: { $in: values } }).toArray();
   }
 
   getAll() {
@@ -34,5 +33,9 @@ export default class MongoHelpers extends MongoDataSource {
   async create(user) {
     const { insertedId } = await this.collection.insertOne(user);
     return this.findOneById(insertedId);
+  }
+
+  removeDocument(id) {
+    return this.collection.deleteOne({ _id: id });
   }
 }

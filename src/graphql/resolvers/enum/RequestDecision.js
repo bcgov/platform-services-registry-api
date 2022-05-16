@@ -1,6 +1,6 @@
 const RequestDecision = {
   APPROVE: "approve",
-  REJECT: "reject"
+  REJECT: "reject",
 };
 
 export default RequestDecision;

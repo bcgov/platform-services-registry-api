@@ -50,7 +50,7 @@ async function projects(
 //     technicalLeadPublicCloud,
 //   } = await users.findByFields({ email })[0];
 
-//   const privateCloudProjects = 
+//   const privateCloudProjects =
 
 // }
 

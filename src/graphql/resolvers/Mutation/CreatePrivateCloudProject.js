@@ -7,11 +7,14 @@ async function createPrivateCloudProject(
   _,
   { input },
   {
-    dataSources: { users, privateCloudRequestedProjects, privateCloudActiveRequests },
+    dataSources: {
+      users,
+      privateCloudRequestedProjects,
+      privateCloudActiveRequests,
+    },
     kauth,
   }
 ) {
-
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access[process.env.AUTH_RESOURCE];
   const [user] = await users.findByFields({ email });
@@ -25,8 +28,13 @@ async function createPrivateCloudProject(
     );
   }
 
-  const [projectOwner] = await users.findByFields({ email: input.projectOwner });
-  const technicalLeads = await users.findManyByFieldValues("email",  input.technicalLeads);
+  const [projectOwner] = await users.findByFields({
+    email: input.projectOwner,
+  });
+  const technicalLeads = await users.findManyByFieldValues(
+    "email",
+    input.technicalLeads
+  );
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...input,

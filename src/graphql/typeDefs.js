@@ -91,7 +91,6 @@ const typeDefs = gql`
     ministry: Ministry!
     PublicCloudPlatform: PublicCloudPlatform!
     requestHistory: [Request]
-
   }
 
   type PrivateCloudProject implements Project {
@@ -122,7 +121,7 @@ const typeDefs = gql`
     technicalLeads: [EmailAddress!]!
     ministry: Ministry!
     cluster: Cluster!
-    productionCpuQuota: String ="test-cpu-quota"
+    productionCpuQuota: String = "test-cpu-quota"
     productionMemoryQuota: String = "test-memory-quota"
     productionStorageQuota: String = "test-storage-quota"
     productionSnapshotQuota: String = "test-snapshot-quota"
@@ -132,7 +131,8 @@ const typeDefs = gql`
     testSnapshotQuota: String = "test-snapshot-quota"
     developmentCpuQuota: String = "test-cpu-quota"
     developmentMemoryQuota: String = "test-memory-quota"
-    developmentStorageQuota: String "test-storage-quota"
+    developmentStorageQuota: String
+    "test-storage-quota"
     developmentSnapshotQuota: String = "test-snapshot-quota"
     toolsCpuQuota: String = "test-cpu-quota"
     toolsnMemoryQuota: String = "test-memory-quota"
@@ -212,23 +212,23 @@ const typeDefs = gql`
     ministry: Ministry
   }
 
-  input UpdateUserInput { 
+  input UpdateUserInput {
     firstName: String
     lastName: String
     email: EmailAddress
     archived: Boolean
     lastSeen: DateTime
-    projectOwner: [ID!],
-    technicalLead: [ID!],
+    projectOwner: [ID!]
+    technicalLead: [ID!]
   }
 
   type Query {
     users: [User!]! @auth
-    user(id: ID!): User 
+    user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
     me: User @auth
 
-    # This should all require admin privileges 
+    # This should all require admin privileges
     projects: [Project!]!
     privateCloudProjects: [PrivateCloudProject!]!
     privateCloudProject(projectId: ID!): PrivateCloudProject!
@@ -260,9 +260,13 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
-
-    createPrivateCloudProject(input: CreatePrivateCloudProjectInput!): Request! @auth
-    updatePrivateCloudProject(id: ID!, metaData: UpdatePrivateCloudProjectMetaDataInput, quota: UpdatePrivateCloudProjectQuotaInput!): Request!
+    createPrivateCloudProject(input: CreatePrivateCloudProjectInput!): Request!
+      @auth
+    updatePrivateCloudProject(
+      id: ID!
+      metaData: UpdatePrivateCloudProjectMetaDataInput
+      quota: UpdatePrivateCloudProjectQuotaInput!
+    ): Request!
     makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): Request!
   }
 `;

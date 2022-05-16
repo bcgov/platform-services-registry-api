@@ -56,7 +56,7 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should return undefined if document does not exist, async", async () => {
-    const user = await users.findOneById("123")
+    const user = await users.findOneById("123");
     expect(user).toBeUndefined();
   });
 
@@ -121,14 +121,19 @@ describe("Mongo Helpers", () => {
   it("Should update specified fields in document with specified values ", async () => {
     const { acknowledged } = await users.updateFieldsById(oamarId, {
       email: "a.kanji@gamil.com",
-      firstName: "Aahil"
+      firstName: "Aahil",
     });
 
     const user = await users.findOneById(oamarId);
     expect(acknowledged).toBe(true);
     // expect(user.email).toEqual("a.kanji@gamil.com")
     // expect(user.firstName).toEqual("Aahil")
+  });
 
+  it("Should delete a document", async () => {
+    const { acknowledged } = await users.removeDocument(oamarId);
+    const allUsers = await users.getAll();
 
+    expect(acknowledged).toBe(true);
   });
 });

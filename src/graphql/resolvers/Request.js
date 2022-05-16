@@ -21,7 +21,12 @@ const Request = {
   requestedProject: (
     { requestedProject, platform },
     _,
-    { dataSources: { privateCloudRequestedProjects, publicCloudRequestedProjects } }
+    {
+      dataSources: {
+        privateCloudRequestedProjects,
+        publicCloudRequestedProjects,
+      },
+    }
   ) => {
     switch (platform) {
       case Platform.PRIVATE_CLOUD:

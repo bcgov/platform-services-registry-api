@@ -52,7 +52,7 @@ const resolvers = {
     signUp,
     createUser,
     createPrivateCloudProject,
-    updatePrivateCloudProject
+    updatePrivateCloudProject,
   },
   PrivateCloudProject,
   User,
@@ -66,7 +66,7 @@ const resolvers = {
   Environment,
   PublicCloudPlatform,
   Platform,
-  RequestDecision
+  RequestDecision,
 };
 
 export default resolvers;
