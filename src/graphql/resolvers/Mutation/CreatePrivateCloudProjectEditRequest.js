@@ -2,7 +2,7 @@ import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 
-async function updatePrivateCloudProject(
+async function createPrivateCloudProjectEditRequest(
   _,
   { id, metaData, quota },
   {
@@ -16,10 +16,6 @@ async function updatePrivateCloudProject(
     kauth,
   }
 ) {
-  // TODO: Configure mongo to either accept or reject all of the following writes
-  // (so that partial writes are avoided in case of an error). Then return error stating
-  // that project creation was rejected. (Might need to do sequentially as create project needs
-  // to be done first)
 
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access[process.env.AUTH_RESOURCE];
@@ -103,4 +99,4 @@ async function updatePrivateCloudProject(
   }
 }
 
-export default updatePrivateCloudProject;
+export default createPrivateCloudProjectEditRequest;

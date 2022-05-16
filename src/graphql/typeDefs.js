@@ -260,9 +260,8 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
 
-    createPrivateCloudProject(input: CreatePrivateCloudProjectInput!): Request!
-      @auth
-    updatePrivateCloudProject(
+    createPrivateCloudProjectRequest(input: CreatePrivateCloudProjectInput!): Request! @auth
+    createPrivateCloudProjectEditRequest(
       id: ID!
       metaData: UpdatePrivateCloudProjectMetaDataInput
       quota: UpdatePrivateCloudProjectQuotaInput!

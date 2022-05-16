@@ -3,7 +3,7 @@ import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 
-async function createPrivateCloudProject(
+async function createPrivateCloudProjectRequest(
   _,
   { input },
   {
@@ -77,4 +77,4 @@ async function createPrivateCloudProject(
   return request;
 }
 
-export default createPrivateCloudProject;
+export default createPrivateCloudProjectRequest;

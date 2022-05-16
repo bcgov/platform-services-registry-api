@@ -14,10 +14,10 @@ import {
   publicCloudRequest,
   requests,
 } from "./Query/Requests";
-import createPrivateCloudProject from "./Mutation/CreatePrivateCloudProject";
+import createPrivateCloudProjectRequest from "./Mutation/CreatePrivateCloudProjectRequest";
 import createUser from "./Mutation/CreateUser";
 import signUp from "./Mutation/SignUp";
-import updatePrivateCloudProject from "./Mutation/UpdatePrivateCloudProject";
+import createPrivateCloudProjectEditRequest from "./Mutation/CreatePrivateCloudProjectEditRequest";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
@@ -51,8 +51,8 @@ const resolvers = {
   Mutation: {
     signUp,
     createUser,
-    createPrivateCloudProject,
-    updatePrivateCloudProject,
+    createPrivateCloudProjectRequest,
+    createPrivateCloudProjectEditRequest,
   },
   PrivateCloudProject,
   User,
