@@ -31,7 +31,7 @@ async function makePrivateCloudRequestDecision(
     });
     await privateCloudActiveRequests.removeDocument(input.request);
 
-    if (request.type !== CREATE) {
+    if (request.type !== RequestType.CREATE) {
       await privateCloudProjects.addElementToDocumentArray(request.project, {
         requestHistory: updatedRequest._id,
       });
