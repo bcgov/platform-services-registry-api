@@ -18,6 +18,7 @@ import createPrivateCloudProjectRequest from "./Mutation/CreatePrivateCloudProje
 import createUser from "./Mutation/CreateUser";
 import signUp from "./Mutation/SignUp";
 import createPrivateCloudProjectEditRequest from "./Mutation/CreatePrivateCloudProjectEditRequest";
+import makePrivateCloudRequestDecision from "./Mutation/MakePrivateCloudRequestDecision";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
@@ -53,6 +54,7 @@ const resolvers = {
     createUser,
     createPrivateCloudProjectRequest,
     createPrivateCloudProjectEditRequest,
+    makePrivateCloudRequestDecision
   },
   PrivateCloudProject,
   User,

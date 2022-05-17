@@ -47,20 +47,24 @@ async function createPrivateCloudProjectRequest(
     technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
-  // Find project owner and add the project id
-  await users.addElementToDocumentArray(projectOwner._id, {
-    projectOwner: requestedProject._id,
-  });
 
-  // Find technical leads and add the project id
-  if (input?.technicalLeads) {
-    await users.addElementToManyDocumentsArray(
-      technicalLeads.map(({ _id }) => _id),
-      {
-        technicalLead: requestedProject._id,
-      }
-    );
-  }
+  // Move this to the provisioned controller. The project will be assgined
+  // to the PO and TL's once it's provisioned
+
+  // // Find project owner and add the project id
+  // await users.addElementToDocumentArray(projectOwner._id, {
+  //   projectOwner: requestedProject._id,
+  // });
+
+  // // Find technical leads and add the project id
+  // if (input?.technicalLeads) {
+  //   await users.addElementToManyDocumentsArray(
+  //     technicalLeads.map(({ _id }) => _id),
+  //     {
+  //       technicalLead: requestedProject._id,
+  //     }
+  //   );
+  // }
 
   const request = await privateCloudActiveRequests.create({
     createdBy: requestedProject.createdBy,
@@ -73,6 +77,8 @@ async function createPrivateCloudProjectRequest(
     project: null,
     requestedProject: requestedProject._id,
   });
+
+  await users.addElementToDocumentArray(user._id, {projectRequests: request._id})
 
   return request;
 }

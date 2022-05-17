@@ -182,7 +182,7 @@ const typeDefs = gql`
   }
 
   input MakeRequestDecisionInput {
-    dicision: RequestDecision!
+    decision: RequestDecision!
     request: ID!
   }
 
@@ -193,6 +193,7 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
+    projectRequests: [Request]!
     projectOwner: [Project]!
     technicalLead: [Project]!
     created: DateTime!

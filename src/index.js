@@ -14,7 +14,7 @@ import MongoHelpers from "./dataSources/MongoHelpers";
 
 async function startApolloServer(typeDefs, resolvers) {
   const client = new MongoClient(process.env.MONGO_URI);
-  client.connect();
+  await client.connect();
 
   let schema = makeExecutableSchema({
     typeDefs: [KeycloakTypeDefs, typeDefs],

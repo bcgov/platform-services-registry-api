@@ -94,6 +94,10 @@ describe("Mongo Helpers", () => {
           firstName
           lastName
           email
+          projectRequests {
+            id
+            type
+          }
         }
       }`,
       variables: {
@@ -111,13 +115,24 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should create a new project request", async () => {
-    const result = await server.executeOperation({
-      query: `mutation CreatePrivateCloudProject($input: CreatePrivateCloudProjectInput!) {
-        createPrivateCloudProject(input: $input) {
+    const request = await server.executeOperation({
+      query: `mutation CreatePrivateCloudProjectRequest($input: CreatePrivateCloudProjectInput!) {
+        createPrivateCloudProjectRequest(input: $input) {
           id
           createdBy {
             id
             firstName
+            email
+            technicalLead {
+              technicalLeads {
+                id
+                firstName
+              }
+            }
+            projectRequests {
+              id
+              type
+            }
           }
           requestedProject {
             ... on PrivateCloudProject {
@@ -139,69 +154,32 @@ describe("Mongo Helpers", () => {
       },
     });
 
-    const { id, requestedProject } = result.data?.createPrivateCloudProject;
-
-    // Will be used in subsequent tests
-    requestId = id;
-
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe(
-      "Oamar"
-    );
-    expect(
-      await collections.privateCloudActiveRequests.findOneById(id)
-    ).toHaveProperty("_id", ObjectId(id));
-    expect(
-      await collections.privateCloudRequests.findOneById(id)
-    ).toBeUndefined();
-    expect(
-      await collections.privateCloudRequestedProjects.findOneById(
-        requestedProject.id
-      )
-    ).toHaveProperty("name", "Test Project");
-    expect(
-      await collections.privateCloudProjects.findOneById(id)
-    ).toBeUndefined();
-  });
-
-  it("Should approve a create project request", async () => {
-    const result = await server.executeOperation({
-      query: `mutation CreatePrivateCloudProject($input: CreatePrivateCloudProjectInput!) {
-        createPrivateCloudProject(input: $input) {
+    const me = await server.executeOperation({
+      query: `query Me {
+      me {
+        id
+        firstName
+        email
+        projectRequests {
           id
           createdBy {
             id
-            firstName
-          }
-          requestedProject {
-            ... on PrivateCloudProject {
-              id
-              name
-            }
+            email
           }
         }
-      }`,
-      variables: {
-        input: {
-          name: "Test Project",
-          description: "Some test project",
-          ministry: "AGRICULTURE",
-          cluster: "SILVER",
-          projectOwner: "oamar.kanji@gov.bc.ca",
-          technicalLeads: [],
-        },
-      },
+      }
+    }`,
     });
 
-    const { id, requestedProject } = result.data?.createPrivateCloudProject;
+    const { id, requestedProject, createdBy } =
+      request.data?.createPrivateCloudProjectRequest;
 
     // Will be used in subsequent tests
-    requestId = id;
 
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.createPrivateCloudProject.createdBy.firstName).toBe(
-      "Oamar"
-    );
+    const [user] = me.data?.me.projectRequests
+
+    expect(request.errors).toBeUndefined();
+    expect(createdBy.firstName).toBe("Oamar");
     expect(
       await collections.privateCloudActiveRequests.findOneById(id)
     ).toHaveProperty("_id", ObjectId(id));
@@ -216,5 +194,10 @@ describe("Mongo Helpers", () => {
     expect(
       await collections.privateCloudProjects.findOneById(id)
     ).toBeUndefined();
+    expect([user.id]).toStrictEqual([id]);
   });
+
+  // it("Should approve a create project request", async () => {
+    
+  // });
 });

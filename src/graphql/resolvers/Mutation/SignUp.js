@@ -13,6 +13,7 @@ async function signUp(_, { input }, { dataSources: { users }, kauth }) {
     created: new Date(),
     projectOwner: [],
     technicalLead: [],
+    projectRequests: [],
     lastSeen: new Date(),
   });
 }

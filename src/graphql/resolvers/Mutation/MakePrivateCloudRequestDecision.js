@@ -1,18 +1,24 @@
 import RequestDecision from "../enum/RequestDecision";
 import RequestStatus from "../enum/RequestStatus";
+import RequestType from "../enum/RequestType";
 
 async function makePrivateCloudRequestDecision(
   _,
   { input },
   {
-    dataSources: { privateCloudRequests, privateCloudActiveRequests, users },
+    dataSources: {
+      privateCloudRequests,
+      privateCloudActiveRequests,
+      privateCloudProjects,
+      users,
+    },
     kauth,
   }
 ) {
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  if (input.RequestDecision === RequestDecision.REJECT) {
+  if (input.decision === RequestDecision.REJECT) {
     const request = await privateCloudActiveRequests.findOneById(input.request);
     const updatedRequest = await privateCloudRequests.create({
       ...request,
@@ -25,8 +31,14 @@ async function makePrivateCloudRequestDecision(
     });
     await privateCloudActiveRequests.removeDocument(input.request);
 
+    if (request.type !== CREATE) {
+      await privateCloudProjects.addElementToDocumentArray(request.project, {
+        requestHistory: updatedRequest._id,
+      });
+    }
+
     return updatedRequest;
-  } else if (input.RequestDecision === RequestDecision.APPROVE) {
+  } else if (input.decision === RequestDecision.APPROVE) {
     // *** Provision ***
     // wait for nats confirmation acknowledgment, return request if it works otherwise throw error
 
