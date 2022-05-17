@@ -7,7 +7,7 @@ async function makePrivateCloudRequestDecision(
   { input },
   {
     dataSources: {
-      privateCloudRequests,
+      privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
       users,
@@ -20,7 +20,7 @@ async function makePrivateCloudRequestDecision(
 
   if (input.decision === RequestDecision.REJECT) {
     const request = await privateCloudActiveRequests.findOneById(input.request);
-    const updatedRequest = await privateCloudRequests.create({
+    const updatedRequest = await privateCloudArchivedRequests.create({
       ...request,
       ...{
         status: RequestStatus.REJECTED,

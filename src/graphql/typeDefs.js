@@ -233,14 +233,11 @@ const typeDefs = gql`
     projects: [Project!]!
     privateCloudProjects: [PrivateCloudProject!]!
     privateCloudProject(projectId: ID!): PrivateCloudProject!
-    publicCloudProjects: [PublicCloudProject!]!
-    publicCloudProject(projectId: ID!): PublicCloudProject
 
     requests: [Request!]!
     privateCloudRequests: [Request!]!
-    privateCloudRequest(requestId: ID!): Request!
-    publicCloudRequests: [Request!]!
-    publicCloudRequest(requestId: ID!): Request!
+    privateCloudActiveRequest(requestId: ID!): Request!
+    privateCloudArchivedRequest(requestId: ID!): Request!
 
     # Need to implement the above but for a user
     userProjects: [Project!]!

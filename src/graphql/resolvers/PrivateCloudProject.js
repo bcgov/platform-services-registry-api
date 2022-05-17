@@ -9,8 +9,8 @@ const PrivateCloudProject = {
   requestHistory: (
     { requestHistory },
     _,
-    { dataSources: { privateCloudRequests } }
-  ) => privateCloudRequests.findManyByIds(requestHistory),
+    { dataSources: { privateCloudArchivedRequests } }
+  ) => privateCloudArchivedRequests.findManyByIds(requestHistory),
 };
 
 export default PrivateCloudProject;

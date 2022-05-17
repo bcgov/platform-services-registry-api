@@ -9,7 +9,7 @@ async function createPrivateCloudProjectEditRequest(
     dataSources: {
       users,
       privateCloudRequestedProjects,
-      privateCloudRequests,
+      privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
     },
@@ -55,7 +55,7 @@ async function createPrivateCloudProjectEditRequest(
     "projectOwner" in metaData &&
     metaData.projectOwner !== email
   ) {
-    await privateCloudRequests.create({...requestBody, status: RequestStatus.REJECTED});
+    await privateCloudArchivedRequests.create({...requestBody, status: RequestStatus.REJECTED});
     throw new Error("Only the project owner can set a new project owner");
   }
 
@@ -63,7 +63,7 @@ async function createPrivateCloudProjectEditRequest(
     !roles.includes("admin") &&
     ![project.projectOwner, ...project.technicalLeads].includes(email)
   ) {
-    await privateCloudRequests.create({...requestBody, status: RequestStatus.REJECTED});
+    await privateCloudArchivedRequest.create({...requestBody, status: RequestStatus.REJECTED});
     throw new Error(
       "User must either be a project owner or technical lead on this project in order to edit it"
     );

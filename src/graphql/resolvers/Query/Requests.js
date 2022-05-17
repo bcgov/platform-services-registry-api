@@ -1,46 +1,83 @@
 function privateCloudRequests(
   _,
   __,
-  { dataSources: { privateCloudRequests } }
+  { dataSources: { privateCloudArchivedRequests, privateCloudActiveRequests } }
 ) {
-  return privateCloudRequests.getAll();
+  return [
+    ...privateCloudArchivedRequests.getAll(),
+    ...privateCloudActiveRequests.getAll(),
+  ];
 }
 
-function privateCloudRequest(
+function privateCloudActiveRequest(
   _,
   { id },
-  { dataSources: { privateCloudRequests } }
+  { dataSources: { privateCloudActiveRequests } }
 ) {
-  return privateCloudRequests.findOneById(id);
+  return privateCloudActiveRequests.findOneById(id);
 }
 
-function publicCloudRequests(_, __, { dataSources: { publicCloudRequests } }) {
-  return publicCloudRequests.getAll();
-}
-
-function publicCloudRequest(
+function privateCloudArchivedRequest(
   _,
   { id },
-  { dataSources: { publicCloudRequests } }
+  { dataSources: { privateCloudArchivedRequests } }
 ) {
-  return publicCloudRequests.findOneById(id);
+  return privateCloudArchivedRequests.findOneById(id);
+}
+
+function publicCloudRequests(
+  _,
+  __,
+  { dataSources: { publicCloudArchivedRequests, publicCloudActiveRequests } }
+) {
+  return [
+    ...publicCloudArchivedRequests.getAll(),
+    ...publicCloudActiveRequests.getAll(),
+  ];
+}
+
+function publicCloudActiveRequest(
+  _,
+  { id },
+  { dataSources: { publicCloudActiveRequests } }
+) {
+  return publicCloudActiveRequests.findOneById(id);
+}
+
+function publicCloudArchivedRequest(
+  _,
+  { id },
+  { dataSources: { publicCloudArchivedRequests } }
+) {
+  return publicCloudArchivedRequests.findOneById(id);
 }
 
 async function requests(
   _,
   __,
-  { dataSources: { publicCloudRequests, privateCloudRequests } }
+  {
+    dataSources: {
+      publicCloudArchivedRequests,
+      publicCloudActiveRequests,
+      privateCloudArchivedRequests,
+      privateCloudActiveRequests,
+    },
+  }
 ) {
   return [
-    ...(await privateCloudRequests.getAll()),
-    ...(await publicCloudRequests.getAll()),
+    ...(await publicCloudArchivedRequests.getAll()),
+    ...(await publicCloudActiveRequests.getAll()),
+    ...(await privateCloudArchivedRequests.getAll()),
+    ...(await privateCloudActiveRequests.getAll()),
   ];
 }
 
 export {
   privateCloudRequests,
-  privateCloudRequest,
+  privateCloudActiveRequest,
+  privateCloudArchivedRequest,
   publicCloudRequests,
-  publicCloudRequest,
+  publicCloudActiveRequest,
+  publicCloudArchivedRequest,
   requests,
 };
