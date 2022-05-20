@@ -78,7 +78,8 @@ async function createPrivateCloudProjectRequest(
     requestedProject: requestedProject._id,
   });
 
-  await users.addElementToDocumentArray(user._id, {projectRequests: request._id})
+  // Need to do for po and tls
+  await users.addElementToDocumentArray(user._id, {activeRequests: request._id})
 
   return request;
 }

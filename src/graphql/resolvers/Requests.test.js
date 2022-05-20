@@ -94,7 +94,7 @@ describe("Mongo Helpers", () => {
           firstName
           lastName
           email
-          projectRequests {
+          activeRequests {
             id
             type
           }
@@ -129,7 +129,7 @@ describe("Mongo Helpers", () => {
                 firstName
               }
             }
-            projectRequests {
+            activeRequests {
               id
               type
             }
@@ -160,7 +160,7 @@ describe("Mongo Helpers", () => {
         id
         firstName
         email
-        projectRequests {
+        activeRequests {
           id
           createdBy {
             id
@@ -176,7 +176,7 @@ describe("Mongo Helpers", () => {
 
     // Will be used in subsequent tests
 
-    const [user] = me.data?.me.projectRequests
+    const [user] = me.data?.me.projectRequests;
 
     expect(request.errors).toBeUndefined();
     expect(createdBy.firstName).toBe("Oamar");
@@ -197,7 +197,79 @@ describe("Mongo Helpers", () => {
     expect([user.id]).toStrictEqual([id]);
   });
 
-  // it("Should approve a create project request", async () => {
-    
-  // });
+  it("Should query all requests", async () => {
+    const result = await server.executeOperation({
+      query: `query PrivateCloudRequests {
+        privateCloudRequests {
+          id
+          createdBy {
+            id
+            firstName
+            lastName
+            email
+          }
+          type
+          status
+          active
+          decisionDate
+          project {
+            id
+            name
+            createdBy {
+              firstName
+              lastName
+              email
+            }
+          }
+        }
+      }`,
+    });
+
+    const requests = result.data?.privateCloudRequests;
+    expect(requests).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: "CREATE",
+        }),
+      ])
+    );
+  });
+
+  it("Should reject a create project request", async () => {
+    const result = await server.executeOperation({
+      query: `mutation MakeDecision($input: MakeRequestDecisionInput!) {
+        makePrivateCloudRequestDecision(input: $input) {
+          id
+          status
+          type
+          project {
+            ... on PrivateCloudProject {
+              name
+              id
+              status
+              description
+            }
+          }
+          requestedProject {
+            ... on PrivateCloudProject {
+              id
+              name
+              archived
+              createdBy {
+                firstName
+              }
+              status
+            }
+            technicalLeads {
+              firstName
+            }
+          }
+        }
+      }`,
+    });
+
+    const request = result.data?.makePrivateCloudRequestDecision;
+
+    expect(request.status).toBe("REJECTED");
+  });
 });

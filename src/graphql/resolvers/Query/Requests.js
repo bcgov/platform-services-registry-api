@@ -1,11 +1,11 @@
-function privateCloudRequests(
+async function privateCloudRequests(
   _,
   __,
   { dataSources: { privateCloudArchivedRequests, privateCloudActiveRequests } }
 ) {
   return [
-    ...privateCloudArchivedRequests.getAll(),
-    ...privateCloudActiveRequests.getAll(),
+    ...await privateCloudArchivedRequests.getAll(),
+    ...await privateCloudActiveRequests.getAll(),
   ];
 }
 

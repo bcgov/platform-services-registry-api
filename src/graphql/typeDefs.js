@@ -193,7 +193,7 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
-    projectRequests: [Request]!
+    activeRequests: [Request]!
     projectOwner: [Project]!
     technicalLead: [Project]!
     created: DateTime!
@@ -234,7 +234,7 @@ const typeDefs = gql`
     privateCloudProjects: [PrivateCloudProject!]!
     privateCloudProject(projectId: ID!): PrivateCloudProject!
 
-    requests: [Request!]!
+    # requests: [Request!]!
     privateCloudRequests: [Request!]!
     privateCloudActiveRequest(requestId: ID!): Request!
     privateCloudArchivedRequest(requestId: ID!): Request!
