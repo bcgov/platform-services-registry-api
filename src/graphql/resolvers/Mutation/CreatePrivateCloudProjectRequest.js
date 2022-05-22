@@ -47,7 +47,6 @@ async function createPrivateCloudProjectRequest(
     technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
-
   // Move this to the provisioned controller. The project will be assgined
   // to the PO and TL's once it's provisioned
 
@@ -78,8 +77,13 @@ async function createPrivateCloudProjectRequest(
     requestedProject: requestedProject._id,
   });
 
-  // Need to do for po and tls
-  await users.addElementToDocumentArray(user._id, {activeRequests: request._id})
+
+  await users.addElementToManyDocumentsArray(
+    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    {
+      activeRequests: request._id,
+    }
+  );
 
   return request;
 }

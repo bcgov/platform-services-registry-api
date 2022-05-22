@@ -50,44 +50,44 @@ async function createPrivateCloudProjectEditRequest(
     requestedProject: requestedProject._id,
   };
 
+  // Only an Admin or a PO or TL of this project can request to edit it
   if (
-    !roles.includes("admin") &&
-    "projectOwner" in metaData &&
-    metaData.projectOwner !== email
+    ![project.projectOwner, ...project.technicalLeads].includes(user._id) &&
+    !roles.includes("admin") 
   ) {
-    await privateCloudArchivedRequests.create({...requestBody, status: RequestStatus.REJECTED});
-    throw new Error("Only the project owner can set a new project owner");
-  }
+    requestBody.status = RequestStatus.REJECTED;
+    await privateCloudArchivedRequests.create(requestBody);
 
-  if (
-    !roles.includes("admin") &&
-    ![project.projectOwner, ...project.technicalLeads].includes(email)
-  ) {
-    await privateCloudArchivedRequest.create({...requestBody, status: RequestStatus.REJECTED});
     throw new Error(
       "User must either be a project owner or technical lead on this project in order to edit it"
     );
   }
 
+  // Only an Admin or the PO can request to change the PO
+  if (
+    "projectOwner" in metaData &&
+    !roles.includes("admin") &&
+    project.projectOwner !== user._id
+  ) {
+    requestBody.status = RequestStatus.REJECTED;
+    await privateCloudArchivedRequests.create(requestBody);
+
+    throw new Error("Only the project owner can set a new project owner");
+  }
+
   // If there is no requested quota change, we do not need admin approval and can proceed to provision
   if (Object.keys(quota).length === 0) {
-    const request = await privateCloudActiveRequests.create({
-      ...requestBody,
-      status: RequestStatus.APPROVED,
-    });
+    requestBody.status = RequestStatus.APPROVED;
 
     // *** PROVISON ***
     // request variable from above to provision
-
-    return request;
   } else {
-    const request = await privateCloudActiveRequests.create({
-      ...requestBody,
-      status: RequestStatus.PENDING_DECISION ,
-    });
-
-    return request;
+    requestBody.status = RequestStatus.PENDING_DECISION;
   }
+
+  const request = await privateCloudActiveRequests.create(requestBody);
+
+  return request;
 }
 
 export default createPrivateCloudProjectEditRequest;

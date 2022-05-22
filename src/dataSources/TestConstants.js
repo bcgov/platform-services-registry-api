@@ -4,6 +4,7 @@ const mockUserOamar = {
   email: "oamarkanji@registry.com",
   archived: false,
   created: new Date(),
+  array: ["A", "B"]
 };
 
 const mockUserAlex = {
@@ -12,6 +13,7 @@ const mockUserAlex = {
   email: "alexcarmichael@registry.com",
   archived: false,
   created: new Date(),
+  array: ["A", "B"]
 };
 
 const mockUserBilly = {
@@ -20,6 +22,7 @@ const mockUserBilly = {
   email: "billyli@registry.com",
   archived: false,
   created: new Date(),
+  array: ["A", "B"]
 };
 
 export { mockUserAlex, mockUserBilly, mockUserOamar };

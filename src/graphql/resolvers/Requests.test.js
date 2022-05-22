@@ -176,7 +176,7 @@ describe("Mongo Helpers", () => {
 
     // Will be used in subsequent tests
 
-    const [user] = me.data?.me.projectRequests;
+    const [user] = me.data?.me.activeRequests;
 
     expect(request.errors).toBeUndefined();
     expect(createdBy.firstName).toBe("Oamar");

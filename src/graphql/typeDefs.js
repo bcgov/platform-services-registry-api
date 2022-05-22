@@ -264,7 +264,7 @@ const typeDefs = gql`
       metaData: UpdatePrivateCloudProjectMetaDataInput
       quota: UpdatePrivateCloudProjectQuotaInput!
     ): Request!
-    makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): Request!
+    makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): RequestStatus!
   }
 `;
 

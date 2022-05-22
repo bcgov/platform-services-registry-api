@@ -1,10 +1,7 @@
 const { MongoClient } = require("mongodb");
+import { user } from "../graphql/resolvers/Query/Users";
 import MongoHelpers from "./MongoHelpers";
-import {
-  mockUserAlex,
-  mockUserBilly,
-  mockUserOamar,
-} from "./TestConstants";
+import { mockUserAlex, mockUserBilly, mockUserOamar } from "./TestConstants";
 
 describe("MongoDataSource", () => {
   it("sets up caching functions", () => {
@@ -131,13 +128,23 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should delete a document", async () => {
-    const res = await users.removeDocument(oamarId);
+    const { acknowledged } = await users.removeDocument(oamarId);
     const allUsers = await users.getAll();
-    console.log(res)
-    console.log(oamarId)
+
     // console.log(allUsers)
 
     expect(acknowledged).toBe(true);
+  });
 
+  it("Should delete an element from an array in multipe documents", async () => {
+    const oamar = await users.create(mockUserOamar);
+    const { acknowledged } = await users.removeElementFromManyDocumentsArray(
+      [billyId, oamar._id],
+      { array: "B" }
+    );
+    const allUsers = await users.getAll();
+    console.log(allUsers.map((user) => user.array));
+
+    expect(allUsers.map((user) => user.array)).toStrictEqual([["A"], ["A", "B"], ["A"]]);
   });
 });

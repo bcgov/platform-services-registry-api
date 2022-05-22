@@ -1,7 +1,7 @@
 import RequestDecision from "../enum/RequestDecision";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
-import sendNatsMessage from "../../../scripts/Nats";
+import sendNatsMessage from "../../../scripts/SendNatsMessage";
 
 async function makePrivateCloudRequestDecision(
   _,
@@ -11,6 +11,7 @@ async function makePrivateCloudRequestDecision(
       privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
+      privateCloudRequestedProjects,
       users,
     },
     kauth,
@@ -24,6 +25,18 @@ async function makePrivateCloudRequestDecision(
   if (!request) {
     throw Error("active request does not exist");
   }
+
+  // remove active request for PO and TLs
+  const { projectOwner, technicalLeads } = RequestType.CREATE
+    ? await privateCloudRequestedProjects.findOneById(
+      request.requestedProject
+      )
+    : await privateCloudProjects.findOneById(request.project);
+
+  await users.removeElementFromManyDocumentsArray(
+    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    { activeRequests: request._id }
+  );
 
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
@@ -53,21 +66,12 @@ async function makePrivateCloudRequestDecision(
     //   );
     // }
 
-    db.profiles.updateOne({ _id: 1 }, { $pull: { votes: { $gte: 6 } } });
-
-    return rejectedRequest;
+    return RequestStatus.REJECTED;
   } else if (input.decision === RequestDecision.APPROVE) {
-    // *** Provision ***
-    // wait for nats confirmation acknowledgment, return request if it works otherwise throw error
-
-    await sendNatsMessage();
-
-    // Update successful request after nats such that the request will not be created if nats does not work
-    // active private cloud requests
     const { acknowledged } = await privateCloudActiveRequests.updateFieldsById(
       input.request,
       {
-        status: RequestStatus.PROVISIONING,
+        status: RequestStatus.APPROVED,
         decisionDate: new Date(),
         active: false,
         decisionMaker: user._id,
@@ -78,9 +82,9 @@ async function makePrivateCloudRequestDecision(
       throw new Error("Unable to update request");
     }
 
-    const request = await privateCloudActiveRequests.findOneById(input.request);
+    await sendNatsMessage();
 
-    return request;
+    return RequestStatus.APPROVED;
   }
 }
 
