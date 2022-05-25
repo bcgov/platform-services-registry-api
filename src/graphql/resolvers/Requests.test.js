@@ -114,6 +114,9 @@ describe("Mongo Helpers", () => {
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
+
+  // TODO: Sign up two additional users then add them as the technical leads for the request being created below.
+  // you should test that those two users are being returned as the technical leads in the request object that is returned from teh mutation
   it("Should create a new project request", async () => {
     const request = await server.executeOperation({
       query: `mutation CreatePrivateCloudProjectRequest($input: CreatePrivateCloudProjectInput!) {
@@ -122,22 +125,15 @@ describe("Mongo Helpers", () => {
           createdBy {
             id
             firstName
-            email
-            technicalLead {
-              technicalLeads {
-                id
-                firstName
-              }
-            }
-            activeRequests {
-              id
-              type
-            }
           }
           requestedProject {
             ... on PrivateCloudProject {
-              id
-              name
+              technicalLeads {
+                id
+                firstName
+                lastName
+                email
+              }
             }
           }
         }
@@ -149,7 +145,7 @@ describe("Mongo Helpers", () => {
           ministry: "AGRICULTURE",
           cluster: "SILVER",
           projectOwner: "oamar.kanji@gov.bc.ca",
-          technicalLeads: [],
+          technicalLeads: [], // <- Add technical leads here. e.g [tecnnicalLeadOneEmail, technicalLeadTwoEmail]
         },
       },
     });

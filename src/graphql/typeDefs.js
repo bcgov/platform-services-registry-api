@@ -256,7 +256,7 @@ const typeDefs = gql`
     # userUpdateSelf()
 
     createUser(input: CreateUserInput!): User!
-    updateUser(input: UpdateUserInput!): User!
+    # updateUser(input: UpdateUserInput!): User!
 
     createPrivateCloudProjectRequest(input: CreatePrivateCloudProjectInput!): Request! @auth
     createPrivateCloudProjectEditRequest(
