@@ -8,6 +8,8 @@ import { applyDirectiveTransformers } from "../../auth/transformers";
 import typeDefs from "../typeDefs";
 import resolvers from ".";
 
+let signedUpUserId = "";
+
 describe("Mongo Helpers", () => {
   let server;
   let connection;
@@ -90,6 +92,7 @@ describe("Mongo Helpers", () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.signUp.firstName).toBe("Oamar");
+    signedUpUserId  = result.data?.signUp.id;
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
@@ -108,5 +111,23 @@ describe("Mongo Helpers", () => {
     expect(result.errors).toBeUndefined();
     expect(result.data?.me.firstName).toBe("Oamar");
     expect(result.data?.me.email).toBe("oamar.kanji@gov.bc.ca");
+  });
+
+  it("A newly signed up user should have an ID, and can be queried by that ID", async () => {
+    const result = await server.executeOperation({
+      query: `query User($userId: ID!) {
+        user(id: $userId) {
+          id
+          firstName
+          lastName
+        }
+      }`,
+      variables: {
+        userId: signedUpUserId,
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.user.firstName).toBe("Oamar");
+    expect(result.data?.user.lastName).toBe("Kanji");
   });
 });
