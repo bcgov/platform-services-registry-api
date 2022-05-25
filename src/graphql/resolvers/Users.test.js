@@ -113,7 +113,7 @@ describe("Mongo Helpers", () => {
     expect(result.data?.me.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
-  it("A newly signed up user should have an ID, and can be queried by that ID", async () => {
+  it("Newly signed up user can be queried by ID", async () => {
     const result = await server.executeOperation({
       query: `query User($userId: ID!) {
         user(id: $userId) {
@@ -130,4 +130,20 @@ describe("Mongo Helpers", () => {
     expect(result.data?.user.firstName).toBe("Oamar");
     expect(result.data?.user.lastName).toBe("Kanji");
   });
+
+  // at least one user exists from tests above
+  it("Listing users retrieves at least one user", async () => {
+    const result = await server.executeOperation({
+      query: `query Users {
+        users {
+          firstName
+        }
+      }`,
+    });
+    expect(result.errors).toBeUndefined();
+    expect(Object.keys(result.data?.users).length).toBeGreaterThan(0); 
+  });
+
+  // a user can be assigned to a project.
+  // a user can be removed from a project.
 });
