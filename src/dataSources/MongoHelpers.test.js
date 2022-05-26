@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+import { MongoClient } from "mongodb";
 import { user } from "../graphql/resolvers/Query/Users";
 import MongoHelpers from "./MongoHelpers";
 import { mockUserAlex, mockUserBilly, mockUserOamar } from "./TestConstants";

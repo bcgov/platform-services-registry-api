@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+dotenv.config();
 
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
@@ -13,7 +14,6 @@ import resolvers from "./graphql/resolvers";
 import { MongoClient } from "mongodb";
 import MongoHelpers from "./dataSources/MongoHelpers";
 
-dotenv.config();
 async function startApolloServer(typeDefs, resolvers) {
   const client = new MongoClient(process.env.MONGO_URI);
   await client.connect();
