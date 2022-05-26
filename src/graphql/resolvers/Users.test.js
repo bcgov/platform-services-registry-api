@@ -7,6 +7,7 @@ import { applyDirectiveTransformers } from "../../auth/transformers";
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
+import { usersByIds } from "./Query/Users";
 
 let signedUpUserId = "";
 
@@ -141,9 +142,61 @@ describe("Mongo Helpers", () => {
       }`,
     });
     expect(result.errors).toBeUndefined();
-    expect(Object.keys(result.data?.users).length).toBeGreaterThan(0); 
+    expect(result.data?.users.length).toBeGreaterThan(0); 
   });
 
-  // a user can be assigned to a project.
-  // a user can be removed from a project.
+  it("A new user can be created", async () => {
+    const result = await server.executeOperation({
+      query: `mutation {
+        createUser(input: {
+          firstName: "Alexander",
+          lastName: "Carmichael",
+          ministry: HEALTH,
+          email: "alexander.carmichael@gov.bc.ca"
+        }) {
+          id
+          firstName
+        }
+      }`,
+      variables: {
+        input: {
+          firstName: "Alexander",
+          lastName: "Carmichael",
+          ministry: "HEALTH",
+        },
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.createUser.firstName).toBe("Alexander");
+  });
+
+  /*It should be noted that this is dependent on the CreateUser test passing successfully*/
+  it("Can query multiple users by an array of IDs", async () => {
+    let userId1;
+    let userId2;
+    const usersResult = await server.executeOperation({
+      query: `query Users {
+        users {
+          id
+        }
+      }`,
+    });
+
+    expect(usersResult.data?.users.length).toBeGreaterThan(1);
+    userId1 = usersResult.data?.users[0].id;
+    userId2 = usersResult.data?.users[1].id;
+    
+    const result = await server.executeOperation({
+      query: `query UsersByIds($ids: [ID!]!) {
+        usersByIds(ids: $ids) {
+          firstName
+        }
+      }`,
+      variables: {
+        ids: [userId1, userId2]
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.usersByIds.length).toBe(2); 
+  });
 });
