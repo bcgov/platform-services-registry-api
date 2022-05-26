@@ -1,4 +1,6 @@
-require("dotenv").config();
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { makeExecutableSchema } from "@graphql-tools/schema";

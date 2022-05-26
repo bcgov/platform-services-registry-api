@@ -1,7 +1,7 @@
 import RequestDecision from "../enum/RequestDecision";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
-import sendNatsMessage from "../../../scripts/SendNatsMessage";
+import sendNatsMessage from "../../../nats/SendNatsMessage";
 
 async function makePrivateCloudRequestDecision(
   _,
@@ -28,9 +28,7 @@ async function makePrivateCloudRequestDecision(
 
   // remove active request for PO and TLs
   const { projectOwner, technicalLeads } = RequestType.CREATE
-    ? await privateCloudRequestedProjects.findOneById(
-      request.requestedProject
-      )
+    ? await privateCloudRequestedProjects.findOneById(request.requestedProject)
     : await privateCloudProjects.findOneById(request.project);
 
   await users.removeElementFromManyDocumentsArray(
@@ -41,30 +39,21 @@ async function makePrivateCloudRequestDecision(
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
 
-    const rejectedRequest = await privateCloudArchivedRequests.create({
-      ...request,
-      ...{
-        status: RequestStatus.REJECTED,
-        decisionDate: new Date(),
-        active: false,
-        decisionMaker: user._id,
-      },
-    });
-
     if (request.type !== RequestType.CREATE) {
+      const rejectedRequest = await privateCloudArchivedRequests.create({
+        ...request,
+        ...{
+          status: RequestStatus.REJECTED,
+          decisionDate: new Date(),
+          active: false,
+          decisionMaker: user._id,
+        },
+      });
+
       await privateCloudProjects.addElementToDocumentArray(request.project, {
         requestHistory: rejectedRequest._id,
       });
     }
-
-    // if (input?.technicalLeads) {
-    //   await users.addElementToManyDocumentsArray(
-    //     technicalLeads.map(({ _id }) => _id),
-    //     {
-    //       technicalLead: requestedProject._id,
-    //     }
-    //   );
-    // }
 
     return RequestStatus.REJECTED;
   } else if (input.decision === RequestDecision.APPROVE) {

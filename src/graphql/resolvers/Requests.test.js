@@ -1,15 +1,15 @@
-require("dotenv").config();
-const { ApolloServer, gql } = require("apollo-server");
-const { MongoClient } = require("mongodb");
+import dotenv from 'dotenv';
+dotenv.config();
+import { ApolloServer } from "apollo-server";
+import { MongoClient } from "mongodb";
 import MongoHelpers from "../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { applyDirectiveTransformers } from "../../auth/transformers";
-const { ObjectId } = require("mongodb");
+import { ObjectId } from "mongodb";
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
-import { users } from "./Query/Users";
 
 describe("Mongo Helpers", () => {
   let server;

@@ -1,5 +1,5 @@
-const { ApolloServer, gql } = require("apollo-server");
-const { MongoClient } = require("mongodb");
+import { ApolloServer } from "apollo-server";
+import { MongoClient } from "mongodb";
 import MongoHelpers from "../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -22,7 +22,6 @@ describe("Mongo Helpers", () => {
     db = await connection.db(global.__MONGO_DB_NAME__);
 
     const users = new MongoHelpers(db.collection("users"));
-    // users.initialize();
 
     let schema = makeExecutableSchema({
       typeDefs: [KeycloakTypeDefs, typeDefs],

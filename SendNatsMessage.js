@@ -1,4 +1,4 @@
-const { connect, StringCodec, JSONCodec } = require("nats");
+import { connect, StringCodec, JSONCodec } from "nats";
 
 const host = `nats://localhost:4222`;
 

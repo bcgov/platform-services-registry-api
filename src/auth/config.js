@@ -1,10 +1,7 @@
-const fs = require("fs");
-const path = require("path");
-const session = require("express-session");
-const Keycloak = require("keycloak-connect");
+import session from "express-session";
+import Keycloak from ("keycloak-connect");
 
 function configureKeycloak(app, graphqlPath) {
-  // const keycloakConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'keycloak.json')))
 
   const keycloakConfig = {
     realm: process.env.AUTH_RELM,

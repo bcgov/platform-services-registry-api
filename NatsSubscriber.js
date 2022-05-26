@@ -1,4 +1,4 @@
-const { connect, StringCodec } = require("nats");
+import { connect, StringCodec } from "nats";
 
 // const host = "nats://nats.platform-provisioner-dev.svc:4222";
 // const host = "https://nats-dev-platform-provisioner-dev.apps.silver.devops.gov.bc.ca/";
