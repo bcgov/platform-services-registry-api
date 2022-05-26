@@ -1,5 +1,5 @@
 import session from "express-session";
-import Keycloak from "keycloak-connect";
+import Keycloak from ("keycloak-connect");
 
 function configureKeycloak(app, graphqlPath) {
 

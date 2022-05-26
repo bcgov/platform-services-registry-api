@@ -1,6 +1,6 @@
 FROM node:17-alpine
 
-RUN mkdir /var/opt/server
+RUN mkdir /var/opt/build
 WORKDIR /var/opt/build
 
 COPY . .
