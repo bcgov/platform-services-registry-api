@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "start:dev": "nodemon --exec babel-node -- ./src/index.js",
+    "dev:docker": "nodemon -L --delay 1600ms --watch build --inspect=0.0.0.0:9229 -e js,json --nolazy ./build/server.js",
     "test": "node -r dotenv/config $(which jest)",
     "prettier": "prettier --write 'src/**/*.js'",
     "build": "babel -d dist src"

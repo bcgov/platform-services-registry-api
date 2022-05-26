@@ -1,0 +1,34 @@
+version: "3.7"
+x-env: &defaults
+  NODE_ENV: development
+  MONGO_URI:
+  AUTH_RELM:
+  AUTH_SERVER_URL:
+  AUTH_RESOURCE:
+  AUTH_SECRET:
+services:
+  api:
+    container_name: registry-api-new
+    image: registry-api-new/api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: .
+        target: /opt/app
+      # - type: tmpfs
+      #   target: /tmp
+      #   tmpfs:
+      #     size: 128000000
+    ports:
+      - 4222:4222
+      - 4000:4000
+
+    environment:
+      <<: *defaults
+      PORT: 4000
+    command: >
+      bash -c "sleep 5 && npm run start"
+    # command: >
+    #   bash -c "sleep 5 && npm run dev:docker"
