@@ -1,4 +1,4 @@
-require("dotenv").config();
+import dotenv from 'dotenv'
 const { ApolloServer, gql } = require("apollo-server");
 const { MongoClient } = require("mongodb");
 import MongoHelpers from "../../dataSources/MongoHelpers";
@@ -11,6 +11,7 @@ import typeDefs from "../typeDefs";
 import resolvers from ".";
 import { users } from "./Query/Users";
 
+dotenv.config();
 describe("Mongo Helpers", () => {
   let server;
   let connection;
