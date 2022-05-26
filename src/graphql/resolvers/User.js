@@ -11,10 +11,10 @@ const User = {
     { dataSources: { privateCloudProjects } }
   ) => privateCloudProjects.findManyByIds(technicalLead),
   activeRequests: (
-    {activeRequests},
+    { activeRequests },
     _,
     { dataSources: { privateCloudActiveRequests } }
-    ) => privateCloudActiveRequests.findManyByIds(activeRequests),
-  };
+  ) => privateCloudActiveRequests.findManyByIds(activeRequests),
+};
 
 export default User;

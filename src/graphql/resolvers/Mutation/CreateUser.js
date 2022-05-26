@@ -5,6 +5,7 @@ function createUser(_, { input }, { dataSources: { users } }) {
     created: new Date(),
     projectOwner: [],
     technicalLead: [],
+    activeRequests: [],
     lastSeen: new Date(),
   });
 }
