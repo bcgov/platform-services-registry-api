@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "API for platform services registry",
   "scripts": {
-    "start": "nodemon --exec babel-node -- ./src/index.js",
+    "start": "node dist/index.js",
+    "start:dev": "nodemon --exec babel-node -- ./src/index.js",
+    "dev:docker": "nodemon -L --delay 1600ms --watch build --inspect=0.0.0.0:9229 -e js,json --nolazy ./build/server.js",
     "test": "node -r dotenv/config $(which jest)",
-    "prettier": "prettier --write 'src/**/*.js'"
+    "prettier": "prettier --write 'src/**/*.js'",
+    "build": "babel -d dist src"
   },
   "dependencies": {
     "apollo-datasource-mongodb": "^0.5.2",
