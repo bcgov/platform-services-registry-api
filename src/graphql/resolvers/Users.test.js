@@ -7,6 +7,9 @@ import { applyDirectiveTransformers } from "../../auth/transformers";
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
+import { usersByIds } from "./Query/Users";
+
+let signedUpUserId = "";
 
 describe("Mongo Helpers", () => {
   let server;
@@ -89,6 +92,7 @@ describe("Mongo Helpers", () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.signUp.firstName).toBe("Oamar");
+    signedUpUserId  = result.data?.signUp.id;
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
@@ -107,5 +111,91 @@ describe("Mongo Helpers", () => {
     expect(result.errors).toBeUndefined();
     expect(result.data?.me.firstName).toBe("Oamar");
     expect(result.data?.me.email).toBe("oamar.kanji@gov.bc.ca");
+  });
+
+  it("Newly signed up user can be queried by ID", async () => {
+    const result = await server.executeOperation({
+      query: `query User($userId: ID!) {
+        user(id: $userId) {
+          id
+          firstName
+          lastName
+        }
+      }`,
+      variables: {
+        userId: signedUpUserId,
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.user.firstName).toBe("Oamar");
+    expect(result.data?.user.lastName).toBe("Kanji");
+  });
+
+  // at least one user exists from tests above
+  it("Listing users retrieves at least one user", async () => {
+    const result = await server.executeOperation({
+      query: `query Users {
+        users {
+          firstName
+        }
+      }`,
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.users.length).toBeGreaterThan(0); 
+  });
+
+  it("A new user can be created", async () => {
+    const result = await server.executeOperation({
+      query: `mutation {
+        createUser(input: {
+          firstName: "Alexander",
+          lastName: "Carmichael",
+          ministry: HEALTH,
+          email: "alexander.carmichael@gov.bc.ca"
+        }) {
+          id
+          firstName
+        }
+      }`,
+      variables: {
+        input: {
+          firstName: "Alexander",
+          lastName: "Carmichael",
+          ministry: "HEALTH",
+        },
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.createUser.firstName).toBe("Alexander");
+  });
+
+  /*It should be noted that this is dependent on the CreateUser test passing successfully*/
+  it("Can query multiple users by an array of IDs", async () => {
+    let userId1;
+    let userId2;
+    const usersResult = await server.executeOperation({
+      query: `query Users {
+        users {
+          id
+        }
+      }`,
+    });
+
+    expect(usersResult.data?.users.length).toBeGreaterThan(1);
+    userId1 = usersResult.data?.users[0].id;
+    userId2 = usersResult.data?.users[1].id;
+    
+    const result = await server.executeOperation({
+      query: `query UsersByIds($ids: [ID!]!) {
+        usersByIds(ids: $ids) {
+          firstName
+        }
+      }`,
+      variables: {
+        ids: [userId1, userId2]
+      },
+    });
+    expect(result.errors).toBeUndefined();
+    expect(result.data?.usersByIds.length).toBe(2); 
   });
 });
