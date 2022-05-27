@@ -26,6 +26,14 @@ async function createPrivateCloudProjectEditRequest(
     throw new Error("Project does not exist");
   }
 
+  if (metaData === null) {
+    metaData = {};
+  }
+
+  if (quota === null) {
+    quota = {};
+  }
+
   const omitNull = (obj) =>
     Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
 
@@ -53,7 +61,7 @@ async function createPrivateCloudProjectEditRequest(
   // Only an Admin or a PO or TL of this project can request to edit it
   if (
     ![project.projectOwner, ...project.technicalLeads].includes(user._id) &&
-    !roles.includes("admin") 
+    !roles.includes("admin")
   ) {
     requestBody.status = RequestStatus.REJECTED;
     await privateCloudArchivedRequests.create(requestBody);
@@ -85,9 +93,14 @@ async function createPrivateCloudProjectEditRequest(
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
 
+  // Need to add request to users
   const request = await privateCloudActiveRequests.create(requestBody);
 
   return request;
 }
 
 export default createPrivateCloudProjectEditRequest;
+
+
+
+

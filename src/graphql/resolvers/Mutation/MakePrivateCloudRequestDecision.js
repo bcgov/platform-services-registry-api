@@ -26,43 +26,50 @@ async function makePrivateCloudRequestDecision(
     throw Error("active request does not exist");
   }
 
-  // remove active request for PO and TLs
-  const { projectOwner, technicalLeads } = RequestType.CREATE
-    ? await privateCloudRequestedProjects.findOneById(request.requestedProject)
-    : await privateCloudProjects.findOneById(request.project);
-
-  await users.removeElementFromManyDocumentsArray(
-    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
-    { activeRequests: request._id }
-  );
+  if (request.status !== RequestStatus.PENDING_DECISION) {
+    throw Error("A decision has already been made for this request");
+  }
 
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
 
-    if (request.type !== RequestType.CREATE) {
-      const rejectedRequest = await privateCloudArchivedRequests.create({
-        ...request,
-        ...{
-          status: RequestStatus.REJECTED,
-          decisionDate: new Date(),
-          active: false,
-          decisionMaker: user._id,
-        },
-      });
+    // Move request to archived requests collection
+    const rejectedRequest = await privateCloudArchivedRequests.create({
+      ...request,
+      ...{
+        status: RequestStatus.REJECTED,
+        decisionDate: new Date(),
+        active: false,
+        decisionMaker: user._id,
+      },
+    });
 
+    // Add request to the projects requet history
+    if (request.type !== RequestType.CREATE) {
       await privateCloudProjects.addElementToDocumentArray(request.project, {
         requestHistory: rejectedRequest._id,
       });
     }
 
+    // remove active request for PO and TLs
+    const { projectOwner, technicalLeads } = RequestType.CREATE
+      ? await privateCloudRequestedProjects.findOneById(
+          request.requestedProject
+        )
+      : await privateCloudProjects.findOneById(request.project);
+
+    await users.removeElementFromManyDocumentsArray(
+      [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+      { activeRequests: request._id }
+    );
+
     return RequestStatus.REJECTED;
   } else if (input.decision === RequestDecision.APPROVE) {
     const { acknowledged } = await privateCloudActiveRequests.updateFieldsById(
-      input.request,
+      request._id,
       {
         status: RequestStatus.APPROVED,
         decisionDate: new Date(),
-        active: false,
         decisionMaker: user._id,
       }
     );
@@ -71,6 +78,9 @@ async function makePrivateCloudRequestDecision(
       throw new Error("Unable to update request");
     }
 
+    console.log("APPROVE")
+    console.log(acknowledged)
+    
     await sendNatsMessage();
 
     return RequestStatus.APPROVED;

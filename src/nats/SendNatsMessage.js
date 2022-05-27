@@ -8,6 +8,9 @@ const subject = process.env.NATS_SUBJECT
 async function sendNatsMessage() {
   const nc = await connect({ servers: serverURL });
 
+  console.log("** SEND NATS MESSAGE **");
+  console.log(nc)
+
   // create a codec
   const sc = StringCodec();
   const jc = JSONCodec();

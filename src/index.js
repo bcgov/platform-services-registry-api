@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 import { ApolloServer } from "apollo-server-express";
@@ -50,9 +50,9 @@ async function startApolloServer(typeDefs, resolvers) {
         client.db().collection("privateCloudRequestedProjects")
       ),
     }),
-    context: ({ req }) => {
-      return { kauth: new KeycloakContext({ req }, keycloak) };
-    },
+    context: ({ req }) => ({
+      kauth: new KeycloakContext({ req }, keycloak),
+    }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
