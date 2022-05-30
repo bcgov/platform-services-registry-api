@@ -13,6 +13,7 @@ async function createPrivateCloudProjectRequest(
       privateCloudActiveRequests,
     },
     kauth,
+    chesService
   }
 ) {
   const { email, resource_access } = kauth.accessToken.content;
@@ -47,24 +48,6 @@ async function createPrivateCloudProjectRequest(
     technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
-  // Move this to the provisioned controller. The project will be assgined
-  // to the PO and TL's once it's provisioned
-
-  // // Find project owner and add the project id
-  // await users.addElementToDocumentArray(projectOwner._id, {
-  //   projectOwner: requestedProject._id,
-  // });
-
-  // // Find technical leads and add the project id
-  // if (input?.technicalLeads) {
-  //   await users.addElementToManyDocumentsArray(
-  //     technicalLeads.map(({ _id }) => _id),
-  //     {
-  //       technicalLead: requestedProject._id,
-  //     }
-  //   );
-  // }
-
   const request = await privateCloudActiveRequests.create({
     createdBy: requestedProject.createdBy,
     status: RequestStatus.PENDING_DECISION,
@@ -84,6 +67,16 @@ async function createPrivateCloudProjectRequest(
       activeRequests: request._id,
     }
   );
+
+  chesService.send({
+    bodyType: "html",
+    body: `<div style="color: blue" >Project Created</div>`,
+    to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+    from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+    subject: `**profile.name** OCP 4 Project Set`,
+    // subject: `${profile.name} OCP 4 Project Set`,
+  })
+
 
   return request;
 }

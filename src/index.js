@@ -11,12 +11,11 @@ import express from "express";
 import http from "http";
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
-import { MongoClient } from "mongodb";
-import MongoHelpers from "./dataSources/MongoHelpers";
+import { getDatasources } from "./dataSources";
+import chesService from "./ches";
+import provision from "./controllers/provision";
 
 async function startApolloServer(typeDefs, resolvers) {
-  const client = new MongoClient(process.env.MONGO_URI);
-  await client.connect();
 
   let schema = makeExecutableSchema({
     typeDefs: [KeycloakTypeDefs, typeDefs],
@@ -26,38 +25,27 @@ async function startApolloServer(typeDefs, resolvers) {
   schema = applyDirectiveTransformers(schema);
 
   const app = express();
-
-  const graphqlPath = "/graphql";
-  const { keycloak } = configureKeycloak(app, graphqlPath);
-
+  const { keycloak } = configureKeycloak(app, "/graphql");
   const httpServer = http.createServer(app);
+
+  const dataSources = await getDatasources()
 
   const server = new ApolloServer({
     schema,
     resolvers,
-    dataSources: () => ({
-      users: new MongoHelpers(client.db().collection("users")),
-      privateCloudProjects: new MongoHelpers(
-        client.db().collection("privateCloudProjects")
-      ),
-      privateCloudActiveRequests: new MongoHelpers(
-        client.db().collection("privateCloudActiveRequests")
-      ),
-      privateCloudArchivedRequests: new MongoHelpers(
-        client.db().collection("privateCloudArchivedRequests")
-      ),
-      privateCloudRequestedProjects: new MongoHelpers(
-        client.db().collection("privateCloudRequestedProjects")
-      ),
-    }),
+    dataSources: () => dataSources,
     context: ({ req }) => ({
       kauth: new KeycloakContext({ req }, keycloak),
+      chesService,
     }),
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
   await server.start();
   server.applyMiddleware({ app });
+
+  app.post("/rest/provision-callback", provision);
+
   await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }

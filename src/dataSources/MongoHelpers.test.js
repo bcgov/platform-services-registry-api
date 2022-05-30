@@ -116,7 +116,7 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should update specified fields in document with specified values ", async () => {
-    const { acknowledged } = await users.updateFieldsById(oamarId, {
+    const ret = await users.updateFieldsById(oamarId, {
       email: "a.kanji@gamil.com",
       firstName: "Aahil",
     });

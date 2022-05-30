@@ -15,6 +15,7 @@ async function makePrivateCloudRequestDecision(
       users,
     },
     kauth,
+    chesService,
   }
 ) {
   const { email } = kauth.accessToken.content;
@@ -30,6 +31,13 @@ async function makePrivateCloudRequestDecision(
     throw Error("A decision has already been made for this request");
   }
 
+  const { projectOwner, technicalLeads } =
+    request.type === RequestType.CREATE
+      ? await privateCloudRequestedProjects.findOneById(
+          request.requestedProject
+        )
+      : await privateCloudProjects.findOneById(request.project);
+
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
 
@@ -44,7 +52,7 @@ async function makePrivateCloudRequestDecision(
       },
     });
 
-    // Add request to the projects requet history
+    // Add request to the projects request history
     if (request.type !== RequestType.CREATE) {
       await privateCloudProjects.addElementToDocumentArray(request.project, {
         requestHistory: rejectedRequest._id,
@@ -52,16 +60,19 @@ async function makePrivateCloudRequestDecision(
     }
 
     // remove active request for PO and TLs
-    const { projectOwner, technicalLeads } = RequestType.CREATE
-      ? await privateCloudRequestedProjects.findOneById(
-          request.requestedProject
-        )
-      : await privateCloudProjects.findOneById(request.project);
-
     await users.removeElementFromManyDocumentsArray(
       [projectOwner, ...technicalLeads].map(({ _id }) => _id),
       { activeRequests: request._id }
     );
+
+    chesService.send({
+      bodyType: "html",
+      body: `<div style="color: blue">Request Decision made: ${RequestDecision.REJECT}</div>`,
+      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `**profile.name** OCP 4 Project Set`,
+      // subject: `${profile.name} OCP 4 Project Set`,
+    });
 
     return RequestStatus.REJECTED;
   } else if (input.decision === RequestDecision.APPROVE) {
@@ -78,10 +89,16 @@ async function makePrivateCloudRequestDecision(
       throw new Error("Unable to update request");
     }
 
-    console.log("APPROVE")
-    console.log(acknowledged)
-    
-    await sendNatsMessage();
+    chesService.send({
+      bodyType: "html",
+      body: `<div style="color: blue">Request Decision made: ${RequestDecision.APPROVE}</div>`,
+      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `**profile.name** OCP 4 Project Set`,
+      // subject: `${profile.name} OCP 4 Project Set`,
+    });
+
+    //await sendNatsMessage();
 
     return RequestStatus.APPROVED;
   }

@@ -1,6 +1,7 @@
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
+import sendNatsMessage from "../../../nats/SendNatsMessage";
 
 async function createPrivateCloudProjectEditRequest(
   _,
@@ -87,14 +88,23 @@ async function createPrivateCloudProjectEditRequest(
   if (Object.keys(quota).length === 0) {
     requestBody.status = RequestStatus.APPROVED;
 
-    // *** PROVISON ***
-    // request variable from above to provision
+  //await sendNatsMessage();
+
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
 
   // Need to add request to users
   const request = await privateCloudActiveRequests.create(requestBody);
+
+  chesService.send({
+    bodyType: "html",
+    body: `<div style="color: blue">Edit request made: ${RequestDecision.APPROVE}</div>`,
+    to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+    from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+    subject: `**profile.name** OCP 4 Project Set`,
+    // subject: `${profile.name} OCP 4 Project Set`,
+  })
 
   return request;
 }

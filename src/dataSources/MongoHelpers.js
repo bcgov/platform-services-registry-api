@@ -29,7 +29,7 @@ export default class MongoHelpers extends MongoDataSource {
   removeElementFromManyDocumentsArray(ids, set) {
     return this.collection.updateMany(
       { _id: { $in: ids } },
-      { $pull: set},
+      { $pull: set },
       { multi: true }
     );
   }
@@ -37,13 +37,17 @@ export default class MongoHelpers extends MongoDataSource {
   removeElementFromManyDocumentsArray(ids, set) {
     return this.collection.updateMany(
       { _id: { $in: ids } },
-      { $pull: set},
+      { $pull: set },
       { multi: true }
     );
   }
 
   updateFieldsById(id, data) {
-    return this.collection.updateOne({ _id: id }, { $set: data });
+    return this.collection.updateOne(
+      { _id: id },
+      { $set: data },
+      { upsert: true }
+    );
   }
 
   async create(user) {

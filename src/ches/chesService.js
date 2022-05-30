@@ -1,37 +1,36 @@
-const config = require('config');
-const log = require('../../src/components/log')(module.filename);
+import ClientConnection from "./clientConnection";
 
-const ClientConnection = require('../components/clientConnection');
+const SERVICE = "CHES";
 
-const errorToProblem = require('../components/errorToProblem');
-const SERVICE = 'CHES';
-
-class ChesService {
-
+export default class ChesService {
   constructor({ tokenUrl, clientId, clientSecret, apiUrl }) {
-    log.verbose('ChesService', `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`);
+    console.log(
+      "ChesService",
+      `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`
+    );
     if (!tokenUrl || !clientId || !clientSecret || !apiUrl) {
-      log.error('Invalid configuration.', { function: 'constructor' });
-      throw new Error('ChesService is not configured. Check configuration.');
+      console.log("Invalid configuration.", { function: "constructor" });
+      throw new Error("ChesService is not configured. Check configuration.");
     }
-    this.connection = new ClientConnection({ tokenUrl, clientId, clientSecret });
+    this.connection = new ClientConnection({
+      tokenUrl,
+      clientId,
+      clientSecret,
+    });
     this.axios = this.connection.axios;
-    this.apiUrl = `${apiUrl}/v1`;
+    this.apiUrl = apiUrl;
   }
 
   async health() {
     try {
-      const { data, status } = await this.axios.get(
-        `${this.apiUrl}/health`,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      const { data, status } = await this.axios.get(`${this.apiUrl}/health`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       return { data, status };
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -42,25 +41,22 @@ class ChesService {
           `${this.apiUrl}/status/${params.msgId}`,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
       } else {
-        const { data, status } = await this.axios.get(
-          `${this.apiUrl}/status`,
-          {
-            params: query,
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        );
+        const { data, status } = await this.axios.get(`${this.apiUrl}/status`, {
+          params: query,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         return { data, status };
       }
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -71,8 +67,8 @@ class ChesService {
           `${this.apiUrl}/cancel/${params.msgId}`,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -82,14 +78,14 @@ class ChesService {
           {
             params: query,
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
       }
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -100,15 +96,15 @@ class ChesService {
         email,
         {
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -119,15 +115,15 @@ class ChesService {
         mergeData,
         {
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -138,15 +134,15 @@ class ChesService {
         mergeData,
         {
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
 
@@ -157,8 +153,8 @@ class ChesService {
           `${this.apiUrl}/promote/${params.msgId}`,
           {
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -168,23 +164,14 @@ class ChesService {
           {
             params: query,
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
       }
     } catch (e) {
-      errorToProblem(SERVICE, e);
+      console.log(SERVICE, e);
     }
   }
-
 }
-
-const endpoint = config.get('serviceClient.commonServices.ches.endpoint');
-const tokenEndpoint = config.get('serviceClient.commonServices.tokenEndpoint');
-const username = config.get('serviceClient.commonServices.username');
-const password = config.get('serviceClient.commonServices.password');
-
-let chesService = new ChesService({ tokenUrl: tokenEndpoint, clientId: username, clientSecret: password, apiUrl: endpoint });
-module.exports = chesService;

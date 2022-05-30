@@ -2,7 +2,7 @@ import axios from 'axios';
 import oauth from 'axios-oauth-client';
 import tokenProvider from 'axios-token-interceptor';
 
-class ClientConnection {
+export default class ClientConnection {
   constructor({ tokenUrl, clientId, clientSecret }) {
     console.log('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
     if (!tokenUrl || !clientId || !clientSecret) {
@@ -27,5 +27,3 @@ class ClientConnection {
     );
   }
 }
-
-module.exports = ClientConnection;
