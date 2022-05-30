@@ -1,4 +1,5 @@
 import { connect, StringCodec, JSONCodec } from "nats";
+import { testMessage } from "./constants";
 
 // const serverURL = `nats://localhost:4222`;
 
@@ -15,7 +16,7 @@ async function sendNatsMessage() {
   const sc = StringCodec();
   const jc = JSONCodec();
 
-  nc.publish(subject, sc.encode("hello world"));
+  nc.publish(subject, jc.encode(testMessage));
 
   await nc.drain();
 }
