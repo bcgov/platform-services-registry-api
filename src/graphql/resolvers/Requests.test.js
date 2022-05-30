@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "apollo-server";
 import { MongoClient } from "mongodb";
@@ -113,7 +113,6 @@ describe("Mongo Helpers", () => {
     expect(result.data?.signUp.firstName).toBe("Oamar");
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
-
 
   // TODO: Sign up two additional users then add them as the technical leads for the request being created below.
   // you should test that those two users are being returned as the technical leads in the request object that is returned from teh mutation
@@ -262,6 +261,12 @@ describe("Mongo Helpers", () => {
           }
         }
       }`,
+      variables: {
+        input: {
+          decision: "REJECT",
+          request: "629299722eefb803ec23dc03",
+        },
+      },
     });
 
     const request = result.data?.makePrivateCloudRequestDecision;
