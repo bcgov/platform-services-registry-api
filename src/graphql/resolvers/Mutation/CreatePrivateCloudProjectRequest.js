@@ -22,9 +22,6 @@ async function createPrivateCloudProjectRequest(
   };
   const [user] = await users.findByFields({ email });
 
-  console.log("Roles");
-  console.log(roles);
-
   if (
     !roles.includes("admin") &&
     ![input.projectOwner, ...input.technicalLeads].includes(email)
