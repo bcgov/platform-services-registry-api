@@ -152,4 +152,4 @@ function message(action, requestedProject) {
   return request;
 }
 
-export { testMessage };
+export { message };
