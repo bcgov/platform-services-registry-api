@@ -89,7 +89,7 @@ async function createPrivateCloudProjectEditRequest(
   if (Object.keys(quota).length === 0) {
     requestBody.status = RequestStatus.APPROVED;
 
-  //await sendNatsMessage();
+  await sendNatsMessage();
 
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;

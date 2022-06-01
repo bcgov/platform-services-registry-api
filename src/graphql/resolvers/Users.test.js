@@ -11,7 +11,7 @@ import { usersByIds } from "./Query/Users";
 
 let signedUpUserId = "";
 
-describe("Mongo Helpers", () => {
+describe("User tests", () => {
   let server;
   let connection;
   let db;
@@ -48,6 +48,9 @@ describe("Mongo Helpers", () => {
                   roles: ["admin"],
                 },
               },
+              given_name: "Oamar",
+              family_name: "Kanji"
+
             },
           },
         },
@@ -83,9 +86,8 @@ describe("Mongo Helpers", () => {
       }`,
       variables: {
         input: {
-          firstName: "Oamar",
-          lastName: "Kanji",
           ministry: "AGRICULTURE",
+          githubId: "okanji"
         },
       },
     });

@@ -1,5 +1,5 @@
 async function signUp(_, { input }, { dataSources: { users }, kauth }) {
-  const { email } = kauth.accessToken.content;
+  const { email, given_name: firstName, family_name: lastName } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
   if (user !== undefined) {
@@ -8,14 +8,16 @@ async function signUp(_, { input }, { dataSources: { users }, kauth }) {
 
   return users.create({
     ...input,
-    email: email,
+    firstName,
+    lastName,
+    email,
     archived: false,
     created: new Date(),
     projectOwner: [],
     technicalLead: [],
     activeRequests: [],
     lastSeen: new Date(),
-  });
+  })
 }
 
 export default signUp;

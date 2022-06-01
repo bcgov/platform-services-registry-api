@@ -4,10 +4,10 @@ const SERVICE = "CHES";
 
 export default class ChesService {
   constructor({ tokenUrl, clientId, clientSecret, apiUrl }) {
-    console.log(
-      "ChesService",
-      `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`
-    );
+    // console.log(
+    //   "ChesService",
+    //   `Constructed with ${tokenUrl}, ${clientId}, clientSecret, ${apiUrl}`
+    // );
     if (!tokenUrl || !clientId || !clientSecret || !apiUrl) {
       console.log("Invalid configuration.", { function: "constructor" });
       throw new Error("ChesService is not configured. Check configuration.");

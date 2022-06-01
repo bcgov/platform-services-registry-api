@@ -59,12 +59,14 @@ describe("Mongo Helpers", () => {
             token: "abc",
             content: {
               email: "oamar.kanji@gov.bc.ca",
-              firstName: "Oamar",
               resource_access: {
                 "registry-api": {
                   roles: ["admin"],
                 },
               },
+              given_name: "Oamar",
+              family_name: "Kanji"
+
             },
           },
         },
@@ -102,9 +104,8 @@ describe("Mongo Helpers", () => {
       }`,
       variables: {
         input: {
-          firstName: "Oamar",
-          lastName: "Kanji",
           ministry: "AGRICULTURE",
+          githubId: "okanji"
         },
       },
     });
