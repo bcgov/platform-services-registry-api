@@ -1,3 +1,4 @@
+
 import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "apollo-server";
@@ -10,6 +11,18 @@ import { ObjectId } from "mongodb";
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
+import { getResolveFn } from "nats/lib/nats-base-client/transport";
+
+// jest.mock("express-validator", () => ({
+//   ...jest.requireActual("express-validator"),
+//   validationResult: () => ({ isEmpty: () => true }),
+// }));
+
+// jest.mock(".../import/ches", () => ({
+//   send: jest.fn(),
+// }));
+
+let newRequestId;
 
 describe("Mongo Helpers", () => {
   let server;
@@ -59,12 +72,13 @@ describe("Mongo Helpers", () => {
             token: "abc",
             content: {
               email: "oamar.kanji@gov.bc.ca",
-              firstName: "Oamar",
               resource_access: {
                 "registry-api": {
                   roles: ["admin"],
                 },
               },
+              given_name: "Oamar",
+              family_name: "Kanji"
             },
           },
         },
@@ -75,9 +89,12 @@ describe("Mongo Helpers", () => {
       schema,
       resolvers,
       dataSources: () => collections,
-      context: () => {
-        return { kauth: new KeycloakContext({ req }) };
-      },
+      context: () => ({
+        kauth: new KeycloakContext({ req }),
+        chesService: {
+          send: () => console.log("*** SEND ***")
+        }
+      }),
     });
   });
 
@@ -108,14 +125,46 @@ describe("Mongo Helpers", () => {
         },
       },
     });
-
+    //Two other users for subsequest testing
+    const secondUser = await server.executeOperation({
+      query: `mutation Mutation($input: CreateUserInput!) {
+        createUser(input: $input) {
+          id
+          email
+        }
+      }`,
+      variables: {
+        input: {
+          firstName: "Alexander",
+          lastName: "Carmichael",
+          ministry: "AGRICULTURE",
+          email: "alexander.carmichael@gov.bc.ca"
+        },
+      },
+    });
+    expect(secondUser.data?.createUser.email).toBe("alexander.carmichael@gov.bc.ca");
+    const thirdUser = await server.executeOperation({
+      query: `mutation Mutation($input: CreateUserInput!) {
+        createUser(input: $input) {
+          id
+          email
+        }
+      }`,
+      variables: {
+        input: {
+          firstName: "Billy",
+          lastName: "Li",
+          ministry: "AGRICULTURE",
+          email: "billy.li@gov.bc.ca"
+        },
+      },
+    });
+    expect(thirdUser.data?.createUser.email).toBe("billy.li@gov.bc.ca");
     expect(result.errors).toBeUndefined();
     expect(result.data?.signUp.firstName).toBe("Oamar");
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
-  // TODO: Sign up two additional users then add them as the technical leads for the request being created below.
-  // you should test that those two users are being returned as the technical leads in the request object that is returned from teh mutation
   it("Should create a new project request", async () => {
     const request = await server.executeOperation({
       query: `mutation CreatePrivateCloudProjectRequest($input: CreatePrivateCloudProjectInput!) {
@@ -127,6 +176,7 @@ describe("Mongo Helpers", () => {
           }
           requestedProject {
             ... on PrivateCloudProject {
+              id
               technicalLeads {
                 id
                 firstName
@@ -144,11 +194,10 @@ describe("Mongo Helpers", () => {
           ministry: "AGRICULTURE",
           cluster: "SILVER",
           projectOwner: "oamar.kanji@gov.bc.ca",
-          technicalLeads: [], // <- Add technical leads here. e.g [tecnnicalLeadOneEmail, technicalLeadTwoEmail]
+          technicalLeads: ["alexander.carmichael@gov.bc.ca", "billy.li@gov.bc.ca"],
         },
       },
     });
-
     const me = await server.executeOperation({
       query: `query Me {
       me {
@@ -168,9 +217,8 @@ describe("Mongo Helpers", () => {
 
     const { id, requestedProject, createdBy } =
       request.data?.createPrivateCloudProjectRequest;
-
+    newRequestId = id;
     // Will be used in subsequent tests
-
     const [user] = me.data?.me.activeRequests;
 
     expect(request.errors).toBeUndefined();
@@ -190,6 +238,8 @@ describe("Mongo Helpers", () => {
       await collections.privateCloudProjects.findOneById(id)
     ).toBeUndefined();
     expect([user.id]).toStrictEqual([id]);
+    expect(requestedProject.technicalLeads[0].firstName).toBe("Alexander");
+    expect(requestedProject.technicalLeads[1].lastName).toBe("Li");
   });
 
   it("Should query all requests", async () => {
@@ -230,47 +280,24 @@ describe("Mongo Helpers", () => {
     );
   });
 
+  it("Should allow a technical lead to be removed from a request", async () => {
+    const request =  await collections.privateCloudActiveRequests.findOneById(newRequestId);
+    console.log(request);
+  });
+
   it("Should reject a create project request", async () => {
     const result = await server.executeOperation({
-      query: `mutation MakeDecision($input: MakeRequestDecisionInput!) {
-        makePrivateCloudRequestDecision(input: $input) {
-          id
-          status
-          type
-          project {
-            ... on PrivateCloudProject {
-              name
-              id
-              status
-              description
-            }
-          }
-          requestedProject {
-            ... on PrivateCloudProject {
-              id
-              name
-              archived
-              createdBy {
-                firstName
-              }
-              status
-            }
-            technicalLeads {
-              firstName
-            }
-          }
-        }
+      query: `mutation MakePrivateCloudRequestDecision($input: MakeRequestDecisionInput!) {
+        makePrivateCloudRequestDecision(input: $input)
       }`,
       variables: {
         input: {
           decision: "REJECT",
-          request: "629299722eefb803ec23dc03",
+          request: newRequestId,
         },
       },
     });
-
     const request = result.data?.makePrivateCloudRequestDecision;
-
     expect(request.status).toBe("REJECTED");
   });
 });
