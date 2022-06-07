@@ -119,9 +119,8 @@ describe("Mongo Helpers", () => {
       }`,
       variables: {
         input: {
-          firstName: "Oamar",
-          lastName: "Kanji",
           ministry: "AGRICULTURE",
+          githubId: "okanji"
         },
       },
     });

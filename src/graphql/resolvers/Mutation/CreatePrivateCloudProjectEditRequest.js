@@ -18,8 +18,9 @@ async function createPrivateCloudProjectEditRequest(
   }
 ) {
   const { email, resource_access } = kauth.accessToken.content;
-  const { roles } = resource_access[process.env.AUTH_RESOURCE];
-  const [user] = await users.findByFields({ email });
+  const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
+    roles: [],
+  };  const [user] = await users.findByFields({ email });
 
   const project = await privateCloudProjects.findOneById(id);
 
@@ -88,7 +89,7 @@ async function createPrivateCloudProjectEditRequest(
   if (Object.keys(quota).length === 0) {
     requestBody.status = RequestStatus.APPROVED;
 
-  //await sendNatsMessage();
+  await sendNatsMessage();
 
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;

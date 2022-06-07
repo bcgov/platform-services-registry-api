@@ -91,12 +91,12 @@ async function makePrivateCloudRequestDecision(
 
     chesService.send({
       bodyType: "html",
-      body: `<div style="color: blue">Request Decision made: ${RequestDecision.APPROVE}</div>`,
+      body: `<div style="color: blue" >Project decision made</div>`,
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
-    });
+    })
 
     await sendNatsMessage();
 

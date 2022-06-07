@@ -55,10 +55,10 @@ const typeDefs = gql`
   }
 
   type Namespace {
-    cpuQuota: String!
-    memoryQuota: String!
-    storageQuota: String!
-    snapshotQuota: String!
+    cpu: String!
+    memory: String!
+    storage: String!
+    snapshot: String!
   }
 
   interface Project {
@@ -131,8 +131,7 @@ const typeDefs = gql`
     testSnapshotQuota: String = "test-snapshot-quota"
     developmentCpuQuota: String = "test-cpu-quota"
     developmentMemoryQuota: String = "test-memory-quota"
-    developmentStorageQuota: String
-    "test-storage-quota"
+    developmentStorageQuota: String = "test-storage-quota"
     developmentSnapshotQuota: String = "test-snapshot-quota"
     toolsCpuQuota: String = "test-cpu-quota"
     toolsnMemoryQuota: String = "test-memory-quota"
@@ -198,6 +197,7 @@ const typeDefs = gql`
     technicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
+    githubId: String!
   }
 
   input CreateUserInput {
@@ -205,12 +205,12 @@ const typeDefs = gql`
     lastName: String!
     email: EmailAddress!
     ministry: Ministry
+    githubId: String!
   }
 
   input SignUpInput {
-    firstName: String!
-    lastName: String!
-    ministry: Ministry
+    ministry: Ministry!
+    githubId: String!
   }
 
   input UpdateUserInput {

@@ -13,11 +13,13 @@ async function createPrivateCloudProjectRequest(
       privateCloudActiveRequests,
     },
     kauth,
-    chesService
+    chesService,
   }
 ) {
   const { email, resource_access } = kauth.accessToken.content;
-  const { roles } = resource_access[process.env.AUTH_RESOURCE];
+  const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
+    roles: [],
+  };
   const [user] = await users.findByFields({ email });
 
   if (
@@ -60,7 +62,6 @@ async function createPrivateCloudProjectRequest(
     requestedProject: requestedProject._id,
   });
 
-
   await users.addElementToManyDocumentsArray(
     [projectOwner, ...technicalLeads].map(({ _id }) => _id),
     {
@@ -75,8 +76,7 @@ async function createPrivateCloudProjectRequest(
     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
     subject: `**profile.name** OCP 4 Project Set`,
     // subject: `${profile.name} OCP 4 Project Set`,
-  })
-
+  });
 
   return request;
 }

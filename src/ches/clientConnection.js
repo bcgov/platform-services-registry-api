@@ -4,7 +4,7 @@ import tokenProvider from 'axios-token-interceptor';
 
 export default class ClientConnection {
   constructor({ tokenUrl, clientId, clientSecret }) {
-    console.log('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
+    //console.log('ClientConnection', `Constructed with ${tokenUrl}, ${clientId}, clientSecret`);
     if (!tokenUrl || !clientId || !clientSecret) {
       console.log('Invalid configuration.', { function: 'constructor' });
       throw new Error('ClientConnection is not configured. Check configuration.');
