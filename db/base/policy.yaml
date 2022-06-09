@@ -1,0 +1,18 @@
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-mongo-replication
+spec:
+  # Allow the mongo pods to replicate
+  podSelector:
+    matchLabels:
+      statefulset: mongodb
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              statefulset: mongodb
+      ports:
+        - protocol: TCP
+          port: 27017

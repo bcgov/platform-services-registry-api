@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: platform-registry-dev
+bases:
+  - ../../base
+patches:
+  - mongo-env-patch.yaml
+  - deployment.db-resources.yaml
+generatorOptions:
+  labels:
+    app: platform-registry-api-new
+    type: generated
+configMapGenerator:
+  - name: mongodb-env
+    env: mongodb.properties
+secretGenerator:
+- name: platform-registry-api-new-mongo-creds
+  envs:
+  - .env.secret
+  files:
+  - MONGODB_KEYFILE_VALUE
+images:
+  - name: mongo
+    newName: image-registry.openshift-image-registry.svc:5000/bcgov/mongodb-36-ha 
+    newTag: "1"

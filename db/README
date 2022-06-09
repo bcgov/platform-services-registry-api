@@ -1,0 +1,53 @@
+# DevOps for platform registry API
+
+## Structure:
+
+We are using kustomize to template and config platform registry API
+
+- the kustomization templates are in ./base folder, sorted by the micro-services components.
+- also note that we have build templates in ./base/tekton folder. However, please notes that we are using GitHub workflows for CI at the moment, see ../.github/workflows for details.
+- the environment configurations are in ./env folder. Please note that all secrets are using Vault services, the only thing that would need a local secret file is the route certificates. They should be placed in the ./env/<env_name>/routes, please refer to the specific kustomization.yaml for details.
+
+## Run:
+
+> dev and test environments utilize local secrets whereas prod utilizes vault. Please note! Prod is only meant for prod cluster enviornments. Do not run vault in lab as it is not stable!
+
+0. Create Secrets for non Prod Environments
+
+1. generate a `MONGODB_KEYFILE_VALUE` file in the env and test environments
+
+```
+openssl rand -base64 756 > ./env/dev/MONGODB_KEYFILE_VALUE
+chmod 400 ./env/dev/MONGODB_KEYFILE_VALUE
+
+openssl rand -base64 756 > ./env/test/MONGODB_KEYFILE_VALUE
+chmod 400 ./env/test/MONGODB_KEYFILE_VALUE
+```
+
+2. update `.env.secret.example`
+
+```
+cp ./env/test/.env.secret.example ./env/test/.env.secret
+cp ./env/dev/.env.secret.example ./env/dev/.env.secret
+```
+
+1. Create App Components:
+
+To manually deploy the app, provide the needed configurations in the ./env folder, and use kustomize to generate oc configurations.
+
+```shell
+# generate configs:
+kustomize build devops/env/<env_name> > deployment.yaml
+
+# dry run to test:
+oc apply -f deployment.yaml --dry-run
+
+# when all good, apply the configuration:
+oc apply -f deployment.yaml
+
+# To delete objects, first check on what are there:
+oc get all -l "app=platform-registry-api-new"
+
+# then delete:
+oc delete all -l "app=platform-registry-api-new"
+```

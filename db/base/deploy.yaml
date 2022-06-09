@@ -1,0 +1,115 @@
+# https://github.com/BCDevOps/resource-tuning-advisor-app/tree/main/devops/base/mongo
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb
+  labels:
+    app: platform-registry-api-new
+spec:
+  ports:
+    - name: mongodb
+      port: 27017
+  selector:
+    statefulset: mongodb
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongodb-internal
+  labels:
+    app: platform-registry-api-new
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  clusterIP: None
+  ports:
+    - name: mongodb
+      port: 27017
+  selector:
+    statefulset: mongodb
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: mongodb
+  labels:
+    app: platform-registry-api-new
+spec:
+  selector:
+    matchLabels:
+      statefulset: mongodb
+  serviceName: mongodb-internal
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: platform-registry-api-new
+        statefulset: mongodb
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: name
+                    operator: In
+                    values:
+                      - mongodb
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: mongo-container
+          # this is just a placeholder
+          image: mongo:3.6
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 27017
+          args:
+            - "run-mongod"
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /var/lib/mongodb/data
+          envFrom:
+            - configMapRef:
+                # this gets rewrite in patch
+                name: mongodb-env
+          resources:
+            limits:
+              memory: 384mi
+              cpu: 100m
+            requests:
+              memory: 12888mi
+              cpu: 80m
+          readinessProbe:
+            exec:
+              command:
+                - stat
+                - /tmp/initialized
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            failureThreshold:
+              10
+              # command:
+              #   - /bin/bash
+              #   - -o
+              #   - pipefail
+              #   - -ec
+              #   - >-
+              #     mongo --quiet
+              #     -u $MONGO_INITDB_ROOT_USERNAME
+              #     -p $MONGO_INITDB_ROOT_PASSWORD
+              #     --eval "db.adminCommand('ping')" |
+              #     /bin/grep -Eq '\"ok\"[[:space:]]+:[[:space:]]+1'
+              #   - billycli get work done --try-your-best
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-data
+        labels:
+          name: mongodb
+          app: platform-registry-api-new
+      spec:
+        accessModes: [ReadWriteOnce]
+        storageClassName: netapp-block-standard
+        resources:
+          requests:
+            storage: 1G

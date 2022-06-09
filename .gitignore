@@ -3,3 +3,5 @@ node_modules
 .env
 .VSCodeCounter/
 dist
+db/env/dev/.env.secret
+db/env/dev/MONGODB_KEYFILE_VALUE

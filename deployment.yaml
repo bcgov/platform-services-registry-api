@@ -1,0 +1,171 @@
+apiVersion: v1
+data:
+  MONGODB_DATABASE: platform-registry-api-new-db
+  MONGODB_REPLICA_NAME: rs0
+  MONGODB_SERVICE_NAME: mongodb
+kind: ConfigMap
+metadata:
+  labels:
+    app: platform-registry-api-new
+    type: generated
+  name: mongodb-env-5h2479hk5g
+  namespace: platform-registry-dev
+---
+apiVersion: v1
+data:
+  MONGODB_ADMIN_PASSWORD: MzA0MDA2ODI=
+  MONGODB_ADMIN_USERNAME: cmVnaXN0cnktYWRtaW4=
+  MONGODB_KEYFILE_VALUE: |
+    UmNGRkl3VzFkclZXclBISFRidldqZThiMGRHUnhQN3NNQjdUVkQzZ2NJVEQrYWtKSGw4Sn
+    hqSG0wdVVwR2pROQovRjUxNUVkazZjT0NyVndsZ1lEcWdYTEJsY1RjUkNZMGV0clIycHBy
+    MDBhT1g5MFZGVkNhNGFwL2tpWVp4K1JICmVNRVR5cFZweTRyVUczRnRoZmtzRmRmclQ2bW
+    M2MTF4TmtFY01vbk8zeEQzN1VwRkwyUll0TW5iZ1MxTkpaNysKMm5CWG1xcHJCSU5YR1Fa
+    WlYrUGg0VkVoSG9iWmxYMlVYcCtJQ3Q1WEM5bmJUZnl4b2VCZ0hSR0V2MXhUQzE0YQpTWE
+    ZUSUF5RmJRWUo2UUlScVJvZGsyUHM1RDVpZFd4WHVlZnF5WUlkOGtPS3lBODdUNEw4bEJO
+    VjBCeWdhUXhiClQ4MXg3VEt1a29yOExwZVY3dHRDZGJTbHBuU1dUdGxSellQUzV4YjgxNm
+    pXOWZLYTBoMllWRENmQ3BoS21kVTQKZ2swalE2c1FyRmxCZFpZLzNJUWJucnA3VTllR0dt
+    YWVEaXZOMUwwWm1ENDZlZDJFbnYwQ2taNkcwd282OVMvSgpZYVYwbkdhQlB6RjJpKy9oMj
+    gvK01kYmVHam9VVmlpWlVpODlyeno5bDR6dFltTFVVdTJaTmRBYTFQL08wZWl6CjMzQWhV
+    VXN2eUZBWG1QSUZQUHhUTkxibEMyM0Zhak9KOFhzQWZzMVhTR2JqMzdnaFc1VkxKdXRVb0
+    VQeEhjRUQKbkdLbjhaQWxsdE95Qm8xUnlCbzdoT00zZ2RQcUxud2t1YWdDejI3a0VaL2t4
+    TGI1R093QnpoQ2hyZUE1Q3dyUgpOL1dDbUZCbXpGamFLYVNnY0JuVS84WWw0eUIrSCt1Qz
+    V5NDZIWmVncDFubUUrWEdnc0Q4MVR1QWVFSkYvalFOCkRoNzJaQUVJUytlL3ZJV1R0MnNN
+    dUlpaXc2aGt1cXlQWC9JTUV5ZnNTdUVCa3drRHlEblNDZktRSkZmdm1OUXoKK1ZLMEY4ZX
+    preDdRV3VLK1NlaEMwbGh6ck9haFgzalNoVXZnQXI0NmRGYmVkZm9yYmQxUzVaNHNTMWpS
+    Y0NuRwpXR1JpeTkrMnB5UG1OODBNMFdTNkFMaUZPTFVibklpcjA3SWx6dnpsYWxBYThLL1
+    hxNW1EMGxJbWEwM1A5VEp5ClJ3aGg3NUV6bi96NU9BVTg0N2x6UjFicktNWTFXZUNFR0lG
+    dFZWVElKSFhjMVBLaUNFYmNNa0x1aW01dlEzMTAKc0p6VnpsSFhjQ0hZc2Z2Ym4wZnF5Nj
+    VuUm5MU0lzTUtXSHRYWWZhK1Zpa3JmVWRECg==
+  MONGODB_PASSWORD: MDk2ODQ2Mzk=
+  MONGODB_USER: cmVnaXN0cnktdXNlcg==
+kind: Secret
+metadata:
+  labels:
+    app: platform-registry-api-new
+    type: generated
+  name: platform-registry-api-new-mongo-creds-bmk6kd55gd
+  namespace: platform-registry-dev
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: platform-registry-api-new
+  name: mongodb
+  namespace: platform-registry-dev
+spec:
+  ports:
+  - name: mongodb
+    port: 27017
+  selector:
+    statefulset: mongodb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  labels:
+    app: platform-registry-api-new
+  name: mongodb-internal
+  namespace: platform-registry-dev
+spec:
+  clusterIP: None
+  ports:
+  - name: mongodb
+    port: 27017
+  selector:
+    statefulset: mongodb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: platform-registry-api-new
+  name: mongodb
+  namespace: platform-registry-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      statefulset: mongodb
+  serviceName: mongodb-internal
+  template:
+    metadata:
+      labels:
+        app: platform-registry-api-new
+        statefulset: mongodb
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: name
+                operator: In
+                values:
+                - mongodb
+            topologyKey: kubernetes.io/hostname
+      containers:
+      - args:
+        - run-mongod
+        envFrom:
+        - configMapRef:
+            name: mongodb-env-5h2479hk5g
+        - secretRef:
+            name: platform-registry-api-new-mongo-creds-bmk6kd55gd
+        image: image-registry.openshift-image-registry.svc:5000/bcgov/mongodb-36-ha:1
+        imagePullPolicy: Always
+        name: mongo-container
+        ports:
+        - containerPort: 27017
+        readinessProbe:
+          exec:
+            command:
+            - stat
+            - /tmp/initialized
+          failureThreshold: 10
+          initialDelaySeconds: 10
+          periodSeconds: 3
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 50m
+            memory: 50Mi
+        volumeMounts:
+        - mountPath: /var/lib/mongodb/data
+          name: mongo-data
+  volumeClaimTemplates:
+  - metadata:
+      labels:
+        app: platform-registry-api-new
+        name: mongodb
+      name: mongo-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1G
+      storageClassName: netapp-block-standard
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-mongo-replication
+  namespace: platform-registry-dev
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          statefulset: mongodb
+    ports:
+    - port: 27017
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      statefulset: mongodb

@@ -1,0 +1,17 @@
+---
+kind: StatefulSet
+apiVersion: apps/v1
+metadata:
+  name: mongodb
+  labels:
+    app: platform-registry-api-new
+spec:
+  template:
+    spec:
+      containers:
+        - name: mongo-container
+          envFrom: 
+          - configMapRef:
+              name: mongodb-env
+          - secretRef:
+              name: platform-registry-api-new-mongo-creds
