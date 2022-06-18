@@ -1,9 +1,7 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
-  directive @hasRole(
-    role: [String]
-  ) on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+  directive @nonNullInput on FIELD_DEFINITION
 
   scalar DateTime
   scalar EmailAddress
@@ -97,16 +95,16 @@ const typeDefs = gql`
   }
 
   input CustomQuotaInput {
-    cpuRequests: Float = 0.5
-    cpuLimits: Float = 1.5
-    memoryRequests: Int = 2
-    memoryLimits: Int = 4
-    storageBlock: Int = 1
-    storageFile: Int = 512
-    storageBackup: Int = 1
-    storageCapacity: Int = 1
-    storagePvcCount: Int = 60
-    snapshotCount: Int = 5
+    cpuRequests: Float
+    cpuLimits: Float 
+    memoryRequests: Int
+    memoryLimits: Int
+    storageBlock: Int
+    storageFile: Int
+    storageBackup: Int
+    storageCapacity: Int
+    storagePvcCount: Int
+    snapshotCount: Int
   }
 
   type Quota {
@@ -296,7 +294,7 @@ const typeDefs = gql`
       developmentQuota: CustomQuotaInput
       testQuota: CustomQuotaInput
       toolsQuota: CustomQuotaInput
-    ): Request! @hasRole(role: "admin")
+    ): Request! @hasRole(role: "admin") @nonNullInput
 
     createPrivateCloudProjectRequest(
       metaData: ProjectMetaDataInput!
@@ -304,15 +302,24 @@ const typeDefs = gql`
       developmentQuota: QuotaInput
       testQuota: QuotaInput
       toolsQuota: QuotaInput
-    ): Request! @auth
+    ): Request! @nonNullInput
+
+    createCustomPrivateCloudProjectEditRequest(
+      projectId: ID!
+      metaData: ProjectMetaDataInput
+      productionQuota: CustomQuotaInput
+      developmentQuota: CustomQuotaInput
+      testQuota: CustomQuotaInput
+      toolsQuota: CustomQuotaInput
+    ): Request! @nonNullInput
 
     createPrivateCloudProjectEditRequest(
       projectId: ID!
-      metaData: ProjectMetaDataInput!
-      productionQuota: QuotaInput!
-      developmentQuota: QuotaInput!
-      testQuota: QuotaInput!
-      toolsQuota: QuotaInput!
+      metaData: ProjectMetaDataInput
+      productionQuota: QuotaInput
+      developmentQuota: QuotaInput
+      testQuota: QuotaInput
+      toolsQuota: QuotaInput
     ): Request!
 
     makePrivateCloudRequestDecision(

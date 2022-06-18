@@ -3,9 +3,9 @@ import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
 
-async function createPrivateCloudProjectEditRequest(
+async function createCustomPrivateCloudProjectEditRequest(
   _,
-  { id, metaData, quota },
+  { id, metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
   {
     dataSources: {
       users,
@@ -109,4 +109,4 @@ async function createPrivateCloudProjectEditRequest(
   return request;
 }
 
-export default createPrivateCloudProjectEditRequest;
+export default createCustomPrivateCloudProjectEditRequest;

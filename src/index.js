@@ -6,7 +6,8 @@ import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { configureKeycloak } from "./auth/config";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
-import { applyDirectiveTransformers } from "./auth/transformers";
+import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "./auth/transformers";
+import { applyDirectiveTransformers } from "./graphql/transformers";
 import express from "express";
 import http from "http";
 import typeDefs from "./graphql/typeDefs";
@@ -22,7 +23,7 @@ async function startApolloServer(typeDefs, resolvers) {
     resolvers,
   });
 
-  schema = applyDirectiveTransformers(schema);
+  schema = applyAuthDirectiveTranformers(applyDirectiveTransformers(schema));
 
   const app = express();
   const { keycloak } = configureKeycloak(app, "/graphql");

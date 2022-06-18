@@ -1,5 +1,7 @@
 // Create a test env variable that prefix the namespace name with "t"
-
+const clusterNameLookup = {
+  1: "KLAB Kamloops"
+}
 function message(action, requestedProject) {
   const {
     _id, // Use ID from actaul project, not from requested project
