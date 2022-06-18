@@ -18,7 +18,7 @@ const Request = {
         return null;
     }
   },
-  requestedProject: (
+  requestedProject: async (
     { requestedProject, platform },
     _,
     {

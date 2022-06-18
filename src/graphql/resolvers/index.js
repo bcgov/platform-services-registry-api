@@ -3,11 +3,11 @@ import { users, user, usersByIds, me } from "./Query/Users";
 import {
   privateCloudProjects,
   privateCloudProject,
-  projects,
 } from "./Query/Projects";
 import {
   privateCloudRequests,
   privateCloudActiveRequest,
+  privateCloudActiveRequests,
   privateCloudArchivedRequest,
 } from "./Query/Requests";
 import createCustomPrivateCloudProjectRequest from "./Mutation/CreateCustomPrivateCloudProjectRequest";
@@ -33,6 +33,7 @@ import {
   DefaultMemoryOptions,
   DefaultStorageOptions,
 } from "./enum/QuotaOptions";
+import Cluster from "./enum/Cluster";
 
 const resolvers = {
   Query: {
@@ -42,9 +43,9 @@ const resolvers = {
     me,
     privateCloudProjects,
     privateCloudProject,
-    projects,
     privateCloudRequests,
     privateCloudActiveRequest,
+    privateCloudActiveRequests,
     privateCloudArchivedRequest,
   },
   Mutation: {
@@ -67,6 +68,7 @@ const resolvers = {
   Environment,
   PublicCloudPlatform,
   Platform,
+  Cluster,
   RequestDecision,
   DefaultCpuOptions,
   DefaultMemoryOptions,

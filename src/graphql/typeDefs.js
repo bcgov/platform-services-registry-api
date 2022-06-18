@@ -39,6 +39,7 @@ const typeDefs = gql`
   enum Cluster {
     SILVER
     GOLD
+    KLAB
   }
 
   enum Environment {
@@ -105,7 +106,7 @@ const typeDefs = gql`
     storageBackup: Int = 1
     storageCapacity: Int = 1
     storagePvcCount: Int = 60
-    snapshoCount: Int = 5
+    snapshotCount: Int = 5
   }
 
   type Quota {
@@ -189,11 +190,12 @@ const typeDefs = gql`
   }
 
   input ProjectMetaDataInput {
-    name: String
-    description: String
-    projectOwner: EmailAddress
+    name: String!
+    description: String!
+    projectOwner: EmailAddress!
     technicalLeads: [EmailAddress!]!
-    ministry: Ministry
+    ministry: Ministry!
+    cluster: Cluster!
   }
 
   type Request {
@@ -266,6 +268,7 @@ const typeDefs = gql`
     # requests: [Request!]!
     privateCloudRequests: [Request!]!
     privateCloudActiveRequest(requestId: ID!): Request!
+    privateCloudActiveRequests: [Request!]!
     privateCloudArchivedRequest(requestId: ID!): Request!
 
     # Need to implement the above but for a user

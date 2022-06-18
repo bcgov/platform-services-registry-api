@@ -102,8 +102,6 @@ export const roleDirectiveTransformer = (schema, directiveName = "hasRole") => {
         let role;
         if (keys.length === 1 && keys[0] === "role") {
           role = roleDirective[keys[0]];
-          console.log("*** role ***");
-          console.log(role);
           if (typeof role === "string") role = [role];
           if (Array.isArray(role)) {
             role = role.map((val) => String(val));

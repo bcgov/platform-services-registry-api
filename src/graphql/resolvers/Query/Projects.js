@@ -26,16 +26,16 @@ function publicCloudProject(
   return publicCloudProjects.findOneById(id);
 }
 
-async function projects(
-  _,
-  __,
-  { dataSources: { publicCloudProjects, privateCloudProjects } }
-) {
-  return [
-    ...(await privateCloudProjects.getAll()),
-    ...(await publicCloudProjects.getAll()),
-  ];
-}
+// async function projects(
+//   _,
+//   __,
+//   { dataSources: { publicCloudProjects, privateCloudProjects } }
+// ) {
+//   return [
+//     ...(await privateCloudProjects.getAll()),
+//     ...(await publicCloudProjects.getAll()),
+//   ];
+// }
 
 // async function userProjects(
 //   _,
@@ -59,5 +59,4 @@ export {
   privateCloudProject,
   publicCloudProjects,
   publicCloudProject,
-  projects,
 };

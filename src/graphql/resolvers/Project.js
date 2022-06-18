@@ -1,5 +1,6 @@
 const Project = {
   __resolveType(project) {
+    console.log(project)
     if (project.cluster) {
       return "PrivateCloudProject";
     }

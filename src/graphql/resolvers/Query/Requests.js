@@ -17,6 +17,14 @@ function privateCloudActiveRequest(
   return privateCloudActiveRequests.findOneById(id);
 }
 
+function privateCloudActiveRequests(
+  _,
+  __,
+  { dataSources: { privateCloudActiveRequests } }
+) {
+  return privateCloudActiveRequests.getAll();
+}
+
 function privateCloudArchivedRequest(
   _,
   { id },
@@ -75,6 +83,7 @@ async function requests(
 export {
   privateCloudRequests,
   privateCloudActiveRequest,
+  privateCloudActiveRequests,
   privateCloudArchivedRequest,
   publicCloudRequests,
   publicCloudActiveRequest,
