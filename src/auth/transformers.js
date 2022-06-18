@@ -66,10 +66,44 @@ export const roleDirectiveTransformer = (schema, directiveName = "hasRole") => {
       )?.[0];
       if (roleDirective) {
         const { resolve = defaultFieldResolver } = fieldConfig;
+
         const keys = Object.keys(roleDirective);
         let role;
         if (keys.length === 1 && keys[0] === "role") {
           role = roleDirective[keys[0]];
+
+          if (typeof role === "string") role = [role];
+          if (Array.isArray(role)) {
+            role = role.map((val) => String(val));
+          } else {
+            throw new Error(
+              "invalid hasRole args. role must be a String or an Array of Strings"
+            );
+          }
+        } else {
+          throw Error(
+            "invalid hasRole args. must contain only a 'role argument"
+          );
+        }
+        fieldConfig.resolve = hasRole(role)(resolve);
+      }
+      return fieldConfig;
+    },
+    [MapperKind.INPUT_OBJECT_FIELD]: (fieldConfig) => {
+      const roleDirective = getDirective(
+        schema,
+        fieldConfig,
+        directiveName
+      )?.[0];
+      if (roleDirective) {
+        const { resolve = defaultFieldResolver } = fieldConfig;
+
+        const keys = Object.keys(roleDirective);
+        let role;
+        if (keys.length === 1 && keys[0] === "role") {
+          role = roleDirective[keys[0]];
+          console.log("*** role ***");
+          console.log(role);
           if (typeof role === "string") role = [role];
           if (Array.isArray(role)) {
             role = role.map((val) => String(val));

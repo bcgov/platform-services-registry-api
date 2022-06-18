@@ -14,7 +14,7 @@ const testMessage = {
       quota: {
         cpu: "cpu-request-0.5-limit-1.5",
         memory: "memory-request-2-limit-4",
-        storage: "storage-1",
+        storage: "storage-1", // the one refers to the file
         snapshot: "snapshot-5",
       },
       quotas: {

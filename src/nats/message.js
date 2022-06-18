@@ -65,7 +65,7 @@ function message(action, requestedProject) {
         },
       },
       {
-        namespace_id: 22,
+        // namespace_id: 22,
         name: "dad3d6-dev",
         quota: {
           cpu: developmentCpuQuota,
@@ -87,7 +87,7 @@ function message(action, requestedProject) {
         },
       },
       {
-        namespace_id: 23,
+        // namespace_id: 23,
         name: "dad3d6-test",
         quota: {
           cpu: testCpuQuota,
@@ -109,7 +109,7 @@ function message(action, requestedProject) {
         },
       },
       {
-        namespace_id: 24,
+        // namespace_id: 24,
         name: "dad3d6-prod",
         quota: {
           cpu: productionCpuQuota,

@@ -20,8 +20,8 @@ async function createPrivateCloudProjectEditRequest(
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
     roles: [],
-  };  const [user] = await users.findByFields({ email });
-
+  };
+  const [user] = await users.findByFields({ email });
   const project = await privateCloudProjects.findOneById(id);
 
   if (project === undefined) {
@@ -89,8 +89,7 @@ async function createPrivateCloudProjectEditRequest(
   if (Object.keys(quota).length === 0) {
     requestBody.status = RequestStatus.APPROVED;
 
-  await sendNatsMessage();
-
+    //await sendNatsMessage();
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
@@ -105,13 +104,9 @@ async function createPrivateCloudProjectEditRequest(
     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
     subject: `**profile.name** OCP 4 Project Set`,
     // subject: `${profile.name} OCP 4 Project Set`,
-  })
+  });
 
   return request;
 }
 
 export default createPrivateCloudProjectEditRequest;
-
-
-
-

@@ -1,6 +1,10 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
+  directive @hasRole(
+    role: [String]
+  ) on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
   scalar DateTime
   scalar EmailAddress
 
@@ -54,11 +58,83 @@ const typeDefs = gql`
     AWS
   }
 
-  type Namespace {
-    cpu: String!
-    memory: String!
-    storage: String!
-    snapshot: String!
+  enum DefaultCpuOptions {
+    CPU_REQUEST_0_5_LIMIT_1_5
+    CPU_REQUEST_1_LIMIT_2
+    CPU_REQUEST_2_LIMIT_4
+    CPU_REQUEST_4_LIMIT_8
+    CPU_REQUEST_8_LIMIT_16
+    CPU_REQUEST_16_LIMIT_32
+    CPU_REQUEST_32_LIMIT_64
+  }
+
+  enum DefaultMemoryOptions {
+    MEMORY_REQUEST_2_LIMIT_4
+    MEMORY_REQUEST_4_LIMIT_8
+    MEMORY_REQUEST_8_LIMIT_16
+    MEMORY_REQUEST_16_LIMIT_32
+    MEMORY_REQUEST_32_LIMIT_64
+    MEMORY_REQUEST_64_LIMIT_128
+  }
+
+  enum DefaultStorageOptions {
+    STORAGE_1
+    STORAGE_2
+    STORAGE_4
+    STORAGE_16
+    STORAGE_32
+    STORAGE_64
+    STORAGE_124
+    STORAGE_256
+    STORAGE_512
+  }
+
+  input QuotaInput {
+    cpu: DefaultCpuOptions
+    memory: DefaultMemoryOptions
+    storage: DefaultStorageOptions
+  }
+
+  input CustomQuotaInput {
+    cpuRequests: Float = 0.5
+    cpuLimits: Float = 1.5
+    memoryRequests: Int = 2
+    memoryLimits: Int = 4
+    storageBlock: Int = 1
+    storageFile: Int = 512
+    storageBackup: Int = 1
+    storageCapacity: Int = 1
+    storagePvcCount: Int = 60
+    snapshoCount: Int = 5
+  }
+
+  type Quota {
+    cpu: Cpu!
+    memory: Memory!
+    storage: Storage!
+    snapshot: Snapshot!
+  }
+
+  type Cpu {
+    requests: Float!
+    limits: Float!
+  }
+
+  type Memory {
+    requests: Int!
+    limits: Int!
+  }
+
+  type Storage {
+    block: Int!
+    file: Int!
+    backup: Int!
+    capacity: Int!
+    pvcCount: Int
+  }
+
+  type Snapshot {
+    count: Int!
   }
 
   interface Project {
@@ -105,66 +181,19 @@ const typeDefs = gql`
     technicalLeads: [User]!
     ministry: Ministry!
     cluster: Cluster!
-    productionNamespace: Namespace!
-    testNamespace: Namespace!
-    developmentNamespace: Namespace!
-    toolsNamespace: Namespace!
+    productionQuota: Quota!
+    testQuota: Quota!
+    developmentQuota: Quota!
+    toolsQuota: Quota!
     requestHistory: [Request]!
   }
 
-  # createdBy: ID! # maybe id OR email, BETTER: should get user id from auth token, then remove form here
-
-  input CreatePrivateCloudProjectInput {
-    name: String!
-    description: String!
-    projectOwner: EmailAddress!
-    technicalLeads: [EmailAddress!]!
-    ministry: Ministry!
-    cluster: Cluster!
-    productionCpuQuota: String = "test-cpu-quota"
-    productionMemoryQuota: String = "test-memory-quota"
-    productionStorageQuota: String = "test-storage-quota"
-    productionSnapshotQuota: String = "test-snapshot-quota"
-    testCpuQuota: String = "test-cpu-quota"
-    testMemoryQuota: String = "test-memory-quota"
-    testStorageQuota: String = "test-storage-quota"
-    testSnapshotQuota: String = "test-snapshot-quota"
-    developmentCpuQuota: String = "test-cpu-quota"
-    developmentMemoryQuota: String = "test-memory-quota"
-    developmentStorageQuota: String = "test-storage-quota"
-    developmentSnapshotQuota: String = "test-snapshot-quota"
-    toolsCpuQuota: String = "test-cpu-quota"
-    toolsnMemoryQuota: String = "test-memory-quota"
-    toolsStorageQuota: String = "test-storage-quota"
-    toolsSnapshotQuota: String = "test-snapshot-quota"
-  }
-
-  input UpdatePrivateCloudProjectMetaDataInput {
+  input ProjectMetaDataInput {
     name: String
     description: String
     projectOwner: EmailAddress
-    technicalLeads: [EmailAddress!]
+    technicalLeads: [EmailAddress!]!
     ministry: Ministry
-  }
-
-  input UpdatePrivateCloudProjectQuotaInput {
-    cluster: Cluster
-    productionCpuQuota: String
-    productionMemoryQuota: String
-    productionStorageQuota: String
-    productionSnapshotQuota: String
-    testCpuQuota: String
-    testMemoryQuota: String
-    testStorageQuota: String
-    testSnapshotQuota: String
-    developmenCpuQuota: String
-    developmenMemoryQuota: String
-    developmenStorageQuota: String
-    developmenSnapshotQuota: String
-    toolsCpuQuota: String
-    toolsnMemoryQuota: String
-    toolsStorageQuota: String
-    toolsSnapshotQuota: String
   }
 
   type Request {
@@ -224,7 +253,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User!]! @auth
+    users: [User!]!
     user(id: ID!): User
     usersByIds(ids: [ID!]!): [User!]!
     me: User @auth
@@ -258,13 +287,34 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     # updateUser(input: UpdateUserInput!): User!
 
-    createPrivateCloudProjectRequest(input: CreatePrivateCloudProjectInput!): Request! @auth
+    createCustomPrivateCloudProjectRequest(
+      metaData: ProjectMetaDataInput!
+      productionQuota: CustomQuotaInput
+      developmentQuota: CustomQuotaInput
+      testQuota: CustomQuotaInput
+      toolsQuota: CustomQuotaInput
+    ): Request! @hasRole(role: "admin")
+
+    createPrivateCloudProjectRequest(
+      metaData: ProjectMetaDataInput!
+      productionQuota: QuotaInput
+      developmentQuota: QuotaInput
+      testQuota: QuotaInput
+      toolsQuota: QuotaInput
+    ): Request! @auth
+
     createPrivateCloudProjectEditRequest(
-      id: ID!
-      metaData: UpdatePrivateCloudProjectMetaDataInput
-      quota: UpdatePrivateCloudProjectQuotaInput
+      projectId: ID!
+      metaData: ProjectMetaDataInput!
+      productionQuota: QuotaInput!
+      developmentQuota: QuotaInput!
+      testQuota: QuotaInput!
+      toolsQuota: QuotaInput!
     ): Request!
-    makePrivateCloudRequestDecision(input: MakeRequestDecisionInput!): RequestStatus!
+
+    makePrivateCloudRequestDecision(
+      input: MakeRequestDecisionInput!
+    ): RequestStatus!
   }
 `;
 

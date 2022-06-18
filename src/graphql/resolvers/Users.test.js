@@ -49,8 +49,7 @@ describe("User tests", () => {
                 },
               },
               given_name: "Oamar",
-              family_name: "Kanji"
-
+              family_name: "Kanji",
             },
           },
         },
@@ -87,14 +86,14 @@ describe("User tests", () => {
       variables: {
         input: {
           ministry: "AGRICULTURE",
-          githubId: "okanji"
+          githubId: "okanji",
         },
       },
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.signUp.firstName).toBe("Oamar");
-    signedUpUserId  = result.data?.signUp.id;
+    signedUpUserId = result.data?.signUp.id;
     expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
   });
 
@@ -143,7 +142,7 @@ describe("User tests", () => {
       }`,
     });
     expect(result.errors).toBeUndefined();
-    expect(result.data?.users.length).toBeGreaterThan(0); 
+    expect(result.data?.users.length).toBeGreaterThan(0);
   });
 
   it("A new user can be created", async () => {
@@ -153,19 +152,14 @@ describe("User tests", () => {
           firstName: "Alexander",
           lastName: "Carmichael",
           ministry: HEALTH,
-          email: "alexander.carmichael@gov.bc.ca"
+          email: "alexander.carmichael@gov.bc.ca",
+          githubId: "okanji"
+
         }) {
           id
           firstName
         }
       }`,
-      variables: {
-        input: {
-          firstName: "Alexander",
-          lastName: "Carmichael",
-          ministry: "HEALTH",
-        },
-      },
     });
     expect(result.errors).toBeUndefined();
     expect(result.data?.createUser.firstName).toBe("Alexander");
@@ -186,7 +180,7 @@ describe("User tests", () => {
     expect(usersResult.data?.users.length).toBeGreaterThan(1);
     userId1 = usersResult.data?.users[0].id;
     userId2 = usersResult.data?.users[1].id;
-    
+
     const result = await server.executeOperation({
       query: `query UsersByIds($ids: [ID!]!) {
         usersByIds(ids: $ids) {
@@ -194,10 +188,10 @@ describe("User tests", () => {
         }
       }`,
       variables: {
-        ids: [userId1, userId2]
+        ids: [userId1, userId2],
       },
     });
     expect(result.errors).toBeUndefined();
-    expect(result.data?.usersByIds.length).toBe(2); 
+    expect(result.data?.usersByIds.length).toBe(2);
   });
 });

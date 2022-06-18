@@ -11,6 +11,15 @@ import { ObjectId } from "mongodb";
 import typeDefs from "../typeDefs";
 import resolvers from ".";
 
+// jest.mock("express-validator", () => ({
+//   ...jest.requireActual("express-validator"),
+//   validationResult: () => ({ isEmpty: () => true }),
+// }));
+
+// jest.mock(".../import/ches", () => ({
+//   send: jest.fn(),
+// }));
+
 describe("Mongo Helpers", () => {
   let server;
   let connection;
@@ -66,7 +75,6 @@ describe("Mongo Helpers", () => {
               },
               given_name: "Oamar",
               family_name: "Kanji"
-
             },
           },
         },
@@ -77,9 +85,12 @@ describe("Mongo Helpers", () => {
       schema,
       resolvers,
       dataSources: () => collections,
-      context: () => {
-        return { kauth: new KeycloakContext({ req }) };
-      },
+      context: () => ({
+        kauth: new KeycloakContext({ req }),
+        chesService: {
+          send: () => console.log("*** SEND ***")
+        }
+      }),
     });
   });
 

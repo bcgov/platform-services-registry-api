@@ -10,7 +10,8 @@ import {
   privateCloudActiveRequest,
   privateCloudArchivedRequest,
 } from "./Query/Requests";
-import createPrivateCloudProjectRequest from "./Mutation/CreatePrivateCloudProjectRequest";
+import createCustomPrivateCloudProjectRequest from "./Mutation/CreateCustomPrivateCloudProjectRequest";
+import createPrivateCloudProjectRequest from "./Mutation/CreatePrivateCloudProjectRequest"
 import createUser from "./Mutation/CreateUser";
 import signUp from "./Mutation/SignUp";
 import createPrivateCloudProjectEditRequest from "./Mutation/CreatePrivateCloudProjectEditRequest";
@@ -27,6 +28,11 @@ import RequestType from "./enum/RequestType";
 import PublicCloudPlatform from "./enum/PublicCloudPlatform";
 import Platform from "./enum/Platform";
 import RequestDecision from "./enum/RequestDecision";
+import {
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions,
+} from "./enum/QuotaOptions";
 
 const resolvers = {
   Query: {
@@ -45,8 +51,9 @@ const resolvers = {
     signUp,
     createUser,
     createPrivateCloudProjectRequest,
+    createCustomPrivateCloudProjectRequest,
     createPrivateCloudProjectEditRequest,
-    makePrivateCloudRequestDecision
+    makePrivateCloudRequestDecision,
   },
   PrivateCloudProject,
   User,
@@ -61,6 +68,9 @@ const resolvers = {
   PublicCloudPlatform,
   Platform,
   RequestDecision,
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions,
 };
 
 export default resolvers;
