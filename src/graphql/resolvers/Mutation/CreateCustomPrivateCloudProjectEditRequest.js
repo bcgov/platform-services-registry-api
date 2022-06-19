@@ -17,6 +17,9 @@ async function createCustomPrivateCloudProjectEditRequest(
     kauth,
   }
 ) {
+
+  console.log(productionQuota)
+
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
     roles: [],
@@ -27,20 +30,6 @@ async function createCustomPrivateCloudProjectEditRequest(
   if (project === undefined) {
     throw new Error("Project does not exist");
   }
-
-  if (metaData === null) {
-    metaData = {};
-  }
-
-  if (quota === null) {
-    quota = {};
-  }
-
-  const omitNull = (obj) =>
-    Object.keys(obj).forEach((key) => obj[key] == null && delete obj[key]);
-
-  omitNull(metaData);
-  omitNull(quota);
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,

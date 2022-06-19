@@ -18,7 +18,8 @@ const Request = {
         return null;
     }
   },
-  requestedProject: async (
+  decisionMaker: ({ decisionMaker }, _, { dataSources: { users } }) => users.findOneById(decisionMaker),
+  requestedProject: (
     { requestedProject, platform },
     _,
     {
