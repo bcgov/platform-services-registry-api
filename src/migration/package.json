@@ -1,0 +1,14 @@
+{
+  "name": "migration",
+  "version": "1.0.0",
+  "description": "Migration from PSQL to MongoDb",
+  "main": "y",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.7.3"
+  }
+}

@@ -18,7 +18,8 @@ const Request = {
         return null;
     }
   },
-  decisionMaker: ({ decisionMaker }, _, { dataSources: { users } }) => users.findOneById(decisionMaker),
+  decisionMaker: ({ decisionMaker }, _, { dataSources: { users } }) =>
+    users.findOneById(decisionMaker),
   requestedProject: (
     { requestedProject, platform },
     _,

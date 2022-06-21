@@ -17,9 +17,6 @@ async function createCustomPrivateCloudProjectEditRequest(
     kauth,
   }
 ) {
-
-  console.log(productionQuota)
-
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
     roles: [],

@@ -30,14 +30,42 @@ const typeDefs = gql`
   }
 
   enum Ministry {
-    AGRICULTURE
-    HEALTH
+    AEST
+    AG
+    AGRI
+    ALC
+    BCPC
+    CITZ
+    DBC
+    EAO
+    EDUC
+    EMBC
+    EMPR
+    ENV
+    FIN
+    FLNR
+    HLTH
+    IRR
+    JEDC
+    LBR
+    LDB
+    MAH
+    MCF
+    MMHA
+    PSA
+    PSSG
+    SDPR
+    TCA
+    TRAN
   }
 
   enum Cluster {
+    CLAB
+    KLAB
     SILVER
     GOLD
-    KLAB
+    GOLDDR
+    ARO
   }
 
   enum Environment {
@@ -96,7 +124,7 @@ const typeDefs = gql`
 
   input CustomQuotaInput {
     cpuRequests: Float
-    cpuLimits: Float 
+    cpuLimits: Float
     memoryRequests: Int
     memoryLimits: Int
     storageBlock: Int
