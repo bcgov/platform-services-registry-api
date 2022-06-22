@@ -3,3 +3,5 @@ node_modules
 .env
 .VSCodeCounter/
 dist
+src/migration/mongoUsers.json
+src/migration/mongoProjects.json
