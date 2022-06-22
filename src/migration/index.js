@@ -1,6 +1,8 @@
-const { Client } = require("pg");
+const { Pool } = require("pg");
+const { ObjectId } = require("mongodb");
+const { writeFileSync } = require('fs');
 
-const client = new Client({
+const pool = new Pool({
   host: "localhost",
   user: "postgres",
   password: "postgres",
@@ -8,11 +10,42 @@ const client = new Client({
   daatabase: "postgres",
 });
 
-async function getPsqlData() {
+async function getPsqlUserData() {
+  let userData;
+  try {
+    const { rows } = await pool.query(
+      `
+      SELECT * FROM contact
+      `
+    );
+    userData = rows;
+  } catch (err) {
+    console.log(err);
+  }
+
+  return userData;
+}
+
+async function getPsqlContactProfileData() {
+  let userData;
+  try {
+    const { rows } = await pool.query(
+      `
+      SELECT * FROM profile_contact
+      `
+    );
+    userData = rows;
+  } catch (err) {
+    console.log(err);
+  }
+
+  return userData;
+}
+
+async function getPsqlProjectData() {
   let psqlData;
   try {
-    await client.connect();
-    const { rows } = await client.query(
+    const { rows } = await pool.query(
       `
       SELECT *, namespace.name AS namespace_name FROM namespace
       JOIN cluster_namespace ON cluster_namespace.namespace_id = namespace.id
@@ -23,16 +56,13 @@ async function getPsqlData() {
     psqlData = rows;
   } catch (err) {
     console.log(err);
-  } finally {
-    client.end();
   }
 
   return psqlData;
 }
 
-(async function () {
-  const data = await getPsqlData();
-  const activeProjects = data.filter(
+function generateProjectData(projectData) {
+  const activeProjects = projectData.filter(
     ({ archived, provisioned }) => !archived && provisioned
   );
 
@@ -46,13 +76,13 @@ async function getPsqlData() {
     return acc;
   }, {});
 
-  const newRegistryProjects = []
+  const newRegistryProjects = [];
 
   // Transform to form of Projects in MongoDb schema
   for (let proj of Object.entries(oldRegistryProjects)) {
     const [licencePlate, projects] = proj;
 
-    const { name, created_at, description, cluster_id, bus_org_id } =
+    const { name, id, created_at, description, cluster_id, bus_org_id } =
       projects[0];
 
     const namespaces = {};
@@ -78,20 +108,21 @@ async function getPsqlData() {
         storageCapacity: 1,
         storagePvcCount: 60,
         snapshotCount: 5,
-      }
+      };
 
       namespaces[namespaceName] = {
         ...defaultQuota,
         cpuRequests: quota_cpu_size.split("-")[2],
-        cpuLimits:  quota_cpu_size.split("-")[4],
+        cpuLimits: quota_cpu_size.split("-")[4],
         memoryRequests: quota_memory_size.split("-")[2],
         memoryLimits: quota_memory_size.split("-")[4],
         storageFile: quota_storage_size.split("-")[1],
-        snapshotCount: quota_snapshot_size.split("-")[1]
-      }
+        snapshotCount: quota_snapshot_size.split("-")[1],
+      };
     }
 
-    const mongoDbPRoject = {
+    const newRegistryProject = {
+      _id: ObjectId(),
       name,
       licencePlate,
       created: created_at,
@@ -107,10 +138,112 @@ async function getPsqlData() {
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
       testQuota: namespaces.test,
+      profileId: id, // Will keep the profile ID from the psql db for reference
     };
 
-    newRegistryProjects.push(mongoDbPRoject)
+    newRegistryProjects.push(newRegistryProject);
   }
 
-  console.log(newRegistryProjects)
+  return newRegistryProjects;
+}
+
+function generateUsersPerProject(userData, contatctProfileData) {
+  const activeUsers = userData.filter(({ archived }) => !archived);
+
+  const usersPerProject = contatctProfileData.reduce((acc, obj) => {
+    let key = obj["profile_id"];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+
+    const contactId = obj["contact_id"];
+    const contact = activeUsers.find(({ id }) => id === contactId);
+    obj = { ...obj, ...contact };
+
+    acc[key].push(obj);
+    return acc;
+  }, {});
+
+  return usersPerProject;
+}
+
+(async function () {
+  const projectData = await getPsqlProjectData();
+  const userData = await getPsqlUserData();
+  const contatctProfileData = await getPsqlContactProfileData();
+
+  const newRegistryProjectData = generateProjectData(projectData);
+  const usersPerProject = generateUsersPerProject(
+    userData,
+    contatctProfileData
+  );
+
+  function getUniqueListBy(arr, key) {
+    return [...new Map(arr.map((item) => [item[key], item])).values()];
+  }
+
+  const uniqueUsers = getUniqueListBy(userData, "email");
+  const mongoUsers = uniqueUsers.map(
+    ({ first_name, last_name, email, github_id, created_at }) => ({
+      _id: ObjectId(),
+      ministry: "",
+      githubId: github_id,
+      firstName: first_name,
+      lastName: last_name,
+      email,
+      archived: false,
+      created: created_at,
+      projectOwner: [],
+      technicalLead: [],
+      activeRequests: [],
+      lastSeen: new Date(),
+    })
+  );
+
+  const mongoProjects = newRegistryProjectData.map((project) => {
+    const { profileId } = project;
+
+    const projectUsers = usersPerProject[profileId];
+
+    const projectOwnerEmail = projectUsers.find(({ role_id }) => role_id === 1)[
+      "email"
+    ];
+
+    const technicalLeadsEmails = projectUsers
+      .filter(({ role_id }) => role_id === 2)
+      .map(({ email }) => email);
+
+    const { _id: projectOwnerMongoId } = mongoUsers.find(
+      ({ email }) => email === projectOwnerEmail
+    );
+    const technicalLeadsMongoIds = mongoUsers
+      .filter(({ email }) => technicalLeadsEmails.includes(email))
+      .map(({ _id }) => _id);
+
+    project.technicalLeads = technicalLeadsMongoIds;
+    project.projectOwner = projectOwnerMongoId;
+
+    return project;
+  });
+
+  mongoProjects.forEach((project, i) => {
+    const { projectOwner, technicalLeads, _id } = project;
+
+    const projectOwnerUserIndex = mongoUsers.findIndex(
+      ({ _id }) => _id === projectOwner
+    );
+    mongoUsers[projectOwnerUserIndex]["projectOwner"].push(_id);
+
+    technicalLeads.forEach((technicalLead) => {
+      const technicalLeadUserIndex = mongoUsers.findIndex(
+        ({ _id }) => _id === technicalLead
+      );
+      mongoUsers[technicalLeadUserIndex]["technicalLead"].push(_id);
+    });
+  });
+
+  console.log(mongoUsers)
+
+
+  pool.end();
 })();
