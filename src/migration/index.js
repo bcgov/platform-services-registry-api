@@ -243,7 +243,17 @@ function generateUsersPerProject(userData, contatctProfileData) {
   });
 
   console.log(mongoUsers)
+  try {
+    console.log(`Writing ${mongoUsers.length} mongoDb documents to mongoUsers.json`)
+    console.log(`Writing ${mongoProjects.length} mongoDb documents to mongoProjects.json`)
 
+    writeFileSync("./mongoUsers.json", JSON.stringify(mongoUsers), 'utf8');
+    writeFileSync("./mongoProjects.json", JSON.stringify(mongoProjects), 'utf8');
+    
+    console.log('Data successfully saved to disk');
+  } catch (error) {
+    console.log('An error has occurred ', error);
+  }
 
   pool.end();
 })();
