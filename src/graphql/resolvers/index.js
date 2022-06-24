@@ -20,7 +20,6 @@ import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
 import Request from "./Request";
-import Ministry from "./enum/Ministry";
 import Environment from "./enum/Environment";
 import RequestStatus from "./enum/RequestStatus";
 import ProjectStatus from "./enum/ProjectStatus";
@@ -64,7 +63,6 @@ const resolvers = {
   Request,
   RequestStatus,
   RequestType,
-  Ministry,
   Environment,
   PublicCloudPlatform,
   Platform,
