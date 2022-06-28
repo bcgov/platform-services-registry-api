@@ -1,7 +1,6 @@
 const { Pool } = require("pg");
 const { ObjectId } = require("mongodb");
 const { writeFileSync } = require('fs');
-import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix"
 
 const pool = new Pool({
   host: "localhost",
@@ -122,12 +121,9 @@ function generateProjectData(projectData) {
       };
     }
 
-    const licensePlate = generateNamespacePrefix()
-
     const newRegistryProject = {
-      _id: licensePlate,
+      _id: licencePlate,
       name,
-      licencePlate,
       created: created_at,
       description,
       cluster: cluster_id,
