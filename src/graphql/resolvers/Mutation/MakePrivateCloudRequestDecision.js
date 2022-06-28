@@ -31,12 +31,17 @@ async function makePrivateCloudRequestDecision(
     throw Error("A decision has already been made for this request");
   }
 
-  const { projectOwner, technicalLeads } =
+  const requestedProject =
     request.type === RequestType.CREATE
       ? await privateCloudRequestedProjects.findOneById(
           request.requestedProject
         )
       : await privateCloudProjects.findOneById(request.project);
+
+  const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } = requestedProject;
+
+  const projectOwner = await users.findOneById(projectOwnerId)
+  const technicalLeads = await users.findManyByIds(technicalLeadsIds)
 
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
@@ -96,9 +101,9 @@ async function makePrivateCloudRequestDecision(
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
-    })
+    });
 
-    //await sendNatsMessage();
+    //await sendNatsMessage(request.type, projectOwner, technicalLeads, requestedProject);
 
     return RequestStatus.APPROVED;
   }

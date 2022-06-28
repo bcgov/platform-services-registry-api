@@ -14,7 +14,7 @@ import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import { getDatasources } from "./dataSources";
 import chesService from "./ches";
-import provision from "./controllers/provision";
+import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler";
 
 async function startApolloServer(typeDefs, resolvers) {
 
@@ -44,8 +44,13 @@ async function startApolloServer(typeDefs, resolvers) {
 
   await server.start();
   server.applyMiddleware({ app });
-
-  app.post("/rest/provision-callback", provision);
+  app.use(express.json());
+  app.use(
+    express.urlencoded({
+      extended: true,
+    })
+  );
+  app.post("/namespace", provisionerCallbackHandler);
 
   await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);

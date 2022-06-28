@@ -31,7 +31,10 @@ async function createCustomPrivateCloudProjectEditRequest(
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,
     ...metaData,
-    ...quota,
+    productionQuota: { ...project.productionQuota, ...productionQuota },
+    developmentQuota: { ...project.developmentQuota, ...developmentQuota },
+    testQuota: { ...project.testQuota, ...testQuota },
+    toolsQuota: { ...project.toolsQuota, ...toolsQuota },
   });
 
   const requestBody = {

@@ -2,6 +2,7 @@ import ProjectStatus from "../enum/ProjectStatus";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
+import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix"
 
 async function createCustomPrivateCloudProjectRequest(
   _,
@@ -39,20 +40,23 @@ async function createCustomPrivateCloudProjectRequest(
     metaData.technicalLeads
   );
 
+  const licensePlate = generateNamespacePrefix()
+
   const defaultQuota = {
     cpuRequests: 0.5,
     cpuLimits: 1.5,
     memoryRequests: 2,
     memoryLimits: 4,
     storageBlock: 1,
-    storageFile: 512,
-    storageBackup: 1,
+    storageFile: 1,
+    storageBackup: 512,
     storageCapacity: 1,
     storagePvcCount: 60,
     snapshotCount: 5,
   }
 
   const requestedProject = await privateCloudRequestedProjects.create({
+    _id: licensePlate,
     ...metaData,
     productionQuota: {...defaultQuota, ...productionQuota},
     developmentQuota: {...defaultQuota, ...developmentQuota},
@@ -77,6 +81,7 @@ async function createCustomPrivateCloudProjectRequest(
     decisionDate: null,
     project: null,
     requestedProject: requestedProject._id,
+    decisionMaker: null
   });
 
   await users.addElementToManyDocumentsArray(

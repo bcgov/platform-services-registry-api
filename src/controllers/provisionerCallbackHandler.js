@@ -1,25 +1,47 @@
 import RequestType from "../graphql/resolvers/enum/RequestType";
-import { getDatasources } from "../dataSources";
-import chesService from "../ches"
+import RequestStatus from "../graphql/resolvers/enum/RequestStatus";
 
-export default async function provision(req, res) {
+import { getDatasources } from "../dataSources";
+import chesService from "../ches";
+
+export default async function provisionerCallbackHandler(req, res, next) {
+  const dataSources = await getDatasources();
   const {
     privateCloudActiveRequests,
     privateCloudProjects,
     privateCloudRequestedProjects,
-  } = getDatasources();
+    privateCloudArchivedRequests,
+    users,
+  } = dataSources;
 
   try {
-    const { requestId } = req.data;
+    const { prefix: requestedProjectId } = req.body;
+
+    //const { requestId } = req.data;
+    privateCloudActiveRequests.initialize();
+    privateCloudRequestedProjects.initialize();
+    privateCloudProjects.initialize();
+    privateCloudArchivedRequests.initialize();
+    users.initialize();
 
     // Get request
-    const request = await privateCloudActiveRequests.findOneById(requestId);
-    const { _id, ...requestedProject } =
-      await privateCloudRequestedProjects.findOneById(request.project);
+    const [request] = await privateCloudActiveRequests.findByFields({
+      requestedProject: requestedProjectId,
+    });
 
-    // Replace project with requested project
+    if (request === undefined) {
+      throw Error("The request does not exist");
+    }
+
+    if (request.status !== RequestStatus.APPROVED) {
+      throw Error("Request must be approved before it can be provissioned");
+    }
+
+    const requestedProject =
+      await privateCloudRequestedProjects.findOneById(request.requestedProject);
+
     let projectId;
-
+    // Replace project with requested project
     if (request.type === RequestType.CREATE) {
       const newProject = await privateCloudProjects.create(requestedProject);
       projectId = newProject._id;
@@ -32,12 +54,15 @@ export default async function provision(req, res) {
     }
 
     // Get PO and TL's
-    const { projectOwner, technicalLeads } =
+    const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } =
       request.type === RequestType.CREATE
         ? await privateCloudRequestedProjects.findOneById(
             request.requestedProject
           )
         : await privateCloudProjects.findOneById(request.project);
+
+    const projectOwner = await users.findOneById(projectOwnerId);
+    const technicalLeads = await users.findManyByIds(technicalLeadsIds);
 
     // Remove active request from PO and TL's user documents
     await users.removeElementFromManyDocumentsArray(
@@ -49,12 +74,7 @@ export default async function provision(req, res) {
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
       ...request,
-      ...{
-        status: RequestStatus.REJECTED,
-        decisionDate: new Date(),
-        active: false,
-        decisionMaker: user._id,
-      },
+      active: false,
     });
 
     // Add archived request to the projects request history
@@ -68,18 +88,16 @@ export default async function provision(req, res) {
 
     // Find project owner and add the project id
     await users.addElementToDocumentArray(projectOwner._id, {
-      projectOwner: newProject._id,
+      projectOwner: projectId,
     });
 
     // Find technical leads and add the project id
-    if (input?.technicalLeads) {
-      await users.addElementToManyDocumentsArray(
-        technicalLeads.map(({ _id }) => _id),
-        {
-          technicalLead: newProject._id,
-        }
-      );
-    }
+    await users.addElementToManyDocumentsArray(
+      technicalLeads.map(({ _id }) => _id),
+      {
+        technicalLead: projectId,
+      }
+    );
 
     chesService.send({
       bodyType: "html",
@@ -88,10 +106,11 @@ export default async function provision(req, res) {
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
-    })
-    res.status(200);
+    });
+    res.status(200).end();;
   } catch (err) {
     console.log(err);
     res.status(400);
+    next(err);
   }
 }
