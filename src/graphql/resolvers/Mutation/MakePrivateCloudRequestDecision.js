@@ -103,7 +103,7 @@ async function makePrivateCloudRequestDecision(
       // subject: `${profile.name} OCP 4 Project Set`,
     });
 
-    //await sendNatsMessage(request.type, projectOwner, technicalLeads, requestedProject);
+    await sendNatsMessage(request.type, projectOwner, technicalLeads, requestedProject);
 
     return RequestStatus.APPROVED;
   }
