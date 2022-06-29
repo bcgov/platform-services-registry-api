@@ -56,8 +56,8 @@ async function createCustomPrivateCloudProjectRequest(
   }
 
   const requestedProject = await privateCloudRequestedProjects.create({
-    _id: licensePlate,
     ...metaData,
+    licensePlate,
     productionQuota: {...defaultQuota, ...productionQuota},
     developmentQuota: {...defaultQuota, ...developmentQuota},
     testQuota: {...defaultQuota, ...testQuota},

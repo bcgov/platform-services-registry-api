@@ -1,5 +1,6 @@
 import RequestType from "../graphql/resolvers/enum/RequestType";
 import RequestStatus from "../graphql/resolvers/enum/RequestStatus";
+import ProjectStatus from "../graphql/resolvers/enum/ProjectStatus";
 
 import { getDatasources } from "../dataSources";
 import chesService from "../ches";
@@ -15,18 +16,22 @@ export default async function provisionerCallbackHandler(req, res, next) {
   } = dataSources;
 
   try {
-    const { prefix: requestedProjectId } = req.body;
+    const { prefix: licensePlate } = req.body;
 
-    //const { requestId } = req.data;
     privateCloudActiveRequests.initialize();
     privateCloudRequestedProjects.initialize();
     privateCloudProjects.initialize();
     privateCloudArchivedRequests.initialize();
     users.initialize();
 
-    // Get request
+    const [requestedProject] = await privateCloudRequestedProjects.findByFields(
+      {
+        licensePlate,
+      }
+    );
+
     const [request] = await privateCloudActiveRequests.findByFields({
-      requestedProject: requestedProjectId,
+      requestedProject: requestedProject._id,
     });
 
     if (request === undefined) {
@@ -37,18 +42,21 @@ export default async function provisionerCallbackHandler(req, res, next) {
       throw Error("Request must be approved before it can be provissioned");
     }
 
-    const requestedProject =
-      await privateCloudRequestedProjects.findOneById(request.requestedProject);
-
     let projectId;
-    // Replace project with requested project
     if (request.type === RequestType.CREATE) {
-      const newProject = await privateCloudProjects.create(requestedProject);
+      const newProject = await privateCloudProjects.create({
+        ...requestedProject,
+        requestHistory: [request._id],
+        status: ProjectStatus.ACTIVE,
+      });
       projectId = newProject._id;
     } else {
       const updatedProject = await privateCloudProjects.updateFieldsById(
         request.project,
-        requestedProject
+        {
+          ...requestedProject,
+          requestHistory: [...requestedProject.requestHistory, request._id],
+        }
       );
       projectId = updatedProject._id;
     }
@@ -107,7 +115,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
     });
-    res.status(200).end();;
+    res.status(200).end();
   } catch (err) {
     console.log(err);
     res.status(400);

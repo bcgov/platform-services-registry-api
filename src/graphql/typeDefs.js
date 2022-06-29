@@ -225,6 +225,15 @@ const typeDefs = gql`
     cluster: Cluster!
   }
 
+  input EditProjectMetaDataInput {
+    name: String
+    description: String
+    projectOwner: EmailAddress
+    technicalLeads: [EmailAddress!]
+    ministry: Ministry
+    cluster: Cluster
+  }
+
   type Request {
     id: ID!
     createdBy: User!
@@ -335,7 +344,7 @@ const typeDefs = gql`
 
     createCustomPrivateCloudProjectEditRequest(
       projectId: ID!
-      metaData: ProjectMetaDataInput
+      metaData: EditProjectMetaDataInput
       productionQuota: CustomQuotaInput
       developmentQuota: CustomQuotaInput
       testQuota: CustomQuotaInput
@@ -344,7 +353,7 @@ const typeDefs = gql`
 
     createPrivateCloudProjectEditRequest(
       projectId: ID!
-      metaData: ProjectMetaDataInput
+      metaData: EditProjectMetaDataInput
       productionQuota: QuotaInput
       developmentQuota: QuotaInput
       testQuota: QuotaInput

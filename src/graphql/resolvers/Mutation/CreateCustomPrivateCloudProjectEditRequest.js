@@ -5,7 +5,7 @@ import sendNatsMessage from "../../../nats/SendNatsMessage";
 
 async function createCustomPrivateCloudProjectEditRequest(
   _,
-  { id, metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  { projectId, metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
   {
     dataSources: {
       users,
@@ -15,6 +15,7 @@ async function createCustomPrivateCloudProjectEditRequest(
       privateCloudProjects,
     },
     kauth,
+    chesService
   }
 ) {
   const { email, resource_access } = kauth.accessToken.content;
@@ -22,11 +23,40 @@ async function createCustomPrivateCloudProjectEditRequest(
     roles: [],
   };
   const [user] = await users.findByFields({ email });
-  const project = await privateCloudProjects.findOneById(id);
+  const {_id, ...project} = await privateCloudProjects.findOneById(projectId);
+
+  console.log(projectId)
+  console.log(await privateCloudActiveRequests.findOneById(projectId))
 
   if (project === undefined) {
-    throw new Error("Project does not exist");
+    throw Error("Project does not exist");
   }
+
+  if (await privateCloudActiveRequests.findOneById(projectId) !== undefined) {
+    throw Error("There already exists an active request for this project")
+  }
+
+  // Only an Admin or a PO or TL of this project can request to edit it
+  if (
+    ![project.projectOwner, ...project.technicalLeads].includes(user._id) &&
+    !roles.includes("admin")
+  ) {
+    throw new Error(
+      "User must either be a project owner or technical lead on this project in order to edit it"
+    );
+  }
+
+  // Only an Admin or the PO can request to change the PO
+  if (
+    "projectOwner" in metaData &&
+    !roles.includes("admin") &&
+    project.projectOwner !== user._id
+  ) {
+    throw Error("Only the project owner can set a new project owner");
+  }
+
+  const projectOwner = await users.findOneById(project.projectOwner);
+  const technicalLeads = await users.findManyByIds(project.technicalLeads);
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,
@@ -45,37 +75,17 @@ async function createCustomPrivateCloudProjectEditRequest(
     active: true,
     created: new Date(),
     decisionDate: null,
-    project: id,
+    project: projectId,
     requestedProject: requestedProject._id,
   };
 
-  // Only an Admin or a PO or TL of this project can request to edit it
-  if (
-    ![project.projectOwner, ...project.technicalLeads].includes(user._id) &&
-    !roles.includes("admin")
-  ) {
-    requestBody.status = RequestStatus.REJECTED;
-    await privateCloudArchivedRequests.create(requestBody);
-
-    throw new Error(
-      "User must either be a project owner or technical lead on this project in order to edit it"
-    );
-  }
-
-  // Only an Admin or the PO can request to change the PO
-  if (
-    "projectOwner" in metaData &&
-    !roles.includes("admin") &&
-    project.projectOwner !== user._id
-  ) {
-    requestBody.status = RequestStatus.REJECTED;
-    await privateCloudArchivedRequests.create(requestBody);
-
-    throw new Error("Only the project owner can set a new project owner");
-  }
-
   // If there is no requested quota change, we do not need admin approval and can proceed to provision
-  if (Object.keys(quota).length === 0) {
+  if (
+    productionQuota === undefined &&
+    developmentQuota == undefined &&
+    testQuota == undefined &&
+    toolsQuota === undefined
+  ) {
     requestBody.status = RequestStatus.APPROVED;
 
     //await sendNatsMessage();
@@ -83,8 +93,14 @@ async function createCustomPrivateCloudProjectEditRequest(
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
 
-  // Need to add request to users
   const request = await privateCloudActiveRequests.create(requestBody);
+
+  await users.addElementToManyDocumentsArray(
+    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    {
+      activeRequests: request._id,
+    }
+  );
 
   chesService.send({
     bodyType: "html",

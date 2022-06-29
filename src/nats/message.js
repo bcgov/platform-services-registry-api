@@ -2,7 +2,8 @@
 
 function message(action, projectOwner, technicalLeads, requestedProject) {
   const {
-    _id: licensePlate, // Use ID from actaul project, not from requested project
+    _id, // Use ID from actaul project, not from requested project
+    licensePlate,
     name,
     description,
     ministry,
@@ -62,7 +63,7 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
 
   const request = {
     action,
-    profile_id: licensePlate,
+    profile_id: _id,
     cluster_id: 3, // Cluster id e.g gold, silver, klab (enum)
     cluster_name: cluster,
     display_name: name,
