@@ -4,8 +4,8 @@ function createUser(_, { input }, { dataSources: { users } }) {
     archived: false,
     created: new Date(),
     projectOwner: [],
-    technicalLead: [],
-    activeRequests: [],
+    privateCloudProjectOwner: [],
+    privateCloudTechnicalLead: [],
     lastSeen: new Date(),
   });
 }

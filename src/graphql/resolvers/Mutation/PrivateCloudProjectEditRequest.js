@@ -1,13 +1,21 @@
-import createCustomPrivateCloudProjectRequest from "./CreateCustomPrivateCloudProjectRequest";
+import customPrivateCloudProjectEditRequest from "./CustomPrivateCloudProjectEditRequest";
 
-const createPrivateCloudProjectRequest = (
+const privateCloudProjectEditRequest = (
   _,
-  { metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  {
+    projectId,
+    metaData,
+    productionQuota,
+    developmentQuota,
+    testQuota,
+    toolsQuota,
+  },
   context
 ) =>
-  createCustomPrivateCloudProjectRequest(
+  customPrivateCloudProjectEditRequest(
     _,
     {
+      projectId,
       metaData,
       productionQuota: {
         ...productionQuota?.cpu,
@@ -33,4 +41,4 @@ const createPrivateCloudProjectRequest = (
     context
   );
 
-export default createPrivateCloudProjectRequest;
+export default privateCloudProjectEditRequest;

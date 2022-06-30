@@ -78,13 +78,13 @@ describe("Mongo Helpers", () => {
   it("Should insert an element to an array in a document", async () => {
     const testProjectId = "testProjectOneId";
     const result = await users.addElementToDocumentArray(oamarId, {
-      projectOwner: testProjectId,
+      privateCloudProjectOwner: testProjectId,
     });
 
     const user = await users.collection.find({ _id: oamarId }).toArray();
 
     expect(result.acknowledged).toBe(true);
-    expect(user[0]["projectOwner"]).toEqual([testProjectId]);
+    expect(user[0]["privateCloudProjectOwner"]).toEqual([testProjectId]);
   });
 
   it("Should insert an element to an array in many documents by id", async () => {

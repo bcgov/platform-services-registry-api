@@ -194,7 +194,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
       created: created_at,
       projectOwner: [],
       technicalLead: [],
-      activeRequests: [],
+      privateCloudActiveRequests: [],
       lastSeen: new Date(),
     })
   );

@@ -1,16 +1,16 @@
 import RequestStatus from "../enum/RequestStatus";
+import RequestDecision from "../enum/RequestDecision";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
 
-async function createCustomPrivateCloudProjectEditRequest(
+async function customPrivateCloudProjectEditRequest(
   _,
   { projectId, metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
   {
     dataSources: {
       users,
       privateCloudRequestedProjects,
-      privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
     },
@@ -24,9 +24,6 @@ async function createCustomPrivateCloudProjectEditRequest(
   };
   const [user] = await users.findByFields({ email });
   const {_id, ...project} = await privateCloudProjects.findOneById(projectId);
-
-  console.log(projectId)
-  console.log(await privateCloudActiveRequests.findOneById(projectId))
 
   if (project === undefined) {
     throw Error("Project does not exist");
@@ -114,4 +111,4 @@ async function createCustomPrivateCloudProjectEditRequest(
   return request;
 }
 
-export default createCustomPrivateCloudProjectEditRequest;
+export default customPrivateCloudProjectEditRequest;

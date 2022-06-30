@@ -75,9 +75,9 @@ export default async function provisionerCallbackHandler(req, res, next) {
     // Remove active request from PO and TL's user documents
     await users.removeElementFromManyDocumentsArray(
       [projectOwner, ...technicalLeads].map(({ _id }) => _id),
-      { activeRequests: request._id }
+      { privateCloudActiveRequests: request._id }
     );
-
+      
     // Move active request to archived requests
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
@@ -96,14 +96,14 @@ export default async function provisionerCallbackHandler(req, res, next) {
 
     // Find project owner and add the project id
     await users.addElementToDocumentArray(projectOwner._id, {
-      projectOwner: projectId,
+      privateCloudProjectOwner: projectId,
     });
 
     // Find technical leads and add the project id
     await users.addElementToManyDocumentsArray(
       technicalLeads.map(({ _id }) => _id),
       {
-        technicalLead: projectId,
+        privateCloudTechnicalLead: projectId,
       }
     );
 

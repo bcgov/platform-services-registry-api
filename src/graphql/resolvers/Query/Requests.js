@@ -85,8 +85,4 @@ export {
   privateCloudActiveRequest,
   privateCloudActiveRequests,
   privateCloudArchivedRequest,
-  publicCloudRequests,
-  publicCloudActiveRequest,
-  publicCloudArchivedRequest,
-  requests,
 };

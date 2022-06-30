@@ -259,9 +259,9 @@ const typeDefs = gql`
     email: EmailAddress!
     archived: Boolean!
     lastSeen: DateTime
-    activeRequests: [Request]!
-    projectOwner: [Project]!
-    technicalLead: [Project]!
+    privateCloudActiveRequests: [Request]!
+    privateCloudProjectOwner: [Project]!
+    privateCloudTechnicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
     githubId: String!
@@ -291,30 +291,29 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User!]!
-    user(id: ID!): User
-    usersByIds(ids: [ID!]!): [User!]!
+    users: [User!]! @hasRole(role: "admin")
+    user(id: ID!): User @hasRole(role: "admin")
+    usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
     me: User @auth
 
-    # This should all require admin privileges
-    projects: [Project!]!
-    privateCloudProjects: [PrivateCloudProject!]!
-    privateCloudProject(projectId: ID!): PrivateCloudProject!
+    # projects: [Project!]! @hasRole(role: "admin")
+    privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+    privateCloudProject(projectId: ID!): PrivateCloudProject! @hasRole(role: "admin")
 
-    # requests: [Request!]!
-    privateCloudRequests: [Request!]!
-    privateCloudActiveRequest(requestId: ID!): Request!
-    privateCloudActiveRequests: [Request!]!
-    privateCloudArchivedRequest(requestId: ID!): Request!
+    privateCloudRequests: [Request!]! @hasRole(role: "admin")
+    privateCloudActiveRequest(requestId: ID!): Request! @hasRole(role: "admin")
+    privateCloudActiveRequests: [Request!]! @hasRole(role: "admin")
+    privateCloudArchivedRequest(requestId: ID!): Request! @hasRole(role: "admin")
 
-    # Need to implement the above but for a user
-    userProjects: [Project!]!
-    userPrivateCloudProjects: [PrivateCloudProject!]!
-    userPrivateCloudProject(projectId: ID!): PrivateCloudProject!
+    # userProjects: [Project!]! @auth
+    userPrivateCloudProjects: [PrivateCloudProject!]! @auth
+    userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
+    userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
 
-    userRequests: [Request!]!
-    userPrivateCloudRequests: [Request!]!
-    userPrivateCloudRequest(requestId: ID!): Request!
+
+    # userRequests: [Request!]! @auth
+    userPrivateCloudRequests: [Request!]! @auth
+    userPrivateCloudRequest(requestId: ID!): Request! @auth
 
     # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
@@ -323,10 +322,10 @@ const typeDefs = gql`
     signUp(input: SignUpInput!): User! @auth
     # userUpdateSelf()
 
-    createUser(input: CreateUserInput!): User!
+    user(input: CreateUserInput!): User! @hasRole(role: "admin")
     # updateUser(input: UpdateUserInput!): User!
 
-    createCustomPrivateCloudProjectRequest(
+    customPrivateCloudProjectRequest(
       metaData: ProjectMetaDataInput!
       productionQuota: CustomQuotaInput
       developmentQuota: CustomQuotaInput
@@ -334,35 +333,35 @@ const typeDefs = gql`
       toolsQuota: CustomQuotaInput
     ): Request! @hasRole(role: "admin") @nonNullInput
 
-    createPrivateCloudProjectRequest(
+    privateCloudProjectRequest(
       metaData: ProjectMetaDataInput!
       productionQuota: QuotaInput
       developmentQuota: QuotaInput
       testQuota: QuotaInput
       toolsQuota: QuotaInput
-    ): Request! @nonNullInput
+    ): Request! @nonNullInput @auth
 
-    createCustomPrivateCloudProjectEditRequest(
+    customPrivateCloudProjectEditRequest(
       projectId: ID!
       metaData: EditProjectMetaDataInput
       productionQuota: CustomQuotaInput
       developmentQuota: CustomQuotaInput
       testQuota: CustomQuotaInput
       toolsQuota: CustomQuotaInput
-    ): Request! @nonNullInput
+    ): Request! @nonNullInput @hasRole(role: "admin")
 
-    createPrivateCloudProjectEditRequest(
+    privateCloudProjectEditRequest(
       projectId: ID!
       metaData: EditProjectMetaDataInput
       productionQuota: QuotaInput
       developmentQuota: QuotaInput
       testQuota: QuotaInput
       toolsQuota: QuotaInput
-    ): Request!
+    ): Request! @nonNullInput @auth
 
     makePrivateCloudRequestDecision(
       input: MakeRequestDecisionInput!
-    ): RequestStatus!
+    ): RequestStatus! @hasRole(role: "admin")
   }
 `;
 

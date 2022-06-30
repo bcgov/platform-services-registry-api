@@ -1,20 +1,13 @@
 import { GraphQLDateTime } from "graphql-scalars";
-import { users, user, usersByIds, me } from "./Query/Users";
-import {
-  privateCloudProjects,
-  privateCloudProject,
-} from "./Query/Projects";
-import {
-  privateCloudRequests,
-  privateCloudActiveRequest,
-  privateCloudActiveRequests,
-  privateCloudArchivedRequest,
-} from "./Query/Requests";
-import createCustomPrivateCloudProjectRequest from "./Mutation/CreateCustomPrivateCloudProjectRequest";
-import createPrivateCloudProjectRequest from "./Mutation/CreatePrivateCloudProjectRequest"
-import createUser from "./Mutation/CreateUser";
+import * as userQueries from "./Query/Users";
+import * as projectQueries from "./Query/Projects";
+import * as requestQueries from "./Query/Requests";
+import customPrivateCloudProjectRequest from "./Mutation/CustomPrivateCloudProjectRequest";
+import privateCloudProjectRequest from "./Mutation/PrivateCloudProjectRequest";
+import user from "./Mutation/User";
 import signUp from "./Mutation/SignUp";
-import createCustomPrivateCloudProjectEditRequest from "./Mutation/CreateCustomPrivateCloudProjectEditRequest";
+import customPrivateCloudProjectEditRequest from "./Mutation/CustomPrivateCloudProjectEditRequest";
+import privateCloudProjectEditRequest from "./Mutation/PrivateCloudProjectEditRequest"
 import makePrivateCloudRequestDecision from "./Mutation/MakePrivateCloudRequestDecision";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
@@ -36,23 +29,17 @@ import Cluster from "./enum/Cluster";
 
 const resolvers = {
   Query: {
-    users,
-    user,
-    usersByIds,
-    me,
-    privateCloudProjects,
-    privateCloudProject,
-    privateCloudRequests,
-    privateCloudActiveRequest,
-    privateCloudActiveRequests,
-    privateCloudArchivedRequest,
+    ...userQueries,
+    ...projectQueries,
+    ...requestQueries,
   },
   Mutation: {
     signUp,
-    createUser,
-    createPrivateCloudProjectRequest,
-    createCustomPrivateCloudProjectRequest,
-    createCustomPrivateCloudProjectEditRequest,
+    user,
+    privateCloudProjectRequest,
+    customPrivateCloudProjectRequest,
+    privateCloudProjectEditRequest,
+    customPrivateCloudProjectEditRequest,
     makePrivateCloudRequestDecision,
   },
   PrivateCloudProject,

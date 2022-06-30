@@ -4,7 +4,7 @@ import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix"
 
-async function createCustomPrivateCloudProjectRequest(
+async function customPrivateCloudProjectRequest(
   _,
   { metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
   {
@@ -87,7 +87,7 @@ async function createCustomPrivateCloudProjectRequest(
   await users.addElementToManyDocumentsArray(
     [projectOwner, ...technicalLeads].map(({ _id }) => _id),
     {
-      activeRequests: request._id,
+      privateCloudActiveRequests: request._id,
     }
   );
 
@@ -103,4 +103,4 @@ async function createCustomPrivateCloudProjectRequest(
   return request;
 }
 
-export default createCustomPrivateCloudProjectRequest;
+export default customPrivateCloudProjectRequest;

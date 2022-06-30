@@ -37,26 +37,22 @@ function publicCloudProject(
 //   ];
 // }
 
-// async function userProjects(
-//   _,
-//   __,
-//   { dataSources: { publicCloudProjects, privateCloudProjects, users }, kauth }
-// ) {
-//   const { email } = kauth.accessToken.content;
-//   const {
-//     projectOwnerPrivateCloud,
-//     technicalLeadPrivateCloud,
-//     projectOwnerPublicCloud,
-//     technicalLeadPublicCloud,
-//   } = await users.findByFields({ email })[0];
+async function userPrivateCloudProjects(
+  _,
+  __,
+  { dataSources: { privateCloudProjects, users }, kauth }
+) {
+  const { email } = kauth.accessToken.content;
+  const {
+    projectOwnerPrivateCloud,
+    technicalLeadPrivateCloud,
+  } = await users.findByFields({ email })[0];
 
-//   const privateCloudProjects =
 
-// }
+
+}
 
 export {
   privateCloudProjects,
   privateCloudProject,
-  publicCloudProjects,
-  publicCloudProject,
 };

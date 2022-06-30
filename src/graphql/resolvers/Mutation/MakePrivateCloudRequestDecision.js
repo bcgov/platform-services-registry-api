@@ -67,7 +67,7 @@ async function makePrivateCloudRequestDecision(
     // remove active request for PO and TLs
     await users.removeElementFromManyDocumentsArray(
       [projectOwner, ...technicalLeads].map(({ _id }) => _id),
-      { activeRequests: request._id }
+      { privateCloudActiveRequests: request._id }
     );
 
     chesService.send({
