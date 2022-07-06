@@ -95,7 +95,7 @@ async function customPrivateCloudProjectEditRequest(
   await users.addElementToManyDocumentsArray(
     [projectOwner, ...technicalLeads].map(({ _id }) => _id),
     {
-      activeRequests: request._id,
+      privateCloudActiveRequests: request._id,
     }
   );
 

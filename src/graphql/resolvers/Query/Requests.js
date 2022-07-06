@@ -4,17 +4,17 @@ async function privateCloudRequests(
   { dataSources: { privateCloudArchivedRequests, privateCloudActiveRequests } }
 ) {
   return [
-    ...await privateCloudArchivedRequests.getAll(),
-    ...await privateCloudActiveRequests.getAll(),
+    ...(await privateCloudArchivedRequests.getAll()),
+    ...(await privateCloudActiveRequests.getAll()),
   ];
 }
 
 function privateCloudActiveRequest(
   _,
-  { id },
+  { requestId },
   { dataSources: { privateCloudActiveRequests } }
 ) {
-  return privateCloudActiveRequests.findOneById(id);
+  return privateCloudActiveRequests.findOneById(requestId);
 }
 
 function privateCloudActiveRequests(
@@ -25,64 +25,134 @@ function privateCloudActiveRequests(
   return privateCloudActiveRequests.getAll();
 }
 
+function privateCloudActiveRequestsById(
+  _,
+  { requestIds },
+  { dataSources: { privateCloudActiveRequests } }
+) {
+  return privateCloudActiveRequests.findManyByIds(requestIds);
+}
+
 function privateCloudArchivedRequest(
   _,
-  { id },
+  { requestId },
   { dataSources: { privateCloudArchivedRequests } }
 ) {
-  return privateCloudArchivedRequests.findOneById(id);
+  return privateCloudArchivedRequests.findOneById(requestId);
 }
 
-function publicCloudRequests(
+function privateCloudArchivedRequests(
   _,
   __,
-  { dataSources: { publicCloudArchivedRequests, publicCloudActiveRequests } }
+  { dataSources: { privateCloudArchivedRequests } }
 ) {
-  return [
-    ...publicCloudArchivedRequests.getAll(),
-    ...publicCloudActiveRequests.getAll(),
-  ];
+  return privateCloudArchivedRequests.getAll();
 }
 
-function publicCloudActiveRequest(
+function privateCloudArchivedRequestsById(
   _,
-  { id },
-  { dataSources: { publicCloudActiveRequests } }
+  { requestIds },
+  { dataSources: { privateCloudArchivedRequests } }
 ) {
-  return publicCloudActiveRequests.findOneById(id);
+  return privateCloudArchivedRequests.findManyByIds(requestIds);
 }
 
-function publicCloudArchivedRequest(
-  _,
-  { id },
-  { dataSources: { publicCloudArchivedRequests } }
-) {
-  return publicCloudArchivedRequests.findOneById(id);
-}
-
-async function requests(
+async function userPrivateCloudActiveRequests(
   _,
   __,
-  {
-    dataSources: {
-      publicCloudArchivedRequests,
-      publicCloudActiveRequests,
-      privateCloudArchivedRequests,
-      privateCloudActiveRequests,
-    },
-  }
+  { dataSources: { privateCloudActiveRequests, users }, kauth }
 ) {
-  return [
-    ...(await publicCloudArchivedRequests.getAll()),
-    ...(await publicCloudActiveRequests.getAll()),
-    ...(await privateCloudArchivedRequests.getAll()),
-    ...(await privateCloudActiveRequests.getAll()),
-  ];
+  const { email } = kauth.accessToken.content;
+  const user = await users.findByFields({ email })[0];
+
+  return privateCloudActiveRequests.findManyByIds(
+    user.privateCloudActiveRequests
+  );
 }
+
+async function userPrivateCloudActiveRequest(
+  _,
+  { requestId },
+  { dataSources: { privateCloudActiveRequests, users }, kauth }
+) {
+  const { email } = kauth.accessToken.content;
+  const user = await users.findByFields({ email })[0];
+
+  return user.privateCloudActiveRequests.includes(requestId)
+    ? privateCloudActiveRequests.findOneById(requestId)
+    : undefined;
+}
+async function userPrivateCloudActiveRequestsById(
+  _,
+  { requestIds },
+  { dataSources: { privateCloudActiveRequests, users }, kauth }
+) {
+  const { email } = kauth.accessToken.content;
+  const user = await users.findByFields({ email })[0];
+
+  const activeRequests = user.privateCloudActiveRequests;
+
+  requestIds.every((requestId) => activeRequests.includes(requestId))
+    ? privateCloudActiveRequests.findManyByIds(requestIds)
+    : [];
+}
+
+// function publicCloudRequests(
+//   _,
+//   __,
+//   { dataSources: { publicCloudArchivedRequests, publicCloudActiveRequests } }
+// ) {
+//   return [
+//     ...publicCloudArchivedRequests.getAll(),
+//     ...publicCloudActiveRequests.getAll(),
+//   ];
+// }
+
+// function publicCloudActiveRequest(
+//   _,
+//   { id },
+//   { dataSources: { publicCloudActiveRequests } }
+// ) {
+//   return publicCloudActiveRequests.findOneById(id);
+// }
+
+// function publicCloudArchivedRequest(
+//   _,
+//   { id },
+//   { dataSources: { publicCloudArchivedRequests } }
+// ) {
+//   return publicCloudArchivedRequests.findOneById(id);
+// }
+
+// async function requests(
+//   _,
+//   __,
+//   {
+//     dataSources: {
+//       publicCloudArchivedRequests,
+//       publicCloudActiveRequests,
+//       privateCloudArchivedRequests,
+//       privateCloudActiveRequests,
+//     },
+//   }
+// ) {
+//   return [
+//     ...(await publicCloudArchivedRequests.getAll()),
+//     ...(await publicCloudActiveRequests.getAll()),
+//     ...(await privateCloudArchivedRequests.getAll()),
+//     ...(await privateCloudActiveRequests.getAll()),
+//   ];
+// }
 
 export {
   privateCloudRequests,
   privateCloudActiveRequest,
   privateCloudActiveRequests,
+  privateCloudActiveRequestsById,
+  userPrivateCloudActiveRequests,
+  userPrivateCloudActiveRequest,
+  userPrivateCloudActiveRequestsById,
   privateCloudArchivedRequest,
+  privateCloudArchivedRequests,
+  privateCloudArchivedRequestsById,
 };

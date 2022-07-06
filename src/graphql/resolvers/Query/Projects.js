@@ -8,22 +8,18 @@ function privateCloudProjects(
 
 function privateCloudProject(
   _,
-  { id },
+  { projectId },
   { dataSources: { privateCloudProjects } }
 ) {
-  return privateCloudProjects.findOneById(id);
+  return privateCloudProjects.findOneById(projectId);
 }
 
-function publicCloudProjects(_, __, { dataSources: { publicCloudProjects } }) {
-  return publicCloudProjects.getAll();
-}
-
-function publicCloudProject(
+function privateCloudProjectsById(
   _,
-  { id },
-  { dataSources: { publicCloudProjects } }
+  { projectIds },
+  { dataSources: { privateCloudProjects } }
 ) {
-  return publicCloudProjects.findOneById(id);
+  return privateCloudProjects.findManyByIds(projectIds);
 }
 
 // async function projects(
@@ -43,16 +39,53 @@ async function userPrivateCloudProjects(
   { dataSources: { privateCloudProjects, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const {
-    projectOwnerPrivateCloud,
-    technicalLeadPrivateCloud,
-  } = await users.findByFields({ email })[0];
+  const { privateCloudTechnicalLead, privateCloudProjectOwner } =
+    await users.findByFields({ email })[0];
 
+  return privateCloudProjects.findManyByIds([
+    ...privateCloudProjectOwner,
+    ...privateCloudTechnicalLead,
+  ]);
+}
 
+async function userPrivateCloudProject(
+  _,
+  { projectId },
+  { dataSources: { privateCloudProjects, users }, kauth }
+) {
+  const { email } = kauth.accessToken.content;
+  const user = await users.findByFields({ email })[0];
 
+  const project = privateCloudProjects.findOneById(projectId);
+
+  const { technicalLeads, projectOwner } = project;
+  return [...technicalLeads, projectOwner].includes(user._id)
+    ? project
+    : undefined;
+}
+
+async function userPrivateCloudProjectsById(
+  _,
+  { projectIds },
+  { dataSources: { privateCloudProjects, users }, kauth }
+) {
+  const { email } = kauth.accessToken.content;
+  const user = await users.findByFields({ email })[0];
+
+  const projects = privateCloudProjects.findManyByIds(projectIds);
+
+  projects.every(({ projectOwner, technicalLeads }) =>
+    [projectOwner, ...technicalLeads].includes(user._id)
+  )
+    ? projects
+    : [];
 }
 
 export {
   privateCloudProjects,
   privateCloudProject,
+  privateCloudProjectsById,
+  userPrivateCloudProjects,
+  userPrivateCloudProjectsById,
+  userPrivateCloudProject,
 };

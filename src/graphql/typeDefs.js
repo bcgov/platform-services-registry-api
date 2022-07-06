@@ -296,24 +296,24 @@ const typeDefs = gql`
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
     me: User @auth
 
-    # projects: [Project!]! @hasRole(role: "admin")
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject! @hasRole(role: "admin")
+    privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]! 
+    userPrivateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+    userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
+    userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
 
     privateCloudRequests: [Request!]! @hasRole(role: "admin")
     privateCloudActiveRequest(requestId: ID!): Request! @hasRole(role: "admin")
     privateCloudActiveRequests: [Request!]! @hasRole(role: "admin")
+    privateCloudActiveRequestsById(requestIds: ID!):[Request!]! @hasRole(role: "admin")
+    userPrivateCloudActiveRequests: [Request!]! @auth
+    userPrivateCloudActiveRequest(requestId: ID!): Request! @auth
+    userPrivateCloudActiveRequestsById(requestIds: [ID!]): Request! @auth
+
     privateCloudArchivedRequest(requestId: ID!): Request! @hasRole(role: "admin")
-
-    # userProjects: [Project!]! @auth
-    userPrivateCloudProjects: [PrivateCloudProject!]! @auth
-    userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
-    userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
-
-
-    # userRequests: [Request!]! @auth
-    userPrivateCloudRequests: [Request!]! @auth
-    userPrivateCloudRequest(requestId: ID!): Request! @auth
+    privateCloudArchivedRequests: [Request!]! @hasRole(role: "admin")
+    privateCloudArchivedRequestsById(requestIds: ID!):[Request!]! @hasRole(role: "admin")
 
     # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
