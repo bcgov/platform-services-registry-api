@@ -322,7 +322,7 @@ const typeDefs = gql`
     signUp(input: SignUpInput!): User! @auth
     # userUpdateSelf()
 
-    user(input: CreateUserInput!): User! @hasRole(role: "admin")
+    createUser(input: CreateUserInput!): User! @hasRole(role: "admin")
     # updateUser(input: UpdateUserInput!): User!
 
     customPrivateCloudProjectRequest(

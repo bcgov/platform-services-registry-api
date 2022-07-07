@@ -1,4 +1,3 @@
-
 import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "apollo-server";
@@ -78,6 +77,7 @@ describe("Mongo Helpers", () => {
             isExpired: () => {
               return false;
             },
+            hasRole: () => true,
             token: "abc",
             content: {
               email: "oamar.kanji@gov.bc.ca",
@@ -87,7 +87,7 @@ describe("Mongo Helpers", () => {
                 },
               },
               given_name: "Oamar",
-              family_name: "Kanji"
+              family_name: "Kanji",
             },
           },
         },
@@ -101,8 +101,8 @@ describe("Mongo Helpers", () => {
       context: () => ({
         kauth: new KeycloakContext({ req }),
         chesService: {
-          send: () => console.log("*** SEND ***")
-        }
+          send: () => console.log("*** SEND ***"),
+        },
       }),
     });
   });
@@ -120,19 +120,16 @@ describe("Mongo Helpers", () => {
           firstName
           lastName
           email
-          activeRequests {
-            id
-            type
-          }
         }
       }`,
       variables: {
         input: {
-          ministry: "AGRICULTURE",
-          githubId: "okanji"
+          ministry: "AGRI",
+          githubId: "okanji",
         },
       },
     });
+
     //Two other users for subsequest testing
     const secondUser = await server.executeOperation({
       query: `mutation Mutation($input: CreateUserInput!) {
@@ -145,12 +142,16 @@ describe("Mongo Helpers", () => {
         input: {
           firstName: "Alexander",
           lastName: "Carmichael",
-          ministry: "AGRICULTURE",
-          email: "alexander.carmichael@gov.bc.ca"
+          ministry: "AGRI",
+          email: "alexander.carmichael@gov.bc.ca",
+          githubId: "okanji",
         },
       },
     });
-    expect(secondUser.data?.createUser.email).toBe("alexander.carmichael@gov.bc.ca");
+
+    expect(secondUser.data?.createUser.email).toBe(
+      "alexander.carmichael@gov.bc.ca"
+    );
     const thirdUser = await server.executeOperation({
       query: `mutation Mutation($input: CreateUserInput!) {
         createUser(input: $input) {
@@ -162,8 +163,9 @@ describe("Mongo Helpers", () => {
         input: {
           firstName: "Billy",
           lastName: "Li",
-          ministry: "AGRICULTURE",
-          email: "billy.li@gov.bc.ca"
+          ministry: "AGRI",
+          email: "billy.li@gov.bc.ca",
+          githubId: "libilly",
         },
       },
     });
@@ -175,59 +177,73 @@ describe("Mongo Helpers", () => {
 
   it("Should create a new project request", async () => {
     const request = await server.executeOperation({
-      query: `mutation CreatePrivateCloudProjectRequest($input: CreatePrivateCloudProjectInput!) {
-        createPrivateCloudProjectRequest(input: $input) {
+      query: `mutation CreatePrivateCloudProjectRequest($metaData: ProjectMetaDataInput!, $developmentQuota: QuotaInput, ) {
+        privateCloudProjectRequest(metaData: $metaData, developmentQuota: $developmentQuota) {
           id
           createdBy {
-            id
             firstName
+            lastName
+            id
+            email
           }
+          type
+          status
+          active
+          created
+          decisionDate
           requestedProject {
+            id
+            technicalLeads {
+              firstName
+              lastName
+            }
+          }
+          project {
             ... on PrivateCloudProject {
               id
-              technicalLeads {
-                id
-                firstName
-                lastName
-                email
+              name
+              ministry
+              productionQuota {
+                cpu {
+                  requests
+                }
               }
             }
           }
         }
       }`,
       variables: {
-        input: {
-          name: "Test Project",
-          description: "Some test project",
-          ministry: "AGRICULTURE",
-          cluster: "SILVER",
+        metaData: {
+          name: "Test",
+          description: "Test proj",
           projectOwner: "oamar.kanji@gov.bc.ca",
-          technicalLeads: ["alexander.carmichael@gov.bc.ca", "billy.li@gov.bc.ca"],
+          ministry: "AGRI",
+          technicalLeads: ["billy.li@gov.bc.ca", "alexander.carmichael@gov.bc.ca"],
+          cluster: "SILVER",
+        },
+        developmentQuota: {
+          memory: "MEMORY_REQUEST_64_LIMIT_128",
+          storage: "STORAGE_256",
         },
       },
     });
+
     const me = await server.executeOperation({
       query: `query Me {
       me {
         id
         firstName
         email
-        activeRequests {
-          id
-          createdBy {
-            id
-            email
-          }
-        }
       }
     }`,
     });
 
     const { id, requestedProject, createdBy } =
-      request.data?.createPrivateCloudProjectRequest;
+      request.data?.privateCloudProjectRequest;
+
     newRequestId = id;
     // Will be used in subsequent tests
-    const [user] = me.data?.me.activeRequests;
+    const user = me.data?.me.activeRequests;
 
     expect(request.errors).toBeUndefined();
     expect(createdBy.firstName).toBe("Oamar");
@@ -241,12 +257,12 @@ describe("Mongo Helpers", () => {
       await collections.privateCloudRequestedProjects.findOneById(
         requestedProject.id
       )
-    ).toHaveProperty("name", "Test Project");
+    ).toHaveProperty("name", "Test");
     expect(
       await collections.privateCloudProjects.findOneById(id)
     ).toBeUndefined();
-    expect([user.id]).toStrictEqual([id]);
     expect(requestedProject.technicalLeads[0].firstName).toBe("Alexander");
+    console.log(requestedProject.technicalLeads)
     expect(requestedProject.technicalLeads[1].lastName).toBe("Li");
   });
 
@@ -289,8 +305,9 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should allow a technical lead to be removed from a request", async () => {
-    const request =  await collections.privateCloudActiveRequests.findOneById(newRequestId);
-    console.log(request);
+    const request = await collections.privateCloudActiveRequests.findOneById(
+      newRequestId
+    );
   });
 
   it("Should reject a create project request", async () => {
@@ -305,7 +322,8 @@ describe("Mongo Helpers", () => {
         },
       },
     });
+
     const request = result.data?.makePrivateCloudRequestDecision;
-    expect(request.status).toBe("REJECTED");
+    expect(request).toBe("REJECTED");
   });
 });

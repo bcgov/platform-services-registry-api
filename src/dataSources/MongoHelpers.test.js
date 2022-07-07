@@ -145,7 +145,6 @@ describe("Mongo Helpers", () => {
       { array: "B" }
     );
     const allUsers = await users.getAll();
-    console.log(allUsers.map((user) => user.array));
 
     expect(allUsers.map((user) => user.array)).toStrictEqual([
       ["A"],

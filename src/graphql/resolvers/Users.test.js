@@ -3,7 +3,10 @@ import { MongoClient } from "mongodb";
 import MongoHelpers from "../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { applyDirectiveTransformers } from "../../auth/transformers";
+import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "../../auth/transformers";
+import { applyDirectiveTransformers } from "../../graphql/transformers";
+
+
 
 import typeDefs from "../typeDefs";
 import resolvers from ".";
@@ -31,7 +34,7 @@ describe("User tests", () => {
       resolvers,
     });
 
-    schema = applyDirectiveTransformers(schema);
+    schema = applyAuthDirectiveTranformers(applyDirectiveTransformers(schema));
 
     const req = {
       kauth: {
@@ -51,6 +54,7 @@ describe("User tests", () => {
               given_name: "Oamar",
               family_name: "Kanji",
             },
+            hasRole: () => true
           },
         },
       },
@@ -85,7 +89,7 @@ describe("User tests", () => {
       }`,
       variables: {
         input: {
-          ministry: "AGRICULTURE",
+          ministry: "AGRI",
           githubId: "okanji",
         },
       },
@@ -151,7 +155,7 @@ describe("User tests", () => {
         createUser(input: {
           firstName: "Alexander",
           lastName: "Carmichael",
-          ministry: HEALTH,
+          ministry: HLTH,
           email: "alexander.carmichael@gov.bc.ca",
           githubId: "okanji"
 
