@@ -26,6 +26,7 @@ async function startApolloServer(typeDefs, resolvers) {
   schema = applyAuthDirectiveTranformers(applyDirectiveTransformers(schema));
 
   const app = express();
+  
   const { keycloak } = configureKeycloak(app, "/graphql");
   const httpServer = http.createServer(app);
 

@@ -122,7 +122,8 @@ function generateProjectData(projectData) {
     }
 
     const newRegistryProject = {
-      _id: licencePlate,
+      _id: {"$oid":ObjectId()},
+      licencePlate,
       name,
       created: created_at,
       description,
@@ -184,16 +185,15 @@ function generateUsersPerProject(userData, contatctProfileData) {
   const uniqueUsers = getUniqueListBy(userData, "email");
   const mongoUsers = uniqueUsers.map(
     ({ first_name, last_name, email, github_id, created_at }) => ({
-      _id: ObjectId(),
-      ministry: "",
+      _id: {"$oid":ObjectId()},
       githubId: github_id,
       firstName: first_name,
       lastName: last_name,
       email,
       archived: false,
       created: created_at,
-      projectOwner: [],
-      technicalLead: [],
+      privateCloudProjectOwner: [],
+      privateCloudTechnicalLead: [],
       privateCloudActiveRequests: [],
       lastSeen: new Date(),
     })
@@ -221,6 +221,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
 
     project.technicalLeads = technicalLeadsMongoIds;
     project.projectOwner = projectOwnerMongoId;
+    project.createdBy = projectOwnerMongoId;
 
     return project;
   });
@@ -231,13 +232,13 @@ function generateUsersPerProject(userData, contatctProfileData) {
     const projectOwnerUserIndex = mongoUsers.findIndex(
       ({ _id }) => _id === projectOwner
     );
-    mongoUsers[projectOwnerUserIndex]["projectOwner"].push(_id);
+    mongoUsers[projectOwnerUserIndex]["privateCloudProjectOwner"].push(_id);
 
     technicalLeads.forEach((technicalLead) => {
       const technicalLeadUserIndex = mongoUsers.findIndex(
         ({ _id }) => _id === technicalLead
       );
-      mongoUsers[technicalLeadUserIndex]["technicalLead"].push(_id);
+      mongoUsers[technicalLeadUserIndex]["privateCloudTechnicalLead"].push(_id);
     });
   });
 

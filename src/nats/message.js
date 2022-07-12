@@ -3,7 +3,7 @@
 function message(action, projectOwner, technicalLeads, requestedProject) {
   const {
     _id, // Use ID from actaul project, not from requested project
-    licensePlate,
+    licencePlate,
     name,
     description,
     ministry,
@@ -37,7 +37,7 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
     { quotaName: "test", quota: testQuota },
   ].map((quota) => ({
     // namespace_id: 21,
-    name: `${licensePlate}-${quotaName}`,
+    name: `${licencePlate}-${quotaName}`,
     quota: {
       cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
       memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,

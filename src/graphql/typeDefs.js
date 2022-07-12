@@ -213,7 +213,7 @@ const typeDefs = gql`
     developmentQuota: Quota!
     toolsQuota: Quota!
     requestHistory: [Request]!
-    licensePlate: ID!
+    licencePlate: ID!
   }
 
   input ProjectMetaDataInput {

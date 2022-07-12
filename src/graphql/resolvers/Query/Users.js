@@ -2,8 +2,9 @@ function users(_, __, { dataSources: { users } }) {
   return users.getAll();
 }
 
-function user(_, { id }, { dataSources: { users } }) {
-  return users.findOneById(id);
+async function user(_, { id }, { dataSources: { users } }) {
+  console.log(await users.findOneById(id))
+  return await users.findOneById(id);
 }
 
 function usersByIds(_, { ids }, { dataSources: { users } }) {

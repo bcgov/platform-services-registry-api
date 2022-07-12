@@ -40,7 +40,7 @@ async function customPrivateCloudProjectRequest(
     metaData.technicalLeads
   );
 
-  const licensePlate = generateNamespacePrefix()
+  const licencePlate = generateNamespacePrefix()
 
   const defaultQuota = {
     cpuRequests: 0.5,
@@ -57,7 +57,7 @@ async function customPrivateCloudProjectRequest(
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
-    licensePlate,
+    licencePlate,
     productionQuota: {...defaultQuota, ...productionQuota},
     developmentQuota: {...defaultQuota, ...developmentQuota},
     testQuota: {...defaultQuota, ...testQuota},

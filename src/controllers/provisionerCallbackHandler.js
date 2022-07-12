@@ -16,7 +16,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
   } = dataSources;
 
   try {
-    const { prefix: licensePlate } = req.body;
+    const { prefix: licencePlate } = req.body;
 
     privateCloudActiveRequests.initialize();
     privateCloudRequestedProjects.initialize();
@@ -26,7 +26,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
 
     const [requestedProject] = await privateCloudRequestedProjects.findByFields(
       {
-        licensePlate,
+        licencePlate,
       }
     );
 

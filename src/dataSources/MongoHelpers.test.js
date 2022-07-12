@@ -115,20 +115,6 @@ describe("Mongo Helpers", () => {
     expect(allUsers.map((user) => user._id)).toEqual([oamarId, billyId]);
   });
 
-  // it("Should update specified fields in document with specified values ", async () => {
-  //   const { acknowledged } = await users.updateFieldsById(oamarId, {
-  //     email: "a.kanji@gamil.com",
-  //     firstName: "Aahil",
-  //   });
-
-  //   console.log(acknowledged)
-
-  //   const user = await users.findOneById(oamarId);
-  //   expect(acknowledged).toBe(true);
-  //   expect(user.email).toEqual("a.kanji@gamil.com");
-  //   expect(user.firstName).toEqual("Aahil");
-  // });
-
   it("Should delete a document", async () => {
     const { acknowledged } = await users.removeDocument(oamarId);
     const allUsers = await users.getAll();
