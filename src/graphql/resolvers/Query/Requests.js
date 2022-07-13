@@ -63,7 +63,7 @@ async function userPrivateCloudActiveRequests(
   { dataSources: { privateCloudActiveRequests, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const user = await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
 
   return privateCloudActiveRequests.findManyByIds(
     user.privateCloudActiveRequests
@@ -76,7 +76,7 @@ async function userPrivateCloudActiveRequest(
   { dataSources: { privateCloudActiveRequests, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const user = await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
 
   return user.privateCloudActiveRequests.includes(requestId)
     ? privateCloudActiveRequests.findOneById(requestId)
@@ -88,7 +88,7 @@ async function userPrivateCloudActiveRequestsById(
   { dataSources: { privateCloudActiveRequests, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const user = await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
 
   const activeRequests = user.privateCloudActiveRequests;
 

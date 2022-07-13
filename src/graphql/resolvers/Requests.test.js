@@ -262,7 +262,6 @@ describe("Mongo Helpers", () => {
       await collections.privateCloudProjects.findOneById(id)
     ).toBeUndefined();
     expect(requestedProject.technicalLeads[0].firstName).toBe("Alexander");
-    console.log(requestedProject.technicalLeads)
     expect(requestedProject.technicalLeads[1].lastName).toBe("Li");
   });
 

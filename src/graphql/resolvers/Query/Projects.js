@@ -39,8 +39,9 @@ async function userPrivateCloudProjects(
   { dataSources: { privateCloudProjects, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const { privateCloudTechnicalLead, privateCloudProjectOwner } =
-    await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
+
+  const { privateCloudTechnicalLead, privateCloudProjectOwner } = user;
 
   return privateCloudProjects.findManyByIds([
     ...privateCloudProjectOwner,
@@ -54,7 +55,7 @@ async function userPrivateCloudProject(
   { dataSources: { privateCloudProjects, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const user = await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
 
   const project = privateCloudProjects.findOneById(projectId);
 
@@ -70,7 +71,7 @@ async function userPrivateCloudProjectsById(
   { dataSources: { privateCloudProjects, users }, kauth }
 ) {
   const { email } = kauth.accessToken.content;
-  const user = await users.findByFields({ email })[0];
+  const [user] = await users.findByFields({ email });
 
   const projects = privateCloudProjects.findManyByIds(projectIds);
 
