@@ -299,7 +299,7 @@ const typeDefs = gql`
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject! @hasRole(role: "admin")
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]! 
-    userPrivateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+    userPrivateCloudProjects: [PrivateCloudProject!]! @auth 
     userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
     userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
 
@@ -319,7 +319,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    signUp(input: SignUpInput!): User! @auth
+    signUp(input: SignUpInput): User! @auth
     # userUpdateSelf()
 
     createUser(input: CreateUserInput!): User! @hasRole(role: "admin")
