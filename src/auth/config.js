@@ -8,7 +8,7 @@ function configureKeycloak(app, graphqlPath) {
     "auth-server-url": process.env.AUTH_SERVER_URL,
     "ssl-required": "external",
     resource: process.env.AUTH_RESOURCE,
-    "verify-token-audience": true,
+    "verify-token-audience": false,
     credentials: {
       secret: process.env.AUTH_SECRET,
     },
