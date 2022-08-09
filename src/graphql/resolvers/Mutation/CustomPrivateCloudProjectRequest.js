@@ -105,6 +105,7 @@ async function customPrivateCloudProjectRequest(
         TCEmail: metaData.technicalLeads[0].email,
         setCluster: metaData.cluster,
         licensePlate: requestedProject.licensePlate,
+        showStandardFooterMessage: true,
       }),
     to: [projectOwner, ...technicalLeads].map(({ email }) => email),
     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
