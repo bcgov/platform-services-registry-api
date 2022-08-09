@@ -2,6 +2,7 @@ import RequestDecision from "../enum/RequestDecision";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
+import swig from "swig";
 
 async function makePrivateCloudRequestDecision(
   _,

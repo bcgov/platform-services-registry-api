@@ -8,7 +8,7 @@
       cellspacing="0"
       role="presentation"
       style="
-      background-color: #003366;
+      background-color: #003366
       border-bottom: 2px solid #fcba19;
       width: 100%;
       "
@@ -548,7 +548,7 @@
                                                                               line-height: 21px;
                                                                               "
                                                                               >
-                                                                              Provisioned
+                                                                              Complete
                                                                            </p>
                                                                         </td>
                                                                      </tr>
@@ -576,7 +576,41 @@
                                                                   line-height: 100%;
                                                                   "
                                                                   >
-                                                                  {{ consoleButtons }}
+                                                                  <tr>
+                                                                     <td
+                                                                        align="center"
+                                                                        bgcolor="#ff6f6f"
+                                                                        role="presentation"
+                                                                        style="
+                                                                        background-color: #fcba19;
+                                                                        border: none;
+                                                                        border-radius: 5px;
+                                                                        cursor: auto;
+                                                                        padding: 10px 25px;
+                                                                        "
+                                                                        valign="middle"
+                                                                        >
+                                                                        <a
+                                                                           href="https://console.apps.silver.devops.gov.bc.ca/"
+                                                                           style="
+                                                                           background: #fcba19;
+                                                                           color: #ffffff;
+                                                                           font-family: Oxygen,
+                                                                           Helvetica neue, sans-serif;
+                                                                           font-size: 14px;
+                                                                           font-weight: 400;
+                                                                           line-height: 21px;
+                                                                           margin: 0;
+                                                                           text-decoration: none;
+                                                                           text-transform: none;
+                                                                           "
+                                                                           rel="noopener"
+                                                                           target="_blank"
+                                                                           >
+                                                                        Login to console
+                                                                        </a>
+                                                                     </td>
+                                                                  </tr>
                                                                </table>
                                                             </td>
                                                          </tr>
@@ -600,10 +634,11 @@
                                                                   "
                                                                   >
                                                                   <p>
-                                                                     Your request for a new namespace set
-                                                                     is done; logon to the cluster
+                                                                     Your request for a editType edit is
+                                                                     complete; Login to the cluster
                                                                      console and you'll see all four
-                                                                     namespaces. If you have any more
+                                                                     namespaces with the new editType
+                                                                     values. If you have any more
                                                                      questions reach out to the Platform
                                                                      Services team in the #devops-how-to
                                                                      channel in RocketChat.
@@ -801,10 +836,13 @@
                                                                                        line-height: 1.5;
                                                                                        text-align: center;
                                                                                        "
-                                                                                       href="mailto:{{ POEmail }}"
+                                                                                       href="mailto:POEmail"
                                                                                        >{{ POEmail }}</a
                                                                                        >
                                                                                  </td>
+                                                                              </tr>
+                                                                              <tr>
+                                                                                 <td>{{ POGitHub }}</td>
                                                                               </tr>
                                                                            </table>
                                                                         </td>
@@ -837,10 +875,13 @@
                                                                                        line-height: 1.5;
                                                                                        text-align: center;
                                                                                        "
-                                                                                       href="mailto:{{ TCEmail }}"
+                                                                                       href="mailto:TCEmail"
                                                                                        >{{ TCEmail }}</a
                                                                                        >
                                                                                  </td>
+                                                                              </tr>
+                                                                              <tr>
+                                                                                 <td>{{ TCGitHub }}</td>
                                                                               </tr>
                                                                            </table>
                                                                         </td>
@@ -957,7 +998,27 @@
                                                             width="50%"
                                                             style="padding: 10px"
                                                             >
-                                                         {{ setCluster }}
+                                                         setCluster
+                                                         </td>
+                                                         </tr>
+                                                         <tr
+                                                            style="
+                                                            border-bottom: #777777
+                                                            1px solid;
+                                                            padding: 15px;
+                                                            "
+                                                            >
+                                                         <td
+                                                            width="50%"
+                                                            style="padding: 10px"
+                                                            >
+                                                         Quota Size:
+                                                         </td>
+                                                         <td
+                                                            width="50%"
+                                                            style="padding: 10px"
+                                                            >
+                                                         {{ quotaSize }}
                                                          </td>
                                                          </tr>
                                                          <tr
@@ -1139,10 +1200,5 @@
       >
    channel.
    {% endblock %}
-</div>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 {% endblock %}
