@@ -101,7 +101,18 @@ async function customPrivateCloudProjectEditRequest(
 
   chesService.send({
     bodyType: "html",
-    body: `<div style="color: blue">Edit request made: ${RequestDecision.APPROVE}</div>`,
+    body: swig.renderFile('./src/ches/templates/request-approved.html', {
+      projectName: metaData.name,
+      POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+      POEmail: projectOwner.email,
+      TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
+      TCEmail: metaData.technicalLeads[0].email,
+      setCluster: metaData.cluster,
+      licensePlate: requestedProject.licensePlate,
+      showStandardFooterMessage: false, // show "love, Platform services" instead
+      productMinistry: "PRODUCT MINISTRY",
+      productDescription: "Product DESCRIPTION",
+    }),
     to: [projectOwner, ...technicalLeads].map(({ email }) => email),
     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
     subject: `**profile.name** OCP 4 Project Set`,
