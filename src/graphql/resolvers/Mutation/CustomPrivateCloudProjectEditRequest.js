@@ -101,7 +101,7 @@ async function customPrivateCloudProjectEditRequest(
 
   chesService.send({
     bodyType: "html",
-    body: swig.renderFile('./src/ches/templates/request-approved.html', {
+    body: swig.renderFile('./src/ches/templates/edit-request-done.html', {
       projectName: metaData.name,
       POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
       POEmail: projectOwner.email,
