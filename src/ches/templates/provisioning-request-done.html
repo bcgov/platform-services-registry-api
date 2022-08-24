@@ -588,8 +588,9 @@
                                                                            style="padding: 10px"
                                                                            >
                                                                            <table>
+                                                                              {% for technicalLead in technicalLeads %}
                                                                               <tr>
-                                                                                 <td>{{ TCName }}</td>
+                                                                                 <td>{{ technicalLead.firstName }} {{ technicalLead.lastName }}</td>
                                                                               </tr>
                                                                               <tr>
                                                                                  <td>
@@ -605,10 +606,11 @@
                                                                                        text-align: center;
                                                                                        "
                                                                                        href="mailto:{{ TCEmail }}"
-                                                                                       >{{ TCEmail }}</a
+                                                                                       >{{ technicalLead.email }}</a
                                                                                        >
                                                                                  </td>
                                                                               </tr>
+                                                                              {% endfor %}
                                                                            </table>
                                                                         </td>
                                                                      </tr>

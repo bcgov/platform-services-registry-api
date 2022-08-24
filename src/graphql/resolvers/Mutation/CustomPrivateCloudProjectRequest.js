@@ -91,7 +91,7 @@ async function customPrivateCloudProjectRequest(
       privateCloudActiveRequests: request._id,
     }
   );
-
+    console.log(JSON.stringify(projectOwner));
   chesService.send({
     bodyType: "html",
     body:
@@ -99,10 +99,9 @@ async function customPrivateCloudProjectRequest(
         // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
         // humanActionComment: 'HUMAN ACTION COMMENT HERE',
         projectName: metaData.name,
-        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+        POName: projectOwner.firstName +  " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
-        TCEmail: metaData.technicalLeads[0].email,
+        technicalLeads: technicalLeads,
         setCluster: metaData.cluster,
         licensePlate: requestedProject.licensePlate,
         showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
