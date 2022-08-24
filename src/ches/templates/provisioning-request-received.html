@@ -565,27 +565,29 @@
                                                                           style="padding: 10px"
                                                                           >
                                                                           <table>
-                                                                             <tr>
-                                                                                <td>{{ TCName }}</td>
-                                                                             </tr>
-                                                                             <tr>
-                                                                                <td>
-                                                                                   <a
-                                                                                      style="
-                                                                                      color: #003366;
-                                                                                      font-family: Oxygen,
-                                                                                      Helvetica neue,
-                                                                                      sans-serif;
-                                                                                      font-size: 14px;
-                                                                                      font-style: bold;
-                                                                                      line-height: 1.5;
-                                                                                      text-align: center;
-                                                                                      "
-                                                                                      href="mailto:TCEmail"
-                                                                                      >{{ TCEmail }}</a
-                                                                                      >
-                                                                                </td>
-                                                                             </tr>
+                                                                           {% for technicalLead in technicalLeads %}
+                                                                           <tr>
+                                                                              <td>{{ technicalLead.firstName }} {{ technicalLead.lastName }}</td>
+                                                                           </tr>
+                                                                           <tr>
+                                                                              <td>
+                                                                                 <a
+                                                                                    style="
+                                                                                    color: #003366;
+                                                                                    font-family: Oxygen,
+                                                                                    Helvetica neue,
+                                                                                    sans-serif;
+                                                                                    font-size: 14px;
+                                                                                    font-style: bold;
+                                                                                    line-height: 1.5;
+                                                                                    text-align: center;
+                                                                                    "
+                                                                                    href="mailto:{{ technicalLead.email }}"
+                                                                                    >{{ technicalLead.email }}</a
+                                                                                    >
+                                                                              </td>
+                                                                           </tr>
+                                                                           {% endfor %}
                                                                           </table>
                                                                        </td>
                                                                     </tr>

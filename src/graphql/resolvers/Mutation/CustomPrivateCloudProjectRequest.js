@@ -91,7 +91,7 @@ async function customPrivateCloudProjectRequest(
       privateCloudActiveRequests: request._id,
     }
   );
-    console.log(JSON.stringify(projectOwner));
+  
   chesService.send({
     bodyType: "html",
     body:

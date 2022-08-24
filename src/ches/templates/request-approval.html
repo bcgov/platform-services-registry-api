@@ -425,8 +425,9 @@
                                                                            style="padding: 10px"
                                                                            >
                                                                            <table>
+                                                                              {% for technicalLead in technicalLeads %}
                                                                               <tr>
-                                                                                 <td>{{ TCName }}</td>
+                                                                                 <td>{{ technicalLead.firstName }} {{ technicalLead.lastName }}</td>
                                                                               </tr>
                                                                               <tr>
                                                                                  <td>
@@ -441,14 +442,13 @@
                                                                                        line-height: 1.5;
                                                                                        text-align: center;
                                                                                        "
-                                                                                       href="mailto:TCEmail"
-                                                                                       >{{ TCEmail }}</a
+                                                                                       href="mailto:{{ technicalLead.email }}"
+                                                                                       >{{ technicalLead.email }}</a
                                                                                        >
                                                                                  </td>
                                                                               </tr>
-                                                                              <tr>
-                                                                                 <td>{{ TCGitHub }}</td>
-                                                                              </tr>
+                                                                              {% endfor %}
+                                                                              <!-- td>{{ TCGitHub }}</td -->
                                                                            </table>
                                                                         </td>
                                                                      </tr>
