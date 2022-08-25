@@ -103,10 +103,9 @@ async function customPrivateCloudProjectEditRequest(
     bodyType: "html",
     body: swig.renderFile('./src/ches/templates/edit-request-done.html', {
       projectName: metaData.name,
-      POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+      POName: projectOwner.firstName +  " " + projectOwner.lastName,
       POEmail: projectOwner.email,
-      TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
-      TCEmail: metaData.technicalLeads[0].email,
+      technicalLeads: technicalLeads,
       setCluster: metaData.cluster,
       licensePlate: requestedProject.licensePlate,
       showStandardFooterMessage: false, // show "love, Platform services" instead

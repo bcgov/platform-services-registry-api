@@ -76,10 +76,9 @@ async function makePrivateCloudRequestDecision(
       body: swig.renderFile('./src/ches/templates/request-rejected.html', {
         humanActionComment: 'HUMAN ACTION COMMENT HERE',
         projectName: metaData.name,
-        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+        POName: projectOwner.firstName +  " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
-        TCEmail: metaData.technicalLeads[0].email,
+        technicalLeads: technicalLeads,
         showStandardFooterMessage: true, 
       }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
