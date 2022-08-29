@@ -2,6 +2,7 @@ import RequestDecision from "../enum/RequestDecision";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
+import swig from "swig";
 
 async function makePrivateCloudRequestDecision(
   _,
@@ -72,7 +73,14 @@ async function makePrivateCloudRequestDecision(
 
     chesService.send({
       bodyType: "html",
-      body: `<div style="color: blue">Request Decision made: ${RequestDecision.REJECT}</div>`,
+      body: swig.renderFile('./src/ches/templates/request-rejected.html', {
+        humanActionComment: 'HUMAN ACTION COMMENT HERE',
+        projectName: metaData.name,
+        POName: projectOwner.firstName +  " " + projectOwner.lastName,
+        POEmail: projectOwner.email,
+        technicalLeads: technicalLeads,
+        showStandardFooterMessage: true, 
+      }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
@@ -96,7 +104,18 @@ async function makePrivateCloudRequestDecision(
 
     chesService.send({
       bodyType: "html",
-      body: `<div style="color: blue" >Project decision made</div>`,
+      body: swig.renderFile('./src/ches/templates/request-approved.html', {
+        projectName: metaData.name,
+        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+        POEmail: projectOwner.email,
+        TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
+        TCEmail: metaData.technicalLeads[0].email,
+        setCluster: metaData.cluster,
+        licensePlate: requestedProject.licensePlate,
+        showStandardFooterMessage: false, // show "love, Platform services" instead
+        productMinistry: "PRODUCT MINISTRY",
+        productDescription: "Product DESCRIPTION",
+      }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,

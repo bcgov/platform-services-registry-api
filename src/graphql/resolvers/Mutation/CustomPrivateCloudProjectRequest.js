@@ -3,6 +3,7 @@ import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix"
+import swig from "swig";
 
 async function customPrivateCloudProjectRequest(
   _,
@@ -90,10 +91,21 @@ async function customPrivateCloudProjectRequest(
       privateCloudActiveRequests: request._id,
     }
   );
-
+  
   chesService.send({
     bodyType: "html",
-    body: `<div style="color: blue" >Project Created</div>`,
+    body:
+      swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
+        // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+        // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+        projectName: metaData.name,
+        POName: projectOwner.firstName +  " " + projectOwner.lastName,
+        POEmail: projectOwner.email,
+        technicalLeads: technicalLeads,
+        setCluster: metaData.cluster,
+        licensePlate: requestedProject.licensePlate,
+        showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
+      }),
     to: [projectOwner, ...technicalLeads].map(({ email }) => email),
     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
     subject: `**profile.name** OCP 4 Project Set`,

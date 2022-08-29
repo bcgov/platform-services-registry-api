@@ -31,7 +31,8 @@
     "keycloak-connect-graphql": "^0.7.0",
     "mongodb": "^4.4.1",
     "nats": "^2.6.1",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "swig": "^1.4.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",

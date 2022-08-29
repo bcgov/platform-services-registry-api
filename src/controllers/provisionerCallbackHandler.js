@@ -4,6 +4,7 @@ import ProjectStatus from "../graphql/resolvers/enum/ProjectStatus";
 
 import { getDatasources } from "../dataSources";
 import chesService from "../ches";
+import swig from "swig";
 
 export default async function provisionerCallbackHandler(req, res, next) {
   const dataSources = await getDatasources();
@@ -109,7 +110,18 @@ export default async function provisionerCallbackHandler(req, res, next) {
 
     chesService.send({
       bodyType: "html",
-      body: `<div style="color: blue">Project provisioned</div>`,
+      body: swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
+        // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+        // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+        projectName: metaData.name,
+        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+        POEmail: projectOwner.email,
+        TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
+        TCEmail: metaData.technicalLeads[0].email,
+        setCluster: metaData.cluster,
+        licensePlate: requestedProject.licensePlate,
+        showStandardFooterMessage: true,
+      }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
