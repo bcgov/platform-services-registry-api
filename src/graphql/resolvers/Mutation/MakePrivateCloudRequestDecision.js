@@ -39,10 +39,11 @@ async function makePrivateCloudRequestDecision(
         )
       : await privateCloudProjects.findOneById(request.project);
 
-  const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } = requestedProject;
+  const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } =
+    requestedProject;
 
-  const projectOwner = await users.findOneById(projectOwnerId)
-  const technicalLeads = await users.findManyByIds(technicalLeadsIds)
+  const projectOwner = await users.findOneById(projectOwnerId);
+  const technicalLeads = await users.findManyByIds(technicalLeadsIds);
 
   if (input.decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
@@ -73,13 +74,13 @@ async function makePrivateCloudRequestDecision(
 
     chesService.send({
       bodyType: "html",
-      body: swig.renderFile('./src/ches/templates/request-rejected.html', {
-        humanActionComment: 'HUMAN ACTION COMMENT HERE',
-        projectName: metaData.name,
-        POName: projectOwner.firstName +  " " + projectOwner.lastName,
+      body: swig.renderFile("./src/ches/templates/request-rejected.html", {
+        humanActionComment: "HUMAN ACTION COMMENT HERE",
+        projectName: requestedProject.name,
+        POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: technicalLeads,
-        showStandardFooterMessage: true, 
+        technicalLeads: technicalLeads.map(({ email }) => email),
+        showStandardFooterMessage: true,
       }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
@@ -104,13 +105,13 @@ async function makePrivateCloudRequestDecision(
 
     chesService.send({
       bodyType: "html",
-      body: swig.renderFile('./src/ches/templates/request-approved.html', {
-        projectName: metaData.name,
+      body: swig.renderFile("./src/ches/templates/request-approval.html", {
+        projectName: requestedProject.name,
         POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
         POEmail: projectOwner.email,
-        TCName: `${metaData.technicalLeads[0].firstName} ${metaData.technicalLeads[0].lastName}`,
-        TCEmail: metaData.technicalLeads[0].email,
-        setCluster: metaData.cluster,
+        TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
+        TCEmail: technicalLeads[0].email,
+        setCluster: requestedProject.cluster,
         licensePlate: requestedProject.licensePlate,
         showStandardFooterMessage: false, // show "love, Platform services" instead
         productMinistry: "PRODUCT MINISTRY",
@@ -122,7 +123,12 @@ async function makePrivateCloudRequestDecision(
       // subject: `${profile.name} OCP 4 Project Set`,
     });
 
-    await sendNatsMessage(request.type, projectOwner, technicalLeads, requestedProject);
+    await sendNatsMessage(
+      request.type,
+      projectOwner.email,
+      technicalLeads.map(({ email }) => email),
+      requestedProject
+    );
 
     return RequestStatus.APPROVED;
   }

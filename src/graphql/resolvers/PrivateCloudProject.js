@@ -6,6 +6,17 @@ const PrivateCloudProject = {
     users.findOneById(projectOwner),
   technicalLeads: ({ technicalLeads }, _, { dataSources: { users } }) =>
     users.findManyByIds(technicalLeads),
+  activeRequest: async (
+    { _id },
+    _,
+    { dataSources: { privateCloudActiveRequests } }
+  ) => {
+    const [request] = await privateCloudActiveRequests.findByFields({
+      project: _id,
+    });
+
+    return request;
+  },
   requestHistory: (
     { requestHistory },
     _,

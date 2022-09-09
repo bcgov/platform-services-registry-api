@@ -176,6 +176,7 @@ const typeDefs = gql`
     technicalLeads: [User]!
     ministry: Ministry!
     requestHistory: [Request]
+    activeRequest: Request
   }
 
   # NOTE!!: It is very possible that PublicCloudProject is too general,
@@ -194,11 +195,13 @@ const typeDefs = gql`
     ministry: Ministry!
     PublicCloudPlatform: PublicCloudPlatform!
     requestHistory: [Request]
+    activeRequest: Request
   }
 
   type PrivateCloudProject implements Project {
     id: ID!
     name: String!
+    licencePlate: ID!
     archived: Boolean!
     created: DateTime!
     createdBy: User!
@@ -213,8 +216,8 @@ const typeDefs = gql`
     developmentQuota: Quota!
     toolsQuota: Quota!
     requestHistory: [Request]!
-    licencePlate: ID!
-  }
+    activeRequest: Request
+   }
 
   input ProjectMetaDataInput {
     name: String!

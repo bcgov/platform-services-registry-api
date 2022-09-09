@@ -3,10 +3,19 @@ import RequestDecision from "../enum/RequestDecision";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
+import { ObjectId } from "mongodb";
+import swig from "swig";
 
 async function customPrivateCloudProjectEditRequest(
   _,
-  { projectId, metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  {
+    projectId,
+    metaData,
+    productionQuota,
+    developmentQuota,
+    testQuota,
+    toolsQuota,
+  },
   {
     dataSources: {
       users,
@@ -15,7 +24,7 @@ async function customPrivateCloudProjectEditRequest(
       privateCloudProjects,
     },
     kauth,
-    chesService
+    chesService,
   }
 ) {
   const { email, resource_access } = kauth.accessToken.content;
@@ -23,14 +32,14 @@ async function customPrivateCloudProjectEditRequest(
     roles: [],
   };
   const [user] = await users.findByFields({ email });
-  const {_id, ...project} = await privateCloudProjects.findOneById(projectId);
+  const { _id, ...project } = await privateCloudProjects.findOneById(projectId);
 
   if (project === undefined) {
     throw Error("Project does not exist");
   }
 
-  if (await privateCloudActiveRequests.findOneById(projectId) !== undefined) {
-    throw Error("There already exists an active request for this project")
+  if ((await privateCloudActiveRequests.findOneById(projectId)) !== undefined) {
+    throw Error("There already exists an active request for this project");
   }
 
   // Only an Admin or a PO or TL of this project can request to edit it
@@ -72,7 +81,7 @@ async function customPrivateCloudProjectEditRequest(
     active: true,
     created: new Date(),
     decisionDate: null,
-    project: projectId,
+    project: ObjectId(projectId),
     requestedProject: requestedProject._id,
   };
 
@@ -85,7 +94,12 @@ async function customPrivateCloudProjectEditRequest(
   ) {
     requestBody.status = RequestStatus.APPROVED;
 
-    await sendNatsMessage();
+    await sendNatsMessage(
+      requestBody.type,
+      projectOwner.email,
+      technicalLeads.map(({ email }) => email),
+      requestedProject
+    );
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
@@ -101,9 +115,9 @@ async function customPrivateCloudProjectEditRequest(
 
   chesService.send({
     bodyType: "html",
-    body: swig.renderFile('./src/ches/templates/edit-request-done.html', {
+    body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
       projectName: metaData.name,
-      POName: projectOwner.firstName +  " " + projectOwner.lastName,
+      POName: projectOwner.firstName + " " + projectOwner.lastName,
       POEmail: projectOwner.email,
       technicalLeads: technicalLeads,
       setCluster: metaData.cluster,

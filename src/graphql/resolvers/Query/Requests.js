@@ -78,10 +78,17 @@ async function userPrivateCloudActiveRequest(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  return user.privateCloudActiveRequests.includes(requestId)
-    ? privateCloudActiveRequests.findOneById(requestId)
-    : undefined;
+  if (
+    !user.privateCloudActiveRequests
+      .map((id) => id.toString())
+      .includes(requestId)
+  ) {
+    throw Error("User is not a member of this project");
+  }
+
+  return privateCloudActiveRequests.findOneById(requestId);
 }
+
 async function userPrivateCloudActiveRequestsById(
   _,
   { requestIds },
