@@ -217,7 +217,7 @@ const typeDefs = gql`
     toolsQuota: Quota!
     requestHistory: [Request]!
     activeRequest: Request
-   }
+  }
 
   input ProjectMetaDataInput {
     name: String!
@@ -248,11 +248,6 @@ const typeDefs = gql`
     decisionDate: DateTime
     project: Project
     requestedProject: Project!
-  }
-
-  input MakeRequestDecisionInput {
-    decision: RequestDecision!
-    request: ID!
   }
 
   type User {
@@ -300,23 +295,27 @@ const typeDefs = gql`
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
-    privateCloudProject(projectId: ID!): PrivateCloudProject! @hasRole(role: "admin")
-    privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]! 
-    userPrivateCloudProjects: [PrivateCloudProject!]! @auth 
+    privateCloudProject(projectId: ID!): PrivateCloudProject!
+      @hasRole(role: "admin")
+    privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
+    userPrivateCloudProjects: [PrivateCloudProject!]! @auth
     userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
     userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
 
     privateCloudRequests: [Request!]! @hasRole(role: "admin")
     privateCloudActiveRequest(requestId: ID!): Request! @hasRole(role: "admin")
     privateCloudActiveRequests: [Request!]! @hasRole(role: "admin")
-    privateCloudActiveRequestsById(requestIds: ID!):[Request!]! @hasRole(role: "admin")
+    privateCloudActiveRequestsById(requestIds: ID!): [Request!]!
+      @hasRole(role: "admin")
     userPrivateCloudActiveRequests: [Request!]! @auth
     userPrivateCloudActiveRequest(requestId: ID!): Request! @auth
     userPrivateCloudActiveRequestsById(requestIds: [ID!]): Request! @auth
 
-    privateCloudArchivedRequest(requestId: ID!): Request! @hasRole(role: "admin")
+    privateCloudArchivedRequest(requestId: ID!): Request!
+      @hasRole(role: "admin")
     privateCloudArchivedRequests: [Request!]! @hasRole(role: "admin")
-    privateCloudArchivedRequestsById(requestIds: ID!):[Request!]! @hasRole(role: "admin")
+    privateCloudArchivedRequestsById(requestIds: ID!): [Request!]!
+      @hasRole(role: "admin")
 
     # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
   }
@@ -363,8 +362,9 @@ const typeDefs = gql`
     ): Request! @nonNullInput @auth
 
     makePrivateCloudRequestDecision(
-      input: MakeRequestDecisionInput!
-    ): RequestStatus! @hasRole(role: "admin")
+      requestId: ID!
+      decision: RequestDecision!
+     ): RequestStatus! @hasRole(role: "admin")
   }
 `;
 

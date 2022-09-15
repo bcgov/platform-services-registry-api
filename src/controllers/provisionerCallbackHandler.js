@@ -117,7 +117,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
         POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
         POEmail: projectOwner.email,
         TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-        TCEmail: mtechnicalLeads[0].email,
+        TCEmail: technicalLeads[0].email,
         setCluster: requestedProject.cluster,
         licensePlate: requestedProject.licensePlate,
         showStandardFooterMessage: true,

@@ -6,7 +6,7 @@ import swig from "swig";
 
 async function makePrivateCloudRequestDecision(
   _,
-  { input },
+  { requestId, decision },
   {
     dataSources: {
       privateCloudArchivedRequests,
@@ -22,7 +22,7 @@ async function makePrivateCloudRequestDecision(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  const request = await privateCloudActiveRequests.findOneById(input.request);
+  const request = await privateCloudActiveRequests.findOneById(requestId);
 
   if (!request) {
     throw Error("active request does not exist");
@@ -45,7 +45,7 @@ async function makePrivateCloudRequestDecision(
   const projectOwner = await users.findOneById(projectOwnerId);
   const technicalLeads = await users.findManyByIds(technicalLeadsIds);
 
-  if (input.decision === RequestDecision.REJECT) {
+  if (decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
 
     // Move request to archived requests collection
@@ -89,7 +89,7 @@ async function makePrivateCloudRequestDecision(
     });
 
     return RequestStatus.REJECTED;
-  } else if (input.decision === RequestDecision.APPROVE) {
+  } else if (decision === RequestDecision.APPROVE) {
     const { acknowledged } = await privateCloudActiveRequests.updateFieldsById(
       request._id,
       {
@@ -103,25 +103,29 @@ async function makePrivateCloudRequestDecision(
       throw new Error("Unable to update request");
     }
 
-    chesService.send({
-      bodyType: "html",
-      body: swig.renderFile("./src/ches/templates/request-approval.html", {
-        projectName: requestedProject.name,
-        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-        POEmail: projectOwner.email,
-        TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-        TCEmail: technicalLeads[0].email,
-        setCluster: requestedProject.cluster,
-        licensePlate: requestedProject.licensePlate,
-        showStandardFooterMessage: false, // show "love, Platform services" instead
-        productMinistry: "PRODUCT MINISTRY",
-        productDescription: "Product DESCRIPTION",
-      }),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
-      // subject: `${profile.name} OCP 4 Project Set`,
-    });
+    try {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile("./src/ches/templates/request-approval.html", {
+          projectName: requestedProject.name,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+          POEmail: projectOwner.email,
+          TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
+          TCEmail: technicalLeads[0].email,
+          setCluster: requestedProject.cluster,
+          licensePlate: requestedProject.licensePlate,
+          showStandardFooterMessage: false, // show "love, Platform services" instead
+          productMinistry: "PRODUCT MINISTRY",
+          productDescription: "Product DESCRIPTION",
+        }),
+        to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: `**profile.name** OCP 4 Project Set`,
+        // subject: `${profile.name} OCP 4 Project Set`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     await sendNatsMessage(
       request.type,

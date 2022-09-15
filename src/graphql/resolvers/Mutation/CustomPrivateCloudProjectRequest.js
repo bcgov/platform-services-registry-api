@@ -2,7 +2,7 @@ import ProjectStatus from "../enum/ProjectStatus";
 import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
-import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix"
+import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix";
 import swig from "swig";
 
 async function customPrivateCloudProjectRequest(
@@ -36,12 +36,23 @@ async function customPrivateCloudProjectRequest(
   const [projectOwner] = await users.findByFields({
     email: metaData.projectOwner,
   });
+
+  if (!projectOwner) throw new Error("Project owner not found");
+
   const technicalLeads = await users.findManyByFieldValues(
     "email",
     metaData.technicalLeads
   );
 
-  const licencePlate = generateNamespacePrefix()
+  if( (new Set(metaData.technicalLeads)).size !== metaData.technicalLeads.length) {
+    throw new Error("Duplicate technical leads found");
+  }
+
+  if (technicalLeads.length !== metaData.technicalLeads.length) {
+    throw new Error("One or more technical leads not found");
+  }
+
+  const licencePlate = generateNamespacePrefix();
 
   const defaultQuota = {
     cpuRequests: 0.5,
@@ -54,15 +65,15 @@ async function customPrivateCloudProjectRequest(
     storageCapacity: 1,
     storagePvcCount: 60,
     snapshotCount: 5,
-  }
+  };
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
     licencePlate,
-    productionQuota: {...defaultQuota, ...productionQuota},
-    developmentQuota: {...defaultQuota, ...developmentQuota},
-    testQuota: {...defaultQuota, ...testQuota},
-    toolsQuota: {...defaultQuota, ...toolsQuota},
+    productionQuota: { ...defaultQuota, ...productionQuota },
+    developmentQuota: { ...defaultQuota, ...developmentQuota },
+    testQuota: { ...defaultQuota, ...testQuota },
+    toolsQuota: { ...defaultQuota, ...toolsQuota },
     createdBy: user._id,
     archived: false,
     created: new Date(),
@@ -82,7 +93,7 @@ async function customPrivateCloudProjectRequest(
     decisionDate: null,
     project: null,
     requestedProject: requestedProject._id,
-    decisionMaker: null
+    decisionMaker: null,
   });
 
   await users.addElementToManyDocumentsArray(
@@ -91,26 +102,32 @@ async function customPrivateCloudProjectRequest(
       privateCloudActiveRequests: request._id,
     }
   );
-  
-  chesService.send({
-    bodyType: "html",
-    body:
-      swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
-        // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-        // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-        projectName: metaData.name,
-        POName: projectOwner.firstName +  " " + projectOwner.lastName,
-        POEmail: projectOwner.email,
-        technicalLeads: technicalLeads,
-        setCluster: metaData.cluster,
-        licensePlate: requestedProject.licensePlate,
-        showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
-      }),
-    to: [projectOwner, ...technicalLeads].map(({ email }) => email),
-    from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-    subject: `**profile.name** OCP 4 Project Set`,
-    // subject: `${profile.name} OCP 4 Project Set`,
-  });
+
+  try {
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/templates/provisioning-request-done.html",
+        {
+          // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+          // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+          projectName: metaData.name,
+          POName: projectOwner.firstName + " " + projectOwner.lastName,
+          POEmail: projectOwner.email,
+          technicalLeads: technicalLeads,
+          setCluster: metaData.cluster,
+          licensePlate: requestedProject.licensePlate,
+          showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
+        }
+      ),
+      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `**profile.name** OCP 4 Project Set`,
+      // subject: `${profile.name} OCP 4 Project Set`,
+    });
+  } catch (error) {
+    console.log("CHES Error: ", error);
+  }
 
   return request;
 }

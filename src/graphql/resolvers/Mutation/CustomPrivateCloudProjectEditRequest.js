@@ -113,25 +113,28 @@ async function customPrivateCloudProjectEditRequest(
     }
   );
 
-  chesService.send({
-    bodyType: "html",
-    body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
-      projectName: metaData.name,
-      POName: projectOwner.firstName + " " + projectOwner.lastName,
-      POEmail: projectOwner.email,
-      technicalLeads: technicalLeads,
-      setCluster: metaData.cluster,
-      licensePlate: requestedProject.licensePlate,
-      showStandardFooterMessage: false, // show "love, Platform services" instead
-      productMinistry: "PRODUCT MINISTRY",
-      productDescription: "Product DESCRIPTION",
-    }),
-    to: [projectOwner, ...technicalLeads].map(({ email }) => email),
-    from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-    subject: `**profile.name** OCP 4 Project Set`,
-    // subject: `${profile.name} OCP 4 Project Set`,
-  });
-
+  try {
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
+        projectName: metaData.name,
+        POName: projectOwner.firstName + " " + projectOwner.lastName,
+        POEmail: projectOwner.email,
+        technicalLeads: technicalLeads,
+        setCluster: metaData.cluster,
+        licensePlate: requestedProject.licensePlate,
+        showStandardFooterMessage: false, // show "love, Platform services" instead
+        productMinistry: "PRODUCT MINISTRY",
+        productDescription: "Product DESCRIPTION",
+      }),
+      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `**profile.name** OCP 4 Project Set`,
+      // subject: `${profile.name} OCP 4 Project Set`,
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return request;
 }
 
