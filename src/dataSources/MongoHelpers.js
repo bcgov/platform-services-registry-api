@@ -14,6 +14,10 @@ export default class MongoHelpers extends MongoDataSource {
     return this.collection.find().toArray();
   }
 
+  getAllPaginated(offset, limit) {
+    return this.collection.find().skip(offset).limit(limit).toArray();
+  }
+
   addElementToDocumentArray(id, set) {
     return this.collection.updateOne({ _id: id }, { $addToSet: set });
   }

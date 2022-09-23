@@ -116,25 +116,6 @@ const typeDefs = gql`
     STORAGE_512
   }
 
-  input QuotaInput {
-    cpu: DefaultCpuOptions
-    memory: DefaultMemoryOptions
-    storage: DefaultStorageOptions
-  }
-
-  input CustomQuotaInput {
-    cpuRequests: Float
-    cpuLimits: Float
-    memoryRequests: Int
-    memoryLimits: Int
-    storageBlock: Int
-    storageFile: Int
-    storageBackup: Int
-    storageCapacity: Int
-    storagePvcCount: Int
-    snapshotCount: Int
-  }
-
   type Quota {
     cpu: Cpu!
     memory: Memory!
@@ -164,6 +145,15 @@ const typeDefs = gql`
     count: Int!
   }
 
+  interface Pagination {
+    count: Int!
+  }
+
+  type ProjectPagination implements Pagination {
+    count: Int!
+    projects: [Project!]!
+  }
+
   interface Project {
     id: ID!
     name: String!
@@ -177,6 +167,7 @@ const typeDefs = gql`
     ministry: Ministry!
     requestHistory: [Request]
     activeRequest: Request
+    count: Int
   }
 
   # NOTE!!: It is very possible that PublicCloudProject is too general,
@@ -196,6 +187,7 @@ const typeDefs = gql`
     PublicCloudPlatform: PublicCloudPlatform!
     requestHistory: [Request]
     activeRequest: Request
+    count: Int
   }
 
   type PrivateCloudProject implements Project {
@@ -217,24 +209,7 @@ const typeDefs = gql`
     toolsQuota: Quota!
     requestHistory: [Request]!
     activeRequest: Request
-  }
-
-  input ProjectMetaDataInput {
-    name: String!
-    description: String!
-    projectOwner: EmailAddress!
-    technicalLeads: [EmailAddress!]!
-    ministry: Ministry!
-    cluster: Cluster!
-  }
-
-  input EditProjectMetaDataInput {
-    name: String
-    description: String
-    projectOwner: EmailAddress
-    technicalLeads: [EmailAddress!]
-    ministry: Ministry
-    cluster: Cluster
+    count: Int
   }
 
   type Request {
@@ -265,6 +240,24 @@ const typeDefs = gql`
     githubId: String!
   }
 
+  input ProjectMetaDataInput {
+    name: String!
+    description: String!
+    projectOwner: EmailAddress!
+    technicalLeads: [EmailAddress!]!
+    ministry: Ministry!
+    cluster: Cluster!
+  }
+
+  input EditProjectMetaDataInput {
+    name: String
+    description: String
+    projectOwner: EmailAddress
+    technicalLeads: [EmailAddress!]
+    ministry: Ministry
+    cluster: Cluster
+  }
+
   input CreateUserInput {
     firstName: String!
     lastName: String!
@@ -288,13 +281,35 @@ const typeDefs = gql`
     technicalLead: [ID!]
   }
 
+  input QuotaInput {
+    cpu: DefaultCpuOptions
+    memory: DefaultMemoryOptions
+    storage: DefaultStorageOptions
+  }
+
+  input CustomQuotaInput {
+    cpuRequests: Float
+    cpuLimits: Float
+    memoryRequests: Int
+    memoryLimits: Int
+    storageBlock: Int
+    storageFile: Int
+    storageBackup: Int
+    storageCapacity: Int
+    storagePvcCount: Int
+    snapshotCount: Int
+  }
+
   type Query {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
     me: User @auth
 
-    privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+    privateCloudProjects: [PrivateCloudProject!]!
+      @hasRole(role: "admin")
+    privateCloudProjectsPaginated(offset: Int, limit: Int): ProjectPagination!
+      @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
@@ -364,7 +379,7 @@ const typeDefs = gql`
     makePrivateCloudRequestDecision(
       requestId: ID!
       decision: RequestDecision!
-     ): RequestStatus! @hasRole(role: "admin")
+    ): RequestStatus! @hasRole(role: "admin")
   }
 `;
 

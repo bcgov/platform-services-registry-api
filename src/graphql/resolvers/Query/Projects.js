@@ -6,6 +6,17 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
+function privateCloudProjectsPaginated(
+  _,
+  { offset, limit },
+  { dataSources: { privateCloudProjects } }
+) {
+  return {
+    count: privateCloudProjects.collection.count(),
+    projects: privateCloudProjects.getAllPaginated(offset, limit),
+  };
+}
+
 function privateCloudProject(
   _,
   { projectId },
@@ -91,6 +102,7 @@ async function userPrivateCloudProjectsById(
 
 export {
   privateCloudProjects,
+  privateCloudProjectsPaginated,
   privateCloudProject,
   privateCloudProjectsById,
   userPrivateCloudProjects,
