@@ -8,12 +8,12 @@ function privateCloudProjects(
 
 function privateCloudProjectsPaginated(
   _,
-  { offset, limit },
+  { offset, limit, ministry = 'AG', search = 'test' },
   { dataSources: { privateCloudProjects } }
 ) {
   return {
     count: privateCloudProjects.collection.count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit),
+    projects: privateCloudProjects.getAllPaginated(offset, limit, ministry, search),
   };
 }
 
