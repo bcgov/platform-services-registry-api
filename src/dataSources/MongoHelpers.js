@@ -14,27 +14,41 @@ export default class MongoHelpers extends MongoDataSource {
     return this.collection.find().toArray();
   }
 
-  getAllPaginated(offset, limit, ministry, search) {
-
-    const searchQuery = {
-      $or: search && ministry ? [
-        { ministry: { $regex: ministry, $options: 'i' } },
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        {projectOwner: { firstName :{ $regex: search, $options: 'i'} }}
-      ] : ministry ? [
-        { ministry: { $regex: ministry, $options: 'i' } },
-      ] : search ? [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-      ] : [{ ministry: { $regex: '', $options: 'i' } },
-      { name: { $regex: '', $options: 'i' } },
-      { description: { $regex: '', $options: 'i' } },]
-    }
-    return this.collection.find(searchQuery).skip(offset).limit(limit).toArray();
+  getAllPaginated(offset, limit, ministry="AG", search="open", cluster=2) {    
+    
+    return this.collection.aggregate(
+      [
+        {
+          "$lookup": {
+            "from": "users",
+            "localField": "projectOwner",
+            "foreignField": "_id",
+            "as": "projectOwners"
+          }
+        },
+        {
+          "$unwind": "$projectOwners"
+        },
+        {
+          $match: {
+            $and: [
+              { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
+              { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },
+              {
+                $or: [
+                  { "projectOwners.firstName": { $regex: search?search:'', $options: 'i' } },
+                  { "projectOwners.lastName": { $regex: search?search:'', $options: 'i' } },
+                  { "projectOwners.email": { $regex: search?search:'', $options: 'i' } },
+                   { name: { $regex: search ? search : '', $options: 'i' } } ,
+                   { description: { $regex: search ? search : '', $options: 'i' } },
+                ]    
+              }
+            ]                 
+          }
+        },         
+      ]
+    ).skip(offset).limit(limit).toArray();
   }
-
- 
 
   addElementToDocumentArray(id, set) {
     return this.collection.updateOne({ _id: id }, { $addToSet: set });
