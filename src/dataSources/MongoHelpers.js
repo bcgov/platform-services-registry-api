@@ -14,8 +14,8 @@ export default class MongoHelpers extends MongoDataSource {
     return this.collection.find().toArray();
   }
 
-  getAllPaginated(offset, limit, ministry="AG", search="open", cluster=2) {    
-    
+  getAllPaginated(offset, limit, ministry, search, cluster) {
+
     return this.collection.aggregate(
       [
         {
@@ -30,22 +30,33 @@ export default class MongoHelpers extends MongoDataSource {
           "$unwind": "$projectOwners"
         },
         {
+          "$lookup": {
+            "from": "users",
+            "localField": "technicalLeads",
+            "foreignField": "_id",
+            "as": "projectTechLeads"
+          }
+        },   
+        {
           $match: {
             $and: [
               { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
               { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },
               {
                 $or: [
-                  { "projectOwners.firstName": { $regex: search?search:'', $options: 'i' } },
-                  { "projectOwners.lastName": { $regex: search?search:'', $options: 'i' } },
-                  { "projectOwners.email": { $regex: search?search:'', $options: 'i' } },
-                   { name: { $regex: search ? search : '', $options: 'i' } } ,
-                   { description: { $regex: search ? search : '', $options: 'i' } },
-                ]    
+                  { "projectOwners.firstName": { $regex: search ? search : '', $options: 'i' } },
+                  { "projectOwners.lastName": { $regex: search ? search : '', $options: 'i' } },
+                  { "projectOwners.email": { $regex: search ? search : '', $options: 'i' } },           
+                  {"$and":[{"projectTechLeads.firstName": { $regex: search ? search : '', $options: 'i' }}]},
+                  {"$and":[{"projectTechLeads.lasttName": { $regex: search ? search : '', $options: 'i' }}]},
+                  {"$and":[{"projectTechLeads.email": { $regex: search ? search : '', $options: 'i' }}]},
+                  { name: { $regex: search ? search : '', $options: 'i' } },
+                  { description: { $regex: search ? search : '', $options: 'i' } },                  
+                ]
               }
-            ]                 
+            ]
           }
-        },         
+        },
       ]
     ).skip(offset).limit(limit).toArray();
   }
