@@ -18,7 +18,7 @@ function privateCloudProjectsPaginated(
   }()
 
   return {
-    count: count,
+    count: ministry||cluster||search ? count : privateCloudProjects.collection.find().count(),
     projects: privateCloudProjects.getAllPaginated(offset, limit, ministry, cluster, search),
   };
 }
