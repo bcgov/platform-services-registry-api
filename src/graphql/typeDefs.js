@@ -237,7 +237,7 @@ const typeDefs = gql`
     privateCloudTechnicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
-    githubId: String!
+    githubId: String
   }
 
   input ProjectMetaDataInput {
@@ -304,6 +304,7 @@ const typeDefs = gql`
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
+    userByEmail(email: EmailAddress!): User! @auth
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]!
@@ -336,7 +337,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    signUp(input: SignUpInput): User! @auth
+    signUp: User! @auth
     # userUpdateSelf()
 
     createUser(input: CreateUserInput!): User! @hasRole(role: "admin")

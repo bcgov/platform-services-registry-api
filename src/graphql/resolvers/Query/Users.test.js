@@ -1,16 +1,12 @@
 import { ApolloServer } from "apollo-server";
 import { MongoClient } from "mongodb";
-import MongoHelpers from "../../dataSources/MongoHelpers";
+import MongoHelpers from "../../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "../../auth/transformers";
-import { applyDirectiveTransformers } from "../../graphql/transformers";
-
-
-
-import typeDefs from "../typeDefs";
-import resolvers from ".";
-import { usersByIds } from "./Query/Users";
+import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "../../../auth/transformers";
+import { applyDirectiveTransformers } from "../../../graphql/transformers";
+import resolvers from "../index";
+import typeDefs from "../../typeDefs";
 
 let signedUpUserId = "";
 
@@ -54,7 +50,7 @@ describe("User tests", () => {
               given_name: "Oamar",
               family_name: "Kanji",
             },
-            hasRole: () => true
+            hasRole: () => true,
           },
         },
       },

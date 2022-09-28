@@ -2,14 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "apollo-server";
 import { MongoClient } from "mongodb";
-import MongoHelpers from "../../dataSources/MongoHelpers";
+import MongoHelpers from "../../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { applyDirectiveTransformers } from "../../auth/transformers";
+import { applyDirectiveTransformers } from "../../../auth/transformers";
 import { ObjectId } from "mongodb";
-
-import typeDefs from "../typeDefs";
-import resolvers from ".";
+import typeDefs from "../../typeDefs";
+import resolvers from "../index";
 import { getResolveFn } from "nats/lib/nats-base-client/transport";
 
 // jest.mock("express-validator", () => ({
@@ -218,7 +217,10 @@ describe("Mongo Helpers", () => {
           description: "Test proj",
           projectOwner: "oamar.kanji@gov.bc.ca",
           ministry: "AGRI",
-          technicalLeads: ["billy.li@gov.bc.ca", "alexander.carmichael@gov.bc.ca"],
+          technicalLeads: [
+            "billy.li@gov.bc.ca",
+            "alexander.carmichael@gov.bc.ca",
+          ],
           cluster: "SILVER",
         },
         developmentQuota: {
