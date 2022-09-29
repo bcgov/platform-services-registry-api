@@ -309,7 +309,7 @@ const typeDefs = gql`
 
     privateCloudProjects: [PrivateCloudProject!]!
       @hasRole(role: "admin")
-    privateCloudProjectsPaginated(offset: Int, limit: Int, ministry: String, search: String ): ProjectPagination!
+    privateCloudProjectsPaginated(offset: Int, limit: Int, ministry: String, cluster: Int, search: String ): ProjectPagination!
       @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
