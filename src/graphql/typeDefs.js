@@ -237,7 +237,7 @@ const typeDefs = gql`
     privateCloudTechnicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
-    githubId: String!
+    githubId: String
   }
 
   input ProjectMetaDataInput {
@@ -304,11 +304,12 @@ const typeDefs = gql`
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
+    userByEmail(email: EmailAddress!): User! @auth
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]!
       @hasRole(role: "admin")
-    privateCloudProjectsPaginated(offset: Int, limit: Int, ministry: String, search: String ): ProjectPagination!
+    privateCloudProjectsPaginated(offset: Int, limit: Int, ministry: String, cluster: Int, search: String ): ProjectPagination!
       @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
@@ -336,7 +337,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    signUp(input: SignUpInput): User! @auth
+    signUp: User! @auth
     # userUpdateSelf()
 
     createUser(input: CreateUserInput!): User! @hasRole(role: "admin")

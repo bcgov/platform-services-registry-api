@@ -8,12 +8,18 @@ function privateCloudProjects(
 
 function privateCloudProjectsPaginated(
   _,
-  { offset, limit, ministry = 'AG', search = 'test' },
+  { offset, limit, ministry, cluster, search },
   { dataSources: { privateCloudProjects } }
 ) {
+  const count = async function () {
+    const limit = await privateCloudProjects.collection.find().count()
+    const serachArr = await privateCloudProjects.getAllPaginated(0, limit, ministry, cluster, search)
+    return serachArr.length
+  }()
+
   return {
-    count: privateCloudProjects.collection.count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit, ministry, search),
+    count: ministry||cluster||search ? count : privateCloudProjects.collection.find().count(),
+    projects: privateCloudProjects.getAllPaginated(offset, limit, ministry, cluster, search),
   };
 }
 
