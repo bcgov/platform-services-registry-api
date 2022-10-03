@@ -31,7 +31,14 @@ export default class MongoHelpers extends MongoDataSource {
       { name: { $regex: '', $options: 'i' } },
       { description: { $regex: '', $options: 'i' } },]
     }
-    return this.collection.find(searchQuery).skip(offset).limit(limit).toArray();
+    return this.collection.find( { 
+      // {
+      //   $or:  [         
+      //     {[projectOwner.firstName] : "David" }
+      //   ]
+      // }
+       "projectOwner.firstName": { $regex: "Olena" , $options: 'i' } }
+      ).skip(offset).limit(limit).toArray();
   }
 
  
