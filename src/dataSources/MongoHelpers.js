@@ -20,8 +20,8 @@ export default class MongoHelpers extends MongoDataSource {
     ministry,
     cluster,
     search,
-    sortField = "created",
-    sortOrder = 1
+    // sortField ,
+    // sortOrder = 1
   ) {
     return search ? this.collection.aggregate([
       {
@@ -63,7 +63,7 @@ export default class MongoHelpers extends MongoDataSource {
           ]
         }
       },
-      { $sort: { [sortField]: sortOrder } },
+      // { $sort: { [sortField]: sortOrder } },
     ]
     ).skip(offset).limit(limit).toArray()
       :
@@ -73,7 +73,9 @@ export default class MongoHelpers extends MongoDataSource {
             { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
             { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },]
         }
-      ).sort({ [sortField]: sortOrder }).skip(offset).limit(limit).toArray()
+      )
+      // .sort({ [sortField]: sortOrder })
+      .skip(offset).limit(limit).toArray()
   }
 
   addElementToDocumentArray(id, set) {
