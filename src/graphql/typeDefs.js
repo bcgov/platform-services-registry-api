@@ -318,8 +318,8 @@ type Sort {
       ministry: String, 
       cluster: Int,
       search: String,
-      # sortField: String,
-      # sortOrder: Int,
+      sortField: String,
+      sortOrder: Int,
        ): ProjectPagination!
       @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
