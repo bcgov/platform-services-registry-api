@@ -8,7 +8,7 @@ function privateCloudProjects(
 
 function privateCloudProjectsPaginated(
   _,
-  { offset, limit, ministry, cluster, search, sort = { created: -1 } },
+  { offset, limit, ministry, cluster, search, sortField, sortOrder },
   { dataSources: { privateCloudProjects } }
 ) {
 
@@ -20,7 +20,15 @@ function privateCloudProjectsPaginated(
 
   return {
     count: ministry || cluster || search ? count : privateCloudProjects.collection.find().count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit, ministry, cluster, search, sort),
+    projects: privateCloudProjects.getAllPaginated(
+      offset,
+      limit,
+      ministry,
+      cluster,
+      search,
+      sortField,
+      sortOrder
+    ),
   };
 }
 
