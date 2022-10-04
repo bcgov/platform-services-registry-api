@@ -40,7 +40,7 @@ export default class MongoHelpers extends MongoDataSource {
         $match: {
           $and: [
             { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
-            { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },
+            { "cluster": cluster ? cluster : { $gt: 0, $lt: 7 } },
             {
               $or: [
                 { "projectOwners.firstName": { $regex: search, $options: 'i' } },
@@ -63,7 +63,7 @@ export default class MongoHelpers extends MongoDataSource {
         {
           $and: [
             { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
-            { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },]
+            { "cluster": cluster ? cluster : { $gt: 0, $lt: 7 } },]
         }
       ).skip(offset).limit(limit).toArray()
   }
