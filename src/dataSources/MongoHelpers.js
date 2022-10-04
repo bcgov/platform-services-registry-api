@@ -61,7 +61,7 @@ export default class MongoHelpers extends MongoDataSource {
 
   async createMany(data) {
     const { insertedIds } = await this.collection.insertMany(data);
-    console.log(insertedIds)
+    console.log(insertedIds);
 
     return this.findManyByIds(insertedIds);
   }

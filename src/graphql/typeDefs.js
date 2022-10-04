@@ -304,11 +304,10 @@ const typeDefs = gql`
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
-    userByEmail(email: EmailAddress!): User! @auth
+    userByEmail(email: EmailAddress!): User
     me: User @auth
 
-    privateCloudProjects: [PrivateCloudProject!]!
-      @hasRole(role: "admin")
+    privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
     privateCloudProjectsPaginated(offset: Int, limit: Int): ProjectPagination!
       @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
@@ -340,7 +339,7 @@ const typeDefs = gql`
     signUp: User! @auth
     # userUpdateSelf()
 
-    createUser(input: CreateUserInput!): User! @hasRole(role: "admin")
+    createUser(input: CreateUserInput!): User!
     # updateUser(input: UpdateUserInput!): User!
 
     customPrivateCloudProjectRequest(
