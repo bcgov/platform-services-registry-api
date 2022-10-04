@@ -15,7 +15,6 @@ export default class MongoHelpers extends MongoDataSource {
   }
 
   getAllPaginated(offset, limit, ministry, cluster, search, sort) {
-console.log(sort)
     return search ? this.collection.aggregate([
       {
         "$lookup": {
