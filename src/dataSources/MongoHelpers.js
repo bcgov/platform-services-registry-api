@@ -14,8 +14,8 @@ export default class MongoHelpers extends MongoDataSource {
     return this.collection.find().toArray();
   }
 
-  getAllPaginated(offset, limit, ministry, cluster, search) {
-
+  getAllPaginated(offset, limit, ministry, cluster, search, sort) {
+console.log(sort)
     return search ? this.collection.aggregate([
       {
         "$lookup": {
@@ -56,6 +56,7 @@ export default class MongoHelpers extends MongoDataSource {
           ]
         }
       },
+      {$sort:sort},
     ]
     ).skip(offset).limit(limit).toArray()
       :
@@ -65,7 +66,7 @@ export default class MongoHelpers extends MongoDataSource {
             { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
             { "cluster": cluster ? cluster : { $gt: 0, $lt: 4 } },]
         }
-      ).skip(offset).limit(limit).toArray()
+      ).sort(sort).skip(offset).limit(limit).toArray()
   }
 
   addElementToDocumentArray(id, set) {

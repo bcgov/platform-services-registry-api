@@ -300,6 +300,9 @@ const typeDefs = gql`
     snapshotCount: Int
   }
 
+type Sort {
+  String: Int
+}
   type Query {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
@@ -309,7 +312,13 @@ const typeDefs = gql`
 
     privateCloudProjects: [PrivateCloudProject!]!
       @hasRole(role: "admin")
-    privateCloudProjectsPaginated(offset: Int, limit: Int, ministry: String, cluster: Int, search: String ): ProjectPagination!
+    privateCloudProjectsPaginated(
+      offset: Int, 
+      limit: Int, 
+      ministry: String, 
+      cluster: Int,
+       search: String
+       ): ProjectPagination!
       @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
