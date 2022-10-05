@@ -1,3 +1,5 @@
+const { Parser } = require('json2csv');
+
 function privateCloudProjects(
   _,
   __,
@@ -31,6 +33,27 @@ function privateCloudProjectsPaginated(
     ),
   };
 }
+
+function privateCloudProjectsCSV(
+  _,
+  { fields = ['name', 'description'], ministry, cluster, search, sortField, sortOrder },
+  { dataSources: { privateCloudProjects } }
+) {
+
+  const opts = { fields };
+  const count = async function () {
+    const limit = await privateCloudProjects.collection.count()
+    const serachArr = await privateCloudProjects.getAllPaginated(0, limit, ministry, cluster, search, sortField, sortOrder)
+    const parser = new Parser(opts);
+    const csv = await parser.parse(serachArr)
+    return csv
+  }()
+
+  return {
+    csv: count,
+  };
+}
+
 
 function privateCloudProject(
   _,
@@ -123,4 +146,5 @@ export {
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
+  privateCloudProjectsCSV
 };
