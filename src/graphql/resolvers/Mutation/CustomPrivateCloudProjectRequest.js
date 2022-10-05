@@ -44,7 +44,9 @@ async function customPrivateCloudProjectRequest(
     metaData.technicalLeads
   );
 
-  if( (new Set(metaData.technicalLeads)).size !== metaData.technicalLeads.length) {
+  if (
+    new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
+  ) {
     throw new Error("Duplicate technical leads found");
   }
 
