@@ -51,6 +51,7 @@ export default class MongoHelpers extends MongoDataSource {
                 { "$and": [{ "projectTechLeads.email": { $regex: search, $options: 'i' } }] },
                 { name: { $regex: search, $options: 'i' } },
                 { description: { $regex: search, $options: 'i' } },
+                { licencePlate: { $regex: search, $options: 'i' } },
               ]
             }
           ]
