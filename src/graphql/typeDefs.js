@@ -307,7 +307,7 @@ type Sort {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
     usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
-    userByEmail(email: EmailAddress!): User! @auth
+    userByEmail(email: EmailAddress!): User
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]!
@@ -351,7 +351,7 @@ type Sort {
     signUp: User! @auth
     # userUpdateSelf()
 
-    createUser(input: CreateUserInput!): User! @hasRole(role: "admin")
+    createUser(input: CreateUserInput!): User!
     # updateUser(input: UpdateUserInput!): User!
 
     customPrivateCloudProjectRequest(

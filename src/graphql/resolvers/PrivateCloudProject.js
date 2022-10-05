@@ -122,7 +122,8 @@ const PrivateCloudProject = {
     },
     snapshot: { count: snapshotCount },
   }),
-  count: (_, __, { dataSources: { privateCloudProjects } }) => privateCloudProjects.collection.count()
+  count: (_, __, { dataSources: { privateCloudProjects } }) =>
+    privateCloudProjects.collection.count(),
 };
 
 export default PrivateCloudProject;

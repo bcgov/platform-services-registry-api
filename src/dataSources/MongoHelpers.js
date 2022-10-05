@@ -113,9 +113,16 @@ export default class MongoHelpers extends MongoDataSource {
     );
   }
 
-  async create(user) {
-    const { insertedId } = await this.collection.insertOne(user);
+  async create(data) {
+    const { insertedId } = await this.collection.insertOne(data);
     return this.findOneById(insertedId);
+  }
+
+  async createMany(data) {
+    const { insertedIds } = await this.collection.insertMany(data);
+    console.log(insertedIds);
+
+    return this.findManyByIds(insertedIds);
   }
 
   removeDocument(id) {
