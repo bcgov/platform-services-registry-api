@@ -64,9 +64,41 @@ async function customPrivateCloudProjectEditRequest(
   const projectOwner = await users.findOneById(project.projectOwner);
   const technicalLeads = await users.findManyByIds(project.technicalLeads);
 
+  if (
+    !roles.includes("admin") &&
+    ![metaData.projectOwner, ...metaData.technicalLeads].includes(email)
+  ) {
+    throw new Error(
+      "User must assign themselves as a project owner or technical lead"
+    );
+  }
+
+  const [requestedProjectOwner] = await users.findByFields({
+    email: metaData.projectOwner,
+  });
+
+  if (!requestedProjectOwner) throw new Error("Project owner not found");
+
+  const requestedTechnicalLeads = await users.findManyByFieldValues(
+    "email",
+    metaData.technicalLeads
+  );
+
+  if (
+    new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
+  ) {
+    throw new Error("Duplicate technical leads found");
+  }
+
+  if (requestedTechnicalLeads.length !== metaData.technicalLeads.length) {
+    throw new Error("One or more technical leads not found");
+  }
+
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,
     ...metaData,
+    projectOwner: requestedProjectOwner._id,
+    technicalLeads: requestedTechnicalLeads.map(({ _id }) => _id),
     productionQuota: { ...project.productionQuota, ...productionQuota },
     developmentQuota: { ...project.developmentQuota, ...developmentQuota },
     testQuota: { ...project.testQuota, ...testQuota },

@@ -71,6 +71,8 @@ async function customPrivateCloudProjectRequest(
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
+    projectOwner: projectOwner._id,
+    technicalLeads: technicalLeads.map(({ _id }) => _id),
     licencePlate,
     productionQuota: { ...defaultQuota, ...productionQuota },
     developmentQuota: { ...defaultQuota, ...developmentQuota },
@@ -81,8 +83,6 @@ async function customPrivateCloudProjectRequest(
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
-    projectOwner: projectOwner._id,
-    technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
   const request = await privateCloudActiveRequests.create({
