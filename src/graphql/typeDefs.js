@@ -155,7 +155,7 @@ const typeDefs = gql`
   }
 
   type ProjectCSV  {
-    csv: String
+    csv: String!
   }
 
   interface Project {
@@ -327,8 +327,7 @@ type Sort {
        ): ProjectPagination!
       @hasRole(role: "admin")
       privateCloudProjectsCSV(
-      offset: Int, 
-      limit: Int, 
+     fields:[String], 
       ministry: String, 
       cluster: Int,
       search: String,

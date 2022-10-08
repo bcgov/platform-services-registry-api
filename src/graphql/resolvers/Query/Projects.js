@@ -36,7 +36,7 @@ function privateCloudProjectsPaginated(
 
 function privateCloudProjectsCSV(
   _,
-  { fields = ['name', 'description'], ministry, cluster, search, sortField, sortOrder },
+  { fields = ['name', 'description'], ministry, cluster, search='olena', sortField, sortOrder },
   { dataSources: { privateCloudProjects } }
 ) {
 
@@ -46,6 +46,7 @@ function privateCloudProjectsCSV(
     const serachArr = await privateCloudProjects.getAllPaginated(0, limit, ministry, cluster, search, sortField, sortOrder)
     const parser = new Parser(opts);
     const csv = await parser.parse(serachArr)
+ 
     return csv
   }()
 
