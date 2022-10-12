@@ -36,23 +36,27 @@ function privateCloudProjectsPaginated(
 
 function privateCloudProjectsCSV(
   _,
-  { fields = ['name', 'description'], ministry, cluster, search='olena', sortField, sortOrder },
+  { fields = ['name'], ministry, cluster, search},
   { dataSources: { privateCloudProjects } }
 ) {
 
   const opts = { fields };
-  const count = async function () {
-    const limit = await privateCloudProjects.collection.count()
-    const serachArr = await privateCloudProjects.getAllPaginated(0, limit, ministry, cluster, search, sortField, sortOrder)
+  const csvFile = async function () {
+    const serachArr = await privateCloudProjects.getProjectsFiltered( ministry, cluster, search)
     const parser = new Parser(opts);
-    const csv = await parser.parse(serachArr)
- 
+    const csv = await parser.parse(serachArr) 
     return csv
   }()
 
   return {
-    csv: count,
+    csv: csvFile,
+    projects: privateCloudProjects.getProjectsFiltered(
+      ministry,
+      cluster,
+      search,
+    ),
   };
+ 
 }
 
 

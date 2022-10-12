@@ -155,7 +155,8 @@ const typeDefs = gql`
   }
 
   type ProjectCSV  {
-    csv: String!
+    csv: String!,
+    projects: [Project!]!
   }
 
   interface Project {
