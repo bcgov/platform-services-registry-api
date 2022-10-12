@@ -300,9 +300,16 @@ const typeDefs = gql`
     snapshotCount: Int
   }
 
-type Sort {
-  String: Int
-}
+  input FilterPrivateCloudProjectsInput {
+    ministry: Ministry
+    cluster: Cluster
+  }
+
+  enum SortOrder {
+    ASCENDING
+    DESCENDING
+  }
+
   type Query {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
@@ -310,18 +317,15 @@ type Sort {
     userByEmail(email: EmailAddress!): User
     me: User @auth
 
-    privateCloudProjects: [PrivateCloudProject!]!
-      @hasRole(role: "admin")
+    privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
     privateCloudProjectsPaginated(
-      offset: Int, 
-      limit: Int, 
-      ministry: String, 
-      cluster: Int,
-      search: String,
-      sortField: String,
-      sortOrder: Int,
-       ): ProjectPagination!
-      @hasRole(role: "admin")
+      offset: Int!
+      limit: Int!
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+      sort: String
+      sortOrder: SortOrder
+    ): ProjectPagination! @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!

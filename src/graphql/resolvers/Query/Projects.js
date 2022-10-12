@@ -6,29 +6,28 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
-function privateCloudProjectsPaginated(
+async function privateCloudProjectsPaginated(
   _,
-  { offset, limit, ministry, cluster, search, sortField, sortOrder },
+  { offset, limit, filter, search, sort, sortOrder },
   { dataSources: { privateCloudProjects } }
 ) {
+  const paginatedProjects = await privateCloudProjects.getPaginated(
+    offset,
+    limit,
+    filter,
+    search,
+    sort,
+    sortOrder
+  );
 
-  const count = async function () {
-    const limit = await privateCloudProjects.collection.find().count()
-    const serachArr = await privateCloudProjects.getAllPaginated(0, limit, ministry, cluster, search)
-    return serachArr.length
-  }()
+  const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+    filter,
+    search
+  );
 
   return {
-    count: ministry || cluster || search ? count : privateCloudProjects.collection.find().count(),
-    projects: privateCloudProjects.getAllPaginated(
-      offset,
-      limit,
-      ministry,
-      cluster,
-      search,
-      sortField,
-      sortOrder
-    ),
+    count: allProjects.length,
+    projects: paginatedProjects,
   };
 }
 

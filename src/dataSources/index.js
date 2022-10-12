@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import MongoHelpers from "./MongoHelpers";
+import PrivateCloudProjects from "./PrivateCloudProjects";
 
 let db = null;
 let client = null;
@@ -13,7 +14,7 @@ async function getDatasources() {
 
   const dataSources = {
     users: new MongoHelpers(db.collection("users")),
-    privateCloudProjects: new MongoHelpers(
+    privateCloudProjects: new PrivateCloudProjects(
       db.collection("privateCloudProjects")
     ),
     privateCloudActiveRequests: new MongoHelpers(
