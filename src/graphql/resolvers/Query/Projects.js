@@ -1,5 +1,3 @@
-const { Parser } = require('json2csv');
-
 function privateCloudProjects(
   _,
   __,
@@ -36,27 +34,17 @@ function privateCloudProjectsPaginated(
 
 function privateCloudProjectsCSV(
   _,
-  { fields = ['name'], ministry, cluster, search},
+  { ministry, cluster, search },
   { dataSources: { privateCloudProjects } }
 ) {
-
-  const opts = { fields };
-  const csvFile = async function () {
-    const serachArr = await privateCloudProjects.getProjectsFiltered( ministry, cluster, search)
-    const parser = new Parser(opts);
-    const csv = await parser.parse(serachArr) 
-    return csv
-  }()
-
   return {
-    csv: csvFile,
     projects: privateCloudProjects.getProjectsFiltered(
       ministry,
       cluster,
       search,
     ),
   };
- 
+
 }
 
 
