@@ -1,6 +1,6 @@
 import MongoHelpers from "./MongoHelpers";
 
-const searchParams = ( ministry, cluster, search) => {
+const searchParams = (ministry, cluster, search) => {
   return [
     {
       "$lookup": {
@@ -49,58 +49,36 @@ export default class PrivateCloudProjects extends MongoHelpers {
   getPaginated(offset, limit, filter, search, sort, sortOrder = 1) {
     const { ministry, cluster } = filter || {};
 
-    if (search) {
-      return this.collection
-        .aggregate(searchParams(ministry, cluster, search))
-        .toArray();
-    }
-
-    return this.collection
-      .find({
+    return (search ? this.collection.aggregate(searchParams(ministry, cluster, search))
+      : this.collection.find({
         $and: [
           { ministry: { $regex: ministry ? ministry : "", $options: "i" } },
           { cluster: cluster ? cluster : { $gt: 0, $lt: 8 } },
         ],
-      })
-      .sort({ [sort]: sortOrder })
-      .skip(offset)
-      .limit(limit)
-      .toArray();
+      })).sort({ [sort]: sortOrder }).skip(offset).limit(limit).toArray();
   }
 
-  getProjectsFiltered(    
+  getProjectsFiltered(
     filter,
     search
-    ) {
-      const { ministry, cluster } = filter || {};
-      return search ? this.collection.aggregate(searchParams(ministry, cluster, search)).toArray()
-        :
-        this.collection.find(
-          {
-            $and: [
-              { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
-              { "cluster": cluster ? cluster : { $gt: 0, $lt: 8 } },]
-          }
-        ).toArray()
+  ) {
+    const { ministry, cluster } = filter || {};
+    return (search ? this.collection.aggregate(searchParams(ministry, cluster, search))
+      : this.collection.find({
+        $and: [
+          { "ministry": { $regex: ministry ? ministry : '', $options: 'i' } },
+          { "cluster": cluster ? cluster : { $gt: 0, $lt: 8 } },]
+      })).toArray()
   }
 
   getFilteredSearchSorted(filter, search, sort, sortOrder = 1) {
     const { ministry, cluster } = filter || {};
-
-    if (search) {
-      return this.collection
-        .aggregate(searchParams(ministry, cluster, search))
-        .toArray();
-    }
-
-    return this.collection
-      .find({
+    return (search ? this.collection.aggregate(searchParams(ministry, cluster, search))
+      : this.collection.find({
         $and: [
           { ministry: { $regex: ministry ? ministry : "", $options: "i" } },
           { cluster: cluster ? cluster : { $gt: 0, $lt: 8 } },
         ],
-      })
-      .sort({ [sort]: sortOrder })
-      .toArray();
+      })).sort({ [sort]: sortOrder }).toArray();
   }
 }
