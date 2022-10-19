@@ -4,6 +4,7 @@ import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix";
 import swig from "swig";
+import Cluster from "../enum/Cluster";
 
 async function customPrivateCloudProjectRequest(
   _,
@@ -71,8 +72,6 @@ async function customPrivateCloudProjectRequest(
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
-    projectOwner: projectOwner._id,
-    technicalLeads: technicalLeads.map(({ _id }) => _id),
     licencePlate,
     productionQuota: { ...defaultQuota, ...productionQuota },
     developmentQuota: { ...defaultQuota, ...developmentQuota },
@@ -83,6 +82,8 @@ async function customPrivateCloudProjectRequest(
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
+    projectOwner: projectOwner._id,
+    technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
   const request = await privateCloudActiveRequests.create({
@@ -109,22 +110,25 @@ async function customPrivateCloudProjectRequest(
     chesService.send({
       bodyType: "html",
       body: swig.renderFile(
-        "./src/ches/templates/provisioning-request-done.html",
+        "./src/ches/templates/request-approval.html",
         {
           // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
           // humanActionComment: 'HUMAN ACTION COMMENT HERE',
           projectName: metaData.name,
           POName: projectOwner.firstName + " " + projectOwner.lastName,
           POEmail: projectOwner.email,
+          POGitHub: projectOwner.githubId,
           technicalLeads: technicalLeads,
-          setCluster: metaData.cluster,
-          licensePlate: requestedProject.licensePlate,
-          showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
+          setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
+          productMinistry:requestedProject.ministry,
+          productDescription:requestedProject.description,
+          licencePlate: requestedProject.licencePlate,
+          showStandardFooterMessage: false, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
+      subject: `${metaData.name} OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
     });
   } catch (error) {
