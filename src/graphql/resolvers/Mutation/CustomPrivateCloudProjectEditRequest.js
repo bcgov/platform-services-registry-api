@@ -77,28 +77,38 @@ async function customPrivateCloudProjectEditRequest(
     email: metaData.projectOwner,
   });
 
-  if (!requestedProjectOwner) throw new Error("Project owner not found");
+  if (projectOwner in metaData && !requestedProjectOwner)
+    throw new Error("Project owner not found");
 
   const requestedTechnicalLeads = await users.findManyByFieldValues(
     "email",
-    metaData.technicalLeads
+    metaData.technicalLeads || []
   );
 
-  if (
-    new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
-  ) {
-    throw new Error("Duplicate technical leads found");
-  }
+  if (technicalLeads in metaData) {
+    if (
+      new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
+    ) {
+      throw new Error("Duplicate technical leads found");
+    }
 
-  if (requestedTechnicalLeads.length !== metaData.technicalLeads.length) {
-    throw new Error("One or more technical leads not found");
+    if (
+      metaData &&
+      requestedTechnicalLeads.length !== metaData.technicalLeads.length
+    ) {
+      throw new Error("One or more technical leads not found");
+    }
   }
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,
     ...metaData,
-    projectOwner: requestedProjectOwner._id,
-    technicalLeads: requestedTechnicalLeads.map(({ _id }) => _id),
+    projectOwner: requestedProjectOwner
+      ? requestedProjectOwner._id
+      : project.projectOwner,
+    technicalLeads: requestedTechnicalLeads
+      ? requestedTechnicalLeads.map(({ _id }) => _id)
+      : project.technicalLeads,
     productionQuota: { ...project.productionQuota, ...productionQuota },
     developmentQuota: { ...project.developmentQuota, ...developmentQuota },
     testQuota: { ...project.testQuota, ...testQuota },
@@ -139,7 +149,14 @@ async function customPrivateCloudProjectEditRequest(
   const request = await privateCloudActiveRequests.create(requestBody);
 
   await users.addElementToManyDocumentsArray(
-    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    [
+      projectOwner,
+      requestedProjectOwner,
+      ...requestedTechnicalLeads,
+      ...technicalLeads,
+    ]
+      .filter(Boolean)
+      .map(({ _id }) => _id),
     {
       privateCloudActiveRequests: request._id,
     }
