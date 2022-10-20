@@ -3,6 +3,7 @@ import RequestStatus from "../enum/RequestStatus";
 import RequestType from "../enum/RequestType";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
 import swig from "swig";
+import Cluster from "../enum/Cluster";
 
 async function makePrivateCloudRequestDecision(
   _,
@@ -72,22 +73,25 @@ async function makePrivateCloudRequestDecision(
       { privateCloudActiveRequests: request._id }
     );
 
-    chesService.send({
+    try{
+      chesService.send({
       bodyType: "html",
       body: swig.renderFile("./src/ches/templates/request-rejected.html", {
-        humanActionComment: "HUMAN ACTION COMMENT HERE",
+        humanActionComment: "",
         projectName: requestedProject.name,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: technicalLeads.map(({ email }) => email),
+        technicalLeads: technicalLeads,
         showStandardFooterMessage: true,
       }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
+      subject: `${requestedProject.name} OCP 4 Project Rejected`,
       // subject: `${profile.name} OCP 4 Project Set`,
     });
-
+  } catch (error) {
+    console.log(error);
+  }
     return RequestStatus.REJECTED;
   } else if (decision === RequestDecision.APPROVE) {
     const { acknowledged } = await privateCloudActiveRequests.updateFieldsById(
@@ -106,21 +110,21 @@ async function makePrivateCloudRequestDecision(
     try {
       chesService.send({
         bodyType: "html",
-        body: swig.renderFile("./src/ches/templates/request-approval.html", {
+        body: swig.renderFile("./src/ches/templates/provisioning-request-done.html", {
           projectName: requestedProject.name,
           POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-          TCEmail: technicalLeads[0].email,
-          setCluster: requestedProject.cluster,
-          licensePlate: requestedProject.licensePlate,
-          showStandardFooterMessage: false, // show "love, Platform services" instead
-          productMinistry: "PRODUCT MINISTRY",
-          productDescription: "Product DESCRIPTION",
+          technicalLeads: technicalLeads,
+          setCluster: Object.entries(Cluster).filter(item => item[1] === requestedProject.cluster)[0][0],
+          licencePlate: requestedProject.licencePlate,
+          showStandardFooterMessage: true, // show "love, Platform services" instead
+          // productMinistry: "PRODUCT MINISTRY",
+          // productDescription: "Product DESCRIPTION",
+          humanActionComment:''
         }),
         to: [projectOwner, ...technicalLeads].map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: `**profile.name** OCP 4 Project Set`,
+        subject: `${requestedProject.name} OCP 4 Project Approved`,
         // subject: `${profile.name} OCP 4 Project Set`,
       });
     } catch (error) {
