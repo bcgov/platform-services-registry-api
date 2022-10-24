@@ -108,7 +108,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       }
     );
 
-    chesService.send({
+    try {chesService.send({
       bodyType: "html",
       body: swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
         // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
@@ -116,17 +116,22 @@ export default async function provisionerCallbackHandler(req, res, next) {
         projectName: requestedProject.name,
         POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
         POEmail: projectOwner.email,
-        TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-        TCEmail: technicalLeads[0].email,
-        setCluster: requestedProject.cluster,
-        licensePlate: requestedProject.licensePlate,
-        showStandardFooterMessage: true,
+        technicalLeads: technicalLeads,
+        setCluster: Object.entries(Cluster).filter(item => item[1] === requestedProject.cluster)[0][0],
+        licencePlate: requestedProject.licencePlate,
+        showStandardFooterMessage: true, // show "love, Platform services" instead
+        // productMinistry: "PRODUCT MINISTRY",
+        // productDescription: "Product DESCRIPTION",
+        humanActionComment:''
       }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
+      subject: `${requestedProject.name} OCP 4 Project Approved`,
       // subject: `${profile.name} OCP 4 Project Set`,
-    });
+    })} catch (error) {
+    console.log(error);
+  }
+  
     res.status(200).end();
   } catch (err) {
     console.log(err);

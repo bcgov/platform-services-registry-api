@@ -171,7 +171,7 @@ async function customPrivateCloudProjectEditRequest(
         POEmail: projectOwner.email,
         technicalLeads: technicalLeads,
         setCluster: metaData.cluster,
-        licensePlate: requestedProject.licensePlate,
+        licencePlate: requestedProject.licencePlate,
         showStandardFooterMessage: false, // show "love, Platform services" instead
         productMinistry: "PRODUCT MINISTRY",
         productDescription: "Product DESCRIPTION",
