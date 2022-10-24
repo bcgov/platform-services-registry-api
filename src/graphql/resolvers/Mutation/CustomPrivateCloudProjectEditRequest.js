@@ -5,6 +5,7 @@ import Platform from "../enum/Platform";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
+import Cluster from "../enum/Cluster";
 
 async function customPrivateCloudProjectEditRequest(
   _,
@@ -170,15 +171,15 @@ async function customPrivateCloudProjectEditRequest(
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
         technicalLeads: technicalLeads,
-        setCluster: metaData.cluster,
+        setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
         licencePlate: requestedProject.licencePlate,
         showStandardFooterMessage: false, // show "love, Platform services" instead
-        productMinistry: "PRODUCT MINISTRY",
-        productDescription: "Product DESCRIPTION",
+        // productMinistry: "PRODUCT MINISTRY",
+        // productDescription: "Product DESCRIPTION",
       }),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
+      subject: `${metaData.name} OCP 4 Edit Project Request Received`,
       // subject: `${profile.name} OCP 4 Project Set`,
     });
   } catch (error) {
