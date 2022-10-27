@@ -7,7 +7,14 @@ import swig from "swig";
 
 async function customPrivateCloudProjectRequest(
   _,
-  { metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  {
+    metaData,
+    commonComponents,
+    productionQuota,
+    developmentQuota,
+    testQuota,
+    toolsQuota,
+  },
   {
     dataSources: {
       users,
@@ -26,7 +33,11 @@ async function customPrivateCloudProjectRequest(
 
   if (
     !roles.includes("admin") &&
-    ![metaData.projectOwner, ...metaData.technicalLeads].includes(email)
+    ![
+      metaData.projectOwner,
+      metaData.primaryTechnicalLead,
+      metaData.secondaryTechnicalLead,
+    ].includes(email)
   ) {
     throw new Error(
       "User must assign themselves as a project owner or technical lead"
@@ -39,20 +50,37 @@ async function customPrivateCloudProjectRequest(
 
   if (!projectOwner) throw new Error("Project owner not found");
 
-  const technicalLeads = await users.findManyByFieldValues(
-    "email",
-    metaData.technicalLeads
-  );
+  // const technicalLeads = await users.findManyByFieldValues(
+  //   "email",
+  //   metaData.technicalLeads
+  // );
 
-  if (
-    new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
-  ) {
-    throw new Error("Duplicate technical leads found");
-  }
+  const [primaryTechnicalLead] = await users.findByFields({
+    email: metaData.primaryTechnicalLead,
+  });
 
-  if (technicalLeads.length !== metaData.technicalLeads.length) {
-    throw new Error("One or more technical leads not found");
-  }
+  if (!primaryTechnicalLead)
+    throw new Error("Primary technical lead not found");
+
+  const [secondaryTechnicalLead] = await users.findByFields({
+    email: metaData.secondaryTechnicalLead,
+  });
+
+ 
+  if (!secondaryTechnicalLead)
+    throw new Error("Secondary technical lead not found");
+
+  // Make sure that duplicate technical leads do not exist
+
+  // if (primaryTechnicalLead === secondaryTechnicalLead)
+  //   throw new Error("Primary and secondary technical leads cannot be the same");
+
+   // if (
+  //   new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
+  // ) {
+  //   throw new Error("Duplicate technical leads found");
+  // }
+
 
   const licencePlate = generateNamespacePrefix();
 
@@ -71,8 +99,11 @@ async function customPrivateCloudProjectRequest(
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
+    commonComponents,
     projectOwner: projectOwner._id,
-    technicalLeads: technicalLeads.map(({ _id }) => _id),
+    // technicalLeads: technicalLeads.map(({ _id }) => _id),
+    primaryTechnicalLead: primaryTechnicalLead._id,
+    secondaryTechnicalLead: secondaryTechnicalLead._id,
     licencePlate,
     productionQuota: { ...defaultQuota, ...productionQuota },
     developmentQuota: { ...defaultQuota, ...developmentQuota },
@@ -99,7 +130,9 @@ async function customPrivateCloudProjectRequest(
   });
 
   await users.addElementToManyDocumentsArray(
-    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+      ({ _id }) => _id
+    ),
     {
       privateCloudActiveRequests: request._id,
     }
@@ -116,16 +149,17 @@ async function customPrivateCloudProjectRequest(
           projectName: metaData.name,
           POName: projectOwner.firstName + " " + projectOwner.lastName,
           POEmail: projectOwner.email,
-          technicalLeads: technicalLeads,
+          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
           setCluster: metaData.cluster,
           licensePlate: requestedProject.licensePlate,
           showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+        ({ email }) => email
+      ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
-      // subject: `${profile.name} OCP 4 Project Set`,
     });
   } catch (error) {
     console.log("CHES Error: ", error);

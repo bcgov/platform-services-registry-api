@@ -5,6 +5,7 @@ const privateCloudProjectEditRequest = (
   {
     projectId,
     metaData,
+    commonComponents,
     productionQuota,
     developmentQuota,
     testQuota,
@@ -17,6 +18,7 @@ const privateCloudProjectEditRequest = (
     {
       projectId,
       metaData,
+      commonComponents,
       productionQuota: {
         ...productionQuota?.cpu,
         ...productionQuota?.memory,

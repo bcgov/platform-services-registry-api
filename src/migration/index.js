@@ -1,6 +1,6 @@
 const { Pool } = require("pg");
 const { ObjectId } = require("mongodb");
-const { writeFileSync } = require('fs');
+const { writeFileSync } = require("fs");
 
 const pool = new Pool({
   host: "localhost",
@@ -122,7 +122,7 @@ function generateProjectData(projectData) {
     }
 
     const newRegistryProject = {
-      _id: {"$oid":ObjectId()},
+      _id: { $oid: ObjectId() },
       licencePlate,
       name,
       created: created_at,
@@ -133,7 +133,9 @@ function generateProjectData(projectData) {
       status: "active",
       requestHistory: [],
       projectOwner: "",
-      technicalLeads: [],
+      primaryTechnicalLead: "",
+      secondaryTechnicalLead: "",
+      // technicalLeads: [],
       productionQuota: namespaces.prod,
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
@@ -185,7 +187,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
   const uniqueUsers = getUniqueListBy(userData, "email");
   const mongoUsers = uniqueUsers.map(
     ({ first_name, last_name, email, github_id, created_at }) => ({
-      _id: {"$oid":ObjectId()},
+      _id: { $oid: ObjectId() },
       githubId: github_id,
       firstName: first_name,
       lastName: last_name,
@@ -193,7 +195,8 @@ function generateUsersPerProject(userData, contatctProfileData) {
       archived: false,
       created: created_at,
       privateCloudProjectOwner: [],
-      privateCloudTechnicalLead: [],
+      privateCloudPrimaryTechnicalLead: [],
+      privateCloudSecondaryTechnicalLead: [],
       privateCloudActiveRequests: [],
       lastSeen: new Date(),
     })
@@ -219,7 +222,9 @@ function generateUsersPerProject(userData, contatctProfileData) {
       .filter(({ email }) => technicalLeadsEmails.includes(email))
       .map(({ _id }) => _id);
 
-    project.technicalLeads = technicalLeadsMongoIds;
+    // project.technicalLeads = technicalLeadsMongoIds;
+    project.primaryTechnicalLead = technicalLeadsMongoIds[0];
+    project.secondaryTechnicalLead = technicalLeadsMongoIds[1];
     project.projectOwner = projectOwnerMongoId;
     project.createdBy = projectOwnerMongoId;
 
@@ -227,31 +232,63 @@ function generateUsersPerProject(userData, contatctProfileData) {
   });
 
   mongoProjects.forEach((project, i) => {
-    const { projectOwner, technicalLeads, _id } = project;
+    const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead, _id } =
+      project;
 
     const projectOwnerUserIndex = mongoUsers.findIndex(
       ({ _id }) => _id === projectOwner
     );
-    mongoUsers[projectOwnerUserIndex]["privateCloudProjectOwner"].push(_id);
 
-    technicalLeads.forEach((technicalLead) => {
-      const technicalLeadUserIndex = mongoUsers.findIndex(
-        ({ _id }) => _id === technicalLead
-      );
-      mongoUsers[technicalLeadUserIndex]["privateCloudTechnicalLead"].push(_id);
-    });
+    if (projectOwnerUserIndex !== -1) {
+      mongoUsers[projectOwnerUserIndex]["privateCloudProjectOwner"].push(_id);
+    }
+
+    const primaryTechnicalLeadUserIndex = mongoUsers.findIndex(
+      ({ _id }) => _id === primaryTechnicalLead
+    );
+
+    if (primaryTechnicalLeadUserIndex !== -1) {
+      mongoUsers[primaryTechnicalLeadUserIndex][
+        "privateCloudPrimaryTechnicalLead"
+      ].push(_id);
+    }
+
+    const secondaryTechnicalLeadUserIndex = mongoUsers.findIndex(
+      ({ _id }) => _id === secondaryTechnicalLead
+    );
+
+    if (secondaryTechnicalLeadUserIndex !== -1) {
+      mongoUsers[secondaryTechnicalLeadUserIndex][
+        "privateCloudSecondaryTechnicalLead"
+      ].push(_id);
+    }
+
+    // technicalLeads.forEach((technicalLead) => {
+    //   const technicalLeadUserIndex = mongoUsers.findIndex(
+    //     ({ _id }) => _id === technicalLead
+    //   );
+    //   mongoUsers[technicalLeadUserIndex]["privateCloudTechnicalLead"].push(_id);
+    // });
   });
 
   try {
-    console.log(`Writing ${mongoUsers.length} mongoDb documents to mongoUsers.json`)
-    console.log(`Writing ${mongoProjects.length} mongoDb documents to mongoProjects.json`)
+    console.log(
+      `Writing ${mongoUsers.length} mongoDb documents to mongoUsers.json`
+    );
+    console.log(
+      `Writing ${mongoProjects.length} mongoDb documents to mongoProjects.json`
+    );
 
-    writeFileSync("./mongoUsers.json", JSON.stringify(mongoUsers), 'utf8');
-    writeFileSync("./mongoProjects.json", JSON.stringify(mongoProjects), 'utf8');
+    writeFileSync("./mongoUsers.json", JSON.stringify(mongoUsers), "utf8");
+    writeFileSync(
+      "./mongoProjects.json",
+      JSON.stringify(mongoProjects),
+      "utf8"
+    );
 
-    console.log('Data successfully saved to disk');
+    console.log("Data successfully saved to disk");
   } catch (error) {
-    console.log('An error has occurred ', error);
+    console.log("An error has occurred ", error);
   }
 
   pool.end();
