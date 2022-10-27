@@ -68,6 +68,7 @@ const typeDefs = gql`
     ARO
   }
 
+
   enum Environment {
     PRODUCTION
     TEST
