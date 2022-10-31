@@ -78,7 +78,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       [projectOwner, ...technicalLeads].map(({ _id }) => _id),
       { privateCloudActiveRequests: request._id }
     );
-      
+
     // Move active request to archived requests
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
@@ -108,20 +108,27 @@ export default async function provisionerCallbackHandler(req, res, next) {
       }
     );
 
+    await privateCloudProjects.updateFieldsById(projectId, {
+      activeEditRequest: null,
+    });
+
     chesService.send({
       bodyType: "html",
-      body: swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
-        // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-        // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-        projectName: requestedProject.name,
-        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-        POEmail: projectOwner.email,
-        TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-        TCEmail: technicalLeads[0].email,
-        setCluster: requestedProject.cluster,
-        licensePlate: requestedProject.licensePlate,
-        showStandardFooterMessage: true,
-      }),
+      body: swig.renderFile(
+        "./src/ches/templates/provisioning-request-done.html",
+        {
+          // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+          // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+          projectName: requestedProject.name,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+          POEmail: projectOwner.email,
+          TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
+          TCEmail: technicalLeads[0].email,
+          setCluster: requestedProject.cluster,
+          licensePlate: requestedProject.licensePlate,
+          showStandardFooterMessage: true,
+        }
+      ),
       to: [projectOwner, ...technicalLeads].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,

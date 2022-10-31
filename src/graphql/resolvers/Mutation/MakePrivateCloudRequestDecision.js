@@ -39,11 +39,17 @@ async function makePrivateCloudRequestDecision(
         )
       : await privateCloudProjects.findOneById(request.project);
 
-  const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } =
-    requestedProject;
+  const {
+    projectOwner: projectOwnerId,
+    primaryTechnicalLead: primaryTechnicalLeadId,
+    secondaryTechnicalLead: secondaryTechnicalLeadId,
+  } = requestedProject;
 
   const projectOwner = await users.findOneById(projectOwnerId);
-  const technicalLeads = await users.findManyByIds(technicalLeadsIds);
+  const primaryTechnicalLead = await users.findOneById(primaryTechnicalLeadId);
+  const secondaryTechnicalLead = await users.findOneById(
+    secondaryTechnicalLeadId
+  );
 
   if (decision === RequestDecision.REJECT) {
     await privateCloudActiveRequests.removeDocument(request._id);
@@ -68,7 +74,7 @@ async function makePrivateCloudRequestDecision(
 
     // remove active request for PO and TLs
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(({ _id }) => _id),
       { privateCloudActiveRequests: request._id }
     );
 
@@ -79,10 +85,10 @@ async function makePrivateCloudRequestDecision(
         projectName: requestedProject.name,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: technicalLeads.map(({ email }) => email),
+        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].map(({ email }) => email),
         showStandardFooterMessage: true,
       }),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
@@ -110,15 +116,15 @@ async function makePrivateCloudRequestDecision(
           projectName: requestedProject.name,
           POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-          TCEmail: technicalLeads[0].email,
+          TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          TCEmail: primaryTechnicalLead.email,
           setCluster: requestedProject.cluster,
           licensePlate: requestedProject.licensePlate,
           showStandardFooterMessage: false, // show "love, Platform services" instead
           productMinistry: "PRODUCT MINISTRY",
           productDescription: "Product DESCRIPTION",
         }),
-        to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: `**profile.name** OCP 4 Project Set`,
         // subject: `${profile.name} OCP 4 Project Set`,
@@ -130,7 +136,7 @@ async function makePrivateCloudRequestDecision(
     await sendNatsMessage(
       request.type,
       projectOwner.email,
-      technicalLeads.map(({ email }) => email),
+      [primaryTechnicalLead, secondaryTechnicalLead].map(({ email }) => email),
       requestedProject
     );
 
