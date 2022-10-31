@@ -110,11 +110,6 @@ async function customPrivateCloudProjectEditRequest(
     if ("projectOwner" in metaData && !requestedProjectOwner)
       throw new Error("Project owner not found");
 
-    // requestedTechnicalLeads = await users.findManyByFieldValues(
-    //   "email",
-    //   metaData.technicalLeads || []
-    // );
-
     [requestedPrimaryTechnicalLead] = await users.findByFields({
       email: metaData.primaryTechnicalLead,
     });
@@ -131,18 +126,6 @@ async function customPrivateCloudProjectEditRequest(
       !requestedSecondaryTechnicalLead
     )
       throw new Error("Secondary technical lead not found");
-
-    // if ("technicalLeads" in metaData) {
-    //   if (
-    //     new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
-    //   ) {
-    //     throw new Error("Duplicate technical leads found");
-    //   }
-
-    //   if (requestedTechnicalLeads.length !== metaData.technicalLeads.length) {
-    //     throw new Error("One or more technical leads not found");
-    //   }
-    // }
   }
 
   const requestedProject = await privateCloudRequestedProjects.create({
@@ -152,7 +135,6 @@ async function customPrivateCloudProjectEditRequest(
     projectOwner: requestedProjectOwner
       ? requestedProjectOwner._id
       : project.projectOwner,
-    //technicalLeads: ""
     primaryTechnicalLead: requestedPrimaryTechnicalLead
       ? requestedPrimaryTechnicalLead._id
       : project.primaryTechnicalLead,
@@ -197,7 +179,6 @@ async function customPrivateCloudProjectEditRequest(
           ? requestedSecondaryTechnicalLead
           : secondaryTechnicalLead,
       ].map(({ email }) => email),
-      // technicalLeads.map(({ email }) => email),
       requestedProject
     );
   } else {
@@ -239,7 +220,12 @@ async function customPrivateCloudProjectEditRequest(
         productMinistry: "PRODUCT MINISTRY",
         productDescription: "Product DESCRIPTION",
       }),
-      to: [primaryTechnicalLead, secondaryTechnicalLead, requestedPrimaryTechnicalLead, requestedSecondaryTechnicalLead].map(({ email }) => email),
+      to: [
+        primaryTechnicalLead,
+        secondaryTechnicalLead,
+        requestedPrimaryTechnicalLead,
+        requestedSecondaryTechnicalLead,
+      ].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${metaData.name} OCP 4 Project Set`,
     });

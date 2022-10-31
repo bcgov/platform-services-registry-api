@@ -268,7 +268,6 @@ const typeDefs = gql`
     projectOwner: EmailAddress!
     primaryTechnicalLead: EmailAddress!
     secondaryTechnicalLead: EmailAddress
-    # technicalLeads: [EmailAddress!]!
     ministry: Ministry!
     cluster: Cluster!
   }
@@ -277,7 +276,6 @@ const typeDefs = gql`
     name: String
     description: String
     projectOwner: EmailAddress
-    # technicalLeads: [EmailAddress!]
     primaryTechnicalLead: EmailAddress
     secondaryTechnicalLead: EmailAddress
     ministry: Ministry

@@ -135,7 +135,6 @@ function generateProjectData(projectData) {
       projectOwner: "",
       primaryTechnicalLead: "",
       secondaryTechnicalLead: "",
-      // technicalLeads: [],
       productionQuota: namespaces.prod,
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
