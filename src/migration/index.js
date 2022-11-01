@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "postgres",
   password: "postgres",
   port: 5432,
-  daatabase: "postgres",
+  database: "okanji",
 });
 
 async function getPsqlUserData() {
