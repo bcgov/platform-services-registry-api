@@ -339,7 +339,7 @@ describe("Mongo Helpers", () => {
     const result = await server.executeOperation({
       query: `mutation PrivateCloudProjectEditRequest(
         $projectId: ID!,
-        $metaData: EditProjectMetaDataInput!,
+        $metaData: EditProjectMetaDataInput,
         ) {
           privateCloudProjectEditRequest(
             projectId: $projectId,
@@ -394,7 +394,7 @@ describe("Mongo Helpers", () => {
         },
       },
     });
-    console.log(result)
+    console.log(projectId)
   
   });
 });
