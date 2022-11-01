@@ -395,7 +395,6 @@ describe("Mongo Helpers", () => {
       },
     });
     console.log(result)
-    // const request = result.data?.makePrivateCloudRequestDecision;
-    // expect(request).toBe("REJECTED");
+  
   });
 });
