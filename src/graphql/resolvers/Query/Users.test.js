@@ -75,20 +75,15 @@ describe("User tests", () => {
 
   it("Should sign up user", async () => {
     const result = await server.executeOperation({
-      query: `mutation SignUp($input: SignUpInput!) {
-        signUp(input: $input) {
+      query: `mutation SignUp {
+        signUp{
           id
           firstName
           lastName
           email
         }
       }`,
-      variables: {
-        input: {
-          ministry: "AGRI",
-          githubId: "okanji",
-        },
-      },
+
     });
 
     expect(result.errors).toBeUndefined();

@@ -303,11 +303,6 @@ const typeDefs = gql`
     githubId: String!
   }
 
-  input SignUpInput {
-    ministry: Ministry!
-    githubId: String!
-  }
-
   input UpdateUserInput {
     firstName: String
     lastName: String
@@ -382,6 +377,10 @@ const typeDefs = gql`
     privateCloudProjectRequest(
       metaData: ProjectMetaDataInput!
       commonComponents: CommonComponentsInput
+      productionQuota: CustomQuotaInput
+      developmentQuota: CustomQuotaInput
+      testQuota: CustomQuotaInput
+      toolsQuota: CustomQuotaInput
     ): Request! @nonNullInput @auth
 
     privateCloudProjectEditRequest(
