@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "postgres",
   password: "postgres",
   port: 5432,
-  daatabase: "postgres",
+  database: "okanji",
 });
 
 async function getPsqlUserData() {
@@ -135,7 +135,6 @@ function generateProjectData(projectData) {
       projectOwner: "",
       primaryTechnicalLead: "",
       secondaryTechnicalLead: "",
-      // technicalLeads: [],
       productionQuota: namespaces.prod,
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,

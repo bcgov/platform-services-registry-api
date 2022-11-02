@@ -50,11 +50,6 @@ async function customPrivateCloudProjectRequest(
 
   if (!projectOwner) throw new Error("Project owner not found");
 
-  // const technicalLeads = await users.findManyByFieldValues(
-  //   "email",
-  //   metaData.technicalLeads
-  // );
-
   const [primaryTechnicalLead] = await users.findByFields({
     email: metaData.primaryTechnicalLead,
   });
@@ -66,21 +61,9 @@ async function customPrivateCloudProjectRequest(
     email: metaData.secondaryTechnicalLead,
   });
 
- 
-  if (!secondaryTechnicalLead)
-    throw new Error("Secondary technical lead not found");
-
   // Make sure that duplicate technical leads do not exist
-
-  // if (primaryTechnicalLead === secondaryTechnicalLead)
-  //   throw new Error("Primary and secondary technical leads cannot be the same");
-
-   // if (
-  //   new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
-  // ) {
-  //   throw new Error("Duplicate technical leads found");
-  // }
-
+  if (primaryTechnicalLead._id === secondaryTechnicalLead?._id)
+    throw new Error("Primary and secondary technical leads cannot be the same");
 
   const licencePlate = generateNamespacePrefix();
 
@@ -101,9 +84,8 @@ async function customPrivateCloudProjectRequest(
     ...metaData,
     commonComponents,
     projectOwner: projectOwner._id,
-    // technicalLeads: technicalLeads.map(({ _id }) => _id),
     primaryTechnicalLead: primaryTechnicalLead._id,
-    secondaryTechnicalLead: secondaryTechnicalLead._id,
+    secondaryTechnicalLead: secondaryTechnicalLead?._id,
     licencePlate,
     productionQuota: { ...defaultQuota, ...productionQuota },
     developmentQuota: { ...defaultQuota, ...developmentQuota },
@@ -130,7 +112,7 @@ async function customPrivateCloudProjectRequest(
   });
 
   await users.addElementToManyDocumentsArray(
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
       ({ _id }) => _id
     ),
     {
@@ -149,13 +131,13 @@ async function customPrivateCloudProjectRequest(
           projectName: metaData.name,
           POName: projectOwner.firstName + " " + projectOwner.lastName,
           POEmail: projectOwner.email,
-          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
+          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
           setCluster: metaData.cluster,
           licensePlate: requestedProject.licensePlate,
           showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
         ({ email }) => email
       ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",

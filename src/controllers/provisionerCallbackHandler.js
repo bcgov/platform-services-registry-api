@@ -63,19 +63,28 @@ export default async function provisionerCallbackHandler(req, res, next) {
     }
 
     // Get PO and TL's
-    const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } =
-      request.type === RequestType.CREATE
-        ? await privateCloudRequestedProjects.findOneById(
-            request.requestedProject
-          )
-        : await privateCloudProjects.findOneById(request.project);
+    const {
+      projectOwner: projectOwnerId,
+      primaryTechnicalLead: primaryTechnicalLeadId,
+      secondaryTechnicalLead: secondaryTechnicalLeadId,
+    } = request.type === RequestType.CREATE
+      ? await privateCloudRequestedProjects.findOneById(
+          request.requestedProject
+        )
+      : await privateCloudProjects.findOneById(request.project);
 
     const projectOwner = await users.findOneById(projectOwnerId);
-    const technicalLeads = await users.findManyByIds(technicalLeadsIds);
-
+    const primaryTechnicalLead = await users.findOneById(
+      primaryTechnicalLeadId
+    );
+    const secondaryTechnicalLead = await users.findOneById(
+      secondaryTechnicalLeadId
+    );
     // Remove active request from PO and TL's user documents
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+        ({ _id }) => _id
+      ),
       { privateCloudActiveRequests: request._id }
     );
 
@@ -94,20 +103,19 @@ export default async function provisionerCallbackHandler(req, res, next) {
     }
 
     // Assign the project to the PO and TL's
-
-    // Find project owner and add the project id
     await users.addElementToDocumentArray(projectOwner._id, {
       privateCloudProjectOwner: projectId,
     });
 
-    // Find technical leads and add the project id
-    await users.addElementToManyDocumentsArray(
-      technicalLeads.map(({ _id }) => _id),
-      {
-        privateCloudTechnicalLead: projectId,
-      }
-    );
+    await users.addElementToDocumentArray(projectOwner._id, {
+      privateCloudPrimaryTechnicalLead: projectId,
+    });
 
+    await users.addElementToDocumentArray(projectOwner._id, {
+      privateCloudSecondaryTechnicalLead: projectId,
+    });
+
+    
     await privateCloudProjects.updateFieldsById(projectId, {
       activeEditRequest: null,
     });
@@ -122,14 +130,14 @@ export default async function provisionerCallbackHandler(req, res, next) {
           projectName: requestedProject.name,
           POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          TCName: `${technicalLeads[0].firstName} ${technicalLeads[0].lastName}`,
-          TCEmail: technicalLeads[0].email,
+          TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          TCEmail: primaryTechnicalLead.email,
           setCluster: requestedProject.cluster,
           licensePlate: requestedProject.licensePlate,
           showStandardFooterMessage: true,
         }
       ),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
