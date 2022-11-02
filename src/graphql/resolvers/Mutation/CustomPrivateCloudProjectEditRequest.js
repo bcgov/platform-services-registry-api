@@ -32,9 +32,9 @@ async function customPrivateCloudProjectEditRequest(
     roles: [],
   };
   const [user] = await users.findByFields({ email });
-  const { _id, ...project } = await privateCloudProjects.findOneById(projectId);
+  const { _id, ...project } = await privateCloudProjects.findOneById(projectId) || {};
 
-  if (project === undefined) {
+  if (_id === undefined) {
     throw Error("Project does not exist");
   }
 

@@ -96,7 +96,7 @@ async function userPrivateCloudProjectsById(
   const projects = privateCloudProjects.findManyByIds(projectIds);
 
   projects.every(({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].includes(user._id)
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).includes(user._id)
   )
     ? projects
     : [];

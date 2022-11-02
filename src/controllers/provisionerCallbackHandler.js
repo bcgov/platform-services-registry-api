@@ -82,7 +82,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
     );
     // Remove active request from PO and TL's user documents
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
         ({ _id }) => _id
       ),
       { privateCloudActiveRequests: request._id }
@@ -137,7 +137,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
           showStandardFooterMessage: true,
         }
       ),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
