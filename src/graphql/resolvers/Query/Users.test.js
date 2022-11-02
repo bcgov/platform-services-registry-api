@@ -148,7 +148,7 @@ describe("User tests", () => {
           lastName: "Carmichael",
           ministry: HLTH,
           email: "alexander.carmichael@gov.bc.ca",
-          githubId: "okanji"
+          githubId: "okanjji"
 
         }) {
           id
@@ -156,6 +156,7 @@ describe("User tests", () => {
         }
       }`,
     });
+
     expect(result.errors).toBeUndefined();
     expect(result.data?.createUser.firstName).toBe("Alexander");
   });

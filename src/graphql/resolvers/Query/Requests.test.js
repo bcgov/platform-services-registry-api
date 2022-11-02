@@ -245,7 +245,7 @@ describe("Mongo Helpers", () => {
 
     const { id, requestedProject, createdBy } =
       request.data?.privateCloudProjectRequest;
-
+console.log(request.data?.privateCloudProjectRequest)
     newRequestId = id;
     projectId = requestedProject.id;
     // Will be used in subsequent tests
@@ -394,7 +394,7 @@ describe("Mongo Helpers", () => {
         },
       },
     });
-    console.log(projectId)
+    console.log(result)
   
   });
 });
