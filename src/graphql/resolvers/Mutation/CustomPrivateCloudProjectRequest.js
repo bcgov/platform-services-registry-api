@@ -97,8 +97,6 @@ async function customPrivateCloudProjectRequest(
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
-    projectOwner: projectOwner._id,
-    technicalLeads: technicalLeads.map(({ _id }) => _id),
   });
 
   const request = await privateCloudActiveRequests.create({
@@ -127,7 +125,7 @@ async function customPrivateCloudProjectRequest(
     chesService.send({
       bodyType: "html",
       body: swig.renderFile(
-        "./src/ches/templates/request-approval.html",
+        "./src/ches/templates/provisioning-request-done.html",
         {
           // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
           // humanActionComment: 'HUMAN ACTION COMMENT HERE',
@@ -135,7 +133,7 @@ async function customPrivateCloudProjectRequest(
           POName: projectOwner.firstName + " " + projectOwner.lastName,
           POEmail: projectOwner.email,
           technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
-          setCluster: metaData.cluster,
+          setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
           licencePlate: requestedProject.licencePlate,
           showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
@@ -144,9 +142,8 @@ async function customPrivateCloudProjectRequest(
         ({ email }) => email
       ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${metaData.name} OCP 4 Project Set`,
-      // subject: `${profile.name} OCP 4 Project Set`,
-          });
+      subject: `${metaData.name} OCP 4 Project Requested`,
+    });
   } catch (error) {
     console.log("CHES Error: ", error);
   }

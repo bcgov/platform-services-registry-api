@@ -87,7 +87,7 @@ async function makePrivateCloudRequestDecision(
         projectName: requestedProject.name,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
         showStandardFooterMessage: true,
       }),
       to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
@@ -122,7 +122,7 @@ async function makePrivateCloudRequestDecision(
           POEmail: projectOwner.email,
           TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
           TCEmail: primaryTechnicalLead.email,
-          setCluster: requestedProject.cluster,
+          setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
           licencePlate: requestedProject.licencePlate,
           showStandardFooterMessage: false, // show "love, Platform services" instead
           productMinistry: "PRODUCT MINISTRY",
