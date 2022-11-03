@@ -16,10 +16,24 @@ const searchParams = (ministry, cluster, search) => {
     {
       "$lookup": {
         "from": "users",
-        "localField": "technicalLeads",
+        "localField": "primaryTechnicalLead",
         "foreignField": "_id",
-        "as": "projectTechLeads"
+        "as": "primaryTechnicalLeads"
       }
+    },
+    {
+      "$unwind": "$primaryTechnicalLeads"
+    },
+    {
+      "$lookup": {
+        "from": "users",
+        "localField": "secondaryTechnicalLead",
+        "foreignField": "_id",
+        "as": "secondaryTechnicalLeads"
+      }
+    },
+    {
+      "$unwind": "$secondaryTechnicalLeads"
     },
     {
       $match: {
@@ -31,9 +45,12 @@ const searchParams = (ministry, cluster, search) => {
               { "projectOwners.firstName": { $regex: search, $options: 'i' } },
               { "projectOwners.lastName": { $regex: search, $options: 'i' } },
               { "projectOwners.email": { $regex: search, $options: 'i' } },
-              { "$and": [{ "projectTechLeads.firstName": { $regex: search, $options: 'i' } }] },
-              { "$and": [{ "projectTechLeads.lasttName": { $regex: search, $options: 'i' } }] },
-              { "$and": [{ "projectTechLeads.email": { $regex: search, $options: 'i' } }] },
+              { "primaryTechnicalLeads.firstName": { $regex: search, $options: 'i' } },
+              { "primaryTechnicalLeads.lastName": { $regex: search, $options: 'i' } },
+              { "primaryTechnicalLeads.email": { $regex: search, $options: 'i' } },
+              { "secondaryTechnicalLeads.firstName": { $regex: search, $options: 'i' } },
+              { "secondaryTechnicalLeads.lastName": { $regex: search, $options: 'i' } },
+              { "secondaryTechnicalLeads.email": { $regex: search, $options: 'i' } },
               { name: { $regex: search, $options: 'i' } },
               { description: { $regex: search, $options: 'i' } },
               { licencePlate: { $regex: search, $options: 'i' } },
