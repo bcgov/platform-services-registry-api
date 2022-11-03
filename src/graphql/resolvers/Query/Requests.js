@@ -65,6 +65,10 @@ async function userPrivateCloudActiveRequests(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
+  if (!user) {
+    throw Error("Not a user");
+  }
+
   return privateCloudActiveRequests.findManyByIds(
     user.privateCloudActiveRequests
   );

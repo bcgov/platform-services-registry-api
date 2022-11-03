@@ -52,13 +52,20 @@ async function userPrivateCloudProjects(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  const { privateCloudProjectOwner, privateCloudPrimaryTechnicalLead, privateCloudSecondaryTechnicalLead,  } = user;
+  if (!user) {
+    throw Error("Not a user");
+  }
 
+  const {
+    privateCloudProjectOwner,
+    privateCloudPrimaryTechnicalLead,
+    privateCloudSecondaryTechnicalLead,
+  } = user;
 
   return privateCloudProjects.findManyByIds([
     ...privateCloudProjectOwner,
     ...privateCloudPrimaryTechnicalLead,
-    ...privateCloudSecondaryTechnicalLead
+    ...privateCloudSecondaryTechnicalLead,
   ]);
 }
 
@@ -72,10 +79,11 @@ async function userPrivateCloudProject(
 
   const project = await privateCloudProjects.findOneById(projectId);
 
-  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } = project;
+  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+    project;
 
   if (
-    ![ projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+    ![projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
       .map((id) => id.toString())
       .includes(user._id.toString())
   ) {
@@ -95,8 +103,11 @@ async function userPrivateCloudProjectsById(
 
   const projects = privateCloudProjects.findManyByIds(projectIds);
 
-  projects.every(({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).includes(user._id)
+  projects.every(
+    ({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .includes(user._id)
   )
     ? projects
     : [];
