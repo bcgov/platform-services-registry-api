@@ -4,9 +4,17 @@ const PrivateCloudProject = {
     users.findOneById(createdBy),
   projectOwner: ({ projectOwner }, _, { dataSources: { users } }) =>
     users.findOneById(projectOwner),
-  technicalLeads: ({ technicalLeads }, _, { dataSources: { users } }) =>
-    users.findManyByIds(technicalLeads),
-  activeRequest: async (
+  primaryTechnicalLead: (
+    { primaryTechnicalLead },
+    _,
+    { dataSources: { users } }
+  ) => users.findOneById(primaryTechnicalLead),
+  secondaryTechnicalLead: (
+    { secondaryTechnicalLead },
+    _,
+    { dataSources: { users } }
+  ) => users.findOneById(secondaryTechnicalLead),
+  activeEditRequest: async (
     { _id },
     _,
     { dataSources: { privateCloudActiveRequests } }
@@ -17,6 +25,7 @@ const PrivateCloudProject = {
 
     return request;
   },
+
   requestHistory: (
     { requestHistory },
     _,

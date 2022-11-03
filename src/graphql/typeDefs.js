@@ -96,6 +96,11 @@ const typeDefs = gql`
     CPU_REQUEST_32_LIMIT_64
   }
 
+  enum CommonComponentsOptions {
+    IMPLEMENTED
+    PLANNING_TO_USE
+  }
+
   enum DefaultMemoryOptions {
     MEMORY_REQUEST_2_LIMIT_4
     MEMORY_REQUEST_4_LIMIT_8
@@ -164,10 +169,11 @@ const typeDefs = gql`
     description: String!
     status: ProjectStatus!
     projectOwner: User!
-    technicalLeads: [User]!
+    primaryTechnicalLead: User!
+    secondaryTechnicalLead: User
     ministry: Ministry!
     requestHistory: [Request]
-    activeRequest: Request
+    activeEditRequest: Request
     count: Int
   }
 
@@ -183,11 +189,12 @@ const typeDefs = gql`
     description: String!
     status: ProjectStatus!
     projectOwner: User!
-    technicalLeads: [User]!
+    primaryTechnicalLead: User!
+    secondaryTechnicalLead: User
     ministry: Ministry!
     PublicCloudPlatform: PublicCloudPlatform!
     requestHistory: [Request]
-    activeRequest: Request
+    activeEditRequest: Request
     count: Int
   }
 
@@ -201,7 +208,8 @@ const typeDefs = gql`
     description: String!
     status: ProjectStatus!
     projectOwner: User!
-    technicalLeads: [User]!
+    primaryTechnicalLead: User!
+    secondaryTechnicalLead: User
     ministry: Ministry!
     cluster: Cluster!
     productionQuota: Quota!
@@ -209,8 +217,22 @@ const typeDefs = gql`
     developmentQuota: Quota!
     toolsQuota: Quota!
     requestHistory: [Request]!
-    activeRequest: Request
+    activeEditRequest: Request
     count: Int
+    commonComponents: CommonComponents
+  }
+
+  type CommonComponents {
+    addressAndGeolocation: CommonComponentsOptions
+    workflowManagement: CommonComponentsOptions
+    formDesignAndSubmission: CommonComponentsOptions
+    identityManagement: CommonComponentsOptions
+    paymentServices: CommonComponentsOptions
+    documentManagement: CommonComponentsOptions
+    endUserNotificationAndSubscription: CommonComponentsOptions
+    publishing: CommonComponentsOptions
+    businessIntelligence: CommonComponentsOptions
+    other: String
   }
 
   type Request {
@@ -245,7 +267,8 @@ const typeDefs = gql`
     name: String!
     description: String!
     projectOwner: EmailAddress!
-    technicalLeads: [EmailAddress!]!
+    primaryTechnicalLead: EmailAddress!
+    secondaryTechnicalLead: EmailAddress
     ministry: Ministry!
     cluster: Cluster!
   }
@@ -254,9 +277,23 @@ const typeDefs = gql`
     name: String
     description: String
     projectOwner: EmailAddress
-    technicalLeads: [EmailAddress!]
+    primaryTechnicalLead: EmailAddress
+    secondaryTechnicalLead: EmailAddress
     ministry: Ministry
     cluster: Cluster
+  }
+
+  input CommonComponentsInput {
+    addressAndGeolocation: CommonComponentsOptions
+    workflowManagement: CommonComponentsOptions
+    formDesignAndSubmission: CommonComponentsOptions
+    identityManagement: CommonComponentsOptions
+    paymentServices: CommonComponentsOptions
+    documentManagement: CommonComponentsOptions
+    endUserNotificationAndSubscription: CommonComponentsOptions
+    publishing: CommonComponentsOptions
+    businessIntelligence: CommonComponentsOptions
+    other: String
   }
 
   input CreateUserInput {
@@ -343,39 +380,39 @@ const typeDefs = gql`
     createUser(input: CreateUserInput!): User!
     # updateUser(input: UpdateUserInput!): User!
 
+    privateCloudProjectRequest(
+      metaData: ProjectMetaDataInput!
+      commonComponents: CommonComponentsInput
+    ): Request! @nonNullInput @auth
+
+    privateCloudProjectEditRequest(
+      projectId: ID!
+      metaData: EditProjectMetaDataInput
+      commonComponents: CommonComponentsInput
+      productionQuota: QuotaInput
+      developmentQuota: QuotaInput
+      testQuota: QuotaInput
+      toolsQuota: QuotaInput
+    ): Request! @nonNullInput @auth
+
     customPrivateCloudProjectRequest(
       metaData: ProjectMetaDataInput!
+      commonComponents: CommonComponentsInput!
       productionQuota: CustomQuotaInput
       developmentQuota: CustomQuotaInput
       testQuota: CustomQuotaInput
       toolsQuota: CustomQuotaInput
     ): Request! @hasRole(role: "admin") @nonNullInput
 
-    privateCloudProjectRequest(
-      metaData: ProjectMetaDataInput!
-      productionQuota: QuotaInput
-      developmentQuota: QuotaInput
-      testQuota: QuotaInput
-      toolsQuota: QuotaInput
-    ): Request! @nonNullInput @auth
-
     customPrivateCloudProjectEditRequest(
       projectId: ID!
       metaData: EditProjectMetaDataInput
+      commonComponents: CommonComponentsInput!
       productionQuota: CustomQuotaInput
       developmentQuota: CustomQuotaInput
       testQuota: CustomQuotaInput
       toolsQuota: CustomQuotaInput
     ): Request! @nonNullInput @hasRole(role: "admin")
-
-    privateCloudProjectEditRequest(
-      projectId: ID!
-      metaData: EditProjectMetaDataInput
-      productionQuota: QuotaInput
-      developmentQuota: QuotaInput
-      testQuota: QuotaInput
-      toolsQuota: QuotaInput
-    ): Request! @nonNullInput @auth
 
     makePrivateCloudRequestDecision(
       requestId: ID!

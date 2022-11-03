@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# brew install mongodb-atlas-cli
+
 node index.js
 
 mongoimport --uri "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/registry?retryWrites=true&w=majority" --collection users --drop --jsonArray --file mongoUsers.json

@@ -1,5 +1,4 @@
 import RequestStatus from "../enum/RequestStatus";
-import RequestDecision from "../enum/RequestDecision";
 import RequestType from "../enum/RequestType";
 import Platform from "../enum/Platform";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
@@ -12,6 +11,7 @@ async function customPrivateCloudProjectEditRequest(
   {
     projectId,
     metaData,
+    commonComponents,
     productionQuota,
     developmentQuota,
     testQuota,
@@ -33,19 +33,35 @@ async function customPrivateCloudProjectEditRequest(
     roles: [],
   };
   const [user] = await users.findByFields({ email });
-  const { _id, ...project } = await privateCloudProjects.findOneById(projectId);
+  const { _id, ...project } = await privateCloudProjects.findOneById(projectId) || {};
 
-  if (project === undefined) {
+  if (_id === undefined) {
     throw Error("Project does not exist");
   }
 
-  if ((await privateCloudActiveRequests.findOneById(projectId)) !== undefined) {
+  if ("activeRequest" in project) {
     throw Error("There already exists an active request for this project");
   }
 
+  // if ((await privateCloudActiveRequests.findOneById(projectId)) !== undefined) {
+  //   throw Error("There already exists an active request for this project");
+  // }
+
+  // if (
+  //   (await privateCloudActiveRequests.findByFields({
+  //     licencePlate: project.licencePlate,
+  //   })) !== undefined
+  // ) {
+  //   throw Error("There already exists an active request for this project");
+  // }
+
   // Only an Admin or a PO or TL of this project can request to edit it
   if (
-    ![project.projectOwner, ...project.technicalLeads].includes(user._id) &&
+    ![
+      project.projectOwner,
+      project.primaryTechnicalLead,
+      project.secondaryTechnicalLead,
+    ].includes(user._id) &&
     !roles.includes("admin")
   ) {
     throw new Error(
@@ -53,63 +69,79 @@ async function customPrivateCloudProjectEditRequest(
     );
   }
 
-  // Only an Admin or the PO can request to change the PO
-  if (
-    "projectOwner" in metaData &&
-    !roles.includes("admin") &&
-    project.projectOwner !== user._id
-  ) {
-    throw Error("Only the project owner can set a new project owner");
-  }
-
   const projectOwner = await users.findOneById(project.projectOwner);
-  const technicalLeads = await users.findManyByIds(project.technicalLeads);
-
-  if (
-    !roles.includes("admin") &&
-    ![metaData.projectOwner, ...metaData.technicalLeads].includes(email)
-  ) {
-    throw new Error(
-      "User must assign themselves as a project owner or technical lead"
-    );
-  }
-
-  const [requestedProjectOwner] = await users.findByFields({
-    email: metaData.projectOwner,
-  });
-
-  if (projectOwner in metaData && !requestedProjectOwner)
-    throw new Error("Project owner not found");
-
-  const requestedTechnicalLeads = await users.findManyByFieldValues(
-    "email",
-    metaData.technicalLeads || []
+  const primaryTechnicalLead = await users.findOneById(
+    project.primaryTechnicalLead
+  );
+  const secondaryTechnicalLead = await users.findOneById(
+    project.secondaryTechnicalLead
   );
 
-  if (technicalLeads in metaData) {
+  let requestedProjectOwner;
+  let requestedPrimaryTechnicalLead;
+  let requestedSecondaryTechnicalLead;
+
+  if (metaData) {
+    // Only an Admin or the PO can request to change the PO
     if (
-      new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
+      "projectOwner" in metaData &&
+      !roles.includes("admin") &&
+      project.projectOwner !== user._id
     ) {
-      throw new Error("Duplicate technical leads found");
+      throw Error("Only the project owner can set a new project owner");
     }
 
     if (
-      metaData &&
-      requestedTechnicalLeads.length !== metaData.technicalLeads.length
+      !roles.includes("admin") &&
+      ![
+        metaData.projectOwner,
+        metaData.primaryTechnicalLead,
+        metaData.secondaryTechnicalLead,
+      ].includes(email)
     ) {
-      throw new Error("One or more technical leads not found");
+      throw new Error(
+        "User must assign themselves as a project owner or technical lead"
+      );
     }
+
+    [requestedProjectOwner] = await users.findByFields({
+      email: metaData.projectOwner,
+    });
+
+    if ("projectOwner" in metaData && !requestedProjectOwner)
+      throw new Error("Project owner not found");
+
+    [requestedPrimaryTechnicalLead] = await users.findByFields({
+      email: metaData.primaryTechnicalLead,
+    });
+
+    if ("primaryTechnicalLead" in metaData && !requestedPrimaryTechnicalLead)
+      throw new Error("Primary technical lead not found");
+
+    [requestedSecondaryTechnicalLead] = await users.findByFields({
+      email: metaData.secondaryTechnicalLead,
+    });
+
+    if (
+      "secondaryTechnicalLead" in metaData &&
+      !requestedSecondaryTechnicalLead
+    )
+      throw new Error("Secondary technical lead not found");
   }
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...project,
     ...metaData,
+    commonComponents: { ...project.commonComponents, ...commonComponents },
     projectOwner: requestedProjectOwner
       ? requestedProjectOwner._id
       : project.projectOwner,
-    technicalLeads: requestedTechnicalLeads
-      ? requestedTechnicalLeads.map(({ _id }) => _id)
-      : project.technicalLeads,
+    primaryTechnicalLead: requestedPrimaryTechnicalLead
+      ? requestedPrimaryTechnicalLead._id
+      : project.primaryTechnicalLead,
+    secondaryTechnicalLead: requestedSecondaryTechnicalLead
+      ? requestedSecondaryTechnicalLead._id
+      : project.secondaryTechnicalLead,
     productionQuota: { ...project.productionQuota, ...productionQuota },
     developmentQuota: { ...project.developmentQuota, ...developmentQuota },
     testQuota: { ...project.testQuota, ...testQuota },
@@ -140,7 +172,14 @@ async function customPrivateCloudProjectEditRequest(
     await sendNatsMessage(
       requestBody.type,
       projectOwner.email,
-      technicalLeads.map(({ email }) => email),
+      [
+        requestedPrimaryTechnicalLead
+          ? requestedPrimaryTechnicalLead
+          : primaryTechnicalLead,
+        requestedSecondaryTechnicalLead
+          ? requestedSecondaryTechnicalLead
+          : secondaryTechnicalLead,
+      ].map(({ email }) => email),
       requestedProject
     );
   } else {
@@ -152,9 +191,10 @@ async function customPrivateCloudProjectEditRequest(
   await users.addElementToManyDocumentsArray(
     [
       projectOwner,
-      requestedProjectOwner,
-      ...requestedTechnicalLeads,
-      ...technicalLeads,
+      primaryTechnicalLead,
+      secondaryTechnicalLead,
+      requestedPrimaryTechnicalLead,
+      requestedSecondaryTechnicalLead,
     ]
       .filter(Boolean)
       .map(({ _id }) => _id),
@@ -163,24 +203,32 @@ async function customPrivateCloudProjectEditRequest(
     }
   );
 
+  await privateCloudProjects.updateFieldsById(_id, {
+    activeEditRequest: request._id,
+  });
+
   try {
     chesService.send({
       bodyType: "html",
       body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
-        projectName: metaData.name,
+        projectName: requestedProject.name,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: technicalLeads,
-        setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
+        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
+        setCluster: requestedProject.cluster,
         licencePlate: requestedProject.licencePlate,
         showStandardFooterMessage: false, // show "love, Platform services" instead
         // productMinistry: "PRODUCT MINISTRY",
         // productDescription: "Product DESCRIPTION",
       }),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      to: [
+        primaryTechnicalLead,
+        secondaryTechnicalLead,
+        requestedPrimaryTechnicalLead,
+        requestedSecondaryTechnicalLead,
+      ].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${metaData.name} OCP 4 Edit Project Request Received`,
-      // subject: `${profile.name} OCP 4 Project Set`,
+      subject: `${metaData.name} OCP 4 Project Set`,
     });
   } catch (error) {
     console.log(error);

@@ -63,22 +63,31 @@ export default async function provisionerCallbackHandler(req, res, next) {
     }
 
     // Get PO and TL's
-    const { projectOwner: projectOwnerId, technicalLeads: technicalLeadsIds } =
-      request.type === RequestType.CREATE
-        ? await privateCloudRequestedProjects.findOneById(
-            request.requestedProject
-          )
-        : await privateCloudProjects.findOneById(request.project);
+    const {
+      projectOwner: projectOwnerId,
+      primaryTechnicalLead: primaryTechnicalLeadId,
+      secondaryTechnicalLead: secondaryTechnicalLeadId,
+    } = request.type === RequestType.CREATE
+      ? await privateCloudRequestedProjects.findOneById(
+          request.requestedProject
+        )
+      : await privateCloudProjects.findOneById(request.project);
 
     const projectOwner = await users.findOneById(projectOwnerId);
-    const technicalLeads = await users.findManyByIds(technicalLeadsIds);
-
+    const primaryTechnicalLead = await users.findOneById(
+      primaryTechnicalLeadId
+    );
+    const secondaryTechnicalLead = await users.findOneById(
+      secondaryTechnicalLeadId
+    );
     // Remove active request from PO and TL's user documents
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+        ({ _id }) => _id
+      ),
       { privateCloudActiveRequests: request._id }
     );
-      
+
     // Move active request to archived requests
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
@@ -94,37 +103,41 @@ export default async function provisionerCallbackHandler(req, res, next) {
     }
 
     // Assign the project to the PO and TL's
-
-    // Find project owner and add the project id
     await users.addElementToDocumentArray(projectOwner._id, {
       privateCloudProjectOwner: projectId,
     });
 
-    // Find technical leads and add the project id
-    await users.addElementToManyDocumentsArray(
-      technicalLeads.map(({ _id }) => _id),
-      {
-        privateCloudTechnicalLead: projectId,
-      }
-    );
+    await users.addElementToDocumentArray(projectOwner._id, {
+      privateCloudPrimaryTechnicalLead: projectId,
+    });
+
+    await users.addElementToDocumentArray(projectOwner._id, {
+      privateCloudSecondaryTechnicalLead: projectId,
+    });
+
+    
+    await privateCloudProjects.updateFieldsById(projectId, {
+      activeEditRequest: null,
+    });
 
     try {chesService.send({
       bodyType: "html",
-      body: swig.renderFile('./src/ches/templates/provisioning-request-done.html', {
-        // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-        // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-        projectName: requestedProject.name,
-        POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-        POEmail: projectOwner.email,
-        technicalLeads: technicalLeads,
-        setCluster: Object.entries(Cluster).filter(item => item[1] === requestedProject.cluster)[0][0],
-        licencePlate: requestedProject.licencePlate,
-        showStandardFooterMessage: true, // show "love, Platform services" instead
-        // productMinistry: "PRODUCT MINISTRY",
-        // productDescription: "Product DESCRIPTION",
-        humanActionComment:''
-      }),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      body: swig.renderFile(
+        "./src/ches/templates/provisioning-request-done.html",
+        {
+          // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+          // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+          projectName: requestedProject.name,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+          POEmail: projectOwner.email,
+          TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          TCEmail: primaryTechnicalLead.email,
+          setCluster: requestedProject.cluster,
+          licencePlate: requestedProject.licencePlate,
+          showStandardFooterMessage: true,
+        }
+      ),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${requestedProject.name} OCP 4 Project Approved`,
       // subject: `${profile.name} OCP 4 Project Set`,

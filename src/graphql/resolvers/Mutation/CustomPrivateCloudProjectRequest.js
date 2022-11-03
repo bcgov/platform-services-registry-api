@@ -8,7 +8,14 @@ import Cluster from "../enum/Cluster";
 
 async function customPrivateCloudProjectRequest(
   _,
-  { metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  {
+    metaData,
+    commonComponents,
+    productionQuota,
+    developmentQuota,
+    testQuota,
+    toolsQuota,
+  },
   {
     dataSources: {
       users,
@@ -27,7 +34,11 @@ async function customPrivateCloudProjectRequest(
 
   if (
     !roles.includes("admin") &&
-    ![metaData.projectOwner, ...metaData.technicalLeads].includes(email)
+    ![
+      metaData.projectOwner,
+      metaData.primaryTechnicalLead,
+      metaData.secondaryTechnicalLead,
+    ].includes(email)
   ) {
     throw new Error(
       "User must assign themselves as a project owner or technical lead"
@@ -40,20 +51,20 @@ async function customPrivateCloudProjectRequest(
 
   if (!projectOwner) throw new Error("Project owner not found");
 
-  const technicalLeads = await users.findManyByFieldValues(
-    "email",
-    metaData.technicalLeads
-  );
+  const [primaryTechnicalLead] = await users.findByFields({
+    email: metaData.primaryTechnicalLead,
+  });
 
-  if (
-    new Set(metaData.technicalLeads).size !== metaData.technicalLeads.length
-  ) {
-    throw new Error("Duplicate technical leads found");
-  }
+  if (!primaryTechnicalLead)
+    throw new Error("Primary technical lead not found");
 
-  if (technicalLeads.length !== metaData.technicalLeads.length) {
-    throw new Error("One or more technical leads not found");
-  }
+  const [secondaryTechnicalLead] = await users.findByFields({
+    email: metaData.secondaryTechnicalLead,
+  });
+
+  // Make sure that duplicate technical leads do not exist
+  if (primaryTechnicalLead._id === secondaryTechnicalLead?._id)
+    throw new Error("Primary and secondary technical leads cannot be the same");
 
   const licencePlate = generateNamespacePrefix();
 
@@ -72,6 +83,10 @@ async function customPrivateCloudProjectRequest(
 
   const requestedProject = await privateCloudRequestedProjects.create({
     ...metaData,
+    commonComponents,
+    projectOwner: projectOwner._id,
+    primaryTechnicalLead: primaryTechnicalLead._id,
+    secondaryTechnicalLead: secondaryTechnicalLead?._id,
     licencePlate,
     productionQuota: { ...defaultQuota, ...productionQuota },
     developmentQuota: { ...defaultQuota, ...developmentQuota },
@@ -100,7 +115,9 @@ async function customPrivateCloudProjectRequest(
   });
 
   await users.addElementToManyDocumentsArray(
-    [projectOwner, ...technicalLeads].map(({ _id }) => _id),
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+      ({ _id }) => _id
+    ),
     {
       privateCloudActiveRequests: request._id,
     }
@@ -117,20 +134,19 @@ async function customPrivateCloudProjectRequest(
           projectName: metaData.name,
           POName: projectOwner.firstName + " " + projectOwner.lastName,
           POEmail: projectOwner.email,
-          POGitHub: projectOwner.githubId,
-          technicalLeads: technicalLeads,
-          setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
-          productMinistry:requestedProject.ministry,
-          productDescription:requestedProject.description,
+          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
+          setCluster: metaData.cluster,
           licencePlate: requestedProject.licencePlate,
-          showStandardFooterMessage: false, // if false, shows  the  "love, Platform services" one from request-approval
+          showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
-      to: [projectOwner, ...technicalLeads].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+        ({ email }) => email
+      ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${metaData.name} OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
-    });
+          });
   } catch (error) {
     console.log("CHES Error: ", error);
   }

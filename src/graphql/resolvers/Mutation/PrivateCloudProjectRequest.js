@@ -2,13 +2,21 @@ import customPrivateCloudProjectRequest from "./CustomPrivateCloudProjectRequest
 
 const privateCloudProjectRequest = (
   _,
-  { metaData, productionQuota, developmentQuota, testQuota, toolsQuota },
+  {
+    metaData,
+    commonComponents,
+    productionQuota,
+    developmentQuota,
+    testQuota,
+    toolsQuota,
+  },
   context
 ) =>
   customPrivateCloudProjectRequest(
     _,
     {
       metaData,
+      commonComponents,
       productionQuota: {
         ...productionQuota?.cpu,
         ...productionQuota?.memory,
