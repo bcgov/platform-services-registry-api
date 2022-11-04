@@ -337,6 +337,20 @@ const typeDefs = gql`
     snapshotCount: Int
   }
 
+  input FilterPrivateCloudProjectsInput {
+    ministry: Ministry
+    cluster: Cluster
+  }
+
+  enum SortOrder {
+    ASCENDING
+    DESCENDING
+  }
+
+  type ProjectCSV  {    
+    projects: [Project!]!
+  }
+
   type Query {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
@@ -345,10 +359,24 @@ const typeDefs = gql`
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
-    privateCloudProjectsPaginated(offset: Int, limit: Int): ProjectPagination!
-      @hasRole(role: "admin")
+    privateCloudProjectsPaginated(
+      offset: Int!
+      limit: Int!
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+      sort: String
+      sortOrder: SortOrder
+    ): ProjectPagination! @hasRole(role: "admin")
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
+
+      privateCloudProjectsCSV(
+        filter: FilterPrivateCloudProjectsInput,
+        search: String,      
+         ): ProjectCSV!
+        @hasRole(role: "admin")
+
+        
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     userPrivateCloudProjects: [PrivateCloudProject!]! @auth
     userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth

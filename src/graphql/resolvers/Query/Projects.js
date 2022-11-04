@@ -6,16 +6,45 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
-function privateCloudProjectsPaginated(
+async function privateCloudProjectsPaginated(
   _,
-  { offset, limit },
+  { offset, limit, filter, search, sort, sortOrder },
+  { dataSources: { privateCloudProjects } }
+) {
+  const paginatedProjects = await privateCloudProjects.getPaginated(
+    offset,
+    limit,
+    filter,
+    search,
+    sort,
+    sortOrder
+  );
+
+  const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+    filter,
+    search
+  );
+
+  return {
+    count: allProjects.length,
+    projects: paginatedProjects,
+  };
+}
+
+function privateCloudProjectsCSV(
+  _,
+  { filter, search },
   { dataSources: { privateCloudProjects } }
 ) {
   return {
-    count: privateCloudProjects.collection.count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit),
+    projects: privateCloudProjects.getProjectsFiltered(
+      filter,
+      search,
+    ),
   };
+
 }
+
 
 function privateCloudProject(
   _,
@@ -121,4 +150,5 @@ export {
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
+  privateCloudProjectsCSV
 };

@@ -26,6 +26,7 @@ import {
   DefaultStorageOptions,
 } from "./enum/QuotaOptions";
 import Cluster from "./enum/Cluster";
+import SortOrder from "./enum/SortOrder";
 
 const resolvers = {
   Query: {
@@ -54,6 +55,7 @@ const resolvers = {
   PublicCloudPlatform,
   Platform,
   Cluster,
+  SortOrder,
   RequestDecision,
   DefaultCpuOptions,
   DefaultMemoryOptions,
