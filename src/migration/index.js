@@ -139,6 +139,7 @@ function generateProjectData(projectData) {
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
       testQuota: namespaces.test,
+      activeEditRequest: null,
       profileId: id, // Will keep the profile ID from the psql db for reference
     };
 

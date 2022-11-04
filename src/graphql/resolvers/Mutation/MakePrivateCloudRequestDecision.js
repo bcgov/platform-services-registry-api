@@ -70,11 +70,18 @@ async function makePrivateCloudRequestDecision(
       await privateCloudProjects.addElementToDocumentArray(request.project, {
         requestHistory: rejectedRequest._id,
       });
+
+      // Set activeEditRequest property to null
+      await privateCloudProjects.updateFieldsById(request.project, {
+        activeEditRequest: null,
+      });
     }
 
     // remove active request for PO and TLs
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ _id }) => _id),
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .map(({ _id }) => _id),
       { privateCloudActiveRequests: request._id }
     );
 
@@ -85,10 +92,14 @@ async function makePrivateCloudRequestDecision(
         projectName: requestedProject.name,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead]
+          .filter(Boolean)
+          .map(({ email }) => email),
         showStandardFooterMessage: true,
       }),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `**profile.name** OCP 4 Project Set`,
       // subject: `${profile.name} OCP 4 Project Set`,
@@ -124,7 +135,9 @@ async function makePrivateCloudRequestDecision(
           productMinistry: "PRODUCT MINISTRY",
           productDescription: "Product DESCRIPTION",
         }),
-        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+          .filter(Boolean)
+          .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: `**profile.name** OCP 4 Project Set`,
         // subject: `${profile.name} OCP 4 Project Set`,
@@ -136,7 +149,9 @@ async function makePrivateCloudRequestDecision(
     await sendNatsMessage(
       request.type,
       projectOwner.email,
-      [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+      [primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .map(({ email }) => email),
       requestedProject
     );
 
