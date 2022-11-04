@@ -1,6 +1,5 @@
 import { MongoDataSource } from "apollo-datasource-mongodb";
 
-
 export default class MongoHelpers extends MongoDataSource {
   // Inherited methods
   // findOneById(id, options)
@@ -13,6 +12,10 @@ export default class MongoHelpers extends MongoDataSource {
 
   getAll() {
     return this.collection.find().toArray();
+  }
+
+  getAllPaginated(offset, limit) {
+    return this.collection.find().skip(offset).limit(limit).toArray();
   }
 
   addElementToDocumentArray(id, set) {
