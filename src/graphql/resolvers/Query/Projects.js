@@ -31,20 +31,15 @@ async function privateCloudProjectsPaginated(
   };
 }
 
-function privateCloudProjectsCSV(
+function privateCloudProjectsWithFilterSearch(
   _,
   { filter, search },
   { dataSources: { privateCloudProjects } }
 ) {
   return {
-    projects: privateCloudProjects.getProjectsFiltered(
-      filter,
-      search,
-    ),
+    projects: privateCloudProjects.getFilteredSearch(filter, search),
   };
-
 }
-
 
 function privateCloudProject(
   _,
@@ -61,17 +56,6 @@ function privateCloudProjectsById(
 ) {
   return privateCloudProjects.findManyByIds(projectIds);
 }
-
-// async function projects(
-//   _,
-//   __,
-//   { dataSources: { publicCloudProjects, privateCloudProjects } }
-// ) {
-//   return [
-//     ...(await privateCloudProjects.getAll()),
-//     ...(await publicCloudProjects.getAll()),
-//   ];
-// }
 
 async function userPrivateCloudProjects(
   _,
@@ -150,5 +134,5 @@ export {
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
-  privateCloudProjectsCSV
+  privateCloudProjectsWithFilterSearch,
 };

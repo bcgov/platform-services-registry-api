@@ -75,7 +75,7 @@ export default class PrivateCloudProjects extends MongoHelpers {
       })).sort({ [sort]: sortOrder }).skip(offset).limit(limit).toArray();
   }
 
-  getProjectsFiltered(
+  getFilteredSearch(
     filter,
     search
   ) {
