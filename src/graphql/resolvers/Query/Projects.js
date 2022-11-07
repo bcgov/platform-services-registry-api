@@ -6,16 +6,45 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
-function privateCloudProjectsPaginated(
+async function privateCloudProjectsPaginated(
   _,
-  { offset, limit },
+  { offset, limit, filter, search, sort, sortOrder },
+  { dataSources: { privateCloudProjects } }
+) {
+  const paginatedProjects = await privateCloudProjects.getPaginated(
+    offset,
+    limit,
+    filter,
+    search,
+    sort,
+    sortOrder
+  );
+
+  const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+    filter,
+    search
+  );
+
+  return {
+    count: allProjects.length,
+    projects: paginatedProjects,
+  };
+}
+
+function privateCloudProjectsCSV(
+  _,
+  { filter, search },
   { dataSources: { privateCloudProjects } }
 ) {
   return {
-    count: privateCloudProjects.collection.count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit),
+    projects: privateCloudProjects.getProjectsFiltered(
+      filter,
+      search,
+    ),
   };
+
 }
+
 
 function privateCloudProject(
   _,
@@ -52,13 +81,20 @@ async function userPrivateCloudProjects(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  const { privateCloudProjectOwner, privateCloudPrimaryTechnicalLead, privateCloudSecondaryTechnicalLead,  } = user;
+  if (!user) {
+    throw Error("Not a user");
+  }
 
+  const {
+    privateCloudProjectOwner,
+    privateCloudPrimaryTechnicalLead,
+    privateCloudSecondaryTechnicalLead,
+  } = user;
 
   return privateCloudProjects.findManyByIds([
     ...privateCloudProjectOwner,
     ...privateCloudPrimaryTechnicalLead,
-    ...privateCloudSecondaryTechnicalLead
+    ...privateCloudSecondaryTechnicalLead,
   ]);
 }
 
@@ -72,10 +108,11 @@ async function userPrivateCloudProject(
 
   const project = await privateCloudProjects.findOneById(projectId);
 
-  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } = project;
+  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+    project;
 
   if (
-    ![ projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+    ![projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
       .map((id) => id.toString())
       .includes(user._id.toString())
   ) {
@@ -95,8 +132,11 @@ async function userPrivateCloudProjectsById(
 
   const projects = privateCloudProjects.findManyByIds(projectIds);
 
-  projects.every(({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).includes(user._id)
+  projects.every(
+    ({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .includes(user._id)
   )
     ? projects
     : [];
@@ -110,4 +150,5 @@ export {
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
+  privateCloudProjectsCSV
 };

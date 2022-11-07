@@ -38,7 +38,7 @@ async function customPrivateCloudProjectEditRequest(
     throw Error("Project does not exist");
   }
 
-  if ("activeRequest" in project) {
+  if ("activeEditRequest" in project && project.activeEditRequest) {
     throw Error("There already exists an active request for this project");
   }
 

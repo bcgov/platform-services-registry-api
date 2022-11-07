@@ -96,6 +96,7 @@ async function customPrivateCloudProjectRequest(
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
+    activeEditRequest: null,
   });
 
   const request = await privateCloudActiveRequests.create({

@@ -65,6 +65,10 @@ async function userPrivateCloudActiveRequests(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
+  if (!user) {
+    throw Error("Not a user");
+  }
+
   return privateCloudActiveRequests.findManyByIds(
     user.privateCloudActiveRequests
   );
@@ -103,53 +107,6 @@ async function userPrivateCloudActiveRequestsById(
     ? privateCloudActiveRequests.findManyByIds(requestIds)
     : [];
 }
-
-// function publicCloudRequests(
-//   _,
-//   __,
-//   { dataSources: { publicCloudArchivedRequests, publicCloudActiveRequests } }
-// ) {
-//   return [
-//     ...publicCloudArchivedRequests.getAll(),
-//     ...publicCloudActiveRequests.getAll(),
-//   ];
-// }
-
-// function publicCloudActiveRequest(
-//   _,
-//   { id },
-//   { dataSources: { publicCloudActiveRequests } }
-// ) {
-//   return publicCloudActiveRequests.findOneById(id);
-// }
-
-// function publicCloudArchivedRequest(
-//   _,
-//   { id },
-//   { dataSources: { publicCloudArchivedRequests } }
-// ) {
-//   return publicCloudArchivedRequests.findOneById(id);
-// }
-
-// async function requests(
-//   _,
-//   __,
-//   {
-//     dataSources: {
-//       publicCloudArchivedRequests,
-//       publicCloudActiveRequests,
-//       privateCloudArchivedRequests,
-//       privateCloudActiveRequests,
-//     },
-//   }
-// ) {
-//   return [
-//     ...(await publicCloudArchivedRequests.getAll()),
-//     ...(await publicCloudActiveRequests.getAll()),
-//     ...(await privateCloudArchivedRequests.getAll()),
-//     ...(await privateCloudActiveRequests.getAll()),
-//   ];
-// }
 
 export {
   privateCloudRequests,
