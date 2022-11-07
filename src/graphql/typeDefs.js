@@ -347,7 +347,7 @@ const typeDefs = gql`
     DESCENDING
   }
 
-  type ProjectCSV  {    
+  type ProjectCSV {
     projects: [Project!]!
   }
 
@@ -359,6 +359,7 @@ const typeDefs = gql`
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+
     privateCloudProjectsPaginated(
       offset: Int!
       limit: Int!
@@ -367,16 +368,15 @@ const typeDefs = gql`
       sort: String
       sortOrder: SortOrder
     ): ProjectPagination! @hasRole(role: "admin")
+    
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
 
-      privateCloudProjectsCSV(
-        filter: FilterPrivateCloudProjectsInput,
-        search: String,      
-         ): ProjectCSV!
-        @hasRole(role: "admin")
+    privateCloudProjectsCSV(
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+    ): ProjectCSV! @hasRole(role: "admin")
 
-        
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     userPrivateCloudProjects: [PrivateCloudProject!]! @auth
     userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
