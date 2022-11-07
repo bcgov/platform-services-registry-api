@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photo-sharing-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: photo-sharing-api
+          env:
+            - name: MONGODB_HOST
+              value: mongodb:27017
+            - name: MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_USER
+                  name: photo-sharing-mongo-creds-fkd8kb28k9
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGODB_PASSWORD
+                  name: photo-sharing-mongo-creds-fkd8kb28k9
