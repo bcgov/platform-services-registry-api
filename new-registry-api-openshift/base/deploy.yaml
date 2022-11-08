@@ -48,7 +48,7 @@ spec:
             - name: NATS_SUBJECT
               value: registry_project_provisioning_klab
             - name: NATS_SKIP
-              value: 'false'
+              value: 'true'
             - name: CHES_TOKEN_URL
               value: https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
             - name: CHES_CLIENT_ID
@@ -60,7 +60,7 @@ spec:
                 secretKeyRef:
                   key: chesClientSecret
                   name: new-registry-api
-          image: image-registry.openshift-image-registry.svc:5000/platform-registry-tools/registry-api-new-api:latest
+          image: image-registry.openshift-image-registry.svc:5000/platform-registry-tools/registry-api-new-api:1.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 5000

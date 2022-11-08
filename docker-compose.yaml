@@ -6,6 +6,14 @@ x-env: &defaults
   AUTH_SERVER_URL:
   AUTH_RESOURCE:
   AUTH_SECRET:
+  NATS_HOST:
+  NATS_PORT:
+  NATS_SUBJECT:
+  NATS_SKIP:
+  CHES_TOKEN_URL:
+  CHES_CLIENT_ID:
+  CHES_CLIENT_SECRET:
+  CHES_API_URL:
 services:
   api:
     container_name: registry-api-new
@@ -28,7 +36,7 @@ services:
     environment:
       <<: *defaults
       PORT: 4000
-    command: >
-      bash -c "sleep 5 && npm run start"
+    # command: >
+    #   bash -c "sleep 5 && npm run start"
     # command: >
     #   bash -c "sleep 5 && npm run dev:docker"
