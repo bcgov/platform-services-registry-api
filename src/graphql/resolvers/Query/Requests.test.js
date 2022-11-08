@@ -245,9 +245,8 @@ describe("Mongo Helpers", () => {
 
     const { id, requestedProject, createdBy } =
       request.data?.privateCloudProjectRequest;
-console.log(request.data?.privateCloudProjectRequest)
     newRequestId = id;
-    projectId = requestedProject.id;
+    projectId = requestedProject.description;
     // Will be used in subsequent tests
     const user = me.data?.me.activeRequests;
 
@@ -336,6 +335,64 @@ console.log(request.data?.privateCloudProjectRequest)
   });
 
   it("Should edit project description", async () => {
+
+    const request = await server.executeOperation({
+      query: `mutation CreatePrivateCloudProjectRequest(
+        $metaData: ProjectMetaDataInput!,         
+         ) {
+        privateCloudProjectRequest(
+          metaData: $metaData,       
+        ) {
+          id
+          createdBy {
+            firstName
+            lastName
+            id
+            email
+          }
+          type
+          status
+          active
+          created
+          decisionDate
+          requestedProject {
+            id
+            primaryTechnicalLead {
+              firstName
+              lastName
+            }
+            secondaryTechnicalLead {
+              firstName
+              lastName
+            }
+          }
+          project {
+            ... on PrivateCloudProject {
+              id
+              name
+              ministry
+              productionQuota {
+                cpu {
+                  requests
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        metaData: {
+          name: "Test",
+          description: "Test proj",
+          projectOwner: "oamar.kanji@gov.bc.ca",
+          ministry: "AGRI",
+          primaryTechnicalLead: "billy.li@gov.bc.ca",
+          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
+          cluster: "SILVER",
+        },
+      },
+    });
+const projectId = request.data.privateCloudProjectRequest.requestedProject.id
     const result = await server.executeOperation({
       query: `mutation PrivateCloudProjectEditRequest(
         $projectId: ID!,
@@ -394,7 +451,7 @@ console.log(request.data?.privateCloudProjectRequest)
         },
       },
     });
-    console.log(result)
   
+    console.log(result)
   });
 });
