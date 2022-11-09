@@ -7,7 +7,7 @@ COPY . .
 
 RUN npm install
 RUN npm run build
-RUN rm -rf src
+# RUN rm -rf src
 
 RUN apk update && \
     apk upgrade && \
@@ -17,4 +17,4 @@ RUN apk update && \
 
 EXPOSE 4222 4000
 
-CMD [ "npm", "run", "start" ]
+CMD [ "node", "dist/index.js" ]
