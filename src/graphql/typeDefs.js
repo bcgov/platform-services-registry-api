@@ -371,7 +371,7 @@ const typeDefs = gql`
     privateCloudProjectsWithFilterSearch(
       filter: FilterPrivateCloudProjectsInput
       search: String
-    ): [Project!]! @hasRole(role: "admin")
+    ): [PrivateCloudProject!]! @hasRole(role: "admin")
 
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     userPrivateCloudProjects: [PrivateCloudProject!]! @auth

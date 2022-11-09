@@ -36,9 +36,7 @@ function privateCloudProjectsWithFilterSearch(
   { filter, search },
   { dataSources: { privateCloudProjects } }
 ) {
-  return {
-    projects: privateCloudProjects.getFilteredSearch(filter, search),
-  };
+  return privateCloudProjects.getFilteredSearch(filter, search);
 }
 
 function privateCloudProject(
