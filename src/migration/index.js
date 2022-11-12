@@ -4,10 +4,10 @@ const { writeFileSync } = require("fs");
 
 const pool = new Pool({
   host: "localhost",
-  user: "postgres",
-  password: "postgres",
+  user: "okanji",
+  password: "",
   port: 5432,
-  database: "okanji",
+  database: "postgres",
 });
 
 async function getPsqlUserData() {
@@ -140,6 +140,7 @@ function generateProjectData(projectData) {
       toolsQuota: namespaces.tools,
       testQuota: namespaces.test,
       activeEditRequest: null,
+      commonComponents: {},
       profileId: id, // Will keep the profile ID from the psql db for reference
     };
 

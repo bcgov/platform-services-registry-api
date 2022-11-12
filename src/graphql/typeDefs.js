@@ -218,7 +218,7 @@ const typeDefs = gql`
     requestHistory: [Request]!
     activeEditRequest: Request
     count: Int
-    commonComponents: CommonComponents
+    commonComponents: CommonComponents!
   }
 
   type CommonComponents {
