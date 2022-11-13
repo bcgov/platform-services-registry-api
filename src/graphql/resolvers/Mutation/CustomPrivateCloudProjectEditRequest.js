@@ -43,19 +43,6 @@ async function customPrivateCloudProjectEditRequest(
     throw Error("There already exists an active request for this project");
   }
 
-  // if ((await privateCloudActiveRequests.findOneById(projectId)) !== undefined) {
-  //   throw Error("There already exists an active request for this project");
-  // }
-
-  // if (
-  //   (await privateCloudActiveRequests.findByFields({
-  //     licencePlate: project.licencePlate,
-  //   })) !== undefined
-  // ) {
-  //   throw Error("There already exists an active request for this project");
-  // }
-
-  // Only an Admin or a PO or TL of this project can request to edit it
   if (
     ![
       project.projectOwner,
