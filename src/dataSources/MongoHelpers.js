@@ -14,6 +14,10 @@ export default class MongoHelpers extends MongoDataSource {
     return this.collection.find().toArray();
   }
 
+  getCount() {
+    return this.collection.countDocuments();
+  }
+
   getAllPaginated(offset, limit) {
     return this.collection.find().skip(offset).limit(limit).toArray();
   }

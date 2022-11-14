@@ -363,7 +363,12 @@ const typeDefs = gql`
       search: String
       sort: String
       sortOrder: SortOrder
-    ): ProjectPagination! @hasRole(role: "admin")
+    ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
+    privateCloudProjectsCount(
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+    ): Int! @hasRole(role: "admin")
 
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")

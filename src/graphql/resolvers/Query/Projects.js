@@ -6,12 +6,39 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
-async function privateCloudProjectsPaginated(
+// async function privateCloudProjectsPaginated(
+//   _,
+//   { offset, limit, filter, search, sort, sortOrder },
+//   { dataSources: { privateCloudProjects } }
+// ) {
+//   console.log("privateCloudProjectsPaginated", offset, limit, filter, search, sort, sortOrder);
+//   const paginatedProjects = await privateCloudProjects.getPaginated(
+//     offset,
+//     limit,
+//     filter,
+//     search,
+//     sort,
+//     sortOrder
+//   );
+
+//   const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+//     filter,
+//     search
+//   );
+
+//   return {
+//     count: allProjects.length,
+//     projects: paginatedProjects,
+//   };
+// }
+
+function privateCloudProjectsPaginated(
   _,
   { offset, limit, filter, search, sort, sortOrder },
   { dataSources: { privateCloudProjects } }
 ) {
-  const paginatedProjects = await privateCloudProjects.getPaginated(
+  console.log(
+    "privateCloudProjectsPaginated",
     offset,
     limit,
     filter,
@@ -19,16 +46,23 @@ async function privateCloudProjectsPaginated(
     sort,
     sortOrder
   );
-
-  const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+  return privateCloudProjects.getPaginated(
+    offset,
+    limit,
     filter,
-    search
+    search,
+    sort,
+    sortOrder
   );
+}
 
-  return {
-    count: allProjects.length,
-    projects: paginatedProjects,
-  };
+async function privateCloudProjectsCount(
+  _,
+  { filter, search },
+  { dataSources: { privateCloudProjects } }
+) {
+  const projects = await privateCloudProjects.getFilteredSearch(filter, search);
+  return projects.length;
 }
 
 function privateCloudProjectsWithFilterSearch(
@@ -126,6 +160,7 @@ async function userPrivateCloudProjectsById(
 
 export {
   privateCloudProjects,
+  privateCloudProjectsCount,
   privateCloudProjectsPaginated,
   privateCloudProject,
   privateCloudProjectsById,
