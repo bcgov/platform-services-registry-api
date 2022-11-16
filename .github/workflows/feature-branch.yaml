@@ -14,24 +14,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  api_test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
-    steps:
-      - uses: actions/checkout@v3
-        with:
-         ref: api-devops
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "12"
-      - name: Install
-        run: npm install
-      - name: Install dependencies
-        run: npm ci
-      - name: Unit tests w/ coverage
-        run: npm run test:coverage
+  # api_test:
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: .
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #        ref: api-devops
+  #     - uses: actions/setup-node@v1
+  #       with:
+  #         node-version: "12"
+  #     - name: Install
+  #       run: npm install
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Unit tests w/ coverage
+  #       run: npm run test:coverage
       # - name: LINTing
       #   run: npm run test:lint
       # - name: OpenAPI Schema
@@ -55,7 +55,7 @@ jobs:
       #     exit 1
 
   api_build:
-    needs: api_test
+    # needs: api_test
     runs-on: ubuntu-latest
     defaults:
       run:
