@@ -77,6 +77,7 @@ jobs:
             ${{ runner.OS }}-
       - name: npm install and build
         run: |
+          npm install
           npm ci
           npm run build --if-present
         env:
