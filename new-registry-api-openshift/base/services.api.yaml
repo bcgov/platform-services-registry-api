@@ -5,7 +5,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
   labels:
     app: registry-new
-  name: registry-new-api
+  name: platsrv-registry-api
 spec:
   ports:
     - name: 4000-tcp
@@ -13,6 +13,6 @@ spec:
       protocol: TCP
       targetPort: 4000
   selector:
-    deployment: registry-new-api
+    deployment: platsrv-registry-api
   sessionAffinity: None
   type: ClusterIP

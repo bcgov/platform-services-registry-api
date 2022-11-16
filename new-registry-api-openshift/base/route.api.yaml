@@ -1,17 +1,17 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: registry-new-api
+  name: platsrv-registry-api
   annotations:
     openshift.io/host.generated: "true"
     argocd.argoproj.io/sync-wave: "1"
   labels:
-    app: registry-new-api
+    app: platsrv-registry-api
 spec:
-  host: registry-new-api-platform-registry-dev.apps.silver.devops.gov.bc.ca
+  host: https://registry.developer.gov.bc.ca/
   to:
     kind: Service
-    name: registry-new-api
+    name: platsrv-registry-api
     weight: 100
   port:
     targetPort: 4000-tcp

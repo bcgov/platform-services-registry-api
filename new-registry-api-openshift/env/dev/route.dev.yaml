@@ -1,0 +1,6 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: platsrv-registry-api
+spec:
+  host: platsrv-registry-api-101ed4.apps.silver.devops.gov.bc.ca

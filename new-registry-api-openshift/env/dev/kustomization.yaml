@@ -1,11 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: platform-registry-dev
+namespace: 101ed4-dev
 bases:
   - ../../base
-# patches:
-#   - deployment.api_env.patch.yaml
-# images:
-#   - digest: sha256:bb12a4caefc7d13010f20986a6c9e439446b40792f716528c15560580012b81d
-#     name: registry-api-image
-#     newName: image-registry.openshift-image-registry.svc:5000/platform-registry-tools/registry-api-new-api
+patches:
+  - deployment.api_env.patch.yaml
+  - route.dev.yaml
+images:
+  - name:  platsrv-registry-api-main-build
+    newName: image-registry.openshift-image-registry.svc:5000/101ed4-tools/platsrv-registry-api-feature-branch
+    newTag: "dev"
