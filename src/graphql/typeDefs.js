@@ -150,15 +150,6 @@ const typeDefs = gql`
     count: Int!
   }
 
-  interface Pagination {
-    count: Int!
-  }
-
-  type ProjectPagination implements Pagination {
-    count: Int!
-    projects: [Project!]!
-  }
-
   interface Project {
     id: ID!
     name: String!
