@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  labels:
+    app: registry-new
+  name: platsrv-registry-api
+  namespace: 101ed4-dev
+spec:
+  ports:
+  - name: 4000-tcp
+    port: 4000
+    protocol: TCP
+    targetPort: 4000
+  selector:
+    deployment: platsrv-registry-api
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: registry-new
+    deployment: platsrv-registry-api
+    role: server
+  name: platsrv-registry-api
+  namespace: 101ed4-dev
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: registry-new
+      deployment: platsrv-registry-api
+      role: api
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 2
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: registry-new
+        deployment: platsrv-registry-api
+        role: api
+    spec:
+      containers:
+      - env:
+        - name: NODE_ENV
+          value: production
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              key: mongoURL
+              name: new-registry-api
+        - name: AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: authSecret
+              name: new-registry-api
+        - name: AUTH_RELM
+          value: devhub
+        - name: AUTH_SERVER_URL
+          value: https://dev.oidc.gov.bc.ca/auth
+        - name: AUTH_RESOURCE
+          value: registry-api
+        - name: NATS_HOST
+          value: nats://nats.platform-provisioner-dev.svc
+        - name: NATS_PORT
+          value: "4222"
+        - name: NATS_SUBJECT
+          value: registry_project_provisioning_klab
+        - name: NATS_SKIP
+          value: "true"
+        - name: CHES_TOKEN_URL
+          value: https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
+        - name: CHES_CLIENT_ID
+          value: PS_REG_SERVICE_CLIENT
+        - name: CHES_API_URL
+          value: https://ches-dev.apps.silver.devops.gov.bc.ca/api/v1/
+        - name: CHES_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: chesClientSecret
+              name: new-registry-api
+        image: image-registry.openshift-image-registry.svc:5000/101ed4-tools/platsrv-registry-api-feature-branch:dev
+        imagePullPolicy: Always
+        name: platsrv-registry-api
+        ports:
+        - containerPort: 4000
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
+            cpu: 200m
+            memory: 92Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app: registry-api-new
+  name: allow-from-openshift-ingress-registry-api-new
+  namespace: 101ed4-dev
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+    openshift.io/host.generated: "true"
+  labels:
+    app: platsrv-registry-api
+  name: platsrv-registry-api
+  namespace: 101ed4-dev
+spec:
+  host: platsrv-registry-api-101ed4.apps.silver.devops.gov.bc.ca
+  port:
+    targetPort: 4000-tcp
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: platsrv-registry-api
+    weight: 100
+  wildcardPolicy: None

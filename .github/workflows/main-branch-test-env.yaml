@@ -1,0 +1,138 @@
+name: Dev - build from feature branch
+on:
+  # Build for Test when a pull request is merged into master with changes to
+  # certain api, db, or web files.
+  # If triggered manually, run all steps. 
+  # web-devops for now, change it to other branch if needed. 
+  # ------------------------------------------------------------------------
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**/*"
+      - "package.json"
+  workflow_dispatch:
+
+jobs:
+  # api_test:
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: .
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #        ref: api-devops
+  #     - uses: actions/setup-node@v1
+  #       with:
+  #         node-version: "12"
+  #     - name: Install
+  #       run: npm install
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Unit tests w/ coverage
+  #       run: npm run test:coverage
+      # - name: LINTing
+      #   run: npm run test:lint
+      # - name: OpenAPI Schema
+      # #   run: npm run test:schema
+      # - name: Upload coverage report
+      #   env:
+      #     CC_TEST_REPORTER_ID: ${{ secrets.TestReporterID }}
+      #     CI: "true"
+      #   run: |
+      #     curl -Ls https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      #     chmod +x ./cc-test-reporter
+      #     ./cc-test-reporter format-coverage -t lcov -o codeclimate.json
+      #     ./cc-test-reporter upload-coverage -i codeclimate.json
+
+      # - name: Check test result
+      #   if: ${{ failure() }}
+      #   env:
+      #     ROCKETCHAT_MESSAGE: "There was an error in the registry app API tests during the ${{ github.workflow }} workflow.  See: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      #   run: |
+      #     curl -X POST -H 'Content-Type: application/json' --data '{"text":"${{ env.ROCKETCHAT_MESSAGE }}"}' "${{ secrets.ROCKETCHAT_HOOK_URL }}"
+      #     exit 1
+
+  api_build:
+    # needs: api_test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          ref: main
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      - name: npm install and build
+        run: |
+          npm install
+          npm ci
+          npm run build --if-present
+        env:
+          CI: "true"
+
+  api_s2i-build:
+    needs: api_build
+    runs-on: ubuntu-latest
+    concurrency: platsrv-registry-api
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      # Build the image using the master build config
+      # Get its build ID
+      # Get the commit ID of that build
+      # Get the SHA256 signature of the image
+      # Tag the image with the commit ID and "test"
+      # ---------------------------------------------
+      - name: Build and tag the image
+        id: build-api-image
+        run: |
+          oc version
+          oc login --token=${{ secrets.OpenShiftToken }} --server=${{ secrets.OpenShiftServerURL }}
+          oc -n 101ed4-tools start-build platsrv-registry-web-main-build --follow
+          export BUILDID="$(oc -n 101ed4-tools get -o=jsonpath="{.status.lastVersion}" buildconfig platsrv-registry-web-main-build)"
+          export COMMITID="$(oc -n 101ed4-tools get -o=jsonpath="{.spec.revision.git.commit}" build platsrv-registry-web-main-build-$BUILDID | cut -c1-7)"
+          export IMAGESHA="$(oc -n 101ed4-tools get -o=jsonpath="{.status.output.to.imageDigest}" build platsrv-registry-web-main-build-$BUILDID)"
+          oc -n 101ed4-tools tag platsrv-registry-api-mai@$IMAGESHA platsrv-registry-api-mai:$COMMITID platsrv-registry-api-mai:dev
+          echo "::set-output name=imagesha::$IMAGESHA"
+
+      # Prepare Kustomize and update manifests
+      # --------------------------------------
+      - name: Prepare deploy key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.MANIFEST_REPO_DEPLOY_KEY }}
+      - name: Check out manifest repo
+        uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.MANIFEST_REPO_DEPLOY_KEY }}
+          repository: ${{ secrets.MANIFEST_REPO }}
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v1
+      - name: Set global git config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Update API image ID
+        run: |
+          cd new-platform-registry-app/overlays/test
+          kustomize edit set image "platsrv-registry-api-main-build=image-registry.openshift-image-registry.svc:5000/101ed4-tools/platsrv-registry-api-main@${{ steps.build-api-image.outputs.imagesha }}"
+          git commit -am "Update API image ID for Test"
+          git push origin

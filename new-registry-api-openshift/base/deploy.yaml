@@ -4,24 +4,24 @@ metadata:
   labels:
     app: registry-new
     role: server
-    deployment: registry-new-api
-  name: registry-new-api
+    deployment: platsrv-registry-api
+  name: platsrv-registry-api
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: registry-new
       role: api
-      deployment: registry-new-api
+      deployment: platsrv-registry-api
   template:
     metadata:
       labels:
         app: registry-new
         role: api
-        deployment: registry-new-api
+        deployment: platsrv-registry-api
     spec:
       containers:
-        - name: registry-new-api
+        - name: platsrv-registry-api
           env:
             - name: NODE_ENV
               value: production
@@ -38,11 +38,11 @@ spec:
             - name: AUTH_RELM
               value: devhub
             - name: AUTH_SERVER_URL
-              value: https://dev.oidc.gov.bc.ca/auth
+              value: https://oidc.gov.bc.ca/auth
             - name: AUTH_RESOURCE
               value: registry-api
             - name: NATS_HOST
-              value: nats://nats.platform-provisioner-dev.svc
+              value: nats://nats.platform-provisioner.svc
             - name: NATS_PORT
               value: '4222'
             - name: NATS_SUBJECT
@@ -50,7 +50,7 @@ spec:
             - name: NATS_SKIP
               value: 'true'
             - name: CHES_TOKEN_URL
-              value: https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
+              value: https://oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
             - name: CHES_CLIENT_ID
               value: PS_REG_SERVICE_CLIENT
             - name: CHES_API_URL
@@ -60,10 +60,11 @@ spec:
                 secretKeyRef:
                   key: chesClientSecret
                   name: new-registry-api
-          image: image-registry.openshift-image-registry.svc:5000/platform-registry-tools/registry-api-new-api:1.0.1
+          # image: image-registry.openshift-image-registry.svc:5000/platform-registry-tools/registry-api-new-api:1.0.2
+          image: platsrv-registry-api-main-build
           imagePullPolicy: Always
           ports:
-            - containerPort: 5000
+            - containerPort: 4000
               protocol: TCP
           # readinessProbe:
           #   failureThreshold: 3
