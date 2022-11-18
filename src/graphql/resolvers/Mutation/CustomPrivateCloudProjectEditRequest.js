@@ -5,9 +5,8 @@ import sendNatsMessage from "../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
 
-async function customPrivateCloudProjectEditRequest(
-  _,
-  {
+async function customPrivateCloudProjectEditRequest(_, args, context) {
+  const {
     projectId,
     metaData,
     commonComponents,
@@ -15,8 +14,9 @@ async function customPrivateCloudProjectEditRequest(
     developmentQuota,
     testQuota,
     toolsQuota,
-  },
-  {
+  } = args;
+
+  const {
     dataSources: {
       users,
       privateCloudRequestedProjects,
@@ -25,8 +25,8 @@ async function customPrivateCloudProjectEditRequest(
     },
     kauth,
     chesService,
-  }
-) {
+  } = context;
+
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
     roles: [],
@@ -209,6 +209,8 @@ async function customPrivateCloudProjectEditRequest(
         productDescription: "Product DESCRIPTION",
       }),
       to: [
+        projectOwner,
+        requestedProjectOwner,
         primaryTechnicalLead,
         secondaryTechnicalLead,
         requestedPrimaryTechnicalLead,

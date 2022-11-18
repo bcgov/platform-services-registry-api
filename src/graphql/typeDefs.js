@@ -361,8 +361,6 @@ const typeDefs = gql`
       limit: Int!
       filter: FilterPrivateCloudProjectsInput
       search: String
-      sort: String
-      sortOrder: SortOrder
     ): [PrivateCloudProject!]! @hasRole(role: "admin")
 
     privateCloudProjectsCount(
