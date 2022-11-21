@@ -7,6 +7,7 @@
     "dev": "nodemon --exec babel-node -- ./src/index.js",
     "dev:docker": "nodemon -L --delay 1600ms --watch build --inspect=0.0.0.0:9229 -e js,json --nolazy ./build/server.js",
     "test": "node -r dotenv/config $(which jest)",
+    "test:coverage": "NODE_ENV=test jest --coverage",
     "prettier": "prettier --write 'src/**/*.js'",
     "build": "babel -d dist src"
   },
@@ -29,6 +30,8 @@
     "jwks-rsa": "^2.0.5",
     "keycloak-connect": "^17.0.1",
     "keycloak-connect-graphql": "^0.7.0",
+    "moment": "^2.29.4",
+    "mongo-date-query": "^1.3.1",
     "mongodb": "^4.4.1",
     "nats": "^2.6.1",
     "pg": "^8.7.3",

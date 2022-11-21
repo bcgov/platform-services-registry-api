@@ -6,15 +6,71 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
+// async function privateCloudProjectsPaginated(
+//   _,
+//   { offset, limit, filter, search, sort, sortOrder },
+//   { dataSources: { privateCloudProjects } }
+// ) {
+//   console.log("privateCloudProjectsPaginated", offset, limit, filter, search, sort, sortOrder);
+//   const paginatedProjects = await privateCloudProjects.getPaginated(
+//     offset,
+//     limit,
+//     filter,
+//     search,
+//     sort,
+//     sortOrder
+//   );
+
+//   const allProjects = await privateCloudProjects.getFilteredSearchSorted(
+//     filter,
+//     search
+//   );
+
+//   return {
+//     count: allProjects.length,
+//     projects: paginatedProjects,
+//   };
+// }
+
 function privateCloudProjectsPaginated(
   _,
-  { offset, limit },
+  { offset, limit, filter, search, sort, sortOrder },
   { dataSources: { privateCloudProjects } }
 ) {
-  return {
-    count: privateCloudProjects.collection.count(),
-    projects: privateCloudProjects.getAllPaginated(offset, limit),
-  };
+  console.log(
+    "privateCloudProjectsPaginated",
+    offset,
+    limit,
+    filter,
+    search,
+    sort,
+    sortOrder
+  );
+  return privateCloudProjects.getPaginated(
+    offset,
+    limit,
+    filter,
+    search,
+    sort,
+    sortOrder
+  );
+}
+
+async function privateCloudProjectsCount(
+  _,
+  { filter, search },
+  { dataSources: { privateCloudProjects } }
+) {
+  const projects = await privateCloudProjects.getFilteredSearch(filter, search);
+  return projects.length;
+}
+
+function privateCloudProjectsWithFilterSearch(
+  _,
+  { filter, search },
+  { dataSources: { privateCloudProjects } }
+) {
+  return privateCloudProjects.getFilteredSearch(filter, search);
 }
 
 function privateCloudProject(
@@ -33,17 +89,6 @@ function privateCloudProjectsById(
   return privateCloudProjects.findManyByIds(projectIds);
 }
 
-// async function projects(
-//   _,
-//   __,
-//   { dataSources: { publicCloudProjects, privateCloudProjects } }
-// ) {
-//   return [
-//     ...(await privateCloudProjects.getAll()),
-//     ...(await publicCloudProjects.getAll()),
-//   ];
-// }
-
 async function userPrivateCloudProjects(
   _,
   __,
@@ -52,13 +97,20 @@ async function userPrivateCloudProjects(
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
-  const { privateCloudProjectOwner, privateCloudPrimaryTechnicalLead, privateCloudSecondaryTechnicalLead,  } = user;
+  if (!user) {
+    throw Error("Not a user");
+  }
 
+  const {
+    privateCloudProjectOwner,
+    privateCloudPrimaryTechnicalLead,
+    privateCloudSecondaryTechnicalLead,
+  } = user;
 
   return privateCloudProjects.findManyByIds([
     ...privateCloudProjectOwner,
     ...privateCloudPrimaryTechnicalLead,
-    ...privateCloudSecondaryTechnicalLead
+    ...privateCloudSecondaryTechnicalLead,
   ]);
 }
 
@@ -72,10 +124,11 @@ async function userPrivateCloudProject(
 
   const project = await privateCloudProjects.findOneById(projectId);
 
-  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } = project;
+  const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+    project;
 
   if (
-    ![ projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+    ![projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
       .map((id) => id.toString())
       .includes(user._id.toString())
   ) {
@@ -95,8 +148,11 @@ async function userPrivateCloudProjectsById(
 
   const projects = privateCloudProjects.findManyByIds(projectIds);
 
-  projects.every(({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).includes(user._id)
+  projects.every(
+    ({ projectOwner, primaryTechnicalLead, secondaryTechnicalLead }) =>
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .includes(user._id)
   )
     ? projects
     : [];
@@ -104,10 +160,12 @@ async function userPrivateCloudProjectsById(
 
 export {
   privateCloudProjects,
+  privateCloudProjectsCount,
   privateCloudProjectsPaginated,
   privateCloudProject,
   privateCloudProjectsById,
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
+  privateCloudProjectsWithFilterSearch,
 };

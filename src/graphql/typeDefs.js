@@ -219,7 +219,7 @@ const typeDefs = gql`
     requestHistory: [Request]!
     activeEditRequest: Request
     count: Int
-    commonComponents: CommonComponents
+    commonComponents: CommonComponents!
   }
 
   type CommonComponents {
@@ -338,6 +338,16 @@ const typeDefs = gql`
     snapshotCount: Int
   }
 
+  input FilterPrivateCloudProjectsInput {
+    ministry: Ministry
+    cluster: Cluster
+  }
+
+  enum SortOrder {
+    ASCENDING
+    DESCENDING
+  }
+
   type Query {
     users: [User!]! @hasRole(role: "admin")
     user(id: ID!): User @hasRole(role: "admin")
@@ -346,10 +356,29 @@ const typeDefs = gql`
     me: User @auth
 
     privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
-    privateCloudProjectsPaginated(offset: Int, limit: Int): ProjectPagination!
-      @hasRole(role: "admin")
+
+    privateCloudProjectsPaginated(
+      offset: Int!
+      limit: Int!
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+      sort: String
+      sortOrder: SortOrder
+    ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
+    privateCloudProjectsCount(
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+    ): Int! @hasRole(role: "admin")
+
     privateCloudProject(projectId: ID!): PrivateCloudProject!
       @hasRole(role: "admin")
+
+    privateCloudProjectsWithFilterSearch(
+      filter: FilterPrivateCloudProjectsInput
+      search: String
+    ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
     privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     userPrivateCloudProjects: [PrivateCloudProject!]! @auth
     userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth

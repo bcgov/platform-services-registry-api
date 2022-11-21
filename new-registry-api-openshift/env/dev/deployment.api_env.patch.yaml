@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platsrv-registry-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: platsrv-registry-api
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  key: mongoURL
+                  name: new-registry-api
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: authSecret
+                  name: new-registry-api
+            - name: AUTH_RELM
+              value: devhub
+            - name: AUTH_SERVER_URL
+              value: https://dev.oidc.gov.bc.ca/auth
+            - name: AUTH_RESOURCE
+              value: registry-api
+            - name: NATS_HOST
+              value: nats://nats.platform-provisioner-dev.svc
+            - name: NATS_PORT
+              value: '4222'
+            - name: NATS_SUBJECT
+              value: registry_project_provisioning_klab
+            - name: NATS_SKIP
+              value: 'true'
+            - name: CHES_TOKEN_URL
+              value: https://dev.oidc.gov.bc.ca/auth/realms/jbd6rnxw/protocol/openid-connect/token
+            - name: CHES_CLIENT_ID
+              value: PS_REG_SERVICE_CLIENT
+            - name: CHES_API_URL
+              value: https://ches-dev.apps.silver.devops.gov.bc.ca/api/v1/
+            - name: CHES_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: chesClientSecret
+                  name: new-registry-api

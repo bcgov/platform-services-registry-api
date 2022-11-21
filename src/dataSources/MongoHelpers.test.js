@@ -117,9 +117,6 @@ describe("Mongo Helpers", () => {
 
   it("Should delete a document", async () => {
     const { acknowledged } = await users.removeDocument(oamarId);
-    const allUsers = await users.getAll();
-
-    // console.log(allUsers)
 
     expect(acknowledged).toBe(true);
   });

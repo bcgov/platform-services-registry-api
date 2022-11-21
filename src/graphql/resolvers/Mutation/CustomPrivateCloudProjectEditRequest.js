@@ -33,29 +33,17 @@ async function customPrivateCloudProjectEditRequest(
     roles: [],
   };
   const [user] = await users.findByFields({ email });
-  const { _id, ...project } = await privateCloudProjects.findOneById(projectId) || {};
+  const { _id, ...project } =
+    (await privateCloudProjects.findOneById(projectId)) || {};
 
   if (_id === undefined) {
     throw Error("Project does not exist");
   }
 
-  if ("activeRequest" in project) {
+  if ("activeEditRequest" in project && project.activeEditRequest) {
     throw Error("There already exists an active request for this project");
   }
 
-  // if ((await privateCloudActiveRequests.findOneById(projectId)) !== undefined) {
-  //   throw Error("There already exists an active request for this project");
-  // }
-
-  // if (
-  //   (await privateCloudActiveRequests.findByFields({
-  //     licencePlate: project.licencePlate,
-  //   })) !== undefined
-  // ) {
-  //   throw Error("There already exists an active request for this project");
-  // }
-
-  // Only an Admin or a PO or TL of this project can request to edit it
   if (
     ![
       project.projectOwner,
