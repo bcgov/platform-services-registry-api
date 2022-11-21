@@ -21,6 +21,7 @@ import { getResolveFn } from "nats/lib/nats-base-client/transport";
 // }));
 
 let newRequestId;
+let projectId;
 
 // jest.mock("express-validator", () => ({
 //   ...jest.requireActual("express-validator"),
@@ -113,8 +114,8 @@ describe("Mongo Helpers", () => {
 
   it("Should sign up user", async () => {
     const result = await server.executeOperation({
-      query: `mutation SignUp($input: SignUpInput!) {
-        signUp(input: $input) {
+      query: `mutation SignUp {
+        signUp {
           id
           firstName
           lastName
@@ -176,8 +177,12 @@ describe("Mongo Helpers", () => {
 
   it("Should create a new project request", async () => {
     const request = await server.executeOperation({
-      query: `mutation CreatePrivateCloudProjectRequest($metaData: ProjectMetaDataInput!, $developmentQuota: QuotaInput, ) {
-        privateCloudProjectRequest(metaData: $metaData, developmentQuota: $developmentQuota) {
+      query: `mutation CreatePrivateCloudProjectRequest(
+        $metaData: ProjectMetaDataInput!,         
+         ) {
+        privateCloudProjectRequest(
+          metaData: $metaData,       
+        ) {
           id
           createdBy {
             firstName
@@ -192,7 +197,11 @@ describe("Mongo Helpers", () => {
           decisionDate
           requestedProject {
             id
-            technicalLeads {
+            primaryTechnicalLead {
+              firstName
+              lastName
+            }
+            secondaryTechnicalLead {
               firstName
               lastName
             }
@@ -217,15 +226,9 @@ describe("Mongo Helpers", () => {
           description: "Test proj",
           projectOwner: "oamar.kanji@gov.bc.ca",
           ministry: "AGRI",
-          technicalLeads: [
-            "billy.li@gov.bc.ca",
-            "alexander.carmichael@gov.bc.ca",
-          ],
+          primaryTechnicalLead: "billy.li@gov.bc.ca",
+          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
           cluster: "SILVER",
-        },
-        developmentQuota: {
-          memory: "MEMORY_REQUEST_64_LIMIT_128",
-          storage: "STORAGE_256",
         },
       },
     });
@@ -242,8 +245,8 @@ describe("Mongo Helpers", () => {
 
     const { id, requestedProject, createdBy } =
       request.data?.privateCloudProjectRequest;
-
     newRequestId = id;
+    projectId = requestedProject.description;
     // Will be used in subsequent tests
     const user = me.data?.me.activeRequests;
 
@@ -263,8 +266,8 @@ describe("Mongo Helpers", () => {
     expect(
       await collections.privateCloudProjects.findOneById(id)
     ).toBeUndefined();
-    expect(requestedProject.technicalLeads[0].firstName).toBe("Alexander");
-    expect(requestedProject.technicalLeads[1].lastName).toBe("Li");
+    expect(requestedProject.secondaryTechnicalLead.firstName).toBe("Alexander");
+    expect(requestedProject.primaryTechnicalLead.lastName).toBe("Li");
   });
 
   it("Should query all requests", async () => {
@@ -313,18 +316,142 @@ describe("Mongo Helpers", () => {
 
   it("Should reject a create project request", async () => {
     const result = await server.executeOperation({
-      query: `mutation MakePrivateCloudRequestDecision($input: MakeRequestDecisionInput!) {
-        makePrivateCloudRequestDecision(input: $input)
+      query: `mutation MakePrivateCloudRequestDecision(
+        $requestId: ID!
+        $decision: RequestDecision!) {
+        makePrivateCloudRequestDecision(
+          requestId: $requestId,
+          decision: $decision
+        )
       }`,
       variables: {
-        input: {
-          decision: "REJECT",
-          request: newRequestId,
-        },
+        requestId: newRequestId,
+        decision: "REJECT",
       },
     });
 
     const request = result.data?.makePrivateCloudRequestDecision;
     expect(request).toBe("REJECTED");
+  });
+
+  it("Should edit project description", async () => {
+
+    const request = await server.executeOperation({
+      query: `mutation CreatePrivateCloudProjectRequest(
+        $metaData: ProjectMetaDataInput!,         
+         ) {
+        privateCloudProjectRequest(
+          metaData: $metaData,       
+        ) {
+          id
+          createdBy {
+            firstName
+            lastName
+            id
+            email
+          }
+          type
+          status
+          active
+          created
+          decisionDate
+          requestedProject {
+            id
+            primaryTechnicalLead {
+              firstName
+              lastName
+            }
+            secondaryTechnicalLead {
+              firstName
+              lastName
+            }
+          }
+          project {
+            ... on PrivateCloudProject {
+              id
+              name
+              ministry
+              productionQuota {
+                cpu {
+                  requests
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        metaData: {
+          name: "Test",
+          description: "Test proj",
+          projectOwner: "oamar.kanji@gov.bc.ca",
+          ministry: "AGRI",
+          primaryTechnicalLead: "billy.li@gov.bc.ca",
+          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
+          cluster: "SILVER",
+        },
+      },
+    });
+const projectId = request.data.privateCloudProjectRequest.requestedProject.id
+    const result = await server.executeOperation({
+      query: `mutation PrivateCloudProjectEditRequest(
+        $projectId: ID!,
+        $metaData: EditProjectMetaDataInput,
+        ) {
+          privateCloudProjectEditRequest(
+            projectId: $projectId,
+            metaData: $metaData,          
+        ){id
+          createdBy {
+            firstName
+            lastName
+            id
+            email
+          }
+          type
+          status
+          active
+          created
+          decisionDate
+          requestedProject {
+            id
+            primaryTechnicalLead {
+              firstName
+              lastName
+            }
+            secondaryTechnicalLead {
+              firstName
+              lastName
+            }
+          }
+          project {
+            ... on PrivateCloudProject {
+              id
+              name
+              ministry
+              productionQuota {
+                cpu {
+                  requests
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        projectId: projectId,
+        metaData: {
+          name: "Test",
+          description: "Test projhjhi",
+          projectOwner: "oamar.kanji@gov.bc.ca",
+          ministry: "AGRI",
+          primaryTechnicalLead: "billy.li@gov.bc.ca",
+          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
+          cluster: "SILVER",
+        },
+      },
+    });
+  
+    console.log(result)
   });
 });
