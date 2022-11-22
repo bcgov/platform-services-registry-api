@@ -1,7 +1,7 @@
-import RequestStatus from "../enum/RequestStatus";
-import RequestType from "../enum/RequestType";
-import Platform from "../enum/Platform";
-import sendNatsMessage from "../../../nats/SendNatsMessage";
+import RequestStatus from "../../enum/RequestStatus";
+import RequestType from "../../enum/RequestType";
+import Platform from "../../enum/Platform";
+import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
 

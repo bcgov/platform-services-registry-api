@@ -1,8 +1,9 @@
-import customPrivateCloudProjectRequest from "./CustomPrivateCloudProjectRequest";
+import customPrivateCloudProjectEditRequest from "./CustomProjectEditRequest";
 
-const privateCloudProjectRequest = (
+const privateCloudProjectEditRequest = (
   _,
   {
+    projectId,
     metaData,
     commonComponents,
     productionQuota,
@@ -12,9 +13,10 @@ const privateCloudProjectRequest = (
   },
   context
 ) =>
-  customPrivateCloudProjectRequest(
+  customPrivateCloudProjectEditRequest(
     _,
     {
+      projectId,
       metaData,
       commonComponents,
       productionQuota: {
@@ -41,4 +43,4 @@ const privateCloudProjectRequest = (
     context
   );
 
-export default privateCloudProjectRequest;
+export default privateCloudProjectEditRequest;

@@ -1,8 +1,8 @@
-import ProjectStatus from "../enum/ProjectStatus";
-import RequestStatus from "../enum/RequestStatus";
-import RequestType from "../enum/RequestType";
-import Platform from "../enum/Platform";
-import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix";
+import ProjectStatus from "../../enum/ProjectStatus";
+import RequestStatus from "../../enum/RequestStatus";
+import RequestType from "../../enum/RequestType";
+import Platform from "../../enum/Platform";
+import generateNamespacePrefix from "../../../../helpers/generateNamespacePrefix";
 import swig from "swig";
 
 async function customPrivateCloudProjectRequest(_, args, context) {
