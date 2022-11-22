@@ -6,4 +6,4 @@ node_modules
 dist
 src/migration/mongoUsers.json
 src/migration/mongoProjects.json
-# mongo_data
+mongo_data
