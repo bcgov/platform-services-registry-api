@@ -1,4 +1,4 @@
-name: Dev - build from feature branch
+name: TEST - build from main
 on:
   # Build for Test when a pull request is merged into master with changes to
   # certain api, db, or web files.
@@ -106,11 +106,11 @@ jobs:
         run: |
           oc version
           oc login --token=${{ secrets.OpenShiftToken }} --server=${{ secrets.OpenShiftServerURL }}
-          oc -n 101ed4-tools start-build platsrv-registry-web-main-build --follow
-          export BUILDID="$(oc -n 101ed4-tools get -o=jsonpath="{.status.lastVersion}" buildconfig platsrv-registry-web-main-build)"
-          export COMMITID="$(oc -n 101ed4-tools get -o=jsonpath="{.spec.revision.git.commit}" build platsrv-registry-web-main-build-$BUILDID | cut -c1-7)"
-          export IMAGESHA="$(oc -n 101ed4-tools get -o=jsonpath="{.status.output.to.imageDigest}" build platsrv-registry-web-main-build-$BUILDID)"
-          oc -n 101ed4-tools tag platsrv-registry-api-mai@$IMAGESHA platsrv-registry-api-mai:$COMMITID platsrv-registry-api-mai:dev
+          oc -n 101ed4-tools start-build platsrv-registry-api-main-build --follow
+          export BUILDID="$(oc -n 101ed4-tools get -o=jsonpath="{.status.lastVersion}" buildconfig platsrv-registry-api-main-build)"
+          export COMMITID="$(oc -n 101ed4-tools get -o=jsonpath="{.spec.revision.git.commit}" build platsrv-registry-api-main-build-$BUILDID | cut -c1-7)"
+          export IMAGESHA="$(oc -n 101ed4-tools get -o=jsonpath="{.status.output.to.imageDigest}" build platsrv-registry-api-main-build-$BUILDID)"
+          oc -n 101ed4-tools tag platsrv-registry-api-main@$IMAGESHA platsrv-registry-api-main:$COMMITID platsrv-registry-api-main:test
           echo "::set-output name=imagesha::$IMAGESHA"
 
       # Prepare Kustomize and update manifests

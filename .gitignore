@@ -2,6 +2,7 @@
 node_modules
 .env
 .VSCodeCounter/
+.vscode
 dist
 src/migration/mongoUsers.json
 src/migration/mongoProjects.json

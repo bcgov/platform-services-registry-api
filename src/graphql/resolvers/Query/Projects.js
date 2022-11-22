@@ -6,54 +6,12 @@ function privateCloudProjects(
   return privateCloudProjects.getAll();
 }
 
-// async function privateCloudProjectsPaginated(
-//   _,
-//   { offset, limit, filter, search, sort, sortOrder },
-//   { dataSources: { privateCloudProjects } }
-// ) {
-//   console.log("privateCloudProjectsPaginated", offset, limit, filter, search, sort, sortOrder);
-//   const paginatedProjects = await privateCloudProjects.getPaginated(
-//     offset,
-//     limit,
-//     filter,
-//     search,
-//     sort,
-//     sortOrder
-//   );
-
-//   const allProjects = await privateCloudProjects.getFilteredSearchSorted(
-//     filter,
-//     search
-//   );
-
-//   return {
-//     count: allProjects.length,
-//     projects: paginatedProjects,
-//   };
-// }
-
 function privateCloudProjectsPaginated(
   _,
-  { offset, limit, filter, search, sort, sortOrder },
+  { offset, limit, filter, search },
   { dataSources: { privateCloudProjects } }
 ) {
-  console.log(
-    "privateCloudProjectsPaginated",
-    offset,
-    limit,
-    filter,
-    search,
-    sort,
-    sortOrder
-  );
-  return privateCloudProjects.getPaginated(
-    offset,
-    limit,
-    filter,
-    search,
-    sort,
-    sortOrder
-  );
+  return privateCloudProjects.getPaginated(offset, limit, filter, search);
 }
 
 async function privateCloudProjectsCount(

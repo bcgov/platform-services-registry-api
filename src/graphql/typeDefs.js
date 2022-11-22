@@ -150,15 +150,6 @@ const typeDefs = gql`
     count: Int!
   }
 
-  interface Pagination {
-    count: Int!
-  }
-
-  type ProjectPagination implements Pagination {
-    count: Int!
-    projects: [Project!]!
-  }
-
   interface Project {
     id: ID!
     name: String!
@@ -361,8 +352,6 @@ const typeDefs = gql`
       limit: Int!
       filter: FilterPrivateCloudProjectsInput
       search: String
-      sort: String
-      sortOrder: SortOrder
     ): [PrivateCloudProject!]! @hasRole(role: "admin")
 
     privateCloudProjectsCount(

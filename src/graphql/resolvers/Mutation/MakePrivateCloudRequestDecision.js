@@ -4,10 +4,9 @@ import RequestType from "../enum/RequestType";
 import sendNatsMessage from "../../../nats/SendNatsMessage";
 import swig from "swig";
 
-async function makePrivateCloudRequestDecision(
-  _,
-  { requestId, decision },
-  {
+async function makePrivateCloudRequestDecision(_, args, context) {
+  const { requestId, decision } = args;
+  const {
     dataSources: {
       privateCloudArchivedRequests,
       privateCloudActiveRequests,
@@ -17,8 +16,8 @@ async function makePrivateCloudRequestDecision(
     },
     kauth,
     chesService,
-  }
-) {
+  } = context;
+
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
