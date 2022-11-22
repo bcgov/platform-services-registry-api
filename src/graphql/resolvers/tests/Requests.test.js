@@ -9,28 +9,8 @@ import { applyDirectiveTransformers } from "../../../auth/transformers";
 import { ObjectId } from "mongodb";
 import typeDefs from "../../typeDefs";
 import resolvers from "../index";
+import { project, oamar, billy, olena } from "./TestConstants";
 import { getResolveFn } from "nats/lib/nats-base-client/transport";
-
-// jest.mock("express-validator", () => ({
-//   ...jest.requireActual("express-validator"),
-//   validationResult: () => ({ isEmpty: () => true }),
-// }));
-
-// jest.mock(".../import/ches", () => ({
-//   send: jest.fn(),
-// }));
-
-let newRequestId;
-let projectId;
-
-// jest.mock("express-validator", () => ({
-//   ...jest.requireActual("express-validator"),
-//   validationResult: () => ({ isEmpty: () => true }),
-// }));
-
-// jest.mock(".../import/ches", () => ({
-//   send: jest.fn(),
-// }));
 
 describe("Mongo Helpers", () => {
   let server;
@@ -38,11 +18,13 @@ describe("Mongo Helpers", () => {
   let db;
   let collections;
   let requestId;
+  let newRequestId;
+  let projectId;
 
   beforeAll(async () => {
     connection = await MongoClient.connect(global.__MONGO_URI__, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
 
     db = await connection.db(global.__MONGO_DB_NAME__);
@@ -60,12 +42,22 @@ describe("Mongo Helpers", () => {
       ),
       privateCloudActiveRequests: new MongoHelpers(
         db.collection("privateCloudActiveRequests")
-      ),
+      )
     };
+
+    collections.users.initialize();
+    collections.privateCloudProjects.initialize();
+
+    await collections.users.create(oamar);
+    await collections.users.create(billy);
+    await collections.users.create(olena);
+
+    const mockProject = await collections.privateCloudProjects.create(project);
+    projectId = mockProject._id.toString();
 
     let schema = makeExecutableSchema({
       typeDefs: [KeycloakTypeDefs, typeDefs],
-      resolvers,
+      resolvers
     });
 
     schema = applyDirectiveTransformers(schema);
@@ -83,15 +75,15 @@ describe("Mongo Helpers", () => {
               email: "oamar.kanji@gov.bc.ca",
               resource_access: {
                 "registry-api": {
-                  roles: ["admin"],
-                },
+                  roles: ["admin"]
+                }
               },
               given_name: "Oamar",
-              family_name: "Kanji",
-            },
-          },
-        },
-      },
+              family_name: "Kanji"
+            }
+          }
+        }
+      }
     };
 
     server = new ApolloServer({
@@ -101,9 +93,9 @@ describe("Mongo Helpers", () => {
       context: () => ({
         kauth: new KeycloakContext({ req }),
         chesService: {
-          send: () => console.log("*** SEND ***"),
-        },
-      }),
+          send: () => ""
+        }
+      })
     });
   });
 
@@ -113,25 +105,7 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should sign up user", async () => {
-    const result = await server.executeOperation({
-      query: `mutation SignUp {
-        signUp {
-          id
-          firstName
-          lastName
-          email
-        }
-      }`,
-      variables: {
-        input: {
-          ministry: "AGRI",
-          githubId: "okanji",
-        },
-      },
-    });
-
-    //Two other users for subsequest testing
-    const secondUser = await server.executeOperation({
+    const user = await server.executeOperation({
       query: `mutation Mutation($input: CreateUserInput!) {
         createUser(input: $input) {
           id
@@ -144,35 +118,12 @@ describe("Mongo Helpers", () => {
           lastName: "Carmichael",
           ministry: "AGRI",
           email: "alexander.carmichael@gov.bc.ca",
-          githubId: "okanji",
-        },
-      },
+          githubId: "okanji"
+        }
+      }
     });
 
-    expect(secondUser.data?.createUser.email).toBe(
-      "alexander.carmichael@gov.bc.ca"
-    );
-    const thirdUser = await server.executeOperation({
-      query: `mutation Mutation($input: CreateUserInput!) {
-        createUser(input: $input) {
-          id
-          email
-        }
-      }`,
-      variables: {
-        input: {
-          firstName: "Billy",
-          lastName: "Li",
-          ministry: "AGRI",
-          email: "billy.li@gov.bc.ca",
-          githubId: "libilly",
-        },
-      },
-    });
-    expect(thirdUser.data?.createUser.email).toBe("billy.li@gov.bc.ca");
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.signUp.firstName).toBe("Oamar");
-    expect(result.data?.signUp.email).toBe("oamar.kanji@gov.bc.ca");
+    expect(user.data?.createUser.email).toBe("alexander.carmichael@gov.bc.ca");
   });
 
   it("Should create a new project request", async () => {
@@ -228,9 +179,9 @@ describe("Mongo Helpers", () => {
           ministry: "AGRI",
           primaryTechnicalLead: "billy.li@gov.bc.ca",
           secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
-          cluster: "SILVER",
-        },
-      },
+          cluster: "SILVER"
+        }
+      }
     });
 
     const me = await server.executeOperation({
@@ -240,13 +191,12 @@ describe("Mongo Helpers", () => {
         firstName
         email
       }
-    }`,
+    }`
     });
 
     const { id, requestedProject, createdBy } =
       request.data?.privateCloudProjectRequest;
     newRequestId = id;
-    projectId = requestedProject.description;
     // Will be used in subsequent tests
     const user = me.data?.me.activeRequests;
 
@@ -295,15 +245,15 @@ describe("Mongo Helpers", () => {
             }
           }
         }
-      }`,
+      }`
     });
 
     const requests = result.data?.privateCloudRequests;
     expect(requests).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          type: "CREATE",
-        }),
+          type: "CREATE"
+        })
       ])
     );
   });
@@ -326,8 +276,8 @@ describe("Mongo Helpers", () => {
       }`,
       variables: {
         requestId: newRequestId,
-        decision: "REJECT",
-      },
+        decision: "REJECT"
+      }
     });
 
     const request = result.data?.makePrivateCloudRequestDecision;
@@ -335,64 +285,6 @@ describe("Mongo Helpers", () => {
   });
 
   it("Should edit project description", async () => {
-
-    const request = await server.executeOperation({
-      query: `mutation CreatePrivateCloudProjectRequest(
-        $metaData: ProjectMetaDataInput!,         
-         ) {
-        privateCloudProjectRequest(
-          metaData: $metaData,       
-        ) {
-          id
-          createdBy {
-            firstName
-            lastName
-            id
-            email
-          }
-          type
-          status
-          active
-          created
-          decisionDate
-          requestedProject {
-            id
-            primaryTechnicalLead {
-              firstName
-              lastName
-            }
-            secondaryTechnicalLead {
-              firstName
-              lastName
-            }
-          }
-          project {
-            ... on PrivateCloudProject {
-              id
-              name
-              ministry
-              productionQuota {
-                cpu {
-                  requests
-                }
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        metaData: {
-          name: "Test",
-          description: "Test proj",
-          projectOwner: "oamar.kanji@gov.bc.ca",
-          ministry: "AGRI",
-          primaryTechnicalLead: "billy.li@gov.bc.ca",
-          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
-          cluster: "SILVER",
-        },
-      },
-    });
-const projectId = request.data.privateCloudProjectRequest.requestedProject.id
     const result = await server.executeOperation({
       query: `mutation PrivateCloudProjectEditRequest(
         $projectId: ID!,
@@ -401,7 +293,8 @@ const projectId = request.data.privateCloudProjectRequest.requestedProject.id
           privateCloudProjectEditRequest(
             projectId: $projectId,
             metaData: $metaData,          
-        ){id
+        ){
+          id
           createdBy {
             firstName
             lastName
@@ -442,16 +335,30 @@ const projectId = request.data.privateCloudProjectRequest.requestedProject.id
         projectId: projectId,
         metaData: {
           name: "Test",
-          description: "Test projhjhi",
+          description: "Test changed description",
           projectOwner: "oamar.kanji@gov.bc.ca",
           ministry: "AGRI",
           primaryTechnicalLead: "billy.li@gov.bc.ca",
           secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
-          cluster: "SILVER",
-        },
-      },
+          cluster: "SILVER"
+        }
+      }
     });
-  
-    console.log(result)
+
+    const request = await collections.privateCloudActiveRequests.findOneById(
+      result.data.privateCloudProjectEditRequest.id
+    );
+
+    const requestedProjectId = request.requestedProject;
+
+    const requestedProject =
+      await collections.privateCloudRequestedProjects.findOneById(
+        requestedProjectId
+      );
+
+    expect(requestedProject).toHaveProperty(
+      "description",
+      "Test changed description"
+    );
   });
 });

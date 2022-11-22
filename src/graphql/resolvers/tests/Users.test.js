@@ -4,7 +4,7 @@ import MongoHelpers from "../../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "../../../auth/transformers";
-import { applyDirectiveTransformers } from "../../../graphql/transformers";
+import { applyDirectiveTransformers } from "../../transformers";
 import resolvers from "../index";
 import typeDefs from "../../typeDefs";
 
