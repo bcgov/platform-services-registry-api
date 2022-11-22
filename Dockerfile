@@ -15,6 +15,6 @@ RUN apk update && \
 
 
 
-EXPOSE 4222 4000
+EXPOSE 4000
 
 CMD [ "node", "dist/index.js" ]
