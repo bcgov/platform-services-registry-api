@@ -46,6 +46,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
     let primaryTechnicalLeadId;
     let secondaryTechnicalLeadId;
 
+    // Update an existing project or create a new one, depending on the request type
     if (request.type === RequestType.CREATE) {
       const requestedProject = await privateCloudRequestedProjects.findOneById(
         request.requestedProject
@@ -78,7 +79,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       secondaryTechnicalLeadId = project.secondaryTechnicalLead;
     }
 
-    // Get PO and TL's
+    // Get project owner, primary technical lead and secondary technical lead
     const projectOwner = await users.findOneById(projectOwnerId);
     const primaryTechnicalLead = await users.findOneById(
       primaryTechnicalLeadId
@@ -87,7 +88,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       secondaryTechnicalLeadId
     );
 
-    // Remove active request from PO and TL's user documents
+    // Remove active request from project owner and technical leads user documents
     await users.removeElementFromManyDocumentsArray(
       [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
         .filter(Boolean)
@@ -109,12 +110,17 @@ export default async function provisionerCallbackHandler(req, res, next) {
     //   });
     // }
 
+    if (request.type === RequestType.DELETE) {
+      const result = await privateCloudProjects.removeDocument(request.project);
+      console.log("Deleted project: ", result);
+    }
+
     if (request.type !== RequestType.DELETE) {
       // Add archived request to the projects request history
       await privateCloudProjects.addElementToDocumentArray(projectId, {
         requestHistory: archivedRequest._id
       });
-      
+
       // Assign the project to the PO and TL's
       await users.addElementToDocumentArray(projectOwner._id, {
         privateCloudProjectOwner: projectId
@@ -133,10 +139,7 @@ export default async function provisionerCallbackHandler(req, res, next) {
       });
     }
 
-    if (request.type === RequestType.DELETE) {
-      const result = await privateCloudProjects.removeDocument(request.project);
-      console.log("Deleted project: ", result);
-    }
+
 
     chesService.send({
       bodyType: "html",

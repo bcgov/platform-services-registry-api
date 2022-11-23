@@ -235,7 +235,7 @@ const typeDefs = gql`
     created: DateTime!
     decisionDate: DateTime
     project: Project
-    requestedProject: Project!
+    requestedProject: Project
   }
 
   type User {
