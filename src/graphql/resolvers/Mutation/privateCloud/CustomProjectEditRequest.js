@@ -13,7 +13,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     productionQuota,
     developmentQuota,
     testQuota,
-    toolsQuota,
+    toolsQuota
   } = args;
 
   const {
@@ -21,15 +21,15 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       users,
       privateCloudRequestedProjects,
       privateCloudActiveRequests,
-      privateCloudProjects,
+      privateCloudProjects
     },
     kauth,
-    chesService,
+    chesService
   } = context;
 
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-    roles: [],
+    roles: []
   };
   const [user] = await users.findByFields({ email });
   const { _id, ...project } =
@@ -47,7 +47,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     ![
       project.projectOwner,
       project.primaryTechnicalLead,
-      project.secondaryTechnicalLead,
+      project.secondaryTechnicalLead
     ].includes(user._id) &&
     !roles.includes("admin")
   ) {
@@ -83,7 +83,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       ![
         metaData.projectOwner,
         metaData.primaryTechnicalLead,
-        metaData.secondaryTechnicalLead,
+        metaData.secondaryTechnicalLead
       ].includes(email)
     ) {
       throw new Error(
@@ -92,21 +92,21 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     }
 
     [requestedProjectOwner] = await users.findByFields({
-      email: metaData.projectOwner,
+      email: metaData.projectOwner
     });
 
     if ("projectOwner" in metaData && !requestedProjectOwner)
       throw new Error("Project owner not found");
 
     [requestedPrimaryTechnicalLead] = await users.findByFields({
-      email: metaData.primaryTechnicalLead,
+      email: metaData.primaryTechnicalLead
     });
 
     if ("primaryTechnicalLead" in metaData && !requestedPrimaryTechnicalLead)
       throw new Error("Primary technical lead not found");
 
     [requestedSecondaryTechnicalLead] = await users.findByFields({
-      email: metaData.secondaryTechnicalLead,
+      email: metaData.secondaryTechnicalLead
     });
 
     if (
@@ -132,7 +132,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     productionQuota: { ...project.productionQuota, ...productionQuota },
     developmentQuota: { ...project.developmentQuota, ...developmentQuota },
     testQuota: { ...project.testQuota, ...testQuota },
-    toolsQuota: { ...project.toolsQuota, ...toolsQuota },
+    toolsQuota: { ...project.toolsQuota, ...toolsQuota }
   });
 
   const requestBody = {
@@ -144,7 +144,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     created: new Date(),
     decisionDate: null,
     project: ObjectId(projectId),
-    requestedProject: requestedProject._id,
+    requestedProject: requestedProject._id
   };
 
   // If there is no requested quota change, we do not need admin approval and can proceed to provision
@@ -159,14 +159,8 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     await sendNatsMessage(
       requestBody.type,
       projectOwner.email,
-      [
-        requestedPrimaryTechnicalLead
-          ? requestedPrimaryTechnicalLead
-          : primaryTechnicalLead,
-        requestedSecondaryTechnicalLead
-          ? requestedSecondaryTechnicalLead
-          : secondaryTechnicalLead,
-      ].map(({ email }) => email),
+      requestedPrimaryTechnicalLead?.email || primaryTechnicalLead.email,
+      requestedSecondaryTechnicalLead?.email || secondaryTechnicalLead?.email,
       requestedProject
     );
   } else {
@@ -181,17 +175,17 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       primaryTechnicalLead,
       secondaryTechnicalLead,
       requestedPrimaryTechnicalLead,
-      requestedSecondaryTechnicalLead,
+      requestedSecondaryTechnicalLead
     ]
       .filter(Boolean)
       .map(({ _id }) => _id),
     {
-      privateCloudActiveRequests: request._id,
+      privateCloudActiveRequests: request._id
     }
   );
 
   await privateCloudProjects.updateFieldsById(_id, {
-    activeEditRequest: request._id,
+    activeEditRequest: request._id
   });
 
   try {
@@ -206,18 +200,18 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
         licensePlate: requestedProject.licensePlate,
         showStandardFooterMessage: false, // show "love, Platform services" instead
         productMinistry: "PRODUCT MINISTRY",
-        productDescription: "Product DESCRIPTION",
+        productDescription: "Product DESCRIPTION"
       }),
       to: [
         projectOwner,
         requestedProjectOwner,
         primaryTechnicalLead,
-        secondaryTechnicalLead,
         requestedPrimaryTechnicalLead,
-        requestedSecondaryTechnicalLead,
+        secondaryTechnicalLead,
+        requestedSecondaryTechnicalLead
       ].map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${metaData.name} OCP 4 Project Set`,
+      subject: `${metaData.name} OCP 4 Project Set`
     });
   } catch (error) {
     console.log(error);

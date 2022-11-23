@@ -7,8 +7,9 @@ import privateCloudProjectRequest from "./Mutation/privateCloud/ProjectRequest";
 import createUser from "./Mutation/CreateUser";
 import signUp from "./Mutation/SignUp";
 import customPrivateCloudProjectEditRequest from "./Mutation/privateCloud/CustomProjectEditRequest";
-import privateCloudProjectEditRequest from "./Mutation/privateCloud/ProjectEditRequest"
+import privateCloudProjectEditRequest from "./Mutation/privateCloud/ProjectEditRequest";
 import makePrivateCloudRequestDecision from "./Mutation/privateCloud/MakeRequestDecision";
+import privateCloudProjectDeleteRequest from "./Mutation/privateCloud/DeleteRequest";
 import PrivateCloudProject from "./PrivateCloudProject";
 import User from "./User";
 import Project from "./Project";
@@ -23,7 +24,7 @@ import RequestDecision from "./enum/RequestDecision";
 import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions,
+  DefaultStorageOptions
 } from "./enum/QuotaOptions";
 import Cluster from "./enum/Cluster";
 import SortOrder from "./enum/SortOrder";
@@ -32,7 +33,7 @@ const resolvers = {
   Query: {
     ...userQueries,
     ...projectQueries,
-    ...requestQueries,
+    ...requestQueries
   },
   Mutation: {
     signUp,
@@ -42,6 +43,7 @@ const resolvers = {
     privateCloudProjectEditRequest,
     customPrivateCloudProjectEditRequest,
     makePrivateCloudRequestDecision,
+    privateCloudProjectDeleteRequest
   },
   PrivateCloudProject,
   User,
@@ -59,7 +61,7 @@ const resolvers = {
   RequestDecision,
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions,
+  DefaultStorageOptions
 };
 
 export default resolvers;

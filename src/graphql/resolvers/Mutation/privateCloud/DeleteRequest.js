@@ -56,9 +56,8 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
     project.secondaryTechnicalLead
   );
 
-  let requestedProjectOwner;
-  let requestedPrimaryTechnicalLead;
-  let requestedSecondaryTechnicalLead;
+  const { _id: requestedProjectId, ...requestedProject } =
+    await privateCloudRequestedProjects.create(project);
 
   const requestBody = {
     createdBy: user._id,
@@ -68,35 +67,23 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
     active: true,
     created: new Date(),
     decisionDate: null,
-    project: ObjectId(projectId)
+    project: ObjectId(projectId),
+    requestedProject: requestedProjectId
   };
 
-  // If there is no requested quota change, we do not need admin approval and can proceed to provision
+
+  const request = await privateCloudActiveRequests.create(requestBody);
 
   await sendNatsMessage(
     requestBody.type,
     projectOwner.email,
-    [
-      requestedPrimaryTechnicalLead
-        ? requestedPrimaryTechnicalLead
-        : primaryTechnicalLead,
-      requestedSecondaryTechnicalLead
-        ? requestedSecondaryTechnicalLead
-        : secondaryTechnicalLead
-    ].map(({ email }) => email),
+    primaryTechnicalLead.email,
+    secondaryTechnicalLead?.email,
     requestedProject
   );
 
-  const request = await privateCloudActiveRequests.create(requestBody);
-
   await users.addElementToManyDocumentsArray(
-    [
-      projectOwner,
-      primaryTechnicalLead,
-      secondaryTechnicalLead,
-      requestedPrimaryTechnicalLead,
-      requestedSecondaryTechnicalLead
-    ]
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
       .filter(Boolean)
       .map(({ _id }) => _id),
     {
@@ -122,14 +109,9 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
         productMinistry: "PRODUCT MINISTRY",
         productDescription: "Product DESCRIPTION"
       }),
-      to: [
-        projectOwner,
-        requestedProjectOwner,
-        primaryTechnicalLead,
-        secondaryTechnicalLead,
-        requestedPrimaryTechnicalLead,
-        requestedSecondaryTechnicalLead
-      ].map(({ email }) => email),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+        ({ email }) => email
+      ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${metaData.name} OCP 4 Project Set`
     });

@@ -77,6 +77,15 @@ export default async function provisionerCallbackHandler(req, res, next) {
       projectOwnerId = project.projectOwner;
       primaryTechnicalLeadId = project.primaryTechnicalLead;
       secondaryTechnicalLeadId = project.secondaryTechnicalLead;
+    } else if (request.type === RequestType.DELETE) {
+      const project = await privateCloudProjects.findOneById(request.project);
+
+      const result = await privateCloudProjects.removeDocument(request.project);
+
+      projectId = project._id;
+      projectOwnerId = project.projectOwner;
+      primaryTechnicalLeadId = project.primaryTechnicalLead;
+      secondaryTechnicalLeadId = project.secondaryTechnicalLead;
     }
 
     // Get project owner, primary technical lead and secondary technical lead
@@ -103,20 +112,8 @@ export default async function provisionerCallbackHandler(req, res, next) {
       active: false
     });
 
-    // // Add archived request to the projects request history
-    // if (request.type === RequestType.EDIT) {
-    //   await privateCloudProjects.addElementToDocumentArray(request.project, {
-    //     requestHistory: archivedRequest._id
-    //   });
-    // }
-
-    if (request.type === RequestType.DELETE) {
-      const result = await privateCloudProjects.removeDocument(request.project);
-      console.log("Deleted project: ", result);
-    }
-
+    // Add archived request to project owner and technical leads user documents
     if (request.type !== RequestType.DELETE) {
-      // Add archived request to the projects request history
       await privateCloudProjects.addElementToDocumentArray(projectId, {
         requestHistory: archivedRequest._id
       });
@@ -138,8 +135,6 @@ export default async function provisionerCallbackHandler(req, res, next) {
         activeEditRequest: null
       });
     }
-
-
 
     chesService.send({
       bodyType: "html",

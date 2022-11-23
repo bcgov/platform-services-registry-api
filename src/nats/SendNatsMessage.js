@@ -11,7 +11,8 @@ const skip = process.env.NATS_SKIP;
 async function sendNatsMessage(
   action,
   projectOwner,
-  technicalLeads,
+  primaryTechnicalLead,
+  secondaryTechnicalLead,
   requestedProject
 ) {
   if (skip) {
@@ -25,7 +26,8 @@ async function sendNatsMessage(
   const messageBody = message(
     action,
     projectOwner,
-    technicalLeads,
+    primaryTechnicalLead,
+    secondaryTechnicalLead,
     requestedProject
   );
 

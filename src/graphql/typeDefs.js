@@ -431,6 +431,8 @@ const typeDefs = gql`
       toolsQuota: CustomQuotaInput
     ): Request! @nonNullInput @hasRole(role: "admin")
 
+    privateCloudProjectDeleteRequest(projectId: ID!): Request!
+
     makePrivateCloudRequestDecision(
       requestId: ID!
       decision: RequestDecision!

@@ -12,10 +12,10 @@ async function makePrivateCloudRequestDecision(_, args, context) {
       privateCloudActiveRequests,
       privateCloudProjects,
       privateCloudRequestedProjects,
-      users,
+      users
     },
     kauth,
-    chesService,
+    chesService
   } = context;
 
   const { email } = kauth.accessToken.content;
@@ -41,7 +41,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
   const {
     projectOwner: projectOwnerId,
     primaryTechnicalLead: primaryTechnicalLeadId,
-    secondaryTechnicalLead: secondaryTechnicalLeadId,
+    secondaryTechnicalLead: secondaryTechnicalLeadId
   } = requestedProject;
 
   const projectOwner = await users.findOneById(projectOwnerId);
@@ -60,19 +60,19 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         status: RequestStatus.REJECTED,
         decisionDate: new Date(),
         active: false,
-        decisionMaker: user._id,
-      },
+        decisionMaker: user._id
+      }
     });
 
     // Add request to the projects request history
     if (request.type !== RequestType.CREATE) {
       await privateCloudProjects.addElementToDocumentArray(request.project, {
-        requestHistory: rejectedRequest._id,
+        requestHistory: rejectedRequest._id
       });
 
       // Set activeEditRequest property to null
       await privateCloudProjects.updateFieldsById(request.project, {
-        activeEditRequest: null,
+        activeEditRequest: null
       });
     }
 
@@ -94,13 +94,13 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead]
           .filter(Boolean)
           .map(({ email }) => email),
-        showStandardFooterMessage: true,
+        showStandardFooterMessage: true
       }),
       to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
         .filter(Boolean)
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `**profile.name** OCP 4 Project Set`,
+      subject: `**profile.name** OCP 4 Project Set`
       // subject: `${profile.name} OCP 4 Project Set`,
     });
 
@@ -111,7 +111,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
       {
         status: RequestStatus.APPROVED,
         decisionDate: new Date(),
-        decisionMaker: user._id,
+        decisionMaker: user._id
       }
     );
 
@@ -132,13 +132,13 @@ async function makePrivateCloudRequestDecision(_, args, context) {
           licensePlate: requestedProject.licensePlate,
           showStandardFooterMessage: false, // show "love, Platform services" instead
           productMinistry: "PRODUCT MINISTRY",
-          productDescription: "Product DESCRIPTION",
+          productDescription: "Product DESCRIPTION"
         }),
         to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
           .filter(Boolean)
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: `**profile.name** OCP 4 Project Set`,
+        subject: `**profile.name** OCP 4 Project Set`
         // subject: `${profile.name} OCP 4 Project Set`,
       });
     } catch (error) {
@@ -148,9 +148,8 @@ async function makePrivateCloudRequestDecision(_, args, context) {
     await sendNatsMessage(
       request.type,
       projectOwner.email,
-      [primaryTechnicalLead, secondaryTechnicalLead]
-        .filter(Boolean)
-        .map(({ email }) => email),
+      primaryTechnicalLead.email,
+      secondaryTechnicalLead?.email,
       requestedProject
     );
 
