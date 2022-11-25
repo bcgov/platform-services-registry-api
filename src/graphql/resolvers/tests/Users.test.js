@@ -144,11 +144,11 @@ describe("User tests", () => {
     const result = await server.executeOperation({
       query: `mutation {
         createUser(input: {
-          firstName: "Alexander",
-          lastName: "Carmichael",
+          firstName: "Jane",
+          lastName: "Doe",
           ministry: HLTH,
-          email: "alexander.carmichael@gov.bc.ca",
-          githubId: "okanjji"
+          email: "jane.doe@gov.bc.ca",
+          githubId: "jane.doe",
 
         }) {
           id
@@ -158,7 +158,7 @@ describe("User tests", () => {
     });
 
     expect(result.errors).toBeUndefined();
-    expect(result.data?.createUser.firstName).toBe("Alexander");
+    expect(result.data?.createUser.firstName).toBe("Jane");
   });
 
   /*It should be noted that this is dependent on the CreateUser test passing successfully*/
