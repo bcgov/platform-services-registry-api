@@ -109,7 +109,7 @@
                                           line-height: 37px;
                                           text-align: center;
                                           ">
-                                          requestType request!
+                                          {{requestType}} request!
                                        </h2>
                                     </td>
                                  </tr>
@@ -728,6 +728,7 @@
    body: swig.renderFile(
      "./src/ches/templates/super-admin-request-email.html",
      {
+      requestType: ,
        isProvisioningRequest: ,
        projectName: ,
        productDescription: ,
