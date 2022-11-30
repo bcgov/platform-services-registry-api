@@ -1,25 +1,24 @@
-import RequestDecision from "../enum/RequestDecision";
-import RequestStatus from "../enum/RequestStatus";
-import RequestType from "../enum/RequestType";
-import sendNatsMessage from "../../../nats/SendNatsMessage";
+import RequestDecision from "../../enum/RequestDecision";
+import RequestStatus from "../../enum/RequestStatus";
+import RequestType from "../../enum/RequestType";
+import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import swig from "swig";
 import Cluster from "../enum/Cluster";
 
-async function makePrivateCloudRequestDecision(
-  _,
-  { requestId, decision },
-  {
+async function makePrivateCloudRequestDecision(_, args, context) {
+  const { requestId, decision } = args;
+  const {
     dataSources: {
       privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
       privateCloudRequestedProjects,
-      users,
+      users
     },
     kauth,
-    chesService,
-  }
-) {
+    chesService
+  } = context;
+
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
@@ -43,7 +42,7 @@ async function makePrivateCloudRequestDecision(
   const {
     projectOwner: projectOwnerId,
     primaryTechnicalLead: primaryTechnicalLeadId,
-    secondaryTechnicalLead: secondaryTechnicalLeadId,
+    secondaryTechnicalLead: secondaryTechnicalLeadId
   } = requestedProject;
 
   const projectOwner = await users.findOneById(projectOwnerId);
@@ -62,19 +61,19 @@ async function makePrivateCloudRequestDecision(
         status: RequestStatus.REJECTED,
         decisionDate: new Date(),
         active: false,
-        decisionMaker: user._id,
-      },
+        decisionMaker: user._id
+      }
     });
 
     // Add request to the projects request history
     if (request.type !== RequestType.CREATE) {
       await privateCloudProjects.addElementToDocumentArray(request.project, {
-        requestHistory: rejectedRequest._id,
+        requestHistory: rejectedRequest._id
       });
 
       // Set activeEditRequest property to null
       await privateCloudProjects.updateFieldsById(request.project, {
-        activeEditRequest: null,
+        activeEditRequest: null
       });
     }
 
@@ -114,7 +113,7 @@ async function makePrivateCloudRequestDecision(
       {
         status: RequestStatus.APPROVED,
         decisionDate: new Date(),
-        decisionMaker: user._id,
+        decisionMaker: user._id
       }
     );
 
@@ -135,7 +134,7 @@ async function makePrivateCloudRequestDecision(
           licencePlate: requestedProject.licencePlate,
           showStandardFooterMessage: false, // show "love, Platform services" instead
           productMinistry: "PRODUCT MINISTRY",
-          productDescription: "Product DESCRIPTION",
+          productDescription: "Product DESCRIPTION"
         }),
         to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
           .filter(Boolean)
@@ -151,9 +150,8 @@ async function makePrivateCloudRequestDecision(
     await sendNatsMessage(
       request.type,
       projectOwner.email,
-      [primaryTechnicalLead, secondaryTechnicalLead]
-        .filter(Boolean)
-        .map(({ email }) => email),
+      primaryTechnicalLead.email,
+      secondaryTechnicalLead?.email,
       requestedProject
     );
 

@@ -1,6 +1,12 @@
 // Create a test env variable that prefix the namespace name with "t"
 
-function message(action, projectOwner, technicalLeads, requestedProject) {
+function message(
+  action,
+  projectOwner,
+  primaryTechnicalLead,
+  secondaryTechnicalLead,
+  requestedProject
+) {
   const {
     _id, // Use ID from actaul project, not from requested project
     licencePlate,
@@ -11,7 +17,7 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
     productionQuota,
     developmentQuota,
     testQuota,
-    toolsQuota,
+    toolsQuota
   } = requestedProject;
 
   const projectOwnerContact = {
@@ -19,22 +25,30 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
     provider: "github",
     email: projectOwner.email,
     rocketchat_username: null,
-    role: "owner",
+    role: "owner"
   };
 
-  const technicalLeadsContacts = technicalLeads.map((technicalLead) => ({
-    user_id: technicalLead.githubId,
+  const primaryTechnicalLeadContact = {
+    user_id: primaryTechnicalLead.githubId,
     provider: "github",
-    email: technicalLead.email,
+    email: primaryTechnicalLead.email,
     rocketchat_username: null,
-    role: "lead",
-  }));
+    role: "lead"
+  };
+
+  const secondaryTechnicalLeadContact = {
+    user_id: secondaryTechnicalLead.githubId,
+    provider: "github",
+    email: secondaryTechnicalLead.email,
+    rocketchat_username: null,
+    role: "lead"
+  };
 
   const namespaces = [
     { quotaName: "tools", quota: toolsQuota },
     { quotaName: "prod", productionQuota },
     { quotaName: "dev", quota: developmentQuota },
-    { quotaName: "test", quota: testQuota },
+    { quotaName: "test", quota: testQuota }
   ].map((quota) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${quotaName}`,
@@ -42,23 +56,23 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
       cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
       memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,
       storage: `storage-${quota.storageFile}`,
-      snapshot: `snapshot-${quota.snapshotCount}`,
+      snapshot: `snapshot-${quota.snapshotCount}`
     },
     quotas: {
       cpu: { requests: quota.cpuRequests, limits: quota.cpuLimits },
       memory: {
         requests: `${quota.memoryRequests}Gi`,
-        limits: `${quota.memoryLimits}Gi`,
+        limits: `${quota.memoryLimits}Gi`
       },
       storage: {
         block: `${quota.storageBlock}Gi`,
         file: `${quota.storageFile}Gi`,
         backup: `${quota.storageBackup}Mi`,
         capacity: `${quota.storageCapacity}Gi`,
-        pvc_count: `${quota.storagePvcCount}`,
+        pvc_count: `${quota.storagePvcCount}`
       },
-      snapshot: { count: quota.snapshotCount },
-    },
+      snapshot: { count: quota.snapshotCount }
+    }
   }));
 
   const request = {
@@ -71,7 +85,11 @@ function message(action, projectOwner, technicalLeads, requestedProject) {
     ministry_id: ministry,
     merge_type: "auto", // Make this a variable
     namespaces,
-    contacts: [projectOwnerContact, ...technicalLeadsContacts]
+    contacts: [
+      projectOwnerContact,
+      primaryTechnicalLeadContact,
+      secondaryTechnicalLeadContact
+    ]
   };
 
   return request;

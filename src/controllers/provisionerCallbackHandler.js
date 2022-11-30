@@ -13,26 +13,24 @@ export default async function provisionerCallbackHandler(req, res, next) {
     privateCloudProjects,
     privateCloudRequestedProjects,
     privateCloudArchivedRequests,
-    users,
+    users
   } = dataSources;
+
+  privateCloudActiveRequests.initialize();
+  privateCloudRequestedProjects.initialize();
+  privateCloudProjects.initialize();
+  privateCloudArchivedRequests.initialize();
+  users.initialize();
 
   try {
     const { prefix: licencePlate } = req.body;
 
-    privateCloudActiveRequests.initialize();
-    privateCloudRequestedProjects.initialize();
-    privateCloudProjects.initialize();
-    privateCloudArchivedRequests.initialize();
-    users.initialize();
-
     const [requestedProject] = await privateCloudRequestedProjects.findByFields(
-      {
-        licencePlate,
-      }
+      { licencePlate }
     );
 
     const [request] = await privateCloudActiveRequests.findByFields({
-      requestedProject: requestedProject._id,
+      requestedProject: requestedProject._id
     });
 
     if (request === undefined) {
@@ -44,35 +42,53 @@ export default async function provisionerCallbackHandler(req, res, next) {
     }
 
     let projectId;
+    let projectOwnerId;
+    let primaryTechnicalLeadId;
+    let secondaryTechnicalLeadId;
+
+    // Update an existing project or create a new one, depending on the request type
     if (request.type === RequestType.CREATE) {
+      const requestedProject = await privateCloudRequestedProjects.findOneById(
+        request.requestedProject
+      );
+
       const newProject = await privateCloudProjects.create({
         ...requestedProject,
         requestHistory: [request._id],
-        status: ProjectStatus.ACTIVE,
+        status: ProjectStatus.ACTIVE
       });
+
       projectId = newProject._id;
-    } else {
+      projectOwnerId = requestedProject.projectOwner;
+      primaryTechnicalLeadId = requestedProject.primaryTechnicalLead;
+      secondaryTechnicalLeadId = requestedProject.secondaryTechnicalLead;
+    } else if (request.type === RequestType.EDIT) {
       const updatedProject = await privateCloudProjects.updateFieldsById(
         request.project,
         {
           ...requestedProject,
-          requestHistory: [...requestedProject.requestHistory, request._id],
+          requestHistory: [...requestedProject.requestHistory, request._id]
         }
       );
+
+      const project = await privateCloudProjects.findOneById(request.project);
+
       projectId = updatedProject._id;
+      projectOwnerId = project.projectOwner;
+      primaryTechnicalLeadId = project.primaryTechnicalLead;
+      secondaryTechnicalLeadId = project.secondaryTechnicalLead;
+    } else if (request.type === RequestType.DELETE) {
+      const project = await privateCloudProjects.findOneById(request.project);
+
+      const result = await privateCloudProjects.removeDocument(request.project);
+
+      projectId = project._id;
+      projectOwnerId = project.projectOwner;
+      primaryTechnicalLeadId = project.primaryTechnicalLead;
+      secondaryTechnicalLeadId = project.secondaryTechnicalLead;
     }
 
-    // Get PO and TL's
-    const {
-      projectOwner: projectOwnerId,
-      primaryTechnicalLead: primaryTechnicalLeadId,
-      secondaryTechnicalLead: secondaryTechnicalLeadId,
-    } = request.type === RequestType.CREATE
-      ? await privateCloudRequestedProjects.findOneById(
-          request.requestedProject
-        )
-      : await privateCloudProjects.findOneById(request.project);
-
+    // Get project owner, primary technical lead and secondary technical lead
     const projectOwner = await users.findOneById(projectOwnerId);
     const primaryTechnicalLead = await users.findOneById(
       primaryTechnicalLeadId
@@ -80,11 +96,12 @@ export default async function provisionerCallbackHandler(req, res, next) {
     const secondaryTechnicalLead = await users.findOneById(
       secondaryTechnicalLeadId
     );
-    // Remove active request from PO and TL's user documents
+
+    // Remove active request from project owner and technical leads user documents
     await users.removeElementFromManyDocumentsArray(
-      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
-        ({ _id }) => _id
-      ),
+      [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .map(({ _id }) => _id),
       { privateCloudActiveRequests: request._id }
     );
 
@@ -92,33 +109,32 @@ export default async function provisionerCallbackHandler(req, res, next) {
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
       ...request,
-      active: false,
+      active: false
     });
 
-    // Add archived request to the projects request history
-    if (request.type !== RequestType.CREATE) {
-      await privateCloudProjects.addElementToDocumentArray(request.project, {
-        requestHistory: archivedRequest._id,
+    // Add archived request to project owner and technical leads user documents
+    if (request.type !== RequestType.DELETE) {
+      await privateCloudProjects.addElementToDocumentArray(projectId, {
+        requestHistory: archivedRequest._id
+      });
+
+      // Assign the project to the PO and TL's
+      await users.addElementToDocumentArray(projectOwner._id, {
+        privateCloudProjectOwner: projectId
+      });
+
+      await users.addElementToDocumentArray(projectOwner._id, {
+        privateCloudPrimaryTechnicalLead: projectId
+      });
+
+      await users.addElementToDocumentArray(projectOwner._id, {
+        privateCloudSecondaryTechnicalLead: projectId
+      });
+
+      await privateCloudProjects.updateFieldsById(projectId, {
+        activeEditRequest: null
       });
     }
-
-    // Assign the project to the PO and TL's
-    await users.addElementToDocumentArray(projectOwner._id, {
-      privateCloudProjectOwner: projectId,
-    });
-
-    await users.addElementToDocumentArray(projectOwner._id, {
-      privateCloudPrimaryTechnicalLead: projectId,
-    });
-
-    await users.addElementToDocumentArray(projectOwner._id, {
-      privateCloudSecondaryTechnicalLead: projectId,
-    });
-
-    
-    await privateCloudProjects.updateFieldsById(projectId, {
-      activeEditRequest: null,
-    });
 
     try {chesService.send({
       bodyType: "html",

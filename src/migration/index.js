@@ -112,12 +112,12 @@ function generateProjectData(projectData) {
 
       namespaces[namespaceName] = {
         ...defaultQuota,
-        cpuRequests: quota_cpu_size.split("-")[2],
-        cpuLimits: quota_cpu_size.split("-")[4],
-        memoryRequests: quota_memory_size.split("-")[2],
-        memoryLimits: quota_memory_size.split("-")[4],
-        storageFile: quota_storage_size.split("-")[1],
-        snapshotCount: quota_snapshot_size.split("-")[1],
+        cpuRequests: parseFloat(quota_cpu_size.split("-")[2]),
+        cpuLimits: parseFloat(quota_cpu_size.split("-")[4]),
+        memoryRequests: parseInt(quota_memory_size.split("-")[2]),
+        memoryLimits: parseInt(quota_memory_size.split("-")[4]),
+        storageFile: parseInt(quota_storage_size.split("-")[1]),
+        snapshotCount: parseInt(quota_snapshot_size.split("-")[1]),
       };
     }
 

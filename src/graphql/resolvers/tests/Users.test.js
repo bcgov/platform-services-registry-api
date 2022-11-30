@@ -4,7 +4,7 @@ import MongoHelpers from "../../../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { applyDirectiveTransformers as applyAuthDirectiveTranformers } from "../../../auth/transformers";
-import { applyDirectiveTransformers } from "../../../graphql/transformers";
+import { applyDirectiveTransformers } from "../../transformers";
 import resolvers from "../index";
 import typeDefs from "../../typeDefs";
 
@@ -75,20 +75,15 @@ describe("User tests", () => {
 
   it("Should sign up user", async () => {
     const result = await server.executeOperation({
-      query: `mutation SignUp($input: SignUpInput!) {
-        signUp(input: $input) {
+      query: `mutation SignUp {
+        signUp{
           id
           firstName
           lastName
           email
         }
       }`,
-      variables: {
-        input: {
-          ministry: "AGRI",
-          githubId: "okanji",
-        },
-      },
+
     });
 
     expect(result.errors).toBeUndefined();
@@ -149,11 +144,11 @@ describe("User tests", () => {
     const result = await server.executeOperation({
       query: `mutation {
         createUser(input: {
-          firstName: "Alexander",
-          lastName: "Carmichael",
+          firstName: "Jane",
+          lastName: "Doe",
           ministry: HLTH,
-          email: "alexander.carmichael@gov.bc.ca",
-          githubId: "okanji"
+          email: "jane.doe@gov.bc.ca",
+          githubId: "jane.doe",
 
         }) {
           id
@@ -161,8 +156,9 @@ describe("User tests", () => {
         }
       }`,
     });
+
     expect(result.errors).toBeUndefined();
-    expect(result.data?.createUser.firstName).toBe("Alexander");
+    expect(result.data?.createUser.firstName).toBe("Jane");
   });
 
   /*It should be noted that this is dependent on the CreateUser test passing successfully*/

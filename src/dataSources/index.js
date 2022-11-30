@@ -7,7 +7,8 @@ let client = null;
 
 async function getDatasources() {
   if (!db) {
-    client = new MongoClient(process.env.MONGO_URI);
+    const MONGO_URL = `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`
+    client = new MongoClient(MONGO_URL);
     await client.connect();
     db = client.db();
   }

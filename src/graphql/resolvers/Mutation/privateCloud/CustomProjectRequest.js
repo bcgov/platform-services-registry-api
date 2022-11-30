@@ -1,22 +1,22 @@
-import ProjectStatus from "../enum/ProjectStatus";
-import RequestStatus from "../enum/RequestStatus";
-import RequestType from "../enum/RequestType";
-import Platform from "../enum/Platform";
-import generateNamespacePrefix from "../../../helpers/generateNamespacePrefix";
+import ProjectStatus from "../../enum/ProjectStatus";
+import RequestStatus from "../../enum/RequestStatus";
+import RequestType from "../../enum/RequestType";
+import Platform from "../../enum/Platform";
+import generateNamespacePrefix from "../../../../helpers/generateNamespacePrefix";
 import swig from "swig";
 import Cluster from "../enum/Cluster";
 
-async function customPrivateCloudProjectRequest(
-  _,
-  {
+async function customPrivateCloudProjectRequest(_, args, context) {
+  const {
     metaData,
     commonComponents,
     productionQuota,
     developmentQuota,
     testQuota,
     toolsQuota,
-  },
-  {
+  } = args;
+
+  const {
     dataSources: {
       users,
       privateCloudRequestedProjects,
@@ -24,8 +24,8 @@ async function customPrivateCloudProjectRequest(
     },
     kauth,
     chesService,
-  }
-) {
+  } = context;
+
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
     roles: [],
@@ -114,9 +114,9 @@ async function customPrivateCloudProjectRequest(
   });
 
   await users.addElementToManyDocumentsArray(
-    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
-      ({ _id }) => _id
-    ),
+    [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+      .filter(Boolean)
+      .map(({ _id }) => _id),
     {
       privateCloudActiveRequests: request._id,
     }
@@ -139,9 +139,9 @@ async function customPrivateCloudProjectRequest(
           showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
-        ({ email }) => email
-      ),
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+        .filter(Boolean)
+        .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${metaData.name} OCP 4 Project Requested`,
     });
