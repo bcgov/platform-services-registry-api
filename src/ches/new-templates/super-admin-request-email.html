@@ -1,100 +1,5 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta name="x-apple-disable-message-reformatting">
-      <!--[if !mso]><!-->
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <!--<![endif]-->
-      <title></title>
-      <!--[if mso]>
-      <style type="text/css">
-         table {border-collapse:collapse;border:0;border-spacing:0;margin:0;}
-         div, td {padding:0;}
-         div {margin:0 !important;}
-      </style>
-      <noscript>
-         <xml>
-            <o:OfficeDocumentSettings>
-               <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-         </xml>
-      </noscript>
-      <![endif]-->
-      <style type="text/css">
-         @media screen and (max-width: 350px) {
-         .column {
-         max-width: 100% !important;
-         }
-         }
-         @media screen and (min-width: 351px) and (max-width: 460px) {
-         .column {
-         max-width: 50% !important;
-         }
-         }
-         @media screen and (max-width: 460px) {
-         .two-col .column {
-         max-width: 100% !important;
-         }
-         }
-         @media screen and (min-width: 461px) {
-         .column {
-         max-width: 33.3% !important;
-         }
-         .two-col .column {
-         max-width: 50% !important;
-         }
-         }
-      </style>
-   </head>
-   <body style="margin:0;padding:0;word-spacing:normal;background-color:#f7f7f7;">
-      <div role="article" aria-roledescription="email" lang="en"
-         style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f7f7f7;">
-         <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-            <tr>
-               <td align="center">
-                  <!--[if mso]>
-                  <table role="presentation" align="center" style="width:660px;">
-                     <tr>
-                        <td style="padding:20px 0;">
-                           <![endif]-->
-                           <div class="outer" style="width:96%;max-width:660px;margin:20px auto;">
-                              <table border="0" cellpadding="0" cellspacing="0" aria-label="header image" style="
-                                 padding: 20px;
-                                 background-color: #003366;
-                                 border-bottom: 2px solid #fcba19;
-                                 width: 100%;">
-                                 <tr>
-                                    <th>
-                                    <td width="120px">
-                                       <a href="https://registry.developer.gov.bc.ca">
-                                       <img alt="logo"
-                                          src="https://platsrv-registry-web-101ed4-dev.apps.silver.devops.gov.bc.ca/logo.svg" />
-                                       </a>
-                                    </td>
-                                    <td align="left">
-                                       <a href="https://registry.developer.gov.bc.ca">
-                                          <h1 style="
-                                             color: #ffffff;
-                                             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                             font-size: 24px;
-                                             font-weight: 700;
-                                             line-height: 37px;
-                                             text-align: left;
-                                             text-decoration: none;
-                                             display: block;
-                                             float: left;
-                                             ">
-                                             Platform Services Registry
-                                          </h1>
-                                       </a>
-                                    </td>
-                                    </th>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:26px;height:26px;mso-line-height-rule:exactly;">&nbsp;
-                              </div>
+{% extends 'header.html' %}
+{% block content %}
                               <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff"
                                  aria-label="greeting" style="border:1px solid #B0BFC6; ">
                                  <th>
@@ -887,11 +792,9 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              <div class="spacer" style="line-height:24px;background-color: #ffffff; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
-                              </div>
                               {% endif %}
                               {% endif %}
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
+                              <div class="spacer" style="line-height:24px;border-top:1px solid #B0BFC6;height:24px;mso-line-height-rule:exactly;">&nbsp;
                               </div>
                               <table role="presentation"
                                  style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
@@ -1631,12 +1534,12 @@
                                     </tr>
                                  </table>
                                  <![endif]-->
-                              </div>
-                              <div class="spacer" style="line-height:24px;background-color: #ffffff; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
-                              </div>
+                              </div>                                                         
                               {% endif %}
-                              {% endif %}                          
-                              {% endif %}
+                              {% endif %}  
+                              <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
+                              </div>                          
+                              {% endif %}                              
                               <table role="presentation"
                                  style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
                                  <tr>
@@ -1755,7 +1658,7 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              {% endif %}
+                             
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1805,6 +1708,7 @@
                                  </table>
                                  <![endif]-->
                               </div>
+                              {% endif %}
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -2058,8 +1962,10 @@
                                  <![endif]-->
                               </div>
                               {% endif %}
+                              <div class="spacer" style="line-height:24px; height:15px; mso-line-height-rule:exactly;">&nbsp;
+                              </div>
                               <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border-top:1px solid #B0BFC6;">
                                  <tr>
                                     <td
                                        style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
@@ -2353,12 +2259,12 @@
       </div>
    </body>
 </html>
+{% endblock %}
 <!-- chesService.send({
   bodyType: "html",
   body: swig.renderFile(
     "./src/ches/templates/super-admin-request-email.html",
     {
-      requestType: ,
       isProvisioningRequest: ,
       isQuotaRequest: ,
       consoleURLProdNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
@@ -2421,75 +2327,4 @@
 }); 
 
 
-
-
-  try {    
-    console.log('chesService');
-    chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/new-templates/super-admin-request-email.html",
-        {
-          requestType: "QoutaYupe",
-          isProvisioningRequest: false,
-          isQuotaRequest: true,
-          consoleURLProdNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-prod`,
-          isProductionQuotaChanged: true,
-          productionQuotaCPURequested: "new quota",
-          productionQuotaMemoryRequested: "new quota",
-          productionQuotaStorageRequested: "new quota",
-          isDevelopmentQuotaChanged: true,
-          consoleURLDevNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-dev`,
-          developmentQuotaCPURequested: "new quota",
-          developmentQuotaMemoryRequested: "new quota",
-          developmentQuotaStorageRequested: "new quota",
-          isTestQuotaChanged: true,
-          consoleURLTestNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-test`,
-          testQuotaCPURequested: "new quota",
-          testQuotaMemoryRequested: "new quota",
-          testQuotaStorageRequested: "new quota",
-          isToolsQuotaChanged: true,
-          consoleURLToolNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-tool`,
-          toolsQuotaCPURequested: "new quota",
-          toolsQuotaMemoryRequested: "new quota",
-          toolsQuotaStorageRequested: "new quota",
-          productionQuotaCPUCurrent: "current quota",
-          productionQuotaMemoryCurrent: "current quota",
-          productionQuotaStorageCurrent: "current quota",
-          developmentQuotaCPUCurrent: "current quota",
-          developmentQuotaMemoryCurrent: "current quota",
-          developmentQuotaStorageCurrent: "current quota",
-          testQuotaCPUCurrent: "current quota",
-          testQuotaMemoryCurrent: "current quota",
-          testQuotaStorageCurrent: "current quota",
-          toolsQuotaCPUCurrent: "current quota",
-          toolsQuotaMemoryCurrent: "current quota",
-          toolsQuotaStorageCurrent: "current quota",
-          projectName: "test name",
-          productDescription: "test description",
-          productMinistry: "CITZ",
-          POName: "firstName lastName",
-          POEmail: "owner@mail.com",
-          POGitHub: 'POGitHub',
-          POIDIR: "POIDIR",
-          PriTLName: "firstName lastName",
-          PriTLEmail: "PriTLEmail@mail.com",
-          PriTLGitHub:'PriTLGitHub' ,
-          PriTLIDIR: 'PriTLIDIR',
-          SecTLName: "firstName lastName",
-          SecTLEmail: "SecTLEmail@mail.com",
-          SecTLGitHub: 'SecTLGitHub',
-          SecTLIDIR: 'SecTLIDIR',
-          setCluster: 'silver',
-          licencePlate: 'ggg554',
-        }
-      ),
-      //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
-      to: 'zhanna@bcdevexchange.org',
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `New QoutaYupe request in Registry waiting for your approval`,
-    }); 
-  } catch (error) {
-    console.log(error);
-  }
 -->

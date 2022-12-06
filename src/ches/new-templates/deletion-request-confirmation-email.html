@@ -1,101 +1,6 @@
-
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
-   <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta name="x-apple-disable-message-reformatting">
-      <!--[if !mso]><!-->
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <!--<![endif]-->
-      <title></title>
-      <!--[if mso]>
-      <style type="text/css">
-         table {border-collapse:collapse;border:0;border-spacing:0;margin:0;}
-         div, td {padding:0;}
-         div {margin:0 !important;}
-      </style>
-      <noscript>
-         <xml>
-            <o:OfficeDocumentSettings>
-               <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-         </xml>
-      </noscript>
-      <![endif]-->
-      <style type="text/css">
-         @media screen and (max-width: 350px) {
-         .column {
-         max-width: 100% !important;
-         }
-         }
-         @media screen and (min-width: 351px) and (max-width: 460px) {
-         .column {
-         max-width: 50% !important;
-         }
-         }
-         @media screen and (max-width: 460px) {
-         .two-col .column {
-         max-width: 100% !important;
-         }
-         }
-         @media screen and (min-width: 461px) {
-         .column {
-         max-width: 33.3% !important;
-         }
-         .two-col .column {
-         max-width: 50% !important;
-         }
-         }
-      </style>
-   </head>
-   <body style="margin:0;padding:0;word-spacing:normal;background-color:#f7f7f7;">
-      <div role="article" aria-roledescription="email" lang="en"
-         style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f7f7f7;">
-         <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-            <tr>
-               <td align="center">
-                  <!--[if mso]>
-                  <table role="presentation" align="center" style="width:660px;">
-                     <tr>
-                        <td style="padding:20px 0;">
-                           <![endif]-->
-                           <div class="outer" style="width:96%;max-width:660px;margin:20px auto;">
-                              <table border="0" cellpadding="0" cellspacing="0" aria-label="header image" style="
-                                 padding: 20px;
-                                 background-color: #003366;
-                                 border-bottom: 2px solid #fcba19;
-                                 width: 100%;">
-                                 <tr>
-                                    <th>
-                                    <td width="120px">
-                                       <a href="https://registry.developer.gov.bc.ca">
-                                       <img alt="logo"
-                                          src="https://platsrv-registry-web-101ed4-dev.apps.silver.devops.gov.bc.ca/logo.svg" />
-                                       </a>
-                                    </td>
-                                    <td align="left">
-                                       <a href="https://registry.developer.gov.bc.ca">
-                                          <h1 style="
-                                             color: #ffffff;
-                                             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                             font-size: 24px;
-                                             font-weight: 700;
-                                             line-height: 37px;
-                                             text-align: left;
-                                             text-decoration: none;
-                                             display: block;
-                                             float: left;
-                                             ">
-                                             Platform Services Registry
-                                          </h1>
-                                       </a>
-                                    </td>
-                                    </th>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:26px;height:26px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+{% extends 'header.html' %}
+{% block content %}
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
                                  style="border:1px solid #B0BFC6; ">
                                  <th>
                                  <tr>
@@ -111,14 +16,14 @@
                                           max-width: 90%;
                                           margin: auto;
                                           ">
-                                          {{projectName }} deletion request received
+                                          Your deletion request for Private Cloud Openshift Platform has been received!
                                        </h2>
                                     </td>
                                  </tr>
                                  </th>
                                  <tr>
                                     <td style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
-                                       <img src="https://platsrv-registry-web-101ed4-dev.apps.silver.devops.gov.bc.ca/recieved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
+                                       <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/recieved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
                                     </td>
                                  </tr>
                                  <tr>
@@ -272,7 +177,7 @@
                                                    max-width: 90%;
                                                    text-align:left;
                                                    ">
-                                                   Product Ministry:
+                                                   Ministry:
                                                 </p>
                                              </div>
                                           </div>
@@ -816,8 +721,6 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly; background-color: #ffffff;">&nbsp;
-                              </div>
                            </div>
                            <!--[if mso]>
                         </td>
@@ -830,12 +733,15 @@
       </div>
    </body>
 </html>
+{% endblock %}
+
 <!--   chesService.send({
     bodyType: "html",
     body: swig.renderFile(
       "./src/ches/templates/deletion-request-confirmation-email.html",
       {
       productDescription: ,
+      productMinistry: ,
         projectName: ,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
