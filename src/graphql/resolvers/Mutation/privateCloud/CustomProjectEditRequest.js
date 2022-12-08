@@ -4,7 +4,7 @@ import Platform from "../../enum/Platform";
 import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
-import Cluster from "../enum/Cluster";
+import Cluster from "../../enum/Cluster";
 
 async function customPrivateCloudProjectEditRequest(_, args, context) {
   const {

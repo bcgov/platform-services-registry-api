@@ -4,7 +4,7 @@ import RequestType from "../../enum/RequestType";
 import Platform from "../../enum/Platform";
 import generateNamespacePrefix from "../../../../helpers/generateNamespacePrefix";
 import swig from "swig";
-import Cluster from "../enum/Cluster";
+import Cluster from "../../enum/Cluster";
 
 async function customPrivateCloudProjectRequest(_, args, context) {
   const {

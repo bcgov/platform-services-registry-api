@@ -3,7 +3,7 @@ import RequestStatus from "../../enum/RequestStatus";
 import RequestType from "../../enum/RequestType";
 import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import swig from "swig";
-import Cluster from "../enum/Cluster";
+import Cluster from "../../enum/Cluster";
 
 async function makePrivateCloudRequestDecision(_, args, context) {
   const { requestId, decision } = args;
