@@ -19,7 +19,8 @@ async function signUp(_, { input }, { dataSources: { users }, kauth }) {
     archived: false,
     created: new Date(),
     privateCloudProjectOwner: [],
-    privateCloudTechnicalLead: [],
+    privateCloudPrimaryTechnicalLead: [],
+    privateCloudSecondaryTechnicalLead: [],
     privateCloudActiveRequests: [],
     lastSeen: new Date(),
   });

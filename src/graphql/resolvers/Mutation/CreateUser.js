@@ -11,7 +11,8 @@ async function createUser(_, { input }, { dataSources: { users } }) {
     lastSeen: new Date(),
     privateCloudActiveRequests: [],
     privateCloudProjectOwner: [],
-    privateCloudTechnicalLead: [],
+    privateCloudPrimaryTechnicalLead: [],
+    privateCloudSecondaryTechnicalLead: [],
     created: new Date(),
     ministry: null
   });
