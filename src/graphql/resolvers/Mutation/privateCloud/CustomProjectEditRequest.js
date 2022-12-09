@@ -33,6 +33,10 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     roles: []
   };
   const [user] = await users.findByFields({ email });
+
+  if (!user)
+    throw new Error("User not found, please create a user for yourself");
+
   const { _id, ...project } =
     (await privateCloudProjects.findOneById(projectId)) || {};
 

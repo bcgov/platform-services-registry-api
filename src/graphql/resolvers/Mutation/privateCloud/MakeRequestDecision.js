@@ -22,6 +22,9 @@ async function makePrivateCloudRequestDecision(_, args, context) {
   const { email } = kauth.accessToken.content;
   const [user] = await users.findByFields({ email });
 
+  if (!user)
+    throw new Error("User not found, please create a user for yourself");
+
   const request = await privateCloudActiveRequests.findOneById(requestId);
 
   if (!request) {

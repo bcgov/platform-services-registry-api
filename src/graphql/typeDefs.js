@@ -248,7 +248,8 @@ const typeDefs = gql`
     lastSeen: DateTime
     privateCloudActiveRequests: [Request]!
     privateCloudProjectOwner: [Project]!
-    privateCloudTechnicalLead: [Project]!
+    privateCloudPrimaryTechnicalLead: [Project]!
+    privateCloudSecondaryTechnicalLead: [Project]!
     created: DateTime!
     ministry: Ministry
     githubId: String

@@ -13,31 +13,35 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     productionQuota,
     developmentQuota,
     testQuota,
-    toolsQuota,
+    toolsQuota
   } = args;
 
   const {
     dataSources: {
       users,
       privateCloudRequestedProjects,
-      privateCloudActiveRequests,
+      privateCloudActiveRequests
     },
     kauth,
-    chesService,
+    chesService
   } = context;
 
   const { email, resource_access } = kauth.accessToken.content;
   const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-    roles: [],
+    roles: []
   };
   const [user] = await users.findByFields({ email });
+  console.log(user);
+
+  if (!user)
+    throw new Error("User not found, please create a user for yourself");
 
   if (
     !roles.includes("admin") &&
     ![
       metaData.projectOwner,
       metaData.primaryTechnicalLead,
-      metaData.secondaryTechnicalLead,
+      metaData.secondaryTechnicalLead
     ].includes(email)
   ) {
     throw new Error(
@@ -46,20 +50,20 @@ async function customPrivateCloudProjectRequest(_, args, context) {
   }
 
   const [projectOwner] = await users.findByFields({
-    email: metaData.projectOwner,
+    email: metaData.projectOwner
   });
 
   if (!projectOwner) throw new Error("Project owner not found");
 
   const [primaryTechnicalLead] = await users.findByFields({
-    email: metaData.primaryTechnicalLead,
+    email: metaData.primaryTechnicalLead
   });
 
   if (!primaryTechnicalLead)
     throw new Error("Primary technical lead not found");
 
   const [secondaryTechnicalLead] = await users.findByFields({
-    email: metaData.secondaryTechnicalLead,
+    email: metaData.secondaryTechnicalLead
   });
 
   // Make sure that duplicate technical leads do not exist
@@ -78,7 +82,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     storageBackup: 512,
     storageCapacity: 1,
     storagePvcCount: 60,
-    snapshotCount: 5,
+    snapshotCount: 5
   };
 
   const requestedProject = await privateCloudRequestedProjects.create({
@@ -97,8 +101,10 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     created: new Date(),
     requestHistory: [],
     status: ProjectStatus.CREATE_REQUEST,
-    activeEditRequest: null,
+    activeEditRequest: null
   });
+
+  console.log(requestedProject);
 
   const request = await privateCloudActiveRequests.create({
     createdBy: requestedProject.createdBy,
@@ -110,15 +116,17 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     decisionDate: null,
     project: null,
     requestedProject: requestedProject._id,
-    decisionMaker: null,
+    decisionMaker: null
   });
+
+  console.log(request);
 
   await users.addElementToManyDocumentsArray(
     [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
       .filter(Boolean)
       .map(({ _id }) => _id),
     {
-      privateCloudActiveRequests: request._id,
+      privateCloudActiveRequests: request._id
     }
   );
 
