@@ -1,5 +1,4 @@
 async function createUser(_, { input }, { dataSources: { users } }) {
-
   const [user] = await users.findByFields({ email: input.email });
 
   if (user) {
@@ -9,11 +8,12 @@ async function createUser(_, { input }, { dataSources: { users } }) {
   return users.create({
     ...input,
     archived: false,
-    created: new Date(),
-    projectOwner: [],
+    lastSeen: new Date(),
+    privateCloudActiveRequests: [],
     privateCloudProjectOwner: [],
     privateCloudTechnicalLead: [],
-    lastSeen: new Date(),
+    created: new Date(),
+    ministry: null
   });
 }
 

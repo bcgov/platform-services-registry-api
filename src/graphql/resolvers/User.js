@@ -5,16 +5,22 @@ const User = {
     _,
     { dataSources: { privateCloudProjects } }
   ) => privateCloudProjects.findManyByIds(privateCloudProjectOwner),
-  privateCloudTechnicalLead: (
-    { privateCloudTechnicalLead },
+  privateCloudPrimaryTechnicalLead: (
+    { privateCloudPrimaryTechnicalLead },
     _,
     { dataSources: { privateCloudProjects } }
-  ) => privateCloudProjects.findManyByIds(privateCloudTechnicalLead),
+  ) => privateCloudProjects.findManyByIds(privateCloudPrimaryTechnicalLead),
+  privateCloudSecondaryTechnicalLead: (
+    { privateCloudSecondaryTechnicalLead },
+    _,
+    { dataSources: { privateCloudProjects } }
+  ) => privateCloudProjects.findManyByIds(privateCloudSecondaryTechnicalLead),
+
   privateCloudActiveRequests: (
     { privateCloudActiveRequests: privateCloudActiveRequestsIds },
     _,
     { dataSources: { privateCloudActiveRequests } }
-  ) => privateCloudActiveRequests.findManyByIds(privateCloudActiveRequestsIds),
+  ) => privateCloudActiveRequests.findManyByIds(privateCloudActiveRequestsIds)
 };
 
 export default User;
