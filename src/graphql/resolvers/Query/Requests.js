@@ -5,7 +5,7 @@ async function privateCloudRequests(
 ) {
   return [
     ...(await privateCloudArchivedRequests.getAll()),
-    ...(await privateCloudActiveRequests.getAll()),
+    ...(await privateCloudActiveRequests.getAll())
   ];
 }
 
@@ -69,8 +69,6 @@ async function userPrivateCloudActiveRequests(
     throw Error("Not a user");
   }
 
-  console.log(user)
-
   return privateCloudActiveRequests.findManyByIds(
     user.privateCloudActiveRequests
   );
@@ -120,5 +118,5 @@ export {
   userPrivateCloudActiveRequestsById,
   privateCloudArchivedRequest,
   privateCloudArchivedRequests,
-  privateCloudArchivedRequestsById,
+  privateCloudArchivedRequestsById
 };
