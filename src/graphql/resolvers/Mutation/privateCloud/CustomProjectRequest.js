@@ -30,7 +30,6 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     roles: []
   };
   const [user] = await users.findByFields({ email });
-  console.log(user);
 
   if (!user)
     throw new Error("User not found, please create a user for yourself");
@@ -103,8 +102,6 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     activeEditRequest: null
   });
 
-  console.log(requestedProject);
-
   const request = await privateCloudActiveRequests.create({
     createdBy: requestedProject.createdBy,
     status: RequestStatus.PENDING_DECISION,
@@ -117,8 +114,6 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     requestedProject: requestedProject._id,
     decisionMaker: null
   });
-
-  console.log(request);
 
   await users.addElementToManyDocumentsArray(
     [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
