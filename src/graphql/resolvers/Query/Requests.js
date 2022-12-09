@@ -69,6 +69,8 @@ async function userPrivateCloudActiveRequests(
     throw Error("Not a user");
   }
 
+  console.log(user)
+
   return privateCloudActiveRequests.findManyByIds(
     user.privateCloudActiveRequests
   );

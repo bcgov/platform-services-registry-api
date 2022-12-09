@@ -24,6 +24,10 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
     roles: []
   };
   const [user] = await users.findByFields({ email });
+
+  if (!user)
+    throw new Error("User not found, please create a user for yourself");
+
   const { _id, ...project } =
     (await privateCloudProjects.findOneById(projectId)) || {};
 
@@ -70,7 +74,6 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
     project: ObjectId(projectId),
     requestedProject: requestedProjectId
   };
-
 
   const request = await privateCloudActiveRequests.create(requestBody);
 
