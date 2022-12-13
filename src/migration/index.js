@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "okanji",
   password: "",
   port: 5432,
-  database: "postgres",
+  database: "postgres"
 });
 
 async function getPsqlUserData() {
@@ -92,7 +92,7 @@ function generateProjectData(projectData) {
         quota_cpu_size,
         quota_memory_size,
         quota_storage_size,
-        quota_snapshot_size,
+        quota_snapshot_size
       } = projects.find(
         (proj) => proj.namespace_name === `${licencePlate}-${namespaceName}`
       );
@@ -107,7 +107,7 @@ function generateProjectData(projectData) {
         storageBackup: 1,
         storageCapacity: 1,
         storagePvcCount: 60,
-        snapshotCount: 5,
+        snapshotCount: 5
       };
 
       namespaces[namespaceName] = {
@@ -117,7 +117,7 @@ function generateProjectData(projectData) {
         memoryRequests: parseInt(quota_memory_size.split("-")[2]),
         memoryLimits: parseInt(quota_memory_size.split("-")[4]),
         storageFile: parseInt(quota_storage_size.split("-")[1]),
-        snapshotCount: parseInt(quota_snapshot_size.split("-")[1]),
+        snapshotCount: parseInt(quota_snapshot_size.split("-")[1])
       };
     }
 
@@ -141,7 +141,7 @@ function generateProjectData(projectData) {
       testQuota: namespaces.test,
       activeEditRequest: null,
       commonComponents: {},
-      profileId: id, // Will keep the profile ID from the psql db for reference
+      profileId: id // Will keep the profile ID from the psql db for reference
     };
 
     newRegistryProjects.push(newRegistryProject);
@@ -199,7 +199,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
       privateCloudPrimaryTechnicalLead: [],
       privateCloudSecondaryTechnicalLead: [],
       privateCloudActiveRequests: [],
-      lastSeen: new Date(),
+      lastSeen: new Date()
     })
   );
 
@@ -263,13 +263,6 @@ function generateUsersPerProject(userData, contatctProfileData) {
         "privateCloudSecondaryTechnicalLead"
       ].push(_id);
     }
-
-    // technicalLeads.forEach((technicalLead) => {
-    //   const technicalLeadUserIndex = mongoUsers.findIndex(
-    //     ({ _id }) => _id === technicalLead
-    //   );
-    //   mongoUsers[technicalLeadUserIndex]["privateCloudTechnicalLead"].push(_id);
-    // });
   });
 
   try {
