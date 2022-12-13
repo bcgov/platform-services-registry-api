@@ -65,7 +65,8 @@ const typeDefs = gql`
     SILVER
     GOLD
     GOLDDR
-    ARO
+    KLAB2
+    EMERALD
   }
 
   enum Environment {
