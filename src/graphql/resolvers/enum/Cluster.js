@@ -4,7 +4,8 @@ const Cluster = {
   SILVER: 3,
   GOLD: 4,
   GOLDDR: 5,
-  ARO: 6
+  KLAB2: 6,
+  EMERALD: 7
 };
 
 export default Cluster;
