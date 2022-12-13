@@ -62,13 +62,13 @@ async function userPrivateCloudProjects(
   const {
     privateCloudProjectOwner,
     privateCloudPrimaryTechnicalLead,
-    privateCloudSecondaryTechnicalLead,
+    privateCloudSecondaryTechnicalLead
   } = user;
 
   return privateCloudProjects.findManyByIds([
     ...privateCloudProjectOwner,
     ...privateCloudPrimaryTechnicalLead,
-    ...privateCloudSecondaryTechnicalLead,
+    ...privateCloudSecondaryTechnicalLead
   ]);
 }
 
@@ -125,5 +125,5 @@ export {
   userPrivateCloudProjects,
   userPrivateCloudProjectsById,
   userPrivateCloudProject,
-  privateCloudProjectsWithFilterSearch,
+  privateCloudProjectsWithFilterSearch
 };
