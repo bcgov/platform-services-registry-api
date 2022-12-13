@@ -4,7 +4,8 @@ import RequestType from "../../enum/RequestType";
 import Platform from "../../enum/Platform";
 import generateNamespacePrefix from "../../../../helpers/generateNamespacePrefix";
 import swig from "swig";
-import Cluster from "../../enum/Cluster";
+import { adminEmails, clusterNames } from "../../../../ches/emailConstants"
+
 
 async function customPrivateCloudProjectRequest(_, args, context) {
   const {
@@ -125,31 +126,102 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     }
   );
 
+  // try {
+  //   console.log(requestedProject, metaData,projectOwner, primaryTechnicalLead, secondaryTechnicalLead)
+  //   chesService.send({
+  //     bodyType: "html",
+  //     body: swig.renderFile(
+  //       "./src/ches/templates/provisioning-request-done.html",
+  //       {
+  //         // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+  //         // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+  //         projectName: metaData.name,
+  //         POName: projectOwner.firstName + " " + projectOwner.lastName,
+  //         POEmail: projectOwner.email,
+  //         technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
+  //         setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
+  //         licencePlate: requestedProject.licencePlate,
+  //         showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
+  //       }
+  //     ),
+  //     to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+  //       .filter(Boolean)
+  //       .map(({ email }) => email),
+  //     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+  //     subject: `${metaData.name} OCP 4 Project Requested`,
+  //   });
+  // } catch (error) {
+  //   console.log("CHES Error: ", error);
+  // }
+
   try {
     chesService.send({
       bodyType: "html",
       body: swig.renderFile(
-        "./src/ches/templates/provisioning-request-done.html",
+        "./src/ches/new-templates/super-admin-request-email.html",
         {
-          // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-          // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-          projectName: metaData.name,
-          POName: projectOwner.firstName + " " + projectOwner.lastName,
+          requestType: 'Provisioning',
+          isProvisioningRequest: true,
+          isQuotaRequest: false,
+          consoleURLProdNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster].name}.devops.gov.bc.ca/topology/ns/ggg554-prod`,
+          isProductionQuotaChanged: false,
+          projectName: requestedProject.name,
+          productDescription: requestedProject.description,
+          productMinistry: requestedProject.ministry,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
-          setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
+          POGitHub: projectOwner.githubId,
+          POIDIR: projectOwner.POIDIR || null,
+          PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          PriTLEmail: primaryTechnicalLead.email,
+          PriTLGitHub: primaryTechnicalLead.githubId,
+          PriTLIDIR: primaryTechnicalLead.POIDIR || null,
+          SecTLName: `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` || null,
+          SecTLEmail: secondaryTechnicalLead.email|| null,
+          SecTLGitHub: secondaryTechnicalLead.githubId|| null,
+          SecTLIDIR: secondaryTechnicalLead.POIDIR || null,
+          setCluster: clusterNames[requestedProject.cluster].humanFriendlyName,
           licencePlate: requestedProject.licencePlate,
-          showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
         }
       ),
+      //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
+      to: adminEmails,
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `New Create Product request in Registry waiting for your approval`,
+    });
+
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/new-templates/provisioning-request-received-email.html",
+        {
+          projectName: requestedProject.name,
+          productDescription: requestedProject.description,
+          productMinistry: requestedProject.ministry,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+          POEmail: projectOwner.email,
+          POGitHub: projectOwner.githubId,
+          POIDIR: projectOwner.POIDIR || null,
+          PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          PriTLEmail: primaryTechnicalLead.email,
+          PriTLGitHub: primaryTechnicalLead.githubId,
+          PriTLIDIR: primaryTechnicalLead.POIDIR || null,
+          SecTLName: `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` || null,
+          SecTLEmail: secondaryTechnicalLead.email|| null,
+          SecTLGitHub: secondaryTechnicalLead.githubId|| null,
+          SecTLIDIR: secondaryTechnicalLead.POIDIR || null,
+          setCluster: clusterNames[requestedProject.cluster].humanFriendlyName,
+        }
+      ),
+      // To all project contacts. Sent when a new provisioning request has been submitted successfully.
       to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
         .filter(Boolean)
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${metaData.name} OCP 4 Project Requested`,
+      subject: `ProjectName provisioning request received`,
     });
   } catch (error) {
-    console.log("CHES Error: ", error);
+    console.log(error);
   }
 
   return request;

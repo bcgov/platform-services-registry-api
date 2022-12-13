@@ -1,11 +1,9 @@
 import RequestType from "../graphql/resolvers/enum/RequestType";
 import RequestStatus from "../graphql/resolvers/enum/RequestStatus";
 import ProjectStatus from "../graphql/resolvers/enum/ProjectStatus";
-
 import { getDatasources } from "../dataSources";
 import chesService from "../ches";
 import swig from "swig";
-
 export default async function provisionerCallbackHandler(req, res, next) {
   const dataSources = await getDatasources();
   const {
@@ -161,6 +159,11 @@ export default async function provisionerCallbackHandler(req, res, next) {
     console.log(error);
   }
   
+
+
+
+
+
     res.status(200).end();
   } catch (err) {
     console.log(err);
