@@ -16,7 +16,7 @@ async function sendNatsMessage(
   requestedProject
 ) {
   if (skip) {
-    console.log("Nats skipped")
+    console.log("Nats skipped");
     return;
   }
   const nc = await connect({ servers: serverURL });
@@ -33,9 +33,9 @@ async function sendNatsMessage(
   );
 
   nc.publish(subject, jc.encode(messageBody));
-  
-  console.log("Nats envoked")
-  console.log(messageBody)
+
+  console.log("Nats envoked");
+  console.log(messageBody);
 
   await nc.drain();
 }
