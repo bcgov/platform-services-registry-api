@@ -16,6 +16,7 @@ async function sendNatsMessage(
   requestedProject
 ) {
   if (skip) {
+    console.log("Nats skipped")
     return;
   }
   const nc = await connect({ servers: serverURL });
