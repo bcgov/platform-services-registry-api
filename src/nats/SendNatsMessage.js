@@ -32,6 +32,9 @@ async function sendNatsMessage(
   );
 
   nc.publish(subject, jc.encode(messageBody));
+  
+  console.log("Nats envoked")
+  console.log(messageBody)
 
   await nc.drain();
 }
