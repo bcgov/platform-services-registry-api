@@ -1,10 +1,109 @@
-{% extends 'header.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta name="x-apple-disable-message-reformatting">
+      <!--[if !mso]><!-->
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!--<![endif]-->
+      <title></title>
+      <!--[if mso]>
+      <style type="text/css">
+         table {border-collapse:collapse;border:0;border-spacing:0;margin:0;}
+         div, td {padding:0;}
+         div {margin:0 !important;}
+      </style>
+      <noscript>
+         <xml>
+            <o:OfficeDocumentSettings>
+               <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+         </xml>
+      </noscript>
+      <![endif]-->
+      <style type="text/css">
+         @media screen and (max-width: 350px) {
+         .column {
+         max-width: 100% !important;
+         }
+         }
+         @media screen and (min-width: 351px) and (max-width: 460px) {
+         .column {
+         max-width: 50% !important;
+         }
+         }
+         @media screen and (max-width: 460px) {
+         .two-col .column {
+         max-width: 100% !important;
+         }
+         }
+         @media screen and (min-width: 461px) {
+         .column {
+         max-width: 33.3% !important;
+         }
+         .two-col .column {
+         max-width: 50% !important;
+         }
+         }
+      </style>
+   </head>
+   <body style="margin:0;padding:0;word-spacing:normal;background-color:#f7f7f7;">
+      <div role="article" aria-roledescription="email" lang="en"
+         style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f7f7f7;">
+         <table role="presentation" style="width:100%;border:0;border-spacing:0;">
+            <tr>
+               <td align="center">
+                  <!--[if mso]>
+                  <table role="presentation" align="center" style="width:660px;">
+                     <tr>
+                        <td style="padding:20px 0;">
+                           <![endif]-->
+                           <div class="outer" style="width:96%;max-width:660px;margin:20px auto;">
+                              <table border="0" cellpadding="0" cellspacing="0" aria-label="header image" style="
+                                 padding: 20px;
+                                 background-color: #003366;
+                                 border-bottom: 2px solid #fcba19;
+                                 width: 100%;">
+                                 <tr>
+                                    <th>
+                                    <td width="120px">
+                                       <a href="https://registry.developer.gov.bc.ca">
+                                       <img alt="logo"
+                                          src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/logo.svg" />
+                                       </a>
+                                    </td>
+                                    <td align="left">
+                                       <a href="https://registry.developer.gov.bc.ca">
+                                          <h1 style="
+                                             color: #ffffff;
+                                             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                             font-size: 24px;
+                                             font-weight: 700;
+                                             line-height: 37px;
+                                             text-align: left;
+                                             text-decoration: none;
+                                             display: block;
+                                             float: left;
+                                             ">
+                                             Platform Services Registry
+                                          </h1>
+                                       </a>
+                                    </td>
+                                    </th>
+                                 </tr>
+                              </table>
+                              <div class="spacer" style="line-height:26px;height:26px;mso-line-height-rule:exactly;">&nbsp;
+                              </div>
+                              
+                              
+                              <!-- {% extends 'header.html' %}
+{% block content %} -->
  <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
-                                 style="border:1px solid #B0BFC6; ">
+                                 style="border-top:1px solid #B0BFC6; border-bottom:1px solid #B0BFC6; ">
                                  <th>
                                  <tr>
-                                    <td valign="middle" style="padding: 20px 0;" >
+                                    <td valign="middle" style="padding: 20px 0;" align="center">
                                        <h2 style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -12,9 +111,8 @@
                                           font-size: 32px;
                                           font-weight: 700;
                                           line-height: 37px;
-                                          text-align: center;
+                                          text-align: left;
                                           max-width: 90%;
-                                          margin: auto;
                                           ">
                                           Your resource quota change request for an Openshift namespace has been received!
                                        </h2>
@@ -22,19 +120,20 @@
                                  </tr>
                                  </th>
                                  <tr>
-                                    <td style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
+                                    <td align="center" style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
                                        <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/recieved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td valign="top" style="padding: 20px;">
+                                    <td valign="top" align="center" style="padding-bottom: 20px;">
                                        <p style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                           word-break: break-word;
                                           font-size: 14px;
                                           line-height: 1.5;
-                                          text-align: center;
+                                          text-align: left;
+                                          max-width: 90%;
                                           ">
                                          We have received your quota change request. Platform Resource Tuning Advisor Jason Leach will review your request.     
                                         </p>
@@ -44,37 +143,41 @@
                                           word-break: break-word;
                                           font-size: 14px;
                                           line-height: 1.5;
-                                          text-align: center;
+                                          text-align: left;
+                                          max-width: 90%;
                                           ">
                                          If you haven't discussed this change with Jason, please email supporting information for your request to <a style="
                                          color: #003366;                                    
                                          font-style: bold;
                                          "
-                                         href="mailto:PlatformServicesTeam@gov.bc.ca">PlatformServicesTeam@gov.bc.ca</a>. You need to provide justification for your quota change. This should include historic data showing increased consumption for the resource that you are requesting an increase for (such as CPU, RAM, and/or data storage).                                        
+                                         href="mailto:PlatformServicesTeam@gov.bc.ca">PlatformServicesTeam@gov.bc.ca</a>. You need to provide justification for your quota change. This should include historic consumption data for the resource that you are requesting a quota change for (such as CPU, RAM, and/or data storage).    
                                        </p>
                                     </td>
                                  </tr>
                               </table>
                               <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
                             
-                              <table role="presentation"style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                              <tr>
-                                 <td
-                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                    <h3 style="
-                                       color: #313132;
-                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                       word-break: break-word;
-                                       font-size: 32px;
-                                       font-weight: 700;
-                                       line-height: 37px;
-                                       text-align: center;
-                                       ">
-                                       Requested quota
-                                    </h3>
-                                 </td>
-                              </tr>
-                           </table>
+                              <table role="presentation"
+                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                                 <tr>
+                                    <td
+                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                       <h3 style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 32px;
+                                          font-weight: 700;
+                                          line-height: 37px;
+                                          margin-bottom: 5px;
+                                          text-align: left;
+                                          padding-left:3%;
+                                          ">
+                                          Requested quota
+                                       </h3>
+                                    </td>
+                                 </tr>
+                              </table>
                            {% if isProductionQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -800,24 +903,26 @@
                            <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
                            </div>
                            <table role="presentation"
-                              style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                              <tr>
-                                 <td
-                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                    <h3 style="
-                                       color: #313132;
-                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                       word-break: break-word;
-                                       font-size: 32px;
-                                       font-weight: 700;
-                                       line-height: 37px;
-                                       text-align: center;
-                                       ">
-                                       Current quota
-                                    </h3>
-                                 </td>
-                              </tr>
-                           </table>
+                           style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                           <tr>
+                              <td
+                                 style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                 <h3 style="
+                                    color: #313132;
+                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                    word-break: break-word;
+                                    font-size: 32px;
+                                    font-weight: 700;
+                                    line-height: 37px;
+                                    margin-bottom: 5px;
+                                    text-align: left;
+                                    padding-left:3%;
+                                    ">
+                                    Current quota
+                                 </h3>
+                              </td>
+                           </tr>
+                        </table>
                            {% if isProductionQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -1542,25 +1647,27 @@
                            {% endif %}  
                            <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
                            </div>
-                              <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Product Details
-                                       </h3>
-                                    </td>
-                                 </tr>
-                              </table>
+                           <table role="presentation"
+                           style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                           <tr>
+                              <td
+                                 style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                 <h3 style="
+                                    color: #313132;
+                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                    word-break: break-word;
+                                    font-size: 32px;
+                                    font-weight: 700;
+                                    line-height: 37px;
+                                    margin-bottom: 5px;
+                                    text-align: left;
+                                    padding-left:3%;
+                                    ">
+                                    Product details
+                                 </h3>
+                              </td>
+                           </tr>
+                        </table>
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1577,7 +1684,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Product Name:
                                                 </p>
@@ -1624,7 +1732,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Product Owner:
                                                 </p>
@@ -1684,7 +1793,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Primary Technical Lead:
                                                 </p>
@@ -1769,7 +1879,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Secondary Technical Lead:
                                                 </p>
@@ -1837,28 +1948,50 @@
                                  <![endif]-->
                               </div>
                               {% endif %}
-                              <div class="spacer"
-                                 style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
-                              </div>
                               <table role="presentation"
-                              style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                              style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border-bottom:1px solid #B0BFC6;">
                               <tr>
-                                 <td
-                                    style="padding:0 10px 20px 10px;font-family:Arial,sans-serif;border-top:1px solid #B0BFC6;font-size:24px;line-height:28px;font-weight:bold;">
+                                 <td align="center"
+                                    style="font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
                                     <p style="
                                        color: #313132;
                                        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                        word-break: break-word;
-                                       font-size: 32px;
-                                       font-weight: 700;
-                                       line-height: 37px;
-                                       text-align: center;
+                                       font-size: 14px;
+                                       font-weight: 400;
+                                       line-height: 16px;
+                                       text-align: left;
+                                       max-width: 90%;
                                        ">
-                                       Namespace Details
+                                      Log in to the Product Registry to find out more detailed information on your product, edit your product's details, or submit an additional quota change request
                                     </p>
                                  </td>
                               </tr>
                            </table>
+                              <div class="spacer"
+                                 style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
+                              </div>
+                              <table role="presentation"
+                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border-top:1px solid #B0BFC6;">
+                                 <tr>
+                                    <td
+                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                       <p style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 32px;
+                                          font-weight: 700;
+                                          line-height: 37px;
+                                          margin-bottom: 5px;
+                                          text-align: left;                                          
+                                          padding-left:3%;
+                                          ">
+                                          Namespace details
+                                       </p>
+                                    </td>
+                                 </tr>
+                              </table>
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1875,7 +2008,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Platform Cluster:
                                                 </p>
@@ -1922,7 +2056,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Dev Namespace:
                                                 </p>
@@ -1968,7 +2103,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Test Namespace:
                                                 </p>
@@ -2015,7 +2151,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Prod Namespace:
                                                 </p>
@@ -2062,7 +2199,8 @@
                                                    font-weight: 400;
                                                    color: #313132;
                                                    max-width: 90%;
-                                                   text-align:left;
+                                                   text-align:left; 
+                                                   padding-left:5%;
                                                    ">
                                                    Tools Namespace:
                                                 </p>
@@ -2092,32 +2230,7 @@
                                     </tr>
                                  </table>
                                  <![endif]-->
-                              </div>
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
-                              </div>
-                              <table role="presentation"
-                              style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border:1px solid #B0BFC6;">
-                              <tr>
-                                 <td
-                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                    <p style="
-                                       color: #313132;
-                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                       word-break: break-word;
-                                       font-size: 14px;
-                                       font-weight: 400;
-                                       line-height: 16px;
-                                       text-align: center;
-                                       margin: auto;
-                                       max-width: 85%;
-                                       ">
-                                      Log in to the Product Registry to find out more detailed information on your product, edit your product's details, or submit an additional quota change request
-
-                                    </p>
-                                 </td>
-                              </tr>
-                           </table>
-                             
+                              </div>                             
                            </div>
                            <!--[if mso]>
                         </td>
@@ -2130,7 +2243,10 @@
       </div>
    </body>
 </html>
-{% endblock %}
+<!-- {% endblock %} -->
+
+
+
 <!-- chesService.send({
    bodyType: "html",
    body: swig.renderFile(
