@@ -45,7 +45,8 @@ async function startApolloServer(typeDefs, resolvers) {
     plugins: [
       ApolloServerPluginLandingPageLocalDefault({ footer: false, embed: true }),
       ApolloServerPluginDrainHttpServer({ httpServer })
-    ]
+    ],
+    introspection: true,
   });
 
   await server.start();

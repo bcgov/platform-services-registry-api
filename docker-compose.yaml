@@ -34,14 +34,14 @@ services:
     ports:
       - 27017:27017
     environment: *defaults
-  # api:
-  #   container_name: registry-api-new
-  #   image: registry-api-new/api
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 4222:4222
+  api:
+    container_name: registry-api-new
+    image: registry-api-new/api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4222:4222
 
     environment:
       <<: *defaults
