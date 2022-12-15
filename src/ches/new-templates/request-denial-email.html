@@ -1,10 +1,10 @@
 {% extends 'header.html' %}
 {% block content %}
                               <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
-                                 style="border:1px solid #B0BFC6; ">
+                                 style="border-top:1px solid #B0BFC6; border-bottom:1px solid #B0BFC6; ">
                                  <th>
                                  <tr>
-                                    <td valign="middle" style="padding: 20px 0;" >
+                                    <td valign="middle" align="center" style="padding: 20px 0 0 0;" >
                                        <h2 style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -12,7 +12,7 @@
                                           font-size: 32px;
                                           font-weight: 700;
                                           line-height: 37px;
-                                          text-align: center;
+                                          text-align: left;
                                           max-width: 90%;
                                           margin: auto;
                                           ">
@@ -22,19 +22,22 @@
                                  </tr>
                                  </th>
                                  <tr>
-                                    <td style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
+                                    <td align="center" style="font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
                                        <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td valign="top" style="padding: 20px;">
+                                    <td valign="top" align="center">
                                        <p style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                           word-break: break-word;
                                           font-size: 14px;
                                           line-height: 1.5;
-                                          text-align: center;
+                                          max-width: 90%;
+                                          text-align: left;
+                                          padding: 0 0 20px 0;
+                                          margin: 0;
                                           ">
                                           Unfortunately, your request was not approved. Please see the comments from the reviewer below. If you have any more questions, reach out to the Platform Services team in the <a style="
                                              color: #003366;                                    
@@ -48,9 +51,9 @@
                               <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
                               {% if  humanActionComment%}
                               <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
-                                 style="border:1px solid #B0BFC6; ">
+                                 style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
                                  <tr>
-                                    <td valign="middle" style="padding: 10px 0 0 0;" >
+                                    <td valign="middle" align="center" >
                                        <h3 style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -58,23 +61,27 @@
                                           font-size: 32px;
                                           font-weight: 700;
                                           line-height: 37px;
-                                          text-align: center;
+                                          text-align: left;
+                                          max-width: 90%;
+                                          margin: 20px 0 0 0;
                                           ">
                                           Reviewer’s comments
                                        </h3>
                                     </td>
                                  </tr>
                                  <tr>
-                                    <td valign="top" style="padding: 0 0 10px 0;">
+                                    <td valign="top" align="center" >
                                        <p style="
                                           color: #313132;
                                           font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                           word-break: break-word;
                                           font-size: 14px;
                                           line-height: 1.5;
-                                          text-align: center;
+                                          text-align: left;
+                                          max-width: 90%;
+                                          margin: 20px 0 20px 0;
                                           ">
-                                          {{humanActionComment}}
+                                          {{humanActionComment}} 
                                        </p>
                                     </td>
                                  </tr>
@@ -83,24 +90,26 @@
                               {% endif %}
                               {% if isQuotaRequest %}
                               <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Requested quota
-                                       </h3>
-                                    </td>
-                                 </tr>
-                              </table>
+                              style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                              <tr>
+                                 <td
+                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                    <h3 style="
+                                       color: #313132;
+                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                       word-break: break-word;
+                                       font-size: 32px;
+                                       font-weight: 700;
+                                       line-height: 37px;
+                                       margin-bottom: 5px;
+                                       text-align: left;
+                                       padding-left:3%;
+                                       ">
+                                       Requested quota
+                                    </h3>
+                                 </td>
+                              </tr>
+                           </table>
                               {% if isProductionQuotaChanged %}
                               <table role="presentation"
                                  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -828,24 +837,26 @@
                               <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
                               </div>
                               <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Current quota
-                                       </h3>
-                                    </td>
-                                 </tr>
-                              </table>
+                              style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                              <tr>
+                                 <td
+                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                    <h3 style="
+                                       color: #313132;
+                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                       word-break: break-word;
+                                       font-size: 32px;
+                                       font-weight: 700;
+                                       line-height: 37px;
+                                       margin-bottom: 5px;
+                                       text-align: left;
+                                       padding-left:3%;
+                                       ">
+                                       Current quota
+                                    </h3>
+                                 </td>
+                              </tr>
+                           </table>
                               {% if isProductionQuotaChanged %}
                               <table role="presentation"
                                  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -1565,32 +1576,33 @@
                                     </tr>
                                  </table>
                                  <![endif]-->
-                              </div>
-                              
+                              </div>                              
                               {% endif %}
                               {% endif %}    
                               <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
                               </div>                      
                               {% endif %}
                               <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Product Details
-                                       </h3>
-                                    </td>
-                                 </tr>
-                              </table>
+                              style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                              <tr>
+                                 <td
+                                    style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                    <h3 style="
+                                       color: #313132;
+                                       font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                       word-break: break-word;
+                                       font-size: 32px;
+                                       font-weight: 700;
+                                       line-height: 37px;
+                                       margin-bottom: 5px;
+                                       text-align: left;
+                                       padding-left:3%;
+                                       ">
+                                       Product details
+                                    </h3>
+                                 </td>
+                              </tr>
+                           </table>
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1609,6 +1621,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Product Name:
                                                 </p>
@@ -1659,6 +1672,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Product Description:
                                                 </p>
@@ -1690,7 +1704,6 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1709,6 +1722,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Product Ministry:
                                                 </p>
@@ -1759,6 +1773,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Product Owner:
                                                 </p>
@@ -1842,6 +1857,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Primary Technical Lead:
                                                 </p>
@@ -1927,6 +1943,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Secondary Technical Lead:
                                                 </p>
@@ -1997,7 +2014,7 @@
                               <div class="spacer" style="line-height:24px; height:15px; mso-line-height-rule:exactly;">&nbsp;
                               </div>
                               <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border-top:1px solid #B0BFC6;">
                                  <tr>
                                     <td
                                        style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
@@ -2008,17 +2025,15 @@
                                           font-size: 32px;
                                           font-weight: 700;
                                           line-height: 37px;
-                                          text-align: center;
+                                          margin-bottom: 5px;
+                                          text-align: left;                                          
+                                          padding-left:3%;
                                           ">
-                                          Namespace Details
+                                          Namespace details
                                        </p>
                                     </td>
                                  </tr>
                               </table>
-                              <div class="spacer"
-                                 style="line-height:24px;height:24px;mso-line-height-rule:exactly;background-color: #ffffff;">
-                                 &nbsp;
-                              </div>
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -2037,6 +2052,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    OpenShift Cluster:
                                                 </p>
@@ -2086,6 +2102,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Dev Namespace:
                                                 </p>
@@ -2132,6 +2149,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Test Namespace:
                                                 </p>
@@ -2179,6 +2197,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Prod Namespace:
                                                 </p>
@@ -2226,6 +2245,7 @@
                                                    color: #313132;
                                                    max-width: 90%;
                                                    text-align:left;
+                                                   padding-left:5%;
                                                    ">
                                                    Tools Namespace:
                                                 </p>
@@ -2256,11 +2276,8 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly; background-color: #ffffff;">&nbsp;
-                              </div>
                               {% endif %}
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly; background-color: #ffffff;">&nbsp;
-                              </div>
+                             
                            </div>
                            <!--[if mso]>
                         </td>
@@ -2321,11 +2338,11 @@
         POEmail: projectOwner.email,
         POGitHub: ,
         POIDIR: ,
-        PriTLName: primaryTechnicalLead.firstName + " " + primaryTechnicalLead.lastName,,
+        PriTLName: primaryTechnicalLead.firstName + " " + primaryTechnicalLead.lastName,
         PriTLEmail: ,
         PriTLGitHub: ,
         PriTLIDIR: ,
-        SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,,
+        SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,
         SecTLEmail: ,
         SecTLGitHub: ,
         SecTLIDIR: ,

@@ -92,7 +92,7 @@ const chesService = new ChesService({
 // chesService.send({
 //   bodyType: "html",
 //   body: swig.renderFile(
-//     "../new-templates/quota-request-cmpletion-email.html",
+//     "../new-templates/quota-request-completion-email.html",
 //     {
 //       consoleURL: `https://console.apps.silver.devops.gov.bc.ca/`,
 //       humanActionComment: 'humanActionComment',

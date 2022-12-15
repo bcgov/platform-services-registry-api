@@ -1,977 +1,1016 @@
 {% extends 'header.html' %}
 {% block content %}
 <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
-                                 style="border:1px solid #B0BFC6; ">
-                                 <th>
-                                 <tr>
-                                    <td valign="top">
-                                       <h2 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Your provisioning request was approved and completed!
-                                       </h2>
-                                    </td>
-                                 </tr>
-                                 </th>
-                                 <tr>
-                                    <td style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
-                                       <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td align="center">
-                                       <div style="padding-top:50px">
-                                          <!--[if mso]>
-                                          <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href='{{consoleURL}}' style="height:40px;v-text-anchor:middle;width:200px;" arcsize="13%" strokecolor="#fcba19" fillcolor="#fcba19">
-                                             <w:anchorlock/>
-                                             <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Login to Registry</center>
-                                          </v:roundrect>
-                                          <![endif]--><a href='{{consoleURL}}'
-                                             style="background-color:#fcba19;border:1px solid #fcba19;border-radius:5px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">
-                                          Log in to console
-                                          </a>
-                                       </div>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td valign="top" style="padding: 20px;">
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 14px;
-                                          line-height: 1.5;
-                                          text-align: center;
-                                          ">
-                                          Your request for a new project set for your product on the Private Cloud Openshift platform is complete. Log on to the cluster console using the link above and you'll see all four namespaces included in a project set. If you have any more questions reach out to the Platform Services team in the RocketChat channel <a style="
-                                             color: #003366;                                    
-                                             font-style: bold;
-                                             "
-                                             href="https://chat.developer.gov.bc.ca/channel/devops-operations">#devops-operations</a>.
-                                       </p>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              {% if humanActionComment%}
-                              <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
-                                 style="border:1px solid #B0BFC6; ">
-                                 <tr>
-                                    <td valign="middle" style="padding: 10px 0 0 0;" >
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Reviewer’s comments
-                                       </h3>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td valign="top" style="padding: 0 0 10px 0;">
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 14px;
-                                          line-height: 1.5;
-                                          text-align: center;
-                                          ">
-                                          {{humanActionComment}}
-                                       </p>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              {% endif %}
-                              <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <h3 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Product Details
-                                       </h3>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Product Name:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ projectName }}
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>                             
-                             
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Product Owner:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ POName }}
-                                                </p>
-                                                <a style="
-                                                   color: #003366;                                          
-                                                   font-style: bold;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   display: block;
-                                                   " href="mailto:{{ POEmail }}">{{POEmail }}</a>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ POGitHub }}
-                                                </p>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ POIDIR }}
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Primary Technical Lead:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ PriTLName}}
-                                                </p>
-                                                <a style="
-                                                   color: #003366;                                          
-                                                   font-style: bold;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   display: block;
-                                                   " href="mailto:{{ PriTLEmail }}">{{
-                                                PriTLEmail }}</a>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ PriTLGitHub}}
-                                                </p>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ PriTLIDIR}}
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              {% if SecTLName %}
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Secondary Technical Lead:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{SecTLName }}
-                                                </p>
-                                                <a style="
-                                                   color: #003366;                                          
-                                                   font-style: bold;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   display: block;
-                                                   " href="mailto:{{ SecTLEmail }}">{{
-                                                SecTLEmail }}</a>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ SecTLGitHub}}
-                                                </p>
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ SecTLIDIR}}
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              {% endif %}
-                              <div class="spacer"
-                                 style="line-height:24px;height:24px;mso-line-height-rule:exactly;">
-                                 &nbsp;
-                              </div>
-                              <table role="presentation"
-                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 32px;
-                                          font-weight: 700;
-                                          line-height: 37px;
-                                          text-align: center;
-                                          ">
-                                          Namespace Details
-                                       </p>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer"
-                                 style="line-height:24px;height:24px;mso-line-height-rule:exactly;background-color: #ffffff;">
-                                 &nbsp;
-                              </div>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   OpenShift Cluster:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column"
-                                             style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ setCluster }}
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Dev Namespace:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ licencePlate }}-dev
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <div class="two-col" style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Test Namespace:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ licencePlate }}-test
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Prod Namespace:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ licencePlate }}-prod
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <div class="two-col"
-                                 style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
-                                 <!--[if mso]>
-                                 <table role="presentation" width="100%">
-                                    <tr>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   font-weight: 400;
-                                                   color: #313132;
-                                                   max-width: 90%;
-                                                   text-align:left;
-                                                   ">
-                                                   Tools Namespace:
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                       <td style="width:50%;padding:10px;" valign="middle">
-                                          <![endif]-->
-                                          <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                             <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                                <p style="margin:0;
-                                                   font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                                   font-size:14px;
-                                                   line-height:18px;
-                                                   color: #131313;
-                                                   max-width: 90%;
-                                                   padding-top: 5px;
-                                                   text-align:right;
-                                                   ">
-                                                   {{ licencePlate }}-tools
-                                                </p>
-                                             </div>
-                                          </div>
-                                          <!--[if mso]>
-                                       </td>
-                                    </tr>
-                                 </table>
-                                 <![endif]-->
-                              </div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
-                                 <tr>
-                                    <td style="padding:10px 10px 20px 10px;">
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          max-width: 100%;
-                                          ">
-                                          The Product Owner and the Technical Lead have been provisioned with admin access to the namespaces above and can add other users as necessary. Please note that if a Product Owner or a Technical Lead is removed as a project contact in the Platform Registry, they will lose their access to the project set namespaces in Openshift. The new Product or Technical Lead provided on the product details page will gain the administrative access to the namespaces. 
-                                       </p>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px;text-align:center; background-color: #ffffff; border:1px solid #B0BFC6; ">
-                                       <h4 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 18px;
-                                          line-height: 28px;
-                                          text-align: left;
-                                          ">
-                                          Security Tools
-                                       </h4>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          Your new OpenShift project set includes access to free security tools available to product teams on the Private Cloud Openshift, including: the Artifactory Trusted Artifact Repository repository, the Vault Secrets Management Service, Sysdig Monitoring Service and the Advanced Cluster Security (ACS) Vulnerability Scanning Service. You can read more about these tools <a style="
-                                             color: #003366;
-                                             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                             font-size: 14px;
-                                             font-style: bold;
-                                             line-height: 1.5;
-                                             text-align: center;
-                                             " href="https://github.com/BCDevOps/OpenShift4-Migration">here</a>.
-                                       </p>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px;text-align:center; background-color: #ffffff; border:1px solid #B0BFC6; ">
-                                       <h4 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 18px;
-                                          line-height: 28px;
-                                          text-align: left;
-                                          ">
-                                          Artifactory
-                                       </h4>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          Artifactory is an artifact repository
-                                          system:
-                                       </p>
-                                       <ul style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          <li>
-                                             A service account has been created for you with read access to Artifactory. This includes locally cached container images for faster builds and pod startup, as well as access to useful pre-built images maintained by the Platform Services Team  
-                                          </li>
-                                          <li>
-                                             It is also possible to create your own project in Artifactory for storing builds and other artifacts 
-                                          </li>
-                                          <li>
-                                             Find out
-                                             <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://beta-docs.developer.gov.bc.ca/image-artifact-management-with-artifactory/">how
-                                             to manage images and artifacts with Artifactory</a>
-                                          </li>
-                                          <li>
-                                             Learn more about
-                                             <a style="
-                                                color: #003366;
-                                                " href="https://beta-docs.developer.gov.bc.ca/prebuilt-images/">
-                                             the pre-built images maintained by the Platform Services Team</a>
-                                          </li>
-                                          <li>
-                                             Get more <a style="
-                                                color: #003366;
-                                                " href="https://jfrog.com/artifactory/">general information about
-                                             Artifactory</a>
-                                          </li>
-                                          <li>
-                                             Read more about how to <a style="
-                                                color: #003366;
-                                                " href="https://jfrog.com/artifactory/">set up your own Artifactory
-                                             project</a>
-                                          </li>
-                                       </ul>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px;text-align:center; background-color: #ffffff; border:1px solid #B0BFC6; ">
-                                       <h4 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 18px;
-                                          line-height: 28px;
-                                          text-align: left;
-                                          ">
-                                          Vault
-                                       </h4>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          Vault Secrets Management tool is an identity-based secret and encryption management system. Use it to securely access and store your app secrets such as database credentials, API tokens, etc:
-                                       </p>
-                                       <ul style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          <li>
-                                             Access is automatically granted to Product Owners and Technical Leads
-                                          </li>
-                                          <li>
-                                             A service account is created automatically for Vault access in your deployment
-                                             manifests
-                                          </li>
-                                          <li>
-                                             Read more about Vault’s <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://beta-docs.developer.gov.bc.ca/vault-secrets-management-service/">features and functions</a>
-                                          </li>
-                                          <li>
-                                             Find out <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://beta-docs.developer.gov.bc.ca/vault-getting-started-guide/">
-                                             how to start using Vault</a>
-                                          </li>
-                                          <li>
-                                             Get more <a style="
-                                                color: #003366;
-                                                " href="https://www.vaultproject.io/">general information about
-                                             Vault</a>
-                                          </li>
-                                       </ul>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px;text-align:center; background-color: #ffffff; border:1px solid #B0BFC6; ">
-                                       <h4 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 18px;
-                                          line-height: 28px;
-                                          text-align: left;
-                                          ">
-                                          ACS
-                                       </h4>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          Red Hat Advanced Cluster Security (ACS) helps you enforce DevOps and security best practices in your application by finding vulnerabilities in your running containers:
-                                       </p>
-                                       <ul style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          <li>
-                                             An access role and scope are created for your project set automatically
-                                          </li>
-                                          <li>
-                                             A service account is created automatically for ACS access from your deployment manifests.
-                                          </li>
-                                          <li>
-                                             Read more about ACS the <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://cloud.gov.bc.ca/private-cloud/our-products-in-the-private-cloud-paas/container-scanning-with-redhat-advanced-cluster-security-service/">benefits of using ACS</a>
-                                          </li>
-                                          <li>
-                                             Get <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes">general
-                                             information about ACS</a>
-                                          </li>
-                                       </ul>
-                                    </td>
-                                 </tr>
-                              </table>
-                              <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly;">&nbsp;</div>
-                              <table role="presentation" style="width:100%;border:0;border-spacing:0;">
-                                 <tr>
-                                    <td
-                                       style="padding:10px;text-align:center; background-color: #ffffff; border:1px solid #B0BFC6; ">
-                                       <h4 style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;                                                                                           
-                                          font-size: 18px;
-                                          line-height: 28px;
-                                          text-align: left;
-                                          ">
-                                          Sysdig monitoring system
-                                       </h4>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          Sysdig Monitor is a monitoring, alerting and data collection tool. You can use Sysdig Monitor to build dashboards to monitor the health, availability and resource usage of your applications:
-                                       </p>
-                                       <ul style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          font-size: 14px;
-                                          line-height: 21px;
-                                          text-align: left;
-                                          ">
-                                          <li>
-                                             Learn more about  <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://cloud.gov.bc.ca/private-cloud/our-products-in-the-private-cloud-paas/monitoring-with-sysdig/">Sysdig Monitor and its benefits</a>
-                                          </li>
-                                          <li>
-                                             Start <a style="
-                                                color: #003366;
-                                                "
-                                                href="https://docs.developer.gov.bc.ca/sysdig-monitor-onboarding/">the onboarding process for Sysdig</a>
-                                          </li>
-                                       </ul>
-                                    </td>
-                                 </tr>
-                              </table>
-                           </div>
-                           <!--[if mso]>
-                        </td>
-                     </tr>
-                  </table>
-                  <![endif]-->
-               </td>
-            </tr>
-         </table>
-      </div>
-   </body>
+   style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+   <th>
+   <tr>
+      <td valign="top" align="center">
+         <h2 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+            Your provisioning request was approved and completed!
+         </h2>
+      </td>
+   </tr>
+   </th>
+   <tr>
+      <td align="center" style="padding: 10px 0 10px 0;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
+         <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
+      </td>
+   </tr>
+   <tr>
+      <td align="center">
+         <div >
+            <!--[if mso]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href='{{consoleURL}}' style="height:40px;v-text-anchor:middle;width:200px;" arcsize="13%" strokecolor="#fcba19" fillcolor="#fcba19">
+               <w:anchorlock/>
+               <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Login to Registry</center>
+            </v:roundrect>
+            <![endif]--><a href='{{consoleURL}}'
+               style="background-color:#fcba19;border:1px solid #fcba19;border-radius:5px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">
+            Log in to console
+            </a>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td valign="top" align="center">
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Your request for a new project set for your product on the Private Cloud Openshift platform is complete. Log on to the cluster console using the link above and you'll see all four namespaces included in a project set. If you have any more questions reach out to the Platform Services team in the RocketChat channel <a style="
+               color: #003366;                                    
+               font-style: bold;
+               "
+               href="https://chat.developer.gov.bc.ca/channel/devops-operations">#devops-operations</a>.
+         </p>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+{% if humanActionComment%}
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+   style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+   <tr>
+      <td valign="middle" align="center" >
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+            Reviewer’s comments
+         </h3>
+      </td>
+   </tr>
+   <tr>
+      <td valign="top" align="center" >
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 20px 0;
+            ">
+            {{humanActionComment}} 
+         </p>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+{% endif %}
+<table role="presentation"
+   style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+   <tr>
+      <td align="center"
+         style="font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Product details
+         </h3>
+      </td>
+   </tr>
+</table>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Product Name:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ projectName }}
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Product Owner:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ POName }}
+                  </p>
+                  <a style="
+                     color: #003366;                                          
+                     font-style: bold;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     display: block;
+                     " href="mailto:{{ POEmail }}">{{POEmail }}</a>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ POGitHub }}
+                  </p>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ POIDIR }}
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Primary Technical Lead:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ PriTLName}}
+                  </p>
+                  <a style="
+                     color: #003366;                                          
+                     font-style: bold;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     display: block;
+                     " href="mailto:{{ PriTLEmail }}">{{
+                  PriTLEmail }}</a>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ PriTLGitHub}}
+                  </p>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ PriTLIDIR}}
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+{% if SecTLName %}
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Secondary Technical Lead:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{SecTLName }}
+                  </p>
+                  <a style="
+                     color: #003366;                                          
+                     font-style: bold;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     display: block;
+                     " href="mailto:{{ SecTLEmail }}">{{
+                  SecTLEmail }}</a>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ SecTLGitHub}}
+                  </p>
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ SecTLIDIR}}
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+{% endif %}
+<div class="spacer"
+   style="line-height:24px;height:24px;mso-line-height-rule:exactly;">
+   &nbsp;
+</div>
+<table role="presentation"
+   style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+   <tr>
+      <td align="center"
+         style="font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Namespace details
+         </h3>
+      </td>
+   </tr>
+</table>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     OpenShift Cluster:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column"
+               style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ setCluster }}
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Dev Namespace:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ licencePlate }}-dev
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col" style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Test Namespace:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ licencePlate }}-test
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Prod Namespace:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ licencePlate }}-prod
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<div class="two-col"
+   style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+   <!--[if mso]>
+   <table role="presentation" width="100%">
+      <tr>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     font-weight: 400;
+                     color: #313132;
+                     max-width: 90%;
+                     text-align:left;
+                     padding-left: 8%;
+                     ">
+                     Tools Namespace:
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+         <td style="width:50%;padding:10px;" valign="middle">
+            <![endif]-->
+            <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+               <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                  <p style="margin:0;
+                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                     font-size:14px;
+                     line-height:18px;
+                     color: #131313;
+                     max-width: 90%;
+                     padding-top: 5px;
+                     text-align:right;
+                     ">
+                     {{ licencePlate }}-tools
+                  </p>
+               </div>
+            </div>
+            <!--[if mso]>
+         </td>
+      </tr>
+   </table>
+   <![endif]-->
+</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+   <tr>
+      <td valign="top" align="center" style="border-bottom:1px solid #B0BFC6;">
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            The Product Owner and the Technical Lead have been provisioned with admin access to the namespaces above and can add other users as necessary. Please note that if a Product Owner or a Technical Lead is removed as a project contact in the Platform Registry, they will lose their access to the project set namespaces in Openshift. The new Product or Technical Lead provided on the product details page will gain the administrative access to the namespaces. 
+         </p>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;">
+   <tr>
+      <td valign="top" align="center"
+         style="background-color: #ffffff; border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Security Tools
+         </h3>
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;                                                                                           
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Your new OpenShift project set includes access to free security tools available to product teams on the Private Cloud Openshift, including: the Artifactory Trusted Artifact Repository repository, the Vault Secrets Management Service, Sysdig Monitoring Service and the Advanced Cluster Security (ACS) Vulnerability Scanning Service. You can read more about these tools <a style="
+               color: #003366;
+               font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+               font-size: 14px;
+               font-style: bold;
+               line-height: 1.5;
+               text-align: center;
+               " href="https://github.com/BCDevOps/OpenShift4-Migration">here</a>.
+         </p>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;">
+   <tr>
+      <td valign="top" align="center"
+         style="background-color: #ffffff; border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Artifactory
+         </h3>
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Artifactory is an artifact repository
+            system:
+         </p>
+         <ul style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            <li>
+               A service account has been created for you with read access to Artifactory. This includes locally cached container images for faster builds and pod startup, as well as access to useful pre-built images maintained by the Platform Services Team  
+            </li>
+            <li>
+               It is also possible to create your own project in Artifactory for storing builds and other artifacts 
+            </li>
+            <li>
+               Find out
+               <a style="
+                  color: #003366;
+                  "
+                  href="https://beta-docs.developer.gov.bc.ca/image-artifact-management-with-artifactory/">how
+               to manage images and artifacts with Artifactory</a>
+            </li>
+            <li>
+               Learn more about
+               <a style="
+                  color: #003366;
+                  " href="https://beta-docs.developer.gov.bc.ca/prebuilt-images/">
+               the pre-built images maintained by the Platform Services Team</a>
+            </li>
+            <li>
+               Get more <a style="
+                  color: #003366;
+                  " href="https://jfrog.com/artifactory/">general information about
+               Artifactory</a>
+            </li>
+            <li>
+               Read more about how to <a style="
+                  color: #003366;
+                  " href="https://jfrog.com/artifactory/">set up your own Artifactory
+               project</a>
+            </li>
+         </ul>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;">
+   <tr>
+      <td valign="top" align="center"
+         style="background-color: #ffffff; border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Vault
+         </h3>
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Vault Secrets Management tool is an identity-based secret and encryption management system. Use it to securely access and store your app secrets such as database credentials, API tokens, etc:
+         </p>
+         <ul style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            <li>
+               Access is automatically granted to Product Owners and Technical Leads
+            </li>
+            <li>
+               A service account is created automatically for Vault access in your deployment
+               manifests
+            </li>
+            <li>
+               Read more about Vault’s <a style="
+                  color: #003366;
+                  "
+                  href="https://beta-docs.developer.gov.bc.ca/vault-secrets-management-service/">features and functions</a>
+            </li>
+            <li>
+               Find out <a style="
+                  color: #003366;
+                  "
+                  href="https://beta-docs.developer.gov.bc.ca/vault-getting-started-guide/">
+               how to start using Vault</a>
+            </li>
+            <li>
+               Get more <a style="
+                  color: #003366;
+                  " href="https://www.vaultproject.io/">general information about
+               Vault</a>
+            </li>
+         </ul>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;">
+   <tr>
+      <td valign="top" align="center"
+         style="background-color: #ffffff; border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Advanced cluster security (ACS)
+         </h3>
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Red Hat Advanced Cluster Security (ACS) helps you enforce DevOps and security best practices in your application by finding vulnerabilities in your running containers:
+         </p>
+         <ul style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            <li>
+               An access role and scope are created for your project set automatically
+            </li>
+            <li>
+               A service account is created automatically for ACS access from your deployment manifests.
+            </li>
+            <li>
+               Read more about ACS the <a style="
+                  color: #003366;
+                  "
+                  href="https://cloud.gov.bc.ca/private-cloud/our-products-in-the-private-cloud-paas/container-scanning-with-redhat-advanced-cluster-security-service/">benefits of using ACS</a>
+            </li>
+            <li>
+               Get <a style="
+                  color: #003366;
+                  "
+                  href="https://www.redhat.com/en/technologies/cloud-computing/openshift/advanced-cluster-security-kubernetes">general
+               information about ACS</a>
+            </li>
+         </ul>
+      </td>
+   </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table role="presentation" style="width:100%;border:0;border-spacing:0;">
+   <tr>
+      <td valign="top" align="center"
+         style="background-color: #ffffff; border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+         <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            margin-bottom: 5px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Sysdig monitoring system
+         </h3>
+         <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            Sysdig Monitor is a monitoring, alerting and data collection tool. You can use Sysdig Monitor to build dashboards to monitor the health, availability and resource usage of your applications:
+         </p>
+         <ul style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: left;
+            max-width: 90%;
+            ">
+            <li>
+               Learn more about  <a style="
+                  color: #003366;
+                  "
+                  href="https://cloud.gov.bc.ca/private-cloud/our-products-in-the-private-cloud-paas/monitoring-with-sysdig/">Sysdig Monitor and its benefits</a>
+            </li>
+            <li>
+               Start <a style="
+                  color: #003366;
+                  "
+                  href="https://docs.developer.gov.bc.ca/sysdig-monitor-onboarding/">the onboarding process for Sysdig</a>
+            </li>
+         </ul>
+      </td>
+   </tr>
+</table>
+</div>
+<!--[if mso]>
+</td>
+</tr>
+</table>
+<![endif]-->
+</td>
+</tr>
+</table>
+</div>
+</body>
 </html>
 {% endblock %}
 <!-- chesService.send({
