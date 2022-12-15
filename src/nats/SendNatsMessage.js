@@ -7,6 +7,8 @@ const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 const subject = process.env.NATS_SUBJECT;
 const natsSkip = process.env.NATS_SKIP;
 
+// const serverURL = `nats://localhost:4222`;
+
 async function sendNatsMessage(
   action,
   projectOwner,

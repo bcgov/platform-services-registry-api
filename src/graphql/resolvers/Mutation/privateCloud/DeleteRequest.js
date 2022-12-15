@@ -79,9 +79,9 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
 
   await sendNatsMessage(
     requestBody.type,
-    projectOwner.email,
-    primaryTechnicalLead.email,
-    secondaryTechnicalLead?.email,
+    projectOwner,
+    primaryTechnicalLead,
+    secondaryTechnicalLead,
     requestedProject
   );
 
