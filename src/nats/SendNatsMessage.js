@@ -14,6 +14,7 @@ async function sendNatsMessage(
   secondaryTechnicalLead,
   requestedProject
 ) {
+  console.log("Nats envoked");
   const nc = await connect({ servers: serverURL });
 
   const sc = StringCodec();
@@ -29,7 +30,7 @@ async function sendNatsMessage(
 
   nc.publish(subject, jc.encode(messageBody));
 
-  console.log("Nats envoked");
+  console.log("Nats Message");
   console.log(messageBody);
 
   await nc.drain();
