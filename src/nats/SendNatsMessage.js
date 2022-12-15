@@ -14,10 +14,6 @@ async function sendNatsMessage(
   secondaryTechnicalLead,
   requestedProject
 ) {
-  if (natsSkip === "skip") {
-    console.log("Nats skipped");
-    return;
-  }
   const nc = await connect({ servers: serverURL });
 
   const sc = StringCodec();
