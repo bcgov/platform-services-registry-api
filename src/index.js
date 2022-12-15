@@ -22,8 +22,7 @@ import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler
 async function startApolloServer(typeDefs, resolvers) {
   let schema = makeExecutableSchema({
     typeDefs: [KeycloakTypeDefs, typeDefs],
-    resolvers,
-    plugins: [ApolloServerPluginLandingPageLocalDefault({ footer: false })]
+    resolvers
   });
 
   schema = applyAuthDirectiveTranformers(applyDirectiveTransformers(schema));
@@ -43,7 +42,10 @@ async function startApolloServer(typeDefs, resolvers) {
       kauth: new KeycloakContext({ req }, keycloak),
       chesService
     }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault({ footer: false, embed: true }),
+      ApolloServerPluginDrainHttpServer({ httpServer })
+    ]
   });
 
   await server.start();
