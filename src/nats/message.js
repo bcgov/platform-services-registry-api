@@ -36,13 +36,13 @@ function message(
     role: "lead"
   };
 
-  const secondaryTechnicalLeadContact = {
+  const secondaryTechnicalLeadContact = secondaryTechnicalLead ? {
     user_id: secondaryTechnicalLead.githubId,
     provider: "github",
     email: secondaryTechnicalLead.email,
     rocketchat_username: null,
     role: "lead"
-  };
+  }: null;
 
   const namespaces = [
     { quotaName: "tools", quota: toolsQuota },
@@ -89,7 +89,7 @@ function message(
       projectOwnerContact,
       primaryTechnicalLeadContact,
       secondaryTechnicalLeadContact
-    ]
+    ].filter(Boolean)
   };
 
   return request;
