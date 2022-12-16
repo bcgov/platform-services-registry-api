@@ -49,7 +49,7 @@ function message(
     { quotaName: "prod", quota: productionQuota },
     { quotaName: "dev", quota: developmentQuota },
     { quotaName: "test", quota: testQuota }
-  ].map((quota) => ({
+  ].map(({quotaName, quota}) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${quota.quotaName}`,
     quota: {
