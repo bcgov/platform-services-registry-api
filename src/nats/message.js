@@ -46,12 +46,12 @@ function message(
 
   const namespaces = [
     { quotaName: "tools", quota: toolsQuota },
-    { quotaName: "prod", productionQuota },
+    { quotaName: "prod", quota: productionQuota },
     { quotaName: "dev", quota: developmentQuota },
     { quotaName: "test", quota: testQuota }
   ].map((quota) => ({
     // namespace_id: 21,
-    name: `${licencePlate}-${quotaName}`,
+    name: `${licencePlate}-${quota.quotaName}`,
     quota: {
       cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
       memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,
