@@ -54,7 +54,7 @@ function message(
     { quotaName: "test", quota: testQuota }
   ].map(({quotaName, quota}) => ({
     // namespace_id: 21,
-    name: `${licencePlate}-${quotaName}`,
+    name: `${licencePlate}-${[quotaName]}`,
     quota: {
       cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
       memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,
