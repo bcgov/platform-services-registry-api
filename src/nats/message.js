@@ -20,6 +20,9 @@ function message(
     toolsQuota
   } = requestedProject;
 
+  console.log("Requested Project")
+  console.log(requestedProject);
+
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",
@@ -51,7 +54,7 @@ function message(
     { quotaName: "test", quota: testQuota }
   ].map(({quotaName, quota}) => ({
     // namespace_id: 21,
-    name: `${licencePlate}-${quota.quotaName}`,
+    name: `${licencePlate}-${quotaName}`,
     quota: {
       cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
       memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,

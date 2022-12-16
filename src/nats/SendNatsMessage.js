@@ -16,13 +16,6 @@ async function sendNatsMessage(
   secondaryTechnicalLead,
   requestedProject
 ) {
-  console.log("Nats envoked");
-  console.log(action);
-  console.log(projectOwner);
-  console.log(primaryTechnicalLead);
-  console.log(secondaryTechnicalLead);
-  console.log(requestedProject);
-  
   const nc = await connect({ servers: serverURL });
 
   const sc = StringCodec();
