@@ -20,6 +20,70 @@ const chesService = new ChesService({
 //   subject: `**profile.name** OCP 4 Project Set`
 // });
 
+//Quota Changes and TL/PO Changes 
+
+chesService.send({
+  bodyType: "html",
+  body: swig.renderFile(
+    "../new-templates/quota-and-tlpo-changes.html",
+    {
+      isQuotaRequest: false,
+      consoleURLProdNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-prod`,
+      isProductionQuotaChanged: true,
+      productionQuotaCPURequested: null,
+      productionQuotaMemoryRequested: "new quota",
+      productionQuotaStorageRequested: "new quota",
+      isDevelopmentQuotaChanged: true,
+      consoleURLDevNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-dev`,
+      developmentQuotaCPURequested: "new quota",
+      developmentQuotaMemoryRequested: null,
+      developmentQuotaStorageRequested: "new quota",
+      isTestQuotaChanged: true,
+      consoleURLTestNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-test`,
+      testQuotaCPURequested: "new quota",
+      testQuotaMemoryRequested: "new quota",
+      testQuotaStorageRequested: null,
+      isToolsQuotaChanged: false,
+      consoleURLToolNameSpace: `https://console.apps.silver.devops.gov.bc.ca/topology/ns/ggg554-tool`,
+      toolsQuotaCPURequested: "new quota",
+      toolsQuotaMemoryRequested: "new quota",
+      toolsQuotaStorageRequested: "new quota",
+      productionQuotaCPUCurrent: "current quota",
+      productionQuotaMemoryCurrent: "current quota",
+      productionQuotaStorageCurrent: "current quota",
+      developmentQuotaCPUCurrent: "current quota",
+      developmentQuotaMemoryCurrent: "current quota",
+      developmentQuotaStorageCurrent: "current quota",
+      testQuotaCPUCurrent: "current quota",
+      testQuotaMemoryCurrent: "current quota",
+      testQuotaStorageCurrent: "current quota",
+      toolsQuotaCPUCurrent: "current quota",
+      toolsQuotaMemoryCurrent: "current quota",
+      toolsQuotaStorageCurrent: "current quota",
+      projectName: "test name",
+      productDescription: "test description",
+      productMinistry: "CITZ",
+      POName: "firstName lastName",
+      POEmail: "owner@mail.com",
+      POGitHub: 'POGitHub',
+      POIDIR: "POIDIR",
+      PriTLName: "firstName lastName",
+      PriTLEmail: "PriTLEmail@mail.com",
+      PriTLGitHub: 'PriTLGitHub',
+      PriTLIDIR: 'PriTLIDIR',
+      SecTLName: "firstName lastName",
+      SecTLEmail: "SecTLEmail@mail.com",
+      SecTLGitHub: 'SecTLGitHub',
+      SecTLIDIR: 'SecTLIDIR',
+      setCluster: 'silver',
+      licencePlate: 'ggg554',
+    }
+  ),
+  // Sent to all new, current, and prior project contacts upon form submit. Contacts who were just removed should also receive this email alerting them to these changes.
+  to: ['zhanna.kolesnyk@gov.bc.ca'],
+  from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+  subject: 'ProjectName quota and product contact change request received',
+});
 
 //Deletion Request Completion
 
