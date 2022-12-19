@@ -1,4 +1,5 @@
-import { connect, StringCodec } from "nats";
+// import { connect, StringCodec } from "nats";
+const {connect, StringCodec} = require("nats");
 
 // const host = "nats://nats.platform-provisioner-dev.svc:4222";
 // const host = "https://nats-dev-platform-provisioner-dev.apps.silver.devops.gov.bc.ca/";
@@ -21,8 +22,8 @@ async function makeNats() {
     console.log("subscription closed");
   })();
 
-  // nc.publish("hello", sc.encode("world"));
-  // nc.publish("hello", sc.encode("again"));
+  nc.publish("hello", sc.encode("world"));
+  nc.publish("hello", sc.encode("again"));
 
   // // we want to insure that messages that are in flight
   // // get processed, so we are going to drain the

@@ -163,9 +163,9 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
 
     await sendNatsMessage(
       requestBody.type,
-      projectOwner.email,
-      requestedPrimaryTechnicalLead?.email || primaryTechnicalLead.email,
-      requestedSecondaryTechnicalLead?.email || secondaryTechnicalLead?.email,
+      projectOwner,
+      requestedPrimaryTechnicalLead || primaryTechnicalLead,
+      requestedSecondaryTechnicalLead || secondaryTechnicalLead,
       requestedProject
     );
   } else {

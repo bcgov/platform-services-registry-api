@@ -152,9 +152,9 @@ async function makePrivateCloudRequestDecision(_, args, context) {
 
     await sendNatsMessage(
       request.type,
-      projectOwner.email,
-      primaryTechnicalLead.email,
-      secondaryTechnicalLead?.email,
+      projectOwner,
+      primaryTechnicalLead,
+      secondaryTechnicalLead,
       requestedProject
     );
 

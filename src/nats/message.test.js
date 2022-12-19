@@ -2,15 +2,20 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ApolloServer } from "apollo-server";
 import { MongoClient } from "mongodb";
-import MongoHelpers from "../../../dataSources/MongoHelpers";
+import MongoHelpers from "../dataSources/MongoHelpers";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { applyDirectiveTransformers } from "../../../auth/transformers";
+import { applyDirectiveTransformers } from "../auth/transformers";
 import { ObjectId } from "mongodb";
-import typeDefs from "../../typeDefs";
-import resolvers from "../index";
-import { project, oamar, billy, olena } from "./TestConstants";
-import { getResolveFn } from "nats/lib/nats-base-client/transport";
+import typeDefs from "../graphql/typeDefs";
+import resolvers from "../graphql/resolvers";
+import {
+  project,
+  oamar,
+  billy,
+  olena
+} from "../graphql/resolvers/tests/TestConstants.js";
+import message from "./message";
 
 describe("Mongo Helpers", () => {
   let server;
@@ -220,167 +225,24 @@ describe("Mongo Helpers", () => {
     expect(requestedProject.primaryTechnicalLead.lastName).toBe("Li");
   });
 
-  it("Should query all requests", async () => {
-    const result = await server.executeOperation({
-      query: `query PrivateCloudRequests {
-        privateCloudRequests {
-          id
-          createdBy {
-            id
-            firstName
-            lastName
-            email
-          }
-          type
-          status
-          active
-          decisionDate
-          project {
-            id
-            name
-            createdBy {
-              firstName
-              lastName
-              email
-            }
-          }
-        }
-      }`
-    });
-
-    const requests = result.data?.privateCloudRequests;
-    expect(requests).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          type: "CREATE"
-        })
-      ])
-    );
-  });
-
-  it("Should allow a technical lead to be removed from a request", async () => {
+  it("Should create a valid nats message for a new project request", async () => {
     const request = await collections.privateCloudActiveRequests.findOneById(
       newRequestId
     );
-  });
-
-  it("Should accept a create project request", async () => {
-    const result = await server.executeOperation({
-      query: `mutation MakePrivateCloudRequestDecision(
-        $requestId: ID!
-        $decision: RequestDecision!) {
-        makePrivateCloudRequestDecision(
-          requestId: $requestId,
-          decision: $decision
-        )
-      }`,
-      variables: {
-        requestId: newRequestId,
-        decision: "APPROVE"
-      }
-    });
-
-    console.log(result)
-
-    const request = result.data?.makePrivateCloudRequestDecision;
-    // expect(request).toBe("APPROVED");
-  });
-
-  // it("Should reject a create project request", async () => {
-  //   const result = await server.executeOperation({
-  //     query: `mutation MakePrivateCloudRequestDecision(
-  //       $requestId: ID!
-  //       $decision: RequestDecision!) {
-  //       makePrivateCloudRequestDecision(
-  //         requestId: $requestId,
-  //         decision: $decision
-  //       )
-  //     }`,
-  //     variables: {
-  //       requestId: newRequestId,
-  //       decision: "REJECT"
-  //     }
-  //   });
-
-  //   const request = result.data?.makePrivateCloudRequestDecision;
-  //   expect(request).toBe("REJECTED");
-  // });
-
-  it("Should edit project description", async () => {
-    const result = await server.executeOperation({
-      query: `mutation PrivateCloudProjectEditRequest(
-        $projectId: ID!,
-        $metaData: EditProjectMetaDataInput,
-        ) {
-          privateCloudProjectEditRequest(
-            projectId: $projectId,
-            metaData: $metaData,          
-        ){
-          id
-          createdBy {
-            firstName
-            lastName
-            id
-            email
-          }
-          type
-          status
-          active
-          created
-          decisionDate
-          requestedProject {
-            id
-            primaryTechnicalLead {
-              firstName
-              lastName
-            }
-            secondaryTechnicalLead {
-              firstName
-              lastName
-            }
-          }
-          project {
-            ... on PrivateCloudProject {
-              id
-              name
-              ministry
-              productionQuota {
-                cpu {
-                  requests
-                }
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        projectId: projectId,
-        metaData: {
-          name: "Test",
-          description: "Test changed description",
-          projectOwner: "oamar.kanji@gov.bc.ca",
-          ministry: "AGRI",
-          primaryTechnicalLead: "billy.li@gov.bc.ca",
-          secondaryTechnicalLead: "alexander.carmichael@gov.bc.ca",
-          cluster: "SILVER"
-        }
-      }
-    });
-
-    const request = await collections.privateCloudActiveRequests.findOneById(
-      result.data.privateCloudProjectEditRequest.id
-    );
-
-    const requestedProjectId = request.requestedProject;
 
     const requestedProject =
       await collections.privateCloudRequestedProjects.findOneById(
-        requestedProjectId
+        request.requestedProject
       );
 
-    expect(requestedProject).toHaveProperty(
-      "description",
-      "Test changed description"
+    const messageBody = message(
+      request.type,
+      oamar,
+      olena,
+      billy,
+      requestedProject
     );
+
+    messageBody.namespaces.forEach((namespace) => console.log(namespace));
   });
 });
