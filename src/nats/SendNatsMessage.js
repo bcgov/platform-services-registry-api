@@ -29,7 +29,7 @@ async function sendNatsMessage(
     requestedProject
   );
 
-  nc.publish(subject, jc.encode(messageBody));
+  nc.publish(`${subject}_${requestedProject.cluster}`, jc.encode(messageBody));
 
   console.log("Nats Message");
   console.log(messageBody);
