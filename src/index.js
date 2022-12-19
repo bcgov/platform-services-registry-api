@@ -2,7 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { ApolloServer } from "apollo-server-express";
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault
+} from "apollo-server-core";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { configureKeycloak } from "./auth/config";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
@@ -17,20 +20,19 @@ import chesService from "./ches";
 import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler";
 
 async function startApolloServer(typeDefs, resolvers) {
-
   let schema = makeExecutableSchema({
     typeDefs: [KeycloakTypeDefs, typeDefs],
-    resolvers,
+    resolvers
   });
 
   schema = applyAuthDirectiveTranformers(applyDirectiveTransformers(schema));
 
   const app = express();
-  
+
   const { keycloak } = configureKeycloak(app, "/graphql");
   const httpServer = http.createServer(app);
 
-  const dataSources = await getDatasources()
+  const dataSources = await getDatasources();
 
   const server = new ApolloServer({
     schema,
@@ -38,9 +40,13 @@ async function startApolloServer(typeDefs, resolvers) {
     dataSources: () => dataSources,
     context: ({ req }) => ({
       kauth: new KeycloakContext({ req }, keycloak),
-      chesService,
+      chesService
     }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [
+      ApolloServerPluginLandingPageLocalDefault({ footer: false, embed: true }),
+      ApolloServerPluginDrainHttpServer({ httpServer })
+    ],
+    introspection: true,
   });
 
   await server.start();
@@ -48,7 +54,7 @@ async function startApolloServer(typeDefs, resolvers) {
   app.use(express.json());
   app.use(
     express.urlencoded({
-      extended: true,
+      extended: true
     })
   );
   app.post("/namespace", provisionerCallbackHandler);
