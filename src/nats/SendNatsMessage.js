@@ -14,6 +14,9 @@ async function sendNatsMessage(
   secondaryTechnicalLead,
   requestedProject
 ) {
+  if (process.env.NATS_SKIP === "skip") {
+    return;
+  }
   const nc = await connect({ servers: serverURL });
 
   const sc = StringCodec();

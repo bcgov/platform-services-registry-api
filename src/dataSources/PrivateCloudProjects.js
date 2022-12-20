@@ -70,7 +70,7 @@ export default class PrivateCloudProjects extends MongoHelpers {
       : this.collection.find({
         $and: [
           { ministry: { $regex: ministry ? ministry : "", $options: "i" } },
-          { cluster: cluster ? cluster : { $gt: 0, $lt: 8 } },
+          { cluster: { $regex: ministry ? ministry : "", $options: "i" } },
         ],
       })).sort({ [sort]: sortOrder }).skip(offset).limit(limit).toArray();
   }
