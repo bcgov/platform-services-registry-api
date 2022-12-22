@@ -126,34 +126,6 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     }
   );
 
-  // try {
-  //   console.log(requestedProject, metaData,projectOwner, primaryTechnicalLead, secondaryTechnicalLead)
-  //   chesService.send({
-  //     bodyType: "html",
-  //     body: swig.renderFile(
-  //       "./src/ches/templates/provisioning-request-done.html",
-  //       {
-  //         // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-  //         // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-  //         projectName: metaData.name,
-  //         POName: projectOwner.firstName + " " + projectOwner.lastName,
-  //         POEmail: projectOwner.email,
-  //         technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
-  //         setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
-  //         licencePlate: requestedProject.licencePlate,
-  //         showStandardFooterMessage: true, // if false, shows  the  "love, Platform services" one from request-approval
-  //       }
-  //     ),
-  //     to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
-  //       .filter(Boolean)
-  //       .map(({ email }) => email),
-  //     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-  //     subject: `${metaData.name} OCP 4 Project Requested`,
-  //   });
-  // } catch (error) {
-  //   console.log("CHES Error: ", error);
-  // }
-
   try {
     chesService.send({
       bodyType: "html",
@@ -163,31 +135,27 @@ async function customPrivateCloudProjectRequest(_, args, context) {
           requestType: 'Provisioning',
           isProvisioningRequest: true,
           isQuotaRequest: false,
-          consoleURLProdNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster].name}.devops.gov.bc.ca/topology/ns/ggg554-prod`,
           isProductionQuotaChanged: false,
           projectName: requestedProject.name,
           productDescription: requestedProject.description,
           productMinistry: requestedProject.ministry,
           POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          POGitHub: projectOwner.githubId,
-          POIDIR: projectOwner.POIDIR || null,
+          POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
           PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
           PriTLEmail: primaryTechnicalLead.email,
-          PriTLGitHub: primaryTechnicalLead.githubId,
-          PriTLIDIR: primaryTechnicalLead.POIDIR || null,
-          SecTLName: `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` || null,
-          SecTLEmail: secondaryTechnicalLead.email|| null,
-          SecTLGitHub: secondaryTechnicalLead.githubId|| null,
-          SecTLIDIR: secondaryTechnicalLead.POIDIR || null,
-          setCluster: clusterNames[requestedProject.cluster].humanFriendlyName,
+          PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
+          SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
+          SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
+          SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
+          setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
           licencePlate: requestedProject.licencePlate,
         }
       ),
       //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
       to: adminEmails,
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `New Create Product request in Registry waiting for your approval`,
+      subject: `New Provisioning request in Registry waiting for your approval`,
     });
 
     chesService.send({
@@ -200,17 +168,13 @@ async function customPrivateCloudProjectRequest(_, args, context) {
           productMinistry: requestedProject.ministry,
           POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
           POEmail: projectOwner.email,
-          POGitHub: projectOwner.githubId,
-          POIDIR: projectOwner.POIDIR || null,
           PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
           PriTLEmail: primaryTechnicalLead.email,
-          PriTLGitHub: primaryTechnicalLead.githubId,
-          PriTLIDIR: primaryTechnicalLead.POIDIR || null,
-          SecTLName: `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` || null,
-          SecTLEmail: secondaryTechnicalLead.email|| null,
-          SecTLGitHub: secondaryTechnicalLead.githubId|| null,
-          SecTLIDIR: secondaryTechnicalLead.POIDIR || null,
-          setCluster: clusterNames[requestedProject.cluster].humanFriendlyName,
+          PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
+          SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
+          SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
+          SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
+          setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
         }
       ),
       // To all project contacts. Sent when a new provisioning request has been submitted successfully.
@@ -218,7 +182,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
         .filter(Boolean)
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `ProjectName provisioning request received`,
+      subject: `${requestedProject.name} provisioning request received`,
     });
   } catch (error) {
     console.log(error);

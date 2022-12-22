@@ -23,7 +23,8 @@
    </th>
    <tr>
       <td align="center" style="padding: 10px 0 10px 0;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
-         <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
+         <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt=" Diagram showing two steps. The first step is “Request Received” and the second step is “Request Completed.” The first second is selected.
+         " style="max-width:100%;height:auto;" />
       </td>
    </tr>
    <tr>
@@ -226,29 +227,7 @@
                      line-height:18px;
                      display: block;
                      " href="mailto:{{ POEmail }}">{{POEmail }}</a>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ POGitHub }}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ POIDIR }}
-                  </p>
-               </div>
+                               </div>
             </div>
             <!--[if mso]>
          </td>
@@ -320,18 +299,7 @@
                      padding-top: 5px;
                      text-align:right;
                      ">
-                     {{ PriTLGitHub}}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ PriTLIDIR}}
+                     {{ PriTLGitHubOrIDIR}}
                   </p>
                </div>
             </div>
@@ -406,18 +374,7 @@
                      padding-top: 5px;
                      text-align:right;
                      ">
-                     {{ SecTLGitHub}}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ SecTLIDIR}}
+                     {{ SecTLGitHubOrIDIR}}
                   </p>
                </div>
             </div>
@@ -1027,12 +984,10 @@
        POIDIR: ,
        PriTLName: primaryTechnicalLead.firstName + " " + primaryTechnicalLead.lastName,,
        PriTLEmail: ,
-       PriTLGitHub: ,
-       PriTLIDIR: ,
-       SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,,
-       SecTLEmail: ,
-       SecTLGitHub: ,
-       SecTLIDIR: ,
+     PriTLGitHubOrIDIR: ,
+      SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,,
+      SecTLEmail: ,
+      SecTLGitHubOrIDIR: ,
        setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
        licencePlate: requestedProject.licencePlate,
            }
