@@ -24,9 +24,12 @@ async function getDatasources() {
     privateCloudArchivedRequests: new MongoHelpers(
       db.collection("privateCloudArchivedRequests")
     ),
-    privateCloudRequestedProjects: new MongoHelpers(
-      db.collection("privateCloudRequestedProjects")
+    privateCloudActiveRequestedProjects: new MongoHelpers(
+      db.collection("privateCloudActiveRequestedProjects")
     ),
+    privateCloudArchivedRequestedProjects: new MongoHelpers(
+      db.collection("privateCloudArchivedRequestedProjects")
+    )
   };
 
   return dataSources;

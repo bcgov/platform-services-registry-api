@@ -1,11 +1,11 @@
 const Cluster = {
-  CLAB: 1,
-  KLAB: 2,
-  SILVER: 3,
-  GOLD: 4,
-  GOLDDR: 5,
-  KLAB2: 6,
-  EMERALD: 7
+  CLAB: "clab",
+  KLAB: "klab",
+  SILVER: "silver",
+  GOLD: "gold",
+  GOLDDR: "golddr",
+  KLAB2: "klab2",
+  EMERALD: "emerald"
 };
 
 export default Cluster;

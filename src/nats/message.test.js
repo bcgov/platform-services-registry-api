@@ -39,8 +39,8 @@ describe("Mongo Helpers", () => {
       privateCloudProjects: new MongoHelpers(
         db.collection("privateCloudProjects")
       ),
-      privateCloudRequestedProjects: new MongoHelpers(
-        db.collection("privateCloudRequestedProjects")
+      privateCloudActiveRequestedProjects: new MongoHelpers(
+        db.collection("privateCloudActiveRequestedProjects")
       ),
       privateCloudArchivedRequests: new MongoHelpers(
         db.collection("privateCloudArchivedRequests")
@@ -214,7 +214,7 @@ describe("Mongo Helpers", () => {
       await collections.privateCloudArchivedRequests.findOneById(id)
     ).toBeUndefined();
     expect(
-      await collections.privateCloudRequestedProjects.findOneById(
+      await collections.privateCloudActiveRequestedProjects.findOneById(
         requestedProject.id
       )
     ).toHaveProperty("name", "Test");
@@ -231,7 +231,7 @@ describe("Mongo Helpers", () => {
     );
 
     const requestedProject =
-      await collections.privateCloudRequestedProjects.findOneById(
+      await collections.privateCloudActiveRequestedProjects.findOneById(
         request.requestedProject
       );
 

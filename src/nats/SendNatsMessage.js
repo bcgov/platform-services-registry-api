@@ -4,8 +4,6 @@ import { connect, StringCodec, JSONCodec } from "nats";
 import message from "./message";
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
-const subject = process.env.NATS_SUBJECT;
-const natsSkip = process.env.NATS_SKIP;
 
 // const serverURL = `nats://localhost:4222`;
 
@@ -16,6 +14,9 @@ async function sendNatsMessage(
   secondaryTechnicalLead,
   requestedProject
 ) {
+  if (process.env.NATS_SKIP === "skip") {
+    return;
+  }
   const nc = await connect({ servers: serverURL });
 
   const sc = StringCodec();
@@ -29,7 +30,12 @@ async function sendNatsMessage(
     requestedProject
   );
 
-  nc.publish(subject, jc.encode(messageBody));
+  const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${requestedProject.cluster}`;
+
+  nc.publish(natsSubject, jc.encode(messageBody));
+
+  console.log("Nats Subject");
+  console.log(natsSubject);
 
   console.log("Nats Message");
   console.log(messageBody);
