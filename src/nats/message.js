@@ -83,8 +83,8 @@ function message(
   const request = {
     action,
     profile_id: _id,
-    cluster_id: cluster,
-    cluster_name: "silver", // Cluster id e.g gold, silver, klab (enum)
+    // cluster_id: cluster,
+    cluster_name: cluster,
     display_name: name,
     description: description,
     ministry_id: ministry,

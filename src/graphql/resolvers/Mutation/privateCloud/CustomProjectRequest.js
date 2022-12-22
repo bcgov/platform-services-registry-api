@@ -18,7 +18,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
   const {
     dataSources: {
       users,
-      privateCloudRequestedProjects,
+      privateCloudActiveRequestedProjects,
       privateCloudActiveRequests
     },
     kauth,
@@ -83,7 +83,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
     snapshotCount: 5
   };
 
-  const requestedProject = await privateCloudRequestedProjects.create({
+  const requestedProject = await privateCloudActiveRequestedProjects.create({
     ...metaData,
     commonComponents,
     projectOwner: projectOwner._id,

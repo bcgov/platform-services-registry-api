@@ -11,7 +11,8 @@ async function makePrivateCloudRequestDecision(_, args, context) {
       privateCloudArchivedRequests,
       privateCloudActiveRequests,
       privateCloudProjects,
-      privateCloudRequestedProjects,
+      privateCloudActiveRequestedProjects,
+      privateCloudArchivedRequestedProjects,
       users
     },
     kauth,
@@ -35,11 +36,9 @@ async function makePrivateCloudRequestDecision(_, args, context) {
   }
 
   const requestedProject =
-    request.type === RequestType.CREATE
-      ? await privateCloudRequestedProjects.findOneById(
-          request.requestedProject
-        )
-      : await privateCloudProjects.findOneById(request.project);
+    await privateCloudActiveRequestedProjects.findOneById(
+      request.requestedProject
+    );
 
   const {
     projectOwner: projectOwnerId,
@@ -54,9 +53,8 @@ async function makePrivateCloudRequestDecision(_, args, context) {
   );
 
   if (decision === RequestDecision.REJECT) {
-    await privateCloudActiveRequests.removeDocument(request._id);
-
     // Move request to archived requests collection
+    await privateCloudActiveRequests.removeDocument(request._id);
     const rejectedRequest = await privateCloudArchivedRequests.create({
       ...request,
       ...{
@@ -65,6 +63,15 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         active: false,
         decisionMaker: user._id
       }
+    });
+
+    // Move requested project to archived requested projects
+    await privateCloudActiveRequestedProjects.removeDocument(
+      requestedProject._id
+    );
+    await privateCloudArchivedRequestedProjects.create({
+      ...requestedProject,
+      active: false
     });
 
     // Add request to the projects request history
