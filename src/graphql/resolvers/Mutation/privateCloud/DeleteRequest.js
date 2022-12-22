@@ -11,7 +11,7 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
   const {
     dataSources: {
       users,
-      privateCloudRequestedProjects,
+      privateCloudActiveRequestedProjects,
       privateCloudActiveRequests,
       privateCloudProjects
     },
@@ -61,7 +61,7 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
   );
 
   const { _id: requestedProjectId, ...requestedProject } =
-    await privateCloudRequestedProjects.create(project);
+    await privateCloudActiveRequestedProjects.create(project);
 
   const requestBody = {
     createdBy: user._id,

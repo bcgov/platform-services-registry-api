@@ -19,7 +19,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
   const {
     dataSources: {
       users,
-      privateCloudRequestedProjects,
+      privateCloudActiveRequestedProjects,
       privateCloudActiveRequests,
       privateCloudProjects
     },
@@ -120,7 +120,7 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       throw new Error("Secondary technical lead not found");
   }
 
-  const requestedProject = await privateCloudRequestedProjects.create({
+  const requestedProject = await privateCloudActiveRequestedProjects.create({
     ...project,
     ...metaData,
     commonComponents: { ...project.commonComponents, ...commonComponents },
@@ -138,6 +138,10 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     testQuota: { ...project.testQuota, ...testQuota },
     toolsQuota: { ...project.toolsQuota, ...toolsQuota }
   });
+
+  console.log("toolsQuota: ", toolsQuota) 
+  console.log("productionQuota: ", productionQuota)
+  console.log("Requested project: ", requestedProject);
 
   const requestBody = {
     createdBy: user._id,
@@ -170,6 +174,8 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
   } else {
     requestBody.status = RequestStatus.PENDING_DECISION;
   }
+
+  console.log("Request body: ", requestBody);
 
   const request = await privateCloudActiveRequests.create(requestBody);
 

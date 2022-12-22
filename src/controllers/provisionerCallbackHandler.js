@@ -11,13 +11,15 @@ export default async function provisionerCallbackHandler(req, res, next) {
   const {
     privateCloudActiveRequests,
     privateCloudProjects,
-    privateCloudRequestedProjects,
+    privateCloudActiveRequestedProjects,
+    privateCloudArchivedRequestedProjects,
     privateCloudArchivedRequests,
     users
   } = dataSources;
 
   privateCloudActiveRequests.initialize();
-  privateCloudRequestedProjects.initialize();
+  privateCloudActiveRequestedProjects.initialize();
+  privateCloudArchivedRequestedProjects.initialize();
   privateCloudProjects.initialize();
   privateCloudArchivedRequests.initialize();
   users.initialize();
@@ -25,12 +27,13 @@ export default async function provisionerCallbackHandler(req, res, next) {
   try {
     const { prefix: licencePlate } = req.body;
 
-    const [requestedProject] = await privateCloudRequestedProjects.findByFields(
-      { licencePlate }
-    );
+    console.log("X");
+
+    const [{ _id: requestedProjectId, ...requestedProject }] =
+      await privateCloudActiveRequestedProjects.findByFields({ licencePlate });
 
     const [request] = await privateCloudActiveRequests.findByFields({
-      requestedProject: requestedProject._id
+      requestedProject: requestedProjectId
     });
 
     if (request === undefined) {
@@ -48,9 +51,10 @@ export default async function provisionerCallbackHandler(req, res, next) {
 
     // Update an existing project or create a new one, depending on the request type
     if (request.type === RequestType.CREATE) {
-      const requestedProject = await privateCloudRequestedProjects.findOneById(
-        request.requestedProject
-      );
+      const requestedProject =
+        await privateCloudActiveRequestedProjects.findOneById(
+          request.requestedProject
+        );
 
       const newProject = await privateCloudProjects.create({
         ...requestedProject,
@@ -109,6 +113,15 @@ export default async function provisionerCallbackHandler(req, res, next) {
     await privateCloudActiveRequests.removeDocument(request._id);
     const archivedRequest = await privateCloudArchivedRequests.create({
       ...request,
+      active: false
+    });
+
+    // Move requested project to archived requested projects
+    await privateCloudActiveRequestedProjects.removeDocument(
+      requestedProjectId
+    );
+    await privateCloudArchivedRequestedProjects.create({
+      ...requestedProject,
       active: false
     });
 
