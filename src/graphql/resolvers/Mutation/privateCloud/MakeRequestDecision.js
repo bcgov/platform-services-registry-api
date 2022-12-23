@@ -97,7 +97,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
     );
 
     try {
-      chesService.send({
+        chesService.send({
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/request-denial-email.html",
@@ -106,23 +106,23 @@ async function makePrivateCloudRequestDecision(_, args, context) {
             humanActionComment: requestedProject.humanActionComment || null,
             isProvisioningRequest: request.type === RequestType.CREATE,
             isQuotaRequest: request.type === RequestType.EDIT,
-            consoleURLProdNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster - 1].name}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
+            consoleURLProdNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
             isProductionQuotaChanged: null,
             productionQuotaCPURequested: null,
             productionQuotaMemoryRequested: null,
             productionQuotaStorageRequested: null,
             isDevelopmentQuotaChanged: null,
-            consoleURLDevNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster - 1].name}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
+            consoleURLDevNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
             developmentQuotaCPURequested: null,
             developmentQuotaMemoryRequested: null,
             developmentQuotaStorageRequested: null,
             isTestQuotaChanged: null,
-            consoleURLTestNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster - 1].name}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
+            consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
             testQuotaCPURequested: null,
             testQuotaMemoryRequested: null,
             testQuotaStorageRequested: null,
             isToolsQuotaChanged: null,
-            consoleURLToolNameSpace: `https://console.apps.${clusterNames[requestedProject.cluster - 1].name}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
+            consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
             toolsQuotaCPURequested: null,
             toolsQuotaMemoryRequested: null,
             toolsQuotaStorageRequested: null,
@@ -150,7 +150,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
             SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
             SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
             SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-            setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
+            setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
             licencePlate: requestedProject.licencePlate,
           }
         ),
@@ -199,13 +199,13 @@ async function makePrivateCloudRequestDecision(_, args, context) {
     }
 
     try {
-
+      console.log(request.type, request.type === RequestType.CREATE)
       if (request.type === RequestType.CREATE) chesService.send({
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/provisioning-request-completion-email.html",
           {
-            consoleURL: `https://console.apps.${clusterNames[requestedProject.cluster - 1].name}.devops.gov.bc.ca/`,
+            consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
             humanActionComment: requestedProject.humanActionComment || null,
             projectName: requestedProject.name,
             POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
@@ -216,7 +216,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
             SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
             SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
             SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-            setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
+            setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
             licencePlate: requestedProject.licencePlate,
           }
         ),
@@ -229,7 +229,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
       });
 
 
-      request.type === RequestType.CREATE && chesService.send({
+      if (request.type !== RequestType.CREATE)  chesService.send({
         bodyType: "html",
         body: swig.renderFile("./src/ches/templates/provisioning-request-done.html", {
           projectName: requestedProject.name,
@@ -237,7 +237,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
           POEmail: projectOwner.email,
           TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
           TCEmail: primaryTechnicalLead.email,
-          setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
+          setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
           licencePlate: requestedProject.licencePlate,
           showStandardFooterMessage: false, // show "love, Platform services" instead
           productMinistry: "PRODUCT MINISTRY",
@@ -250,6 +250,8 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         subject: `${requestedProject.name} OCP 4 Project Approved`,
         // subject: `${profile.name} OCP 4 Project Set`,
       });
+
+
     } catch (error) {
       console.log(error);
     }

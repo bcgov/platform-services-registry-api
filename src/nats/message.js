@@ -20,9 +20,6 @@ function message(
     toolsQuota
   } = requestedProject;
 
-  console.log("Requested Project");
-  console.log(requestedProject);
-
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",

@@ -25,8 +25,6 @@ export default async function provisionerCallbackHandler(req, res, next) {
   try {
     const { prefix: licencePlate } = req.body;
 
-    console.log("X");
-
     const [{ _id: requestedProjectId, ...requestedProject }] =
       await privateCloudActiveRequestedProjects.findByFields({ licencePlate });
 

@@ -148,7 +148,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
           SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
           SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
           SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-          setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
+          setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
           licencePlate: requestedProject.licencePlate,
         }
       ),
@@ -174,7 +174,7 @@ async function customPrivateCloudProjectRequest(_, args, context) {
           SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
           SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
           SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-          setCluster: clusterNames[requestedProject.cluster - 1].humanFriendlyName,
+          setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
         }
       ),
       // To all project contacts. Sent when a new provisioning request has been submitted successfully.
