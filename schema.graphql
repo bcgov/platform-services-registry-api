@@ -1,0 +1,458 @@
+directive @nonNullInput on FIELD_DEFINITION
+
+scalar DateTime
+scalar EmailAddress
+
+enum ProjectStatus {
+  CREATE_REQUEST
+  ACTIVE
+  INACTIVE
+}
+
+enum RequestStatus {
+  PENDING_DECISION
+  APPROVED
+  REJECTED
+}
+
+enum RequestDecision {
+  APPROVE
+  REJECT
+}
+
+enum RequestType {
+  CREATE
+  EDIT
+  DELETE
+}
+
+enum Ministry {
+  AEST
+  AG
+  AGRI
+  ALC
+  BCPC
+  CITZ
+  DBC
+  EAO
+  EDUC
+  EMBC
+  EMPR
+  ENV
+  FIN
+  FLNR
+  HLTH
+  IRR
+  JEDC
+  LBR
+  LDB
+  MAH
+  MCF
+  MMHA
+  PSA
+  PSSG
+  SDPR
+  TCA
+  TRAN
+}
+
+enum Cluster {
+  CLAB
+  KLAB
+  SILVER
+  GOLD
+  GOLDDR
+  KLAB2
+  EMERALD
+}
+
+enum Environment {
+  PRODUCTION
+  TEST
+  DEVELOPMENT
+  TOOLS
+}
+
+enum Platform {
+  PRIVATE_CLOUD
+  PUBLIC_CLOUD
+}
+
+enum PublicCloudPlatform {
+  GOOGLE
+  AWS
+}
+
+enum DefaultCpuOptions {
+  CPU_REQUEST_0_5_LIMIT_1_5
+  CPU_REQUEST_1_LIMIT_2
+  CPU_REQUEST_2_LIMIT_4
+  CPU_REQUEST_4_LIMIT_8
+  CPU_REQUEST_8_LIMIT_16
+  CPU_REQUEST_16_LIMIT_32
+  CPU_REQUEST_32_LIMIT_64
+}
+
+enum CommonComponentsOptions {
+  IMPLEMENTED
+  PLANNING_TO_USE
+}
+
+enum DefaultMemoryOptions {
+  MEMORY_REQUEST_2_LIMIT_4
+  MEMORY_REQUEST_4_LIMIT_8
+  MEMORY_REQUEST_8_LIMIT_16
+  MEMORY_REQUEST_16_LIMIT_32
+  MEMORY_REQUEST_32_LIMIT_64
+  MEMORY_REQUEST_64_LIMIT_128
+}
+
+enum DefaultStorageOptions {
+  STORAGE_1
+  STORAGE_2
+  STORAGE_4
+  STORAGE_16
+  STORAGE_32
+  STORAGE_64
+  STORAGE_124
+  STORAGE_256
+  STORAGE_512
+}
+
+type Quota {
+  cpu: Cpu!
+  memory: Memory!
+  storage: Storage!
+  snapshot: Snapshot!
+}
+
+type Cpu {
+  requests: Float!
+  limits: Float!
+}
+
+type Memory {
+  requests: Int!
+  limits: Int!
+}
+
+type Storage {
+  block: Int!
+  file: Int!
+  backup: Int!
+  capacity: Int!
+  pvcCount: Int
+}
+
+type Snapshot {
+  count: Int!
+}
+
+# interface Project @abstractEntity(discriminatorField: "platform") {
+#   id: ID! 
+#   name: String! 
+#   archived: Boolean! 
+#   created: DateTime! 
+#   createdBy: User! 
+#   description: String! 
+#   status: ProjectStatus! 
+#   projectOwner: User! 
+#   primaryTechnicalLead: User! 
+#   secondaryTechnicalLead: User 
+#   ministry: Ministry! 
+#   requestHistory: [Request] 
+#   activeEditRequest: Request 
+#   count: Int 
+# }
+
+# NOTE!!: It is very possible that PublicCloudProject is too general,
+# May need to create a new project type for each platform e.g
+# GoogleCloudProject, AWSProject e.t.c (implements Project)
+# type PublicCloudProject  {
+#   id: ID!
+#   name: String!
+#   archived: Boolean!
+#   created: DateTime!
+#   createdBy: User!
+#   description: String!
+#   status: ProjectStatus!
+#   projectOwner: User!
+#   primaryTechnicalLead: User!
+#   secondaryTechnicalLead: User
+#   ministry: Ministry!
+#   publicCloudPlatform: PublicCloudPlatform!
+#   requestHistory: [Request]
+#   activeEditRequest: Request
+#   count: Int
+# }
+
+type PrivateCloudProject  {
+  id: ID! 
+  name: String! 
+  licencePlate: ID! 
+  archived: Boolean! 
+  created: DateTime! 
+  createdBy: User! 
+  description: String! 
+  status: ProjectStatus! 
+  projectOwner: User! 
+  primaryTechnicalLead: User! 
+  secondaryTechnicalLead: User 
+  ministry: Ministry! 
+  cluster: Cluster! 
+  productionQuota: Quota! 
+  testQuota: Quota! 
+  developmentQuota: Quota! 
+  toolsQuota: Quota! 
+  requestHistory: [PrivateCloudRequest]! 
+  activeEditRequest: PrivateCloudRequest 
+  count: Int 
+  commonComponents: CommonComponents! @embedded
+}
+
+type CommonComponents (embedded: true) {
+  addressAndGeolocation: CommonComponentsOptions (overrideType: "string")
+  workflowManagement: CommonComponentsOptions (overrideType: "string")
+  formDesignAndSubmission: CommonComponentsOptions (overrideType: "string")
+  identityManagement: CommonComponentsOptions (overrideType: "string")
+  paymentServices: CommonComponentsOptions (overrideType: "string")
+  documentManagement: CommonComponentsOptions (overrideType: "string")
+  endUserNotificationAndSubscription: CommonComponentsOptions (overrideType: "string")
+  publishing: CommonComponentsOptions (overrideType: "string")
+  businessIntelligence: CommonComponentsOptions (overrideType: "string")
+  other: String 
+}
+
+type PrivateCloudRequest  {
+  id: ID! 
+  createdBy: User! 
+  decisionMaker: User 
+  type: RequestType! 
+  status: RequestStatus! 
+  active: Boolean! 
+  created: DateTime! 
+  decisionDate: DateTime 
+  project: PrivateCloudProject 
+  requestedProject: PrivateCloudProject 
+  platform: Platform! 
+}
+
+type User  {
+  id: ID! 
+  firstName: String! 
+  lastName: String! 
+  email: EmailAddress! 
+  archived: Boolean! 
+  lastSeen: DateTime 
+  privateCloudActiveRequests: [PrivateCloudRequest]! 
+  privateCloudProjectOwner: [PrivateCloudProject]! 
+  privateCloudPrimaryTechnicalLead: [PrivateCloudProject]! 
+  privateCloudSecondaryTechnicalLead: [PrivateCloudProject]! 
+  created: DateTime! 
+  ministry: Ministry 
+  githubId: String 
+}
+
+input ProjectMetaDataInput {
+  name: String!
+  description: String!
+  projectOwner: EmailAddress!
+  primaryTechnicalLead: EmailAddress!
+  secondaryTechnicalLead: EmailAddress
+  ministry: Ministry!
+  cluster: Cluster!
+}
+
+input EditProjectMetaDataInput {
+  name: String
+  description: String
+  projectOwner: EmailAddress
+  primaryTechnicalLead: EmailAddress
+  secondaryTechnicalLead: EmailAddress
+  ministry: Ministry
+  cluster: Cluster
+}
+
+input CommonComponentsInput {
+  addressAndGeolocation: CommonComponentsOptions
+  workflowManagement: CommonComponentsOptions
+  formDesignAndSubmission: CommonComponentsOptions
+  identityManagement: CommonComponentsOptions
+  paymentServices: CommonComponentsOptions
+  documentManagement: CommonComponentsOptions
+  endUserNotificationAndSubscription: CommonComponentsOptions
+  publishing: CommonComponentsOptions
+  businessIntelligence: CommonComponentsOptions
+  other: String
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  email: EmailAddress!
+  ministry: Ministry
+  githubId: String!
+}
+
+input SignUpInput {
+  ministry: Ministry!
+  githubId: String!
+}
+
+input UpdateUserInput {
+  firstName: String
+  lastName: String
+  email: EmailAddress
+  archived: Boolean
+  lastSeen: DateTime
+  projectOwner: [ID!]
+  technicalLead: [ID!]
+}
+
+input QuotaInput {
+  cpu: DefaultCpuOptions
+  memory: DefaultMemoryOptions
+  storage: DefaultStorageOptions
+}
+
+input CustomQuotaInput {
+  cpuRequests: Float
+  cpuLimits: Float
+  memoryRequests: Int
+  memoryLimits: Int
+  storageBlock: Int
+  storageFile: Int
+  storageBackup: Int
+  storageCapacity: Int
+  storagePvcCount: Int
+  snapshotCount: Int
+}
+
+input FilterPrivateCloudProjectsInput {
+  ministry: Ministry
+  cluster: Cluster
+}
+
+enum SortOrder {
+  ASCENDING
+  DESCENDING
+}
+
+type AddBookMutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  book: Book
+}
+
+type Book {
+  title: String
+  author: String
+}
+
+type Query {
+  books: [Book] @auth
+
+  users: [User!]! @hasRole(role: "admin")
+  user(id: ID!): User @hasRole(role: "admin")
+  usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
+  userByEmail(email: EmailAddress!): User @auth
+  me: User @auth
+
+  privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+
+  privateCloudProjectsPaginated(
+    offset: Int!
+    limit: Int!
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+  ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
+  privateCloudProjectsCount(
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+  ): Int! @hasRole(role: "admin")
+
+  privateCloudProject(projectId: ID!): PrivateCloudProject!
+    @hasRole(role: "admin")
+
+  privateCloudProjectsWithFilterSearch(
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+  ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
+  privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
+  userPrivateCloudProjects: [PrivateCloudProject!]! @auth
+  userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
+  userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
+
+  privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
+  privateCloudActiveRequest(requestId: ID!): PrivateCloudRequest!
+    @hasRole(role: "admin")
+  privateCloudActiveRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
+  privateCloudActiveRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
+    @hasRole(role: "admin")
+  userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
+  userPrivateCloudActiveRequest(requestId: ID!): PrivateCloudRequest! @auth
+  userPrivateCloudActiveRequestsById(requestIds: [ID!]): PrivateCloudRequest!
+    @auth
+
+  privateCloudArchivedRequest(requestId: ID!): PrivateCloudRequest!
+    @hasRole(role: "admin")
+  privateCloudArchivedRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
+  privateCloudArchivedRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
+    @hasRole(role: "admin")
+
+  # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
+}
+
+type Mutation {
+  addBook(title: String, author: String): AddBookMutationResponse
+
+  signUp: User! @auth
+  # userUpdateSelf()
+
+  createUser(input: CreateUserInput!): User!
+  # updateUser(input: UpdateUserInput!): User!
+
+  privateCloudProjectRequest(
+    metaData: ProjectMetaDataInput!
+    commonComponents: CommonComponentsInput
+  ): PrivateCloudRequest! @nonNullInput @auth
+
+  privateCloudProjectEditRequest(
+    projectId: ID!
+    metaData: EditProjectMetaDataInput
+    commonComponents: CommonComponentsInput
+    productionQuota: QuotaInput
+    developmentQuota: QuotaInput
+    testQuota: QuotaInput
+    toolsQuota: QuotaInput
+  ): PrivateCloudRequest! @nonNullInput @auth
+
+  customPrivateCloudProjectRequest(
+    metaData: ProjectMetaDataInput!
+    commonComponents: CommonComponentsInput!
+    productionQuota: CustomQuotaInput
+    developmentQuota: CustomQuotaInput
+    testQuota: CustomQuotaInput
+    toolsQuota: CustomQuotaInput
+  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
+
+  customPrivateCloudProjectEditRequest(
+    projectId: ID!
+    metaData: EditProjectMetaDataInput
+    commonComponents: CommonComponentsInput!
+    productionQuota: CustomQuotaInput
+    developmentQuota: CustomQuotaInput
+    testQuota: CustomQuotaInput
+    toolsQuota: CustomQuotaInput
+  ): PrivateCloudRequest! @nonNullInput @hasRole(role: "admin")
+
+  privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest!
+
+  makePrivateCloudRequestDecision(
+    requestId: ID!
+    decision: RequestDecision!
+  ): RequestStatus! @hasRole(role: "admin")
+}

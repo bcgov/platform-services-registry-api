@@ -1,0 +1,62 @@
+scalar DateTime
+
+type Query {
+  allUsers: [User!]!
+}
+type Post {
+  id: String! 
+  author: User
+  content: String
+  createdAt: DateTime!
+  published: Boolean!
+  title: String!
+  updatedAt: DateTime!
+  viewCount: Int!
+}
+
+input PostCreateInput {
+  content: String
+  title: String!
+}
+
+input PostOrderByUpdatedAtInput {
+  updatedAt: SortOrder!
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+type User {
+  email: String!
+  id: String!
+  name: String
+  posts: [Post!]!
+}
+
+type Address {
+  street: String!
+  city: String!
+  state: String!
+  zip: String!
+}
+
+input UserCreateInput {
+  email: String!
+  name: String
+  posts: [PostCreateInput!]
+}
+
+input UserUniqueInput {
+  email: String
+  id: String!
+}
+
+type Query {
+  allUsers: [User!]!
+}
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+}

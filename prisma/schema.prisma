@@ -1,0 +1,84 @@
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/registry?retryWrites=true&w=majority"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  title   String
+
+  // createdAt DateTime @default(now())
+  // published Boolean
+  // body      String
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id])
+}
+
+model User {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String   @unique
+  name    String?
+  address Address?
+  posts   Post[] // Prisma will resolve this to a list of Post records who's authorId is this user's id
+}
+
+// Address is an embedded document
+type Address {
+  street String
+  city   String
+  state  String
+  zip    String
+}
+
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "mongodb"
+//   url      = env("DATABASE_URL")
+// }
+
+// model User {
+//   id                           String                @id @default(auto()) @map("_id") @db.ObjectId
+//   firstName                    String
+//   lastName                     String
+//   email                        String
+//   archived                     Boolean
+//   created                      DateTime              @default(now())
+//   lastSeen                     DateTime              @updatedAt
+//   privateCloudActiveRequestIds String[]              @db.ObjectId
+//   priavateCloudActiveRequests  PrivateCloudRequest[]
+//   // privateCloudProjectOwnerProjectIds String[]              @db.ObjectId
+//   // privateCloudProjectOwnerProjects             PrivateCloudProject[]
+//   // privateCloudPrimaryTechnicalLeadProjectIds   String[]              @db.ObjectId
+//   // privateCloudPrimaryTechnicalLeadProjects     PrivateCloudProject[]
+//   // privateCloudSecondaryTechnicalLeadProjectIds String[]              @db.ObjectId
+//   // privateCloudSecondaryTechnicalLeadProjects   PrivateCloudProject[]
+//   ministry                     String
+//   githubId                     String
+// }
+
+// model PrivateCloudRequest {
+//   id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+//   createdById        String   @db.ObjectId
+//   createdUser        User     @relation(fields: [createdById], references: [id])
+//   // decisionMakerId    String   @db.ObjectId
+//   // decisionMaker      User     @relation("b", fields: [decisionMakerId], references: [id])
+//   type               String
+//   status             String
+//   active             Boolean
+//   created            DateTime @default(now())
+//   decisionDate       DateTime
+//   projectId          String   @db.ObjectId
+//   requestedProjectId String   @db.ObjectId
+//   platform           String
+// }
