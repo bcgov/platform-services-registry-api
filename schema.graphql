@@ -120,32 +120,16 @@ enum DefaultStorageOptions {
 }
 
 type Quota {
-  cpu: Cpu!
-  memory: Memory!
-  storage: Storage!
-  snapshot: Snapshot!
-}
-
-type Cpu {
-  requests: Float!
-  limits: Float!
-}
-
-type Memory {
-  requests: Int!
-  limits: Int!
-}
-
-type Storage {
-  block: Int!
-  file: Int!
-  backup: Int!
-  capacity: Int!
-  pvcCount: Int
-}
-
-type Snapshot {
-  count: Int!
+  cpuRequests: Float!
+  cpuLimits: Float!
+  memoryRequests: Int!
+  memoryLimits: Int!
+  storageBlock: Int!
+  storageFile: Int!
+  storageBackup: Int!
+  storageCapacity: Int!
+  storagePvcCount: Int!
+  snapshotCount: Int!
 }
 
 # interface Project @abstractEntity(discriminatorField: "platform") {
@@ -252,7 +236,6 @@ type User {
   privateCloudRequestProjectOwner: [PrivateCloudRequest]!
   privateCloudRequestPrimaryTechnicalLead: [PrivateCloudRequest]!
   privateCloudRequestSecondaryTechnicalLead: [PrivateCloudRequest]!
-
 }
 
 input ProjectMetaDataInput {
@@ -419,7 +402,10 @@ type Mutation {
 
   privateCloudProjectRequest(
     metaData: ProjectMetaDataInput!
-    commonComponents: CommonComponentsInput
+    commonComponents: CommonComponentsInput!
+    projectOwner: CreateUserInput
+    primaryTechnicalLead: CreateUserInput
+    secondaryTechnicalLead: CreateUserInput
   ): PrivateCloudRequest! @nonNullInput @auth
 
   privateCloudProjectEditRequest(

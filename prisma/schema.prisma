@@ -60,8 +60,8 @@ model PrivateCloudRequest {
   id                       String                     @id @default(auto()) @map("_id") @db.ObjectId
   createdById              String                     @unique @db.ObjectId
   createdBy                User                       @relation("createdBy", fields: [createdById], references: [id])
-  decisionMakerId          String                     @unique @db.ObjectId
-  decisionMaker            User                       @relation("decisionMaker", fields: [decisionMakerId], references: [id])
+  decisionMakerId          String?                    @unique @db.ObjectId
+  decisionMaker            User?                      @relation("decisionMaker", fields: [decisionMakerId], references: [id])
   projectOwnerId           String                     @db.ObjectId
   projectOwner             User                       @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
   primaryTechnicalLead     User                       @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
@@ -70,10 +70,10 @@ model PrivateCloudRequest {
   secondaryTechnicalLeadId String                     @db.ObjectId
   type                     RequestType
   status                   RequestStatus
-  active                   Boolean
+  active                   Boolean                    @default(true)
   created                  DateTime                   @default(now())
-  decisionDate             DateTime
-  projectId                String                     @unique @db.ObjectId
+  decisionDate             DateTime?
+  projectId                String?                    @unique @db.ObjectId
   project                  PrivateCloudProject?       @relation("requestProject", fields: [projectId], references: [id])
   requestedProject         PrivateCloudProjectEmbeded
 }
@@ -97,11 +97,11 @@ model ArchivedPrivateCloudRequest {
 type PrivateCloudProjectEmbeded {
   name                     String
   licencePlate             String
-  archived                 Boolean
+  archived                 Boolean          @default(false)
   created                  DateTime         @default(now())
   createdById              String           @db.ObjectId
   description              String
-  status                   ProjectStatus
+  // status                   ProjectStatus
   projectOwnerId           String           @db.ObjectId
   primaryTechnicalLeadId   String           @db.ObjectId
   secondaryTechnicalLeadId String           @db.ObjectId
@@ -116,32 +116,16 @@ type PrivateCloudProjectEmbeded {
 }
 
 type Quota {
-  cpu      Cpu
-  memory   Memory
-  storage  Storage
-  snapshot Snapshot
-}
-
-type Cpu {
-  requests Float @default(0.5)
-  limits   Float @default(1.5)
-}
-
-type Memory {
-  requests Int @default(2)
-  limits   Int @default(4)
-}
-
-type Storage {
-  block    Int @default(1)
-  file     Int @default(1)
-  backup   Int @default(512)
-  capacity Int @default(1)
-  pvcCount Int @default(5)
-}
-
-type Snapshot {
-  count Int @default(5)
+  cpuRequests     Float @default(0.5)
+  cpuLimits       Float @default(1.5)
+  memoryRequests  Int   @default(2)
+  memoryLimits    Int   @default(4)
+  storageBlock    Int   @default(1)
+  storageFile     Int   @default(1)
+  storageBackup   Int   @default(512)
+  storageCapacity Int   @default(1)
+  storagePvcCount Int   @default(5)
+  snapshoCount    Int   @default(5)
 }
 
 type CommonComponents {

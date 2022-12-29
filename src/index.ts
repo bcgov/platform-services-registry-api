@@ -8,16 +8,9 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-// import { BooksDataSource } from "./datasources.js";
-// Here we import the automatically generated Book type, so we can use it in our
-// context typing.
-// import { Book } from "./__generated__/resolvers-types";
 import resolvers from "./resolvers/index.js";
 import { readFileSync } from "fs";
-// import { connectToDatabase, collections } from "db/connectToDatabase.js";
-// import { connectToDatabase } from "./db.js";
 import configureKeycloak from "./auth/config.js";
-// import applyDirectiveTransformers from "./transformers/auth.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import { addMocksToSchema } from "@graphql-tools/mock";
 import { authDirectiveTransformer } from "./auth/directives.js";

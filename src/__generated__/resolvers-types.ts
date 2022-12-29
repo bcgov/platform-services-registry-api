@@ -73,12 +73,6 @@ export enum CommonComponentsOptions {
   PlanningToUse = 'PLANNING_TO_USE'
 }
 
-export type Cpu = {
-  __typename?: 'Cpu';
-  limits: Scalars['Float'];
-  requests: Scalars['Float'];
-};
-
 export type CreateUserInput = {
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
@@ -151,12 +145,6 @@ export enum Environment {
 export type FilterPrivateCloudProjectsInput = {
   cluster?: InputMaybe<Cluster>;
   ministry?: InputMaybe<Ministry>;
-};
-
-export type Memory = {
-  __typename?: 'Memory';
-  limits: Scalars['Int'];
-  requests: Scalars['Int'];
 };
 
 export enum Ministry {
@@ -258,8 +246,11 @@ export type MutationPrivateCloudProjectEditRequestArgs = {
 
 
 export type MutationPrivateCloudProjectRequestArgs = {
-  commonComponents?: InputMaybe<CommonComponentsInput>;
+  commonComponents: CommonComponentsInput;
   metaData: ProjectMetaDataInput;
+  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
+  projectOwner?: InputMaybe<CreateUserInput>;
+  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
 };
 
 export enum Platform {
@@ -443,10 +434,16 @@ export type QueryUsersByIdsArgs = {
 
 export type Quota = {
   __typename?: 'Quota';
-  cpu: Cpu;
-  memory: Memory;
-  snapshot: Snapshot;
-  storage: Storage;
+  cpuLimits: Scalars['Float'];
+  cpuRequests: Scalars['Float'];
+  memoryLimits: Scalars['Int'];
+  memoryRequests: Scalars['Int'];
+  snapshotCount: Scalars['Int'];
+  storageBackup: Scalars['Int'];
+  storageBlock: Scalars['Int'];
+  storageCapacity: Scalars['Int'];
+  storageFile: Scalars['Int'];
+  storagePvcCount: Scalars['Int'];
 };
 
 export type QuotaInput = {
@@ -477,24 +474,10 @@ export type SignUpInput = {
   ministry: Ministry;
 };
 
-export type Snapshot = {
-  __typename?: 'Snapshot';
-  count: Scalars['Int'];
-};
-
 export enum SortOrder {
   Ascending = 'ASCENDING',
   Descending = 'DESCENDING'
 }
-
-export type Storage = {
-  __typename?: 'Storage';
-  backup: Scalars['Int'];
-  block: Scalars['Int'];
-  capacity: Scalars['Int'];
-  file: Scalars['Int'];
-  pvcCount?: Maybe<Scalars['Int']>;
-};
 
 export type UpdateUserInput = {
   archived?: InputMaybe<Scalars['Boolean']>;
@@ -602,7 +585,6 @@ export type ResolversTypes = ResolversObject<{
   CommonComponents: ResolverTypeWrapper<CommonComponents>;
   CommonComponentsInput: CommonComponentsInput;
   CommonComponentsOptions: CommonComponentsOptions;
-  Cpu: ResolverTypeWrapper<Cpu>;
   CreateUserInput: CreateUserInput;
   CustomQuotaInput: CustomQuotaInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
@@ -616,7 +598,6 @@ export type ResolversTypes = ResolversObject<{
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  Memory: ResolverTypeWrapper<Memory>;
   Ministry: Ministry;
   Mutation: ResolverTypeWrapper<{}>;
   Platform: Platform;
@@ -632,9 +613,7 @@ export type ResolversTypes = ResolversObject<{
   RequestStatus: RequestStatus;
   RequestType: RequestType;
   SignUpInput: SignUpInput;
-  Snapshot: ResolverTypeWrapper<Snapshot>;
   SortOrder: SortOrder;
-  Storage: ResolverTypeWrapper<Storage>;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
@@ -647,7 +626,6 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
   CommonComponents: CommonComponents;
   CommonComponentsInput: CommonComponentsInput;
-  Cpu: Cpu;
   CreateUserInput: CreateUserInput;
   CustomQuotaInput: CustomQuotaInput;
   DateTime: Scalars['DateTime'];
@@ -657,7 +635,6 @@ export type ResolversParentTypes = ResolversObject<{
   Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
-  Memory: Memory;
   Mutation: {};
   PrivateCloudProject: PrivateCloudProject;
   PrivateCloudRequest: PrivateCloudRequest;
@@ -666,8 +643,6 @@ export type ResolversParentTypes = ResolversObject<{
   Quota: Quota;
   QuotaInput: QuotaInput;
   SignUpInput: SignUpInput;
-  Snapshot: Snapshot;
-  Storage: Storage;
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
   User: User;
@@ -705,12 +680,6 @@ export type CommonComponentsResolvers<ContextType = ContextValue, ParentType ext
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type CpuResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Cpu'] = ResolversParentTypes['Cpu']> = ResolversObject<{
-  limits?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  requests?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
@@ -718,12 +687,6 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
-
-export type MemoryResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Memory'] = ResolversParentTypes['Memory']> = ResolversObject<{
-  limits?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  requests?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
 
 export type MutationResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addBook?: Resolver<Maybe<ResolversTypes['AddBookMutationResponse']>, ParentType, ContextType, Partial<MutationAddBookArgs>>;
@@ -733,7 +696,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   makePrivateCloudRequestDecision?: Resolver<ResolversTypes['RequestStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'projectId'>>;
-  privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'metaData'>>;
+  privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
 
@@ -805,24 +768,16 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
 }>;
 
 export type QuotaResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Quota'] = ResolversParentTypes['Quota']> = ResolversObject<{
-  cpu?: Resolver<ResolversTypes['Cpu'], ParentType, ContextType>;
-  memory?: Resolver<ResolversTypes['Memory'], ParentType, ContextType>;
-  snapshot?: Resolver<ResolversTypes['Snapshot'], ParentType, ContextType>;
-  storage?: Resolver<ResolversTypes['Storage'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SnapshotResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Snapshot'] = ResolversParentTypes['Snapshot']> = ResolversObject<{
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type StorageResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Storage'] = ResolversParentTypes['Storage']> = ResolversObject<{
-  backup?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  block?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  capacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  file?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  pvcCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  cpuLimits?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  cpuRequests?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  memoryLimits?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  memoryRequests?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  snapshotCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  storageBackup?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  storageBlock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  storageCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  storageFile?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  storagePvcCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -849,17 +804,13 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   AddBookMutationResponse?: AddBookMutationResponseResolvers<ContextType>;
   Book?: BookResolvers<ContextType>;
   CommonComponents?: CommonComponentsResolvers<ContextType>;
-  Cpu?: CpuResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
-  Memory?: MemoryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PrivateCloudProject?: PrivateCloudProjectResolvers<ContextType>;
   PrivateCloudRequest?: PrivateCloudRequestResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
-  Snapshot?: SnapshotResolvers<ContextType>;
-  Storage?: StorageResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 

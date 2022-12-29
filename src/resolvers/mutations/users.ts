@@ -9,5 +9,8 @@ export const createUser: MutationResolvers = (
   { prisma }
 ) =>
   prisma.user.create({
-    data: input
+    data: {
+      email: input.email,
+      ...input
+    }
   });
