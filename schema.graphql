@@ -149,20 +149,20 @@ type Snapshot {
 }
 
 # interface Project @abstractEntity(discriminatorField: "platform") {
-#   id: ID! 
-#   name: String! 
-#   archived: Boolean! 
-#   created: DateTime! 
-#   createdBy: User! 
-#   description: String! 
-#   status: ProjectStatus! 
-#   projectOwner: User! 
-#   primaryTechnicalLead: User! 
-#   secondaryTechnicalLead: User 
-#   ministry: Ministry! 
-#   requestHistory: [Request] 
-#   activeEditRequest: Request 
-#   count: Int 
+#   id: ID!
+#   name: String!
+#   archived: Boolean!
+#   created: DateTime!
+#   createdBy: User!
+#   description: String!
+#   status: ProjectStatus!
+#   projectOwner: User!
+#   primaryTechnicalLead: User!
+#   secondaryTechnicalLead: User
+#   ministry: Ministry!
+#   requestHistory: [Request]
+#   activeEditRequest: Request
+#   count: Int
 # }
 
 # NOTE!!: It is very possible that PublicCloudProject is too general,
@@ -186,71 +186,73 @@ type Snapshot {
 #   count: Int
 # }
 
-type PrivateCloudProject  {
-  id: ID! 
-  name: String! 
-  licencePlate: ID! 
-  archived: Boolean! 
-  created: DateTime! 
-  createdBy: User! 
-  description: String! 
-  status: ProjectStatus! 
-  projectOwner: User! 
-  primaryTechnicalLead: User! 
-  secondaryTechnicalLead: User 
-  ministry: Ministry! 
-  cluster: Cluster! 
-  productionQuota: Quota! 
-  testQuota: Quota! 
-  developmentQuota: Quota! 
-  toolsQuota: Quota! 
-  requestHistory: [PrivateCloudRequest]! 
-  activeEditRequest: PrivateCloudRequest 
-  count: Int 
-  commonComponents: CommonComponents! @embedded
+type PrivateCloudProject {
+  id: ID!
+  name: String!
+  licencePlate: ID!
+  archived: Boolean!
+  created: DateTime!
+  createdBy: User!
+  description: String!
+  status: ProjectStatus!
+  projectOwner: User!
+  primaryTechnicalLead: User!
+  secondaryTechnicalLead: User
+  ministry: Ministry!
+  cluster: Cluster!
+  productionQuota: Quota!
+  testQuota: Quota!
+  developmentQuota: Quota!
+  toolsQuota: Quota!
+  requestHistory: [PrivateCloudRequest]!
+  activeEditRequest: PrivateCloudRequest
+  count: Int
+  commonComponents: CommonComponents!
 }
 
-type CommonComponents (embedded: true) {
-  addressAndGeolocation: CommonComponentsOptions (overrideType: "string")
-  workflowManagement: CommonComponentsOptions (overrideType: "string")
-  formDesignAndSubmission: CommonComponentsOptions (overrideType: "string")
-  identityManagement: CommonComponentsOptions (overrideType: "string")
-  paymentServices: CommonComponentsOptions (overrideType: "string")
-  documentManagement: CommonComponentsOptions (overrideType: "string")
-  endUserNotificationAndSubscription: CommonComponentsOptions (overrideType: "string")
-  publishing: CommonComponentsOptions (overrideType: "string")
-  businessIntelligence: CommonComponentsOptions (overrideType: "string")
-  other: String 
+type CommonComponents {
+  addressAndGeolocation: CommonComponentsOptions
+  workflowManagement: CommonComponentsOptions
+  formDesignAndSubmission: CommonComponentsOptions
+  identityManagement: CommonComponentsOptions
+  paymentServices: CommonComponentsOptions
+  documentManagement: CommonComponentsOptions
+  endUserNotificationAndSubscription: CommonComponentsOptions
+  publishing: CommonComponentsOptions
+  businessIntelligence: CommonComponentsOptions
+  other: String
 }
 
-type PrivateCloudRequest  {
-  id: ID! 
-  createdBy: User! 
-  decisionMaker: User 
-  type: RequestType! 
-  status: RequestStatus! 
-  active: Boolean! 
-  created: DateTime! 
-  decisionDate: DateTime 
-  project: PrivateCloudProject 
-  requestedProject: PrivateCloudProject 
-  platform: Platform! 
+type PrivateCloudRequest {
+  id: ID!
+  createdBy: User!
+  decisionMaker: User
+  type: RequestType!
+  status: RequestStatus!
+  active: Boolean!
+  created: DateTime!
+  decisionDate: DateTime
+  project: PrivateCloudProject
+  requestedProject: PrivateCloudProject
 }
 
-type User  {
-  id: ID! 
-  firstName: String! 
-  lastName: String! 
-  email: EmailAddress! 
-  archived: Boolean! 
-  lastSeen: DateTime 
-  privateCloudActiveRequests: [PrivateCloudRequest]! 
-  privateCloudProjectOwner: [PrivateCloudProject]! 
-  privateCloudPrimaryTechnicalLead: [PrivateCloudProject]! 
-  privateCloudSecondaryTechnicalLead: [PrivateCloudProject]! 
-  created: DateTime! 
-  ministry: Ministry 
-  githubId: String 
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: EmailAddress!
+  githubId: String
+  ministry: Ministry
+  archived: Boolean!
+  created: DateTime!
+  lastSeen: DateTime
+  privateCloudProjectOwner: [PrivateCloudProject]!
+  privateCloudProjectPrimaryTechnicalLead: [PrivateCloudProject]!
+  privateCloudProjectSecondaryTechnicalLead: [PrivateCloudProject]!
+  privateCloudRequestProjectOwner: [PrivateCloudRequest]!
+  privateCloudRequestPrimaryTechnicalLead: [PrivateCloudRequest]!
+  privateCloudRequestSecondaryTechnicalLead: [PrivateCloudRequest]!
+
 }
 
 input ProjectMetaDataInput {
