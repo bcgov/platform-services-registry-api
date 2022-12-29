@@ -123,25 +123,25 @@ type Quota {
 }
 
 type Cpu {
-  requests Float
-  limits   Float
+  requests Float @default(0.5)
+  limits   Float @default(1.5)
 }
 
 type Memory {
-  requests Int
-  limits   Int
+  requests Int @default(2)
+  limits   Int @default(4)
 }
 
 type Storage {
-  block    Int
-  file     Int
-  backup   Int
-  capacity Int
-  pvcCount Int
+  block    Int @default(1)
+  file     Int @default(1)
+  backup   Int @default(512)
+  capacity Int @default(1)
+  pvcCount Int @default(5)
 }
 
 type Snapshot {
-  count Int
+  count Int @default(5)
 }
 
 type CommonComponents {
