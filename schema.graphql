@@ -338,7 +338,7 @@ type Book {
 type Query {
   books: [Book] @auth
 
-  users: [User!]! @hasRole(role: "admin")
+  users: [User!]! @hasRole(role: "admin") @auth
   user(id: ID!): User @hasRole(role: "admin")
   usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
   userByEmail(email: EmailAddress!): User @auth
