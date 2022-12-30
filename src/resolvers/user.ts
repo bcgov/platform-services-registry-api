@@ -25,21 +25,21 @@ const User = {
   privateCloudRequestProjectOwner: async (user, _, { prisma }) => {
     return await prisma.privateCloudRequest.findMany({
       where: {
-        requestProjectOwnerId: user.id
+       projectOwnerId: user.id
       }
     });
   },
   privateCloudRequestPrimaryTechnicalLead: async (user, _, { prisma }) => {
     return await prisma.privateCloudRequest.findMany({
       where: {
-        requestPrimaryTechnicalLeadId: user.id
+        primaryTechnicalLeadId: user.id
       }
     });
   },
   privateCloudRequestSecondaryTechnicalLead: async (user, _, { prisma }) => {
     return await prisma.privateCloudRequest.findMany({
       where: {
-        requestSecondaryTechnicalLeadId: user.id
+        secondaryTechnicalLeadId: user.id
       }
     });
   }

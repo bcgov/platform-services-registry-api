@@ -130,9 +130,9 @@ export type EditProjectMetaDataInput = {
   description?: InputMaybe<Scalars['String']>;
   ministry?: InputMaybe<Ministry>;
   name?: InputMaybe<Scalars['String']>;
-  primaryTechnicalLead?: InputMaybe<Scalars['EmailAddress']>;
-  projectOwner?: InputMaybe<Scalars['EmailAddress']>;
-  secondaryTechnicalLead?: InputMaybe<Scalars['EmailAddress']>;
+  primaryTechnicalLeadEmail?: InputMaybe<Scalars['EmailAddress']>;
+  projectOwnerEmail?: InputMaybe<Scalars['EmailAddress']>;
+  secondaryTechnicalLeadEmail?: InputMaybe<Scalars['EmailAddress']>;
 };
 
 export enum Environment {
@@ -302,9 +302,9 @@ export type ProjectMetaDataInput = {
   description: Scalars['String'];
   ministry: Ministry;
   name: Scalars['String'];
-  primaryTechnicalLead: Scalars['EmailAddress'];
-  projectOwner: Scalars['EmailAddress'];
-  secondaryTechnicalLead?: InputMaybe<Scalars['EmailAddress']>;
+  primaryTechnicalLeadEmail: Scalars['EmailAddress'];
+  projectOwnerEmail: Scalars['EmailAddress'];
+  secondaryTechnicalLeadEmail?: InputMaybe<Scalars['EmailAddress']>;
 };
 
 export enum ProjectStatus {

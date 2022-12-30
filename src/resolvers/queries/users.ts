@@ -4,5 +4,7 @@ import {
   User
 } from "__generated__/resolvers-types";
 
-export const users: UserResolvers = (_, __, { prisma }) =>
-  prisma.user.findMany();
+export const users: UserResolvers = async (_, __, { prisma }) => {
+  console.log(await prisma.user.findMany())
+  return await prisma.user.findMany();
+};

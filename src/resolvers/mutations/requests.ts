@@ -12,7 +12,7 @@ export const privateCloudProjectRequest: MutationResolvers = async (
   { kauth, prisma }
 ) => {
   const { email: authEmail, resource_access } = kauth.accessToken.content;
-  console.log(args);
+
   const {
     metaData,
     commonComponents,
@@ -21,6 +21,14 @@ export const privateCloudProjectRequest: MutationResolvers = async (
     secondaryTechnicalLead
   } = args;
 
+  const authUser = await prisma.user.findUnique({
+    where: {
+      email: authEmail
+    }
+  });
+  console.log(authEmail);
+  console.log(authUser);
+
   const createRequest = await prisma.privateCloudRequest.create({
     data: {
       type: RequestType.CREATE,
@@ -28,7 +36,7 @@ export const privateCloudProjectRequest: MutationResolvers = async (
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: metaData.projectOwner
+            email: metaData.projectOwnerEmail
           },
           create: projectOwner
         }
@@ -36,7 +44,7 @@ export const privateCloudProjectRequest: MutationResolvers = async (
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: metaData.primaryTechnicalLead
+            email: metaData.primaryTechnicalLeadEmail
           },
           create: primaryTechnicalLead
         }
@@ -44,16 +52,16 @@ export const privateCloudProjectRequest: MutationResolvers = async (
       secondaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: metaData.secondaryTechnicalLead
+            email: metaData.secondaryTechnicalLeadEmail
           },
           create: secondaryTechnicalLead
         }
+      },
+      createdBy: {
+        connect: {
+          email: metaData.projectOwnerEmail
+        }
       }
-      // createdBy: {
-      //   connect: {
-      //     email: authEmail
-      //   }
-      // }
       // requestedProject: {
       //   ...metaData,
       //   commonComponents,

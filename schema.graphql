@@ -241,9 +241,9 @@ type User {
 input ProjectMetaDataInput {
   name: String!
   description: String!
-  projectOwner: EmailAddress!
-  primaryTechnicalLead: EmailAddress!
-  secondaryTechnicalLead: EmailAddress
+  projectOwnerEmail: EmailAddress!
+  primaryTechnicalLeadEmail: EmailAddress!
+  secondaryTechnicalLeadEmail: EmailAddress
   ministry: Ministry!
   cluster: Cluster!
 }
@@ -251,9 +251,9 @@ input ProjectMetaDataInput {
 input EditProjectMetaDataInput {
   name: String
   description: String
-  projectOwner: EmailAddress
-  primaryTechnicalLead: EmailAddress
-  secondaryTechnicalLead: EmailAddress
+  projectOwnerEmail: EmailAddress
+  primaryTechnicalLeadEmail: EmailAddress
+  secondaryTechnicalLeadEmail: EmailAddress
   ministry: Ministry
   cluster: Cluster
 }
