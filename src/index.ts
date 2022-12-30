@@ -19,6 +19,8 @@ const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
 export interface ContextValue {
   kauth: KeycloakContext;
+  roles: string[];
+  authEmail: string;
   prisma: PrismaClient;
 }
 
@@ -50,9 +52,18 @@ app.use(
   bodyParser.json(),
   expressMiddleware(server, {
     context: async ({ req }) => {
+      // @ts-ignore
+      const kauth: KeycloakContext = new KeycloakContext({ req }, keycloak);
+
+      const { email: authEmail, resource_access } = kauth.accessToken.content;
+      const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
+        roles: []
+      };
+
       return {
-        // @ts-ignore
-        kauth: new KeycloakContext({ req }, keycloak),
+        kauth,
+        roles,
+        authEmail,
         prisma
       };
     }
