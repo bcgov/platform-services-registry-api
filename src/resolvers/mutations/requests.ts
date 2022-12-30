@@ -57,17 +57,21 @@ export const privateCloudProjectRequest: MutationResolvers = async (
           create: secondaryTechnicalLead
         }
       },
-      createdBy: {
-        connect: {
-          email: metaData.projectOwnerEmail
+      createdByEmail: authEmail,
+      requestedProject: {
+        set: {
+          name: "test project",
+          licencePlate: "ABC123",
+          createdByEmail: authEmail,
+          description: "test description",
+          cluster: "CLAB",
+          ministry: "AGRI",
+          projectOwnerEmail: "oamar.kanji@gov.bc.ca",
+          primaryTechnicalLeadEmail: "xyz@test.com",
+          secondaryTechnicalLeadEmail: "test@test.com",
+          // commonComponents: commonComponents,
         }
       }
-      // requestedProject: {
-      //   ...metaData,
-      //   commonComponents,
-      //   licensePlate: "ABC123",
-      //   createdBy: authEmail
-      // }
     }
   });
 

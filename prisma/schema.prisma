@@ -11,24 +11,21 @@ datasource db {
 }
 
 model User {
-  id                                           String                @id @default(auto()) @map("_id") @db.ObjectId
-  firstName                                    String
-  lastName                                     String
-  email                                        String                @unique
-  githubId                                     String
-  ministry                                     String
-  archived                                     Boolean               @default(false)
-  created                                      DateTime              @default(now())
-  lastSeen                                     DateTime              @updatedAt
-  privateCloudProjectOwner                     PrivateCloudProject[] @relation("projectOwner")
-  privateCloudProjectOwnerIds                  String[]              @map("privateCloudProjectOwner") @db.ObjectId
-  privateCloudProjectPrimaryTechnicalLead      PrivateCloudProject[] @relation("primaryTechnicalLead")
-  privateCloudProjectPrimaryTechnicalLeadIds   String[]              @map("privateCloudProjectPrimaryTechnicalLead") @db.ObjectId
-  privateCloudProjectSecondaryTechnicalLead    PrivateCloudProject[] @relation("secondaryTechnicalLead")
-  privateCloudProjectSecondaryTechnicalLeadIds String[]              @map("privateCloudProjectSecondaryTechnicalLead") @db.ObjectId
-  privateCloudRequestProjectOwner              PrivateCloudRequest[] @relation("requestProjectOwner")
-  privateCloudRequestPrimaryTechnicalLead      PrivateCloudRequest[] @relation("requestPrimaryTechnicalLead")
-  privateCloudRequestSecondaryTechnicalLead    PrivateCloudRequest[] @relation("requestSecondaryTechnicalLead")
+  id                                        String                @id @default(auto()) @map("_id") @db.ObjectId
+  firstName                                 String
+  lastName                                  String
+  email                                     String                @unique
+  githubId                                  String
+  ministry                                  String
+  archived                                  Boolean               @default(false)
+  created                                   DateTime              @default(now())
+  lastSeen                                  DateTime              @updatedAt
+  privateCloudProjectOwner                  PrivateCloudProject[] @relation("projectOwner")
+  privateCloudProjectPrimaryTechnicalLead   PrivateCloudProject[] @relation("primaryTechnicalLead")
+  privateCloudProjectSecondaryTechnicalLead PrivateCloudProject[] @relation("secondaryTechnicalLead")
+  privateCloudRequestProjectOwner           PrivateCloudRequest[] @relation("requestProjectOwner")
+  privateCloudRequestPrimaryTechnicalLead   PrivateCloudRequest[] @relation("requestPrimaryTechnicalLead")
+  privateCloudRequestSecondaryTechnicalLead PrivateCloudRequest[] @relation("requestSecondaryTechnicalLead")
   // PrivateCloudRequest                       PrivateCloudRequest?  @relation("createdBy")
 }
 
@@ -50,7 +47,7 @@ model PrivateCloudRequest {
   decisionDate             DateTime?
   // projectId                String?              @unique @db.ObjectId
   // project                  PrivateCloudProject? @relation("requestProject", fields: [projectId], references: [id])
-  // requestedProject PrivateCloudProjectEmbeded
+  requestedProject         PrivateCloudProjectEmbeded
 }
 
 model PrivateCloudProject {
@@ -96,24 +93,24 @@ model ArchivedPrivateCloudRequest {
 }
 
 type PrivateCloudProjectEmbeded {
-  name                     String
-  licencePlate             String
-  archived                 Boolean          @default(false)
-  created                  DateTime         @default(now())
-  createdById              String           @db.ObjectId
-  description              String
-  // status                   ProjectStatus
-  projectOwnerId           String           @db.ObjectId
-  primaryTechnicalLeadId   String           @db.ObjectId
-  secondaryTechnicalLeadId String           @db.ObjectId
-  ministry                 String
-  cluster                  String
-  productionQuota          Quota
-  testQuota                Quota
-  developmentQuota         Quota
-  toolsQuota               Quota
-  activeEditRequestId      String           @db.ObjectId
-  commonComponents         CommonComponents
+  name String
+  licencePlate                String
+  archived                    Boolean          @default(false)
+  created                     DateTime         @default(now())
+  createdByEmail              String
+  description                 String
+  // // status                   ProjectStatus
+  projectOwnerEmail           String
+  primaryTechnicalLeadEmail   String
+  secondaryTechnicalLeadEmail String
+  ministry                    String
+  cluster                     String
+  // productionQuota             Quota
+  // testQuota                   Quota
+  // developmentQuota            Quota
+  // toolsQuota                  Quota
+  // activeEditRequestId         String           @db.ObjectId
+  // commonComponents            CommonComponents
 }
 
 type Quota {
