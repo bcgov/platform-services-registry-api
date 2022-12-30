@@ -29,6 +29,25 @@ export const privateCloudProjectRequest: MutationResolvers = async (
     secondaryTechnicalLead
   } = args;
 
+  const {
+    projectOwnerEmail,
+    primaryTechnicalLeadEmail,
+    secondaryTechnicalLeadEmail
+  } = metaData;
+
+  if (
+    ![
+      projectOwnerEmail,
+      primaryTechnicalLeadEmail,
+      secondaryTechnicalLeadEmail
+    ].includes(authEmail) &&
+    !roles.includes("admin")
+  ) {
+    throw new Error(
+      "You must assign yourself as a project owner or technical lead to create a project request."
+    );
+  }
+
   const licencePlate = generateLicensePlate();
 
   const createRequest = await prisma.privateCloudRequest.create({
