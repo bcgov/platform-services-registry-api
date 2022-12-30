@@ -32,7 +32,9 @@ let schema = makeExecutableSchema({
 schema = authDirectiveTransformer(schema, "auth");
 
 const app = express();
+
 const { keycloak } = configureKeycloak(app, "/graphql");
+
 const httpServer = http.createServer(app);
 const server = new ApolloServer<ContextValue>({
   schema,
