@@ -21,14 +21,6 @@ export const privateCloudProjectRequest: MutationResolvers = async (
     secondaryTechnicalLead
   } = args;
 
-  const authUser = await prisma.user.findUnique({
-    where: {
-      email: authEmail
-    }
-  });
-  console.log(authEmail);
-  console.log(authUser);
-
   const createRequest = await prisma.privateCloudRequest.create({
     data: {
       type: RequestType.CREATE,
@@ -60,16 +52,10 @@ export const privateCloudProjectRequest: MutationResolvers = async (
       createdByEmail: authEmail,
       requestedProject: {
         set: {
-          name: "test project",
-          licencePlate: "ABC123",
+          ...metaData,
           createdByEmail: authEmail,
-          description: "test description",
-          cluster: "CLAB",
-          ministry: "AGRI",
-          projectOwnerEmail: "oamar.kanji@gov.bc.ca",
-          primaryTechnicalLeadEmail: "xyz@test.com",
-          secondaryTechnicalLeadEmail: "test@test.com",
-          // commonComponents: commonComponents,
+          licencePlate: "ABC123",
+          commonComponents: commonComponents
         }
       }
     }

@@ -110,7 +110,7 @@ type PrivateCloudProjectEmbeded {
   // developmentQuota            Quota
   // toolsQuota                  Quota
   // activeEditRequestId         String           @db.ObjectId
-  // commonComponents            CommonComponents
+  commonComponents            CommonComponents
 }
 
 type Quota {
@@ -127,14 +127,14 @@ type Quota {
 }
 
 type CommonComponents {
-  addressAndGeolocation              String
-  workflowManagement                 String
-  formDesignAndSubmission            String
-  identityManagement                 String
-  paymentServices                    String
-  documentManagement                 String
-  endUserNotificationAndSubscription String
-  publishing                         String
-  businessIntelligence               String
-  other                              String
+  addressAndGeolocation              String?
+  workflowManagement                 String?
+  formDesignAndSubmission            String?
+  identityManagement                 String?
+  paymentServices                    String?
+  documentManagement                 String?
+  endUserNotificationAndSubscription String?
+  publishing                         String?
+  businessIntelligence               String?
+  other                              String?
 }
