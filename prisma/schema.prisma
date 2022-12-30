@@ -26,54 +26,51 @@ model User {
   privateCloudRequestProjectOwner           PrivateCloudRequest[] @relation("requestProjectOwner")
   privateCloudRequestPrimaryTechnicalLead   PrivateCloudRequest[] @relation("requestPrimaryTechnicalLead")
   privateCloudRequestSecondaryTechnicalLead PrivateCloudRequest[] @relation("requestSecondaryTechnicalLead")
-  // PrivateCloudRequest                       PrivateCloudRequest?  @relation("createdBy")
 }
 
 model PrivateCloudRequest {
-  id                       String    @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                     @id @default(auto()) @map("_id") @db.ObjectId
   createdByEmail           String
-  // decisionMakerId          String?                    @unique @db.ObjectId
-  // decisionMaker            User?                      @relation("decisionMaker", fields: [decisionMakerId], references: [id])
-  projectOwnerId           String    @db.ObjectId
-  projectOwner             User      @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
-  primaryTechnicalLeadId   String    @db.ObjectId
-  primaryTechnicalLead     User      @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLead   User?     @relation("requestSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLeadId String?   @db.ObjectId
+  decisionMakerEmail       String
+  projectOwnerId           String                     @db.ObjectId
+  projectOwner             User                       @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
+  primaryTechnicalLeadId   String                     @db.ObjectId
+  primaryTechnicalLead     User                       @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLead   User?                      @relation("requestSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLeadId String?                    @db.ObjectId
   type                     String
   status                   String
-  active                   Boolean   @default(true)
-  created                  DateTime  @default(now())
+  active                   Boolean                    @default(true)
+  created                  DateTime                   @default(now())
   decisionDate             DateTime?
-  // projectId                String?              @unique @db.ObjectId
-  // project                  PrivateCloudProject? @relation("requestProject", fields: [projectId], references: [id])
+  projectId                String?                    @unique @db.ObjectId
+  project                  PrivateCloudProject?       @relation("requestProject", fields: [projectId], references: [id])
   requestedProject         PrivateCloudProjectEmbeded
 }
 
 model PrivateCloudProject {
-  id                       String           @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String               @id @default(auto()) @map("_id") @db.ObjectId
   name                     String
   licencePlate             String
   archived                 Boolean
-  created                  DateTime         @default(now())
+  created                  DateTime             @default(now())
   createdByEmail           String
   description              String
   status                   String
-  projectOwnerId           String           @db.ObjectId
-  projectOwner             User             @relation("projectOwner", fields: [projectOwnerId], references: [id])
-  primaryTechnicalLeadId   String           @db.ObjectId
-  primaryTechnicalLead     User             @relation("primaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLeadId String           @db.ObjectId
-  secondaryTechnicalLead   User             @relation("secondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
+  projectOwnerId           String               @db.ObjectId
+  projectOwner             User                 @relation("projectOwner", fields: [projectOwnerId], references: [id])
+  primaryTechnicalLeadId   String               @db.ObjectId
+  primaryTechnicalLead     User                 @relation("primaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLeadId String               @db.ObjectId
+  secondaryTechnicalLead   User                 @relation("secondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
   ministry                 String
   cluster                  String
   productionQuota          Quota
   testQuota                Quota
   developmentQuota         Quota
   toolsQuota               Quota
-  activeEditRequestId      String           @db.ObjectId
   commonComponents         CommonComponents
-  // privateCloudRequestProject PrivateCloudRequest? @relation("requestProject")
+  request                  PrivateCloudRequest? @relation("requestProject")
 }
 
 model ArchivedPrivateCloudRequest {
@@ -93,23 +90,21 @@ model ArchivedPrivateCloudRequest {
 }
 
 type PrivateCloudProjectEmbeded {
-  name String
+  name                        String
   licencePlate                String
   archived                    Boolean          @default(false)
   created                     DateTime         @default(now())
   createdByEmail              String
   description                 String
-  // // status                   ProjectStatus
   projectOwnerEmail           String
   primaryTechnicalLeadEmail   String
   secondaryTechnicalLeadEmail String
   ministry                    String
   cluster                     String
-  // productionQuota             Quota
-  // testQuota                   Quota
-  // developmentQuota            Quota
-  // toolsQuota                  Quota
-  // activeEditRequestId         String           @db.ObjectId
+  productionQuota             Quota
+  testQuota                   Quota
+  developmentQuota            Quota
+  toolsQuota                  Quota
   commonComponents            CommonComponents
 }
 
@@ -123,7 +118,7 @@ type Quota {
   storageBackup   Int   @default(512)
   storageCapacity Int   @default(1)
   storagePvcCount Int   @default(5)
-  snapshoCount    Int   @default(5)
+  snapshotCount   Int   @default(5)
 }
 
 type CommonComponents {

@@ -12,19 +12,13 @@ import resolvers from "./resolvers/index.js";
 import { readFileSync } from "fs";
 import configureKeycloak from "./auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import { addMocksToSchema } from "@graphql-tools/mock";
 import { authDirectiveTransformer } from "./auth/directives.js";
 import { PrismaClient } from "@prisma/client";
 
-// Note: this only works locally because it relies on `npm` routing
-// from the root directory of the project.
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
 export interface ContextValue {
   kauth: KeycloakContext;
-  // dataSources?: {
-  //   booksAPI: BooksDataSource;
-  // };
   prisma: PrismaClient;
 }
 
@@ -45,8 +39,9 @@ const server = new ApolloServer<ContextValue>({
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   introspection: true
 });
+
 await server.start();
-// await connectToDatabase();
+
 app.use(
   "/graphql",
   cors<cors.CorsRequest>(),
@@ -57,9 +52,6 @@ app.use(
         // @ts-ignore
         kauth: new KeycloakContext({ req }, keycloak),
         prisma
-        // dataSources: {
-        //   booksAPI: new BooksDataSource()
-        // }
       };
     }
   })

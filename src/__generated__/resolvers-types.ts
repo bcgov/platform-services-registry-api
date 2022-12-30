@@ -17,20 +17,6 @@ export type Scalars = {
   EmailAddress: any;
 };
 
-export type AddBookMutationResponse = {
-  __typename?: 'AddBookMutationResponse';
-  book?: Maybe<Book>;
-  code: Scalars['String'];
-  message: Scalars['String'];
-  success: Scalars['Boolean'];
-};
-
-export type Book = {
-  __typename?: 'Book';
-  author?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-};
-
 export enum Cluster {
   Clab = 'CLAB',
   Emerald = 'EMERALD',
@@ -179,7 +165,6 @@ export enum Ministry {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addBook?: Maybe<AddBookMutationResponse>;
   createUser: User;
   customPrivateCloudProjectEditRequest: PrivateCloudRequest;
   customPrivateCloudProjectRequest: PrivateCloudRequest;
@@ -188,12 +173,6 @@ export type Mutation = {
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
   signUp: User;
-};
-
-
-export type MutationAddBookArgs = {
-  author?: InputMaybe<Scalars['String']>;
-  title?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -320,7 +299,6 @@ export enum PublicCloudPlatform {
 
 export type Query = {
   __typename?: 'Query';
-  books?: Maybe<Array<Maybe<Book>>>;
   me?: Maybe<User>;
   privateCloudActiveRequest: PrivateCloudRequest;
   privateCloudActiveRequests: Array<PrivateCloudRequest>;
@@ -578,8 +556,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  AddBookMutationResponse: ResolverTypeWrapper<AddBookMutationResponse>;
-  Book: ResolverTypeWrapper<Book>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Cluster: Cluster;
   CommonComponents: ResolverTypeWrapper<CommonComponents>;
@@ -621,8 +597,6 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  AddBookMutationResponse: AddBookMutationResponse;
-  Book: Book;
   Boolean: Scalars['Boolean'];
   CommonComponents: CommonComponents;
   CommonComponentsInput: CommonComponentsInput;
@@ -652,20 +626,6 @@ export type NonNullInputDirectiveArgs = { };
 
 export type NonNullInputDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = NonNullInputDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type AddBookMutationResponseResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['AddBookMutationResponse'] = ResolversParentTypes['AddBookMutationResponse']> = ResolversObject<{
-  book?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType>;
-  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type BookResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
-  author?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type CommonComponentsResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['CommonComponents'] = ResolversParentTypes['CommonComponents']> = ResolversObject<{
   addressAndGeolocation?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
   businessIntelligence?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
@@ -689,7 +649,6 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 }
 
 export type MutationResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addBook?: Resolver<Maybe<ResolversTypes['AddBookMutationResponse']>, ParentType, ContextType, Partial<MutationAddBookArgs>>;
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
   customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
@@ -740,7 +699,6 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
 }>;
 
 export type QueryResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   privateCloudActiveRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestArgs, 'requestId'>>;
   privateCloudActiveRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
@@ -801,8 +759,6 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
 }>;
 
 export type Resolvers<ContextType = ContextValue> = ResolversObject<{
-  AddBookMutationResponse?: AddBookMutationResponseResolvers<ContextType>;
-  Book?: BookResolvers<ContextType>;
   CommonComponents?: CommonComponentsResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;

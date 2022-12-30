@@ -1,5 +1,3 @@
-import { User } from "__generated__/resolvers-types";
-
 const User = {
   privateCloudProjectOwner: async (user, _, { prisma }) => {
     return await prisma.privateCloudProject.findMany({
@@ -25,7 +23,7 @@ const User = {
   privateCloudRequestProjectOwner: async (user, _, { prisma }) => {
     return await prisma.privateCloudRequest.findMany({
       where: {
-       projectOwnerId: user.id
+        projectOwnerId: user.id
       }
     });
   },

@@ -132,23 +132,6 @@ type Quota {
   snapshotCount: Int!
 }
 
-# interface Project @abstractEntity(discriminatorField: "platform") {
-#   id: ID!
-#   name: String!
-#   archived: Boolean!
-#   created: DateTime!
-#   createdBy: User!
-#   description: String!
-#   status: ProjectStatus!
-#   projectOwner: User!
-#   primaryTechnicalLead: User!
-#   secondaryTechnicalLead: User
-#   ministry: Ministry!
-#   requestHistory: [Request]
-#   activeEditRequest: Request
-#   count: Int
-# }
-
 # NOTE!!: It is very possible that PublicCloudProject is too general,
 # May need to create a new project type for each platform e.g
 # GoogleCloudProject, AWSProject e.t.c (implements Project)
@@ -323,21 +306,7 @@ enum SortOrder {
   DESCENDING
 }
 
-type AddBookMutationResponse {
-  code: String!
-  success: Boolean!
-  message: String!
-  book: Book
-}
-
-type Book {
-  title: String
-  author: String
-}
-
 type Query {
-  books: [Book] @auth
-
   users: [User!]! @hasRole(role: "admin") @auth
   user(id: ID!): User @hasRole(role: "admin")
   usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
@@ -392,10 +361,7 @@ type Query {
 }
 
 type Mutation {
-  addBook(title: String, author: String): AddBookMutationResponse
-
   signUp: User! @auth
-  # userUpdateSelf()
 
   createUser(input: CreateUserInput!): User!
   # updateUser(input: UpdateUserInput!): User!
