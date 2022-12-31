@@ -19,8 +19,6 @@ const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
 export interface ContextValue {
   kauth: KeycloakContext;
-  roles: string[];
-  authEmail: string;
   prisma: PrismaClient;
 }
 
@@ -34,18 +32,15 @@ let schema = makeExecutableSchema({
 schema = authDirectiveTransformer(schema, "auth");
 
 const app = express();
-
 const { keycloak } = configureKeycloak(app, "/graphql");
-
 const httpServer = http.createServer(app);
 const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   introspection: true
 });
-
 await server.start();
-
+// await connectToDatabase();
 app.use(
   "/graphql",
   cors<cors.CorsRequest>(),
@@ -53,18 +48,18 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req }) => {
       // @ts-ignore
-      const kauth: KeycloakContext = new KeycloakContext({ req }, keycloak);
-
-      const { email: authEmail, resource_access } = kauth.accessToken.content;
+      const kauth = new KeycloakContext({ req }, keycloak);
+      // @ts-ignore
+      const { email, resource_access } = kauth.accessToken.content;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
         roles: []
       };
-
       return {
-        kauth,
-        roles,
-        authEmail,
-        prisma
+        // @ts-ignore
+        kauth: kauth,
+        prisma,
+        autRoles: roles,
+        authEmail: email
       };
     }
   })

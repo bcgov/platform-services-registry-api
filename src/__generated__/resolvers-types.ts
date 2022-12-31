@@ -168,7 +168,7 @@ export type Mutation = {
   createUser: User;
   customPrivateCloudProjectEditRequest: PrivateCloudRequest;
   customPrivateCloudProjectRequest: PrivateCloudRequest;
-  makePrivateCloudRequestDecision: RequestStatus;
+  makePrivateCloudRequestCreateDecision: RequestStatus;
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
@@ -202,7 +202,7 @@ export type MutationCustomPrivateCloudProjectRequestArgs = {
 };
 
 
-export type MutationMakePrivateCloudRequestDecisionArgs = {
+export type MutationMakePrivateCloudRequestCreateDecisionArgs = {
   decision: RequestDecision;
   requestId: Scalars['ID'];
 };
@@ -652,7 +652,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
   customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
-  makePrivateCloudRequestDecision?: Resolver<ResolversTypes['RequestStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
+  makePrivateCloudRequestCreateDecision?: Resolver<ResolversTypes['RequestStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestCreateDecisionArgs, 'decision' | 'requestId'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'projectId'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;

@@ -19,7 +19,7 @@ interface argsValue {
 export const privateCloudProjectRequest: MutationResolvers = async (
   _,
   args: argsValue,
-  { kauth, prisma, roles, authEmail }
+  { roles, authEmail, prisma }
 ) => {
   const {
     metaData,
@@ -29,18 +29,8 @@ export const privateCloudProjectRequest: MutationResolvers = async (
     secondaryTechnicalLead
   } = args;
 
-  const {
-    projectOwnerEmail,
-    primaryTechnicalLeadEmail,
-    secondaryTechnicalLeadEmail
-  } = metaData;
-
   if (
-    ![
-      projectOwnerEmail,
-      primaryTechnicalLeadEmail,
-      secondaryTechnicalLeadEmail
-    ].includes(authEmail) &&
+    !Object.values(metaData).includes(authEmail) &&
     !roles.includes("admin")
   ) {
     throw new Error(

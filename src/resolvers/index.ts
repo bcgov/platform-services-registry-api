@@ -4,7 +4,7 @@ import {
   Resolvers
 } from "../__generated__/resolvers-types";
 import * as userMutations from "./mutations/users.js";
-import * as requestMutations from "./mutations/requests.js";
+import { privateCloudProjectRequest } from "./mutations/privateCloudProjectRequest.js";
 import * as userQueries from "./queries/users.js";
 import User from "./user.js";
 import * as enums from "./enum.js";
@@ -12,7 +12,7 @@ import * as enums from "./enum.js";
 const mutations: MutationResolvers = {
   Mutation: {
     ...userMutations,
-    ...requestMutations
+    privateCloudProjectRequest
   }
 };
 
