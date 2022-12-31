@@ -29,23 +29,23 @@ model User {
 }
 
 model PrivateCloudRequest {
-  id                       String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                     @id @default(auto()) @map("_id") @db.ObjectId
   createdByEmail           String
   decisionMakerEmail       String?
-  projectOwnerId           String  @db.ObjectId
-  projectOwner             User    @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
-  primaryTechnicalLeadId   String  @db.ObjectId
-  primaryTechnicalLead     User    @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLeadId String? @db.ObjectId
-  secondaryTechnicalLead User?                      @relation("requestSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
-  type                   String
-  status                 String
-  active                 Boolean                    @default(true)
-  created                DateTime                   @default(now())
-  decisionDate           DateTime?
-  projectId              String?                    @unique @db.ObjectId
-  project                PrivateCloudProject?       @relation("requestProject", fields: [projectId], references: [id])
-  requestedProject       PrivateCloudProjectEmbeded
+  projectOwnerId           String                     @db.ObjectId
+  projectOwner             User                       @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
+  primaryTechnicalLeadId   String                     @db.ObjectId
+  primaryTechnicalLead     User                       @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLeadId String?                    @db.ObjectId
+  secondaryTechnicalLead   User?                      @relation("requestSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
+  type                     String
+  status                   String
+  active                   Boolean                    @default(true)
+  created                  DateTime                   @default(now())
+  decisionDate             DateTime?
+  projectId                String?                    @unique @db.ObjectId
+  project                  PrivateCloudProject?       @relation("requestProject", fields: [projectId], references: [id])
+  requestedProject         PrivateCloudProjectEmbeded
 }
 
 model PrivateCloudProject {
@@ -85,7 +85,7 @@ model ArchivedPrivateCloudRequest {
   active                   Boolean
   created                  DateTime                   @default(now())
   decisionDate             DateTime
-  projectId                String                     
+  projectId                String
   requestedProject         PrivateCloudProjectEmbeded
 }
 
