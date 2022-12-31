@@ -63,12 +63,12 @@ export const DefaultStorageOptions = {
 };
 
 export const RequestDecision = {
-  APPROVE: "approve",
-  REJECT: "reject"
+  APPROVED: "approved",
+  REJECTED: "rejected"
 };
 
-export const RequestStatus = {
-  PENDING_DECISION: "pending-decision",
+export const RequestDecisionStatus = {
+  PENDING: "pending-decision",
   APPROVED: "approved",
   REJECTED: "rejected"
 };

@@ -9,15 +9,15 @@ enum ProjectStatus {
   INACTIVE
 }
 
-enum RequestStatus {
-  PENDING_DECISION
+enum RequestDecisionStatus {
+  PENDING
   APPROVED
   REJECTED
 }
 
 enum RequestDecision {
-  APPROVE
-  REJECT
+  APPROVED
+  REJECTED
 }
 
 enum RequestType {
@@ -195,7 +195,7 @@ type PrivateCloudRequest {
   createdBy: User!
   decisionMaker: User
   type: RequestType!
-  status: RequestStatus!
+  status: RequestDecisionStatus!
   active: Boolean!
   created: DateTime!
   decisionDate: DateTime
@@ -408,10 +408,10 @@ type Mutation {
   makePrivateCloudRequestCreateDecision(
     requestId: ID!
     decision: RequestDecision!
-  ): RequestStatus! @hasRole(role: "admin")
+  ): RequestDecisionStatus! @hasRole(role: "admin")
 
   # makePrivateCloudRequestDecision(
   #   requestId: ID!
   #   decision: RequestDecision!
-  # ): RequestStatus! @hasRole(role: "admin")
+  # ): RequestDecisionStatus! @hasRole(role: "admin")
 }

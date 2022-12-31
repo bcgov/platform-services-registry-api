@@ -14,6 +14,7 @@ import configureKeycloak from "./auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import { authDirectiveTransformer } from "./auth/directives.js";
 import { PrismaClient } from "@prisma/client";
+import { connectToDatabase } from "./db.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
@@ -23,6 +24,7 @@ export interface ContextValue {
 }
 
 const prisma = new PrismaClient();
+await connectToDatabase();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
@@ -40,7 +42,7 @@ const server = new ApolloServer<ContextValue>({
   introspection: true
 });
 await server.start();
-// await connectToDatabase();
+
 app.use(
   "/graphql",
   cors<cors.CorsRequest>(),

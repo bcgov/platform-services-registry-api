@@ -168,7 +168,7 @@ export type Mutation = {
   createUser: User;
   customPrivateCloudProjectEditRequest: PrivateCloudRequest;
   customPrivateCloudProjectRequest: PrivateCloudRequest;
-  makePrivateCloudRequestCreateDecision: RequestStatus;
+  makePrivateCloudRequestCreateDecision: RequestDecisionStatus;
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
@@ -272,7 +272,7 @@ export type PrivateCloudRequest = {
   id: Scalars['ID'];
   project?: Maybe<PrivateCloudProject>;
   requestedProject?: Maybe<PrivateCloudProject>;
-  status: RequestStatus;
+  status: RequestDecisionStatus;
   type: RequestType;
 };
 
@@ -431,13 +431,13 @@ export type QuotaInput = {
 };
 
 export enum RequestDecision {
-  Approve = 'APPROVE',
-  Reject = 'REJECT'
+  Approved = 'APPROVED',
+  Rejected = 'REJECTED'
 }
 
-export enum RequestStatus {
+export enum RequestDecisionStatus {
   Approved = 'APPROVED',
-  PendingDecision = 'PENDING_DECISION',
+  Pending = 'PENDING',
   Rejected = 'REJECTED'
 }
 
@@ -586,7 +586,7 @@ export type ResolversTypes = ResolversObject<{
   Quota: ResolverTypeWrapper<Quota>;
   QuotaInput: QuotaInput;
   RequestDecision: RequestDecision;
-  RequestStatus: RequestStatus;
+  RequestDecisionStatus: RequestDecisionStatus;
   RequestType: RequestType;
   SignUpInput: SignUpInput;
   SortOrder: SortOrder;
@@ -652,7 +652,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
   customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
-  makePrivateCloudRequestCreateDecision?: Resolver<ResolversTypes['RequestStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestCreateDecisionArgs, 'decision' | 'requestId'>>;
+  makePrivateCloudRequestCreateDecision?: Resolver<ResolversTypes['RequestDecisionStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestCreateDecisionArgs, 'decision' | 'requestId'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'projectId'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
@@ -693,7 +693,7 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   project?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   requestedProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['RequestStatus'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['RequestDecisionStatus'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['RequestType'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

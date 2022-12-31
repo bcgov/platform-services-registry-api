@@ -4,7 +4,7 @@ import {
   MutationResolvers,
   CreateUserInput
 } from "__generated__/resolvers-types";
-import { RequestType, RequestStatus } from "../enum.js";
+import { RequestType, RequestDecisionStatus } from "../enum.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
 import defaultQuota from "../../utils/defaultQuota.js";
 
@@ -43,7 +43,8 @@ export const privateCloudProjectRequest: MutationResolvers = async (
   const createRequest = await prisma.privateCloudRequest.create({
     data: {
       type: RequestType.CREATE,
-      status: RequestStatus.PENDING_DECISION,
+      status: RequestDecisionStatus.PENDING,
+      active: true,
       projectOwner: {
         connectOrCreate: {
           where: {
