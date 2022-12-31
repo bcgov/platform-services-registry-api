@@ -16,10 +16,10 @@ interface argsValue {
   secondaryTechnicalLead: CreateUserInput;
 }
 
-export const privateCloudProjectRequest: MutationResolvers = async (
+const privateCloudProjectRequest: MutationResolvers = async (
   _,
   args: argsValue,
-  { roles, authEmail, prisma }
+  { authRoles, authEmail, prisma }
 ) => {
   const {
     metaData,
@@ -31,7 +31,7 @@ export const privateCloudProjectRequest: MutationResolvers = async (
 
   if (
     !Object.values(metaData).includes(authEmail) &&
-    !roles.includes("admin")
+    !authRoles.includes("admin")
   ) {
     throw new Error(
       "You must assign yourself as a project owner or technical lead to create a project request."
@@ -87,3 +87,5 @@ export const privateCloudProjectRequest: MutationResolvers = async (
 
   return createRequest;
 };
+
+export default privateCloudProjectRequest;

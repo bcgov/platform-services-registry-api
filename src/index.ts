@@ -60,7 +60,7 @@ app.use(
         // @ts-ignore
         kauth: kauth,
         prisma,
-        autRoles: roles,
+        authRoles: roles,
         authEmail: email
       };
     }

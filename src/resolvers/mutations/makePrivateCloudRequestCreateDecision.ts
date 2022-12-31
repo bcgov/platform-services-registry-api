@@ -4,19 +4,14 @@ import {
 } from "__generated__/resolvers-types";
 import { RequestDecision } from "../enum.js";
 
-export const privateCloudProjectRequest: MutationResolvers = async (
+const makePrivateCloudRequestCreateDecision: MutationResolvers = async (
   _,
   args: MutationMakePrivateCloudRequestCreateDecisionArgs,
-  { roles, authEmail, prisma }
+  { authRoles, authEmail, prisma }
 ) => {
   const { requestId, decision } = args;
-  const user = await prisma.user.findUnique({
-    where: {
-      email: authEmail
-    }
-  });
 
-  if (!roles.includes("admin")) {
+  if (!authRoles.includes("admin")) {
     throw new Error("You must be an admin to make a request decision.");
   }
 
@@ -28,9 +23,11 @@ export const privateCloudProjectRequest: MutationResolvers = async (
       status: decision,
       active: decision === RequestDecision.APPROVED,
       decisionDate: new Date(),
-      decisoinMaker: user.id
+      decisionMakerEmail: authEmail
     }
   });
 
   return request;
 };
+
+export default makePrivateCloudRequestCreateDecision;

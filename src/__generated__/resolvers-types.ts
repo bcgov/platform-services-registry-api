@@ -168,7 +168,7 @@ export type Mutation = {
   createUser: User;
   customPrivateCloudProjectEditRequest: PrivateCloudRequest;
   customPrivateCloudProjectRequest: PrivateCloudRequest;
-  makePrivateCloudRequestCreateDecision: RequestDecisionStatus;
+  makePrivateCloudRequestCreateDecision?: Maybe<PrivateCloudRequest>;
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
@@ -653,7 +653,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
   customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;
-  makePrivateCloudRequestCreateDecision?: Resolver<ResolversTypes['RequestDecisionStatus'], ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestCreateDecisionArgs, 'decision' | 'requestId'>>;
+  makePrivateCloudRequestCreateDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationMakePrivateCloudRequestCreateDecisionArgs, 'decision' | 'requestId'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'projectId'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'commonComponents' | 'metaData'>>;

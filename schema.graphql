@@ -409,7 +409,7 @@ type Mutation {
   makePrivateCloudRequestCreateDecision(
     requestId: ID!
     decision: RequestDecision!
-  ): RequestDecisionStatus! @hasRole(role: "admin")
+  ): PrivateCloudRequest @hasRole(role: "admin")
 
   # makePrivateCloudRequestDecision(
   #   requestId: ID!
