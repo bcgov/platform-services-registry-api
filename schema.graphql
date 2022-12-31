@@ -192,11 +192,12 @@ type CommonComponents {
 
 type PrivateCloudRequest {
   id: ID!
+  active: Boolean!
   createdBy: User!
   decisionMaker: User
   type: RequestType!
   status: RequestDecisionStatus!
-  active: Boolean!
+  decisionStatus: RequestDecisionStatus!
   created: DateTime!
   decisionDate: DateTime
   project: PrivateCloudProject

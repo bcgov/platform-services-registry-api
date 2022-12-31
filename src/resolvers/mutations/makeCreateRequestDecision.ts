@@ -20,25 +20,17 @@ export const privateCloudProjectRequest: MutationResolvers = async (
     throw new Error("You must be an admin to make a request decision.");
   }
 
-  let request;
-
-  request = await prisma.privateCloudRequest.update({
+  const request = await prisma.privateCloudRequest.update({
     where: {
       id: requestId
     },
     data: {
       status: decision,
+      active: decision === RequestDecision.APPROVED,
       decisionDate: new Date(),
       decisoinMaker: user.id
     }
   });
-
-  // if (decision === RequestDecision.REJECT) {
-  //   request = await prisma.privateCloudRequest.update({
-
-  if (!request) {
-    throw new Error("Request not found.");
-  }
 
   return request;
 };
