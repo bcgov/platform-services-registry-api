@@ -1,9 +1,3 @@
-import {
-  QueryResolvers,
-  UserResolvers,
-  User
-} from "__generated__/resolvers-types";
-
 export const users = (_, __, { prisma }) => prisma.user.findMany();
 
 export const user = (_, args, { prisma }) =>
