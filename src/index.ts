@@ -24,7 +24,18 @@ export interface ContextValue {
 }
 
 const prisma = new PrismaClient();
-await connectToDatabase();
+
+prisma.$use(async (params, next) => {
+  if (params.model == "PrivateCloudProject") {
+    if (params.action == "findUnique" && params.args.where.id === undefined) {
+      params.action = "findFirst";
+    }
+  }
+
+  return next(params);
+});
+
+// await connectToDatabase();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],

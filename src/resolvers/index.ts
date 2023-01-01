@@ -10,6 +10,7 @@ import * as userQueries from "./queries/users.js";
 import * as requestQueries from "./queries/requests.js";
 import User from "./user.js";
 import PrivateCloudRequest from "./request.js";
+import PrivateCloudProject from "./project.js";
 import * as enums from "./enum.js";
 
 const mutations: MutationResolvers = {
@@ -29,7 +30,8 @@ const resolvers: Resolvers = {
   ...queries,
   ...enums,
   User,
-  PrivateCloudRequest
+  PrivateCloudRequest,
+  PrivateCloudProject
 };
 
 export default resolvers;

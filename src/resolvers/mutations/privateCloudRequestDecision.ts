@@ -2,11 +2,7 @@ import {
   MutationPrivateCloudRequestDecisionArgs,
   MutationResolvers
 } from "__generated__/resolvers-types";
-import {
-  RequestDecision,
-  RequestDecisionStatus,
-  RequestType
-} from "../enum.js";
+import { RequestDecision, RequestDecisionStatus } from "../enum.js";
 import { Prisma as PrismaType } from "@prisma/client";
 
 const privateCloudRequestDecision: MutationResolvers = async (

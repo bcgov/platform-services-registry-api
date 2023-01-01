@@ -18,37 +18,37 @@ export async function connectToDatabase() {
     "PrivateCloudRequest"
   );
 
-  // Create indexes
+  // ** Create indexes **
   // Prisma does not support partial unique indexes. So we drop the one that Prisma created and create a new one.
 
-  let dropIndexResult;
+  // let dropIndexResult;
 
-  try {
-    dropIndexResult = await privateCloudRequest.dropIndex(
-      "PrivateCloudRequest_projectId_key"
-    );
-  } catch (e) {
-    console.log(e);
-  }
+  // try {
+  //   dropIndexResult = await privateCloudRequest.dropIndex(
+  //     "PrivateCloudRequest_projectId_key"
+  //   );
+  // } catch (e) {
+  //   console.log(e);
+  // }
 
-  setTimeout(() => {}, 4000); // Wait for index to drop
+  // setTimeout(() => {}, 4000); // Wait for index to drop
 
-  let createIndexresult;
+  // let createIndexresult;
 
-  try {
-    createIndexresult = await privateCloudRequest.createIndex(
-      { projectId: 1 },
-      {
-        unique: true,
-        partialFilterExpression: { projectId: { $exists: true } }
-      }
-    );
-  } catch (e) {
-    console.log(e);
-  }
+  // try {
+  //   createIndexresult = await privateCloudRequest.createIndex(
+  //     { projectId: 1 },
+  //     {
+  //       unique: true,
+  //       partialFilterExpression: { projectId: { $exists: true } }
+  //     }
+  //   );
+  // } catch (e) {
+  //   console.log(e);
+  // }
 
-  console.log(`Dropped index: ${dropIndexResult}`);
-  console.log(`Created index: ${createIndexresult}`);
+  // console.log(`Dropped index: ${dropIndexResult}`);
+  // console.log(`Created index: ${createIndexresult}`);
 
   collections.privateCloudRequest = privateCloudRequest;
 
