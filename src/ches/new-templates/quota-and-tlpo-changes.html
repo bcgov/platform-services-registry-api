@@ -75,7 +75,6 @@
    </tr>
 </table>
 <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
-{% if isQuotaRequest %}
 <table role="presentation"
    style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
    <tr>
@@ -1407,7 +1406,7 @@
       </td>
    </tr>
 </table>
-{% if isDevelopmentQuotaChanged and toolsQuotaCPURequested%}
+{% if isToolsQuotaChanged and toolsQuotaCPURequested%}
 <div class="two-col"
    style="text-align:center;font-size:0;background-color: #ffffff;  ">
    <!--[if mso]>
@@ -1457,7 +1456,7 @@
    <![endif]-->
 </div>
 {% endif %}
-{% if isProductionQuotaChanged and toolsQuotaMemoryRequested%}
+{% if isToolsQuotaChanged and toolsQuotaMemoryRequested%}
 <div class="two-col"
    style="text-align:center;font-size:0;background-color: #ffffff;  ">
    <!--[if mso]>
@@ -1507,7 +1506,7 @@
    <![endif]-->
 </div>
 {% endif %}
-{% if isProductionQuotaChanged and toolsQuotaStorageRequested%}
+{% if isToolsQuotaChanged and toolsQuotaStorageRequested%}
 <div class="two-col"
    style="text-align:center;font-size:0;background-color: #ffffff;  ">
    <!--[if mso]>
@@ -1559,7 +1558,7 @@
 {% endif %}
 {% endif %}    
 <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;</div>
-{% endif %}
+
 <table role="presentation"
    style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
    <tr>
@@ -1694,18 +1693,7 @@
                      padding-top: 5px;
                      text-align:right;
                      ">
-                     {{ POGitHub }}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ POIDIR }}
+                     {{ POGitHubOrIDIR }}
                   </p>
                </div>
             </div>
@@ -1779,18 +1767,7 @@
                      padding-top: 5px;
                      text-align:right;
                      ">
-                     {{ PriTLGitHub}}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ PriTLIDIR}}
+                     {{ PriTLGitHubOrIDIR}}
                   </p>
                </div>
             </div>
@@ -1865,18 +1842,7 @@
                      padding-top: 5px;
                      text-align:right;
                      ">
-                     {{ SecTLGitHub}}
-                  </p>
-                  <p style="margin:0;
-                     font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                     font-size:14px;
-                     line-height:18px;
-                     color: #131313;
-                     max-width: 90%;
-                     padding-top: 5px;
-                     text-align:right;
-                     ">
-                     {{ SecTLIDIR}}
+                     {{ SecTLGitHubOrIDIR}}
                   </p>
                </div>
             </div>
@@ -2169,7 +2135,6 @@
      "./src/ches/templates/quota-and-tlpo-changes.html",
      {
         
-        isQuotaRequest: ,
       consoleURLProdNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
       isProductionQuotaChanged: ,
       productionQuotaCPURequested: ,
@@ -2205,16 +2170,13 @@
         projectName: ,
         POName: projectOwner.firstName + " " + projectOwner.lastName,
         POEmail: projectOwner.email,
-        POGitHub: ,
-        POIDIR: ,
+        POGitHubOrIDIR: ,
         PriTLName: primaryTechnicalLead.firstName + " " + primaryTechnicalLead.lastName,
         PriTLEmail: ,
-        PriTLGitHub: ,
-        PriTLIDIR: ,
+        PriTLGitHubOrIDIR: ,
         SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,
         SecTLEmail: ,
-        SecTLGitHub: ,
-        SecTLIDIR: ,
+       SecTLGitHubOrIDIR: ,
         licencePlate: ,
         setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
      }

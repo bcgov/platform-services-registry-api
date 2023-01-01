@@ -2,8 +2,8 @@ import RequestType from "../graphql/resolvers/enum/RequestType";
 import RequestStatus from "../graphql/resolvers/enum/RequestStatus";
 import ProjectStatus from "../graphql/resolvers/enum/ProjectStatus";
 import { getDatasources } from "../dataSources";
-import chesService from "../ches";
-import swig from "swig";
+// import chesService from "../ches";
+// import swig from "swig";
 export default async function provisionerCallbackHandler(req, res, next) {
   const dataSources = await getDatasources();
   const {
@@ -145,30 +145,30 @@ export default async function provisionerCallbackHandler(req, res, next) {
       });
     }
 
-    try {chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/templates/provisioning-request-done.html",
-        {
-          // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
-          // humanActionComment: 'HUMAN ACTION COMMENT HERE',
-          projectName: requestedProject.name,
-          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-          POEmail: projectOwner.email,
-          TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
-          TCEmail: primaryTechnicalLead.email,
-          setCluster: requestedProject.cluster,
-          licencePlate: requestedProject.licencePlate,
-          showStandardFooterMessage: true,
-        }
-      ),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${requestedProject.name} OCP 4 Project Approved`,
-      // subject: `${profile.name} OCP 4 Project Set`,
-    })} catch (error) {
-    console.log(error);
-  }
+  //   try {chesService.send({
+  //     bodyType: "html",
+  //     body: swig.renderFile(
+  //       "./src/ches/templates/provisioning-request-done.html",
+  //       {
+  //         // consoleButtons : '<div>CONSOLE BUTTONS GO HERE</div>',
+  //         // humanActionComment: 'HUMAN ACTION COMMENT HERE',
+  //         projectName: requestedProject.name,
+  //         POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+  //         POEmail: projectOwner.email,
+  //         TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+  //         TCEmail: primaryTechnicalLead.email,
+  //         setCluster: requestedProject.cluster,
+  //         licencePlate: requestedProject.licencePlate,
+  //         showStandardFooterMessage: true,
+  //       }
+  //     ),
+  //     to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
+  //     from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+  //     subject: `${requestedProject.name} OCP 4 Project Approved`,
+  //     // subject: `${profile.name} OCP 4 Project Set`,
+  //   })} catch (error) {
+  //   console.log(error);
+  // }
   
 
 

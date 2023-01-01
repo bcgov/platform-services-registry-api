@@ -22,7 +22,7 @@
                                  </th>
                                  <tr>
                                     <td align="center" style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
-                                       <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/recieved.svg" width="340" alt="" style="max-width:100%;height:auto;" />
+                                       <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/recieved.svg" width="340" alt=" Diagram showing two steps. The first step is “Request Received” and the second step is “Request Completed.” The first step is selected." style="max-width:100%;height:auto;" />
                                     </td>
                                  </tr>
                                  <tr>
@@ -256,8 +256,10 @@
                               </table>
                               <![endif]-->
                            </div>
-                           {% endif %}                           
-                           {% endif %}
+                           {% endif %}    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+{% endif %}
                            {% if isDevelopmentQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -435,8 +437,10 @@
                               </table>
                               <![endif]-->
                            </div>
-                           {% endif %}                           
-                           {% endif %}
+                           {% endif %}    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+{% endif %}
                            {% if isTestQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -614,7 +618,9 @@
                               </table>
                               <![endif]-->
                            </div>
-                           {% endif %}
+                           {% endif %}    
+                           <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                           </div>                        
                            {% endif %}
                            {% if isToolsQuotaChanged %}
                            <table role="presentation"
@@ -644,7 +650,7 @@
                                  </td>
                               </tr>
                            </table>
-                           {% if isDevelopmentQuotaChanged and toolsQuotaCPURequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaCPURequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -694,7 +700,7 @@
                               <![endif]-->
                            </div>
                            {% endif %}
-                           {% if isProductionQuotaChanged and toolsQuotaMemoryRequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaMemoryRequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -744,7 +750,7 @@
                               <![endif]-->
                            </div>
                            {% endif %}
-                           {% if isProductionQuotaChanged and toolsQuotaStorageRequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaStorageRequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -793,7 +799,9 @@
                               </table>
                               <![endif]-->
                            </div>                          
-                           {% endif %}
+                           {% endif %}    
+                           <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                           </div>                        
                            {% endif %}
                            <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
                            </div>
@@ -996,8 +1004,10 @@
                               <![endif]-->
                            </div>
                            
-                           {% endif %}                           
-                           {% endif %}
+                           {% endif %}    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+{% endif %}
                            {% if isDevelopmentQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -1176,8 +1186,10 @@
                               <![endif]-->
                            </div>
                            
-                           {% endif %}                           
-                           {% endif %}
+                           {% endif %}    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+{% endif %}
                            {% if isTestQuotaChanged %}
                            <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
@@ -1354,9 +1366,10 @@
                                  </tr>
                               </table>
                               <![endif]-->
-                           </div>
-                          
+                           </div>                          
                            {% endif %}
+                           <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                           </div>   
                            {% endif %}
                            {% if isToolsQuotaChanged %}
                            <table role="presentation"
@@ -1386,7 +1399,7 @@
                                  </td>
                               </tr>
                            </table>
-                           {% if isDevelopmentQuotaChanged and toolsQuotaCPURequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaCPURequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -1436,7 +1449,7 @@
                               <![endif]-->
                            </div>
                            {% endif %}
-                           {% if isProductionQuotaChanged and toolsQuotaMemoryRequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaMemoryRequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -1486,7 +1499,7 @@
                               <![endif]-->
                            </div>
                            {% endif %}
-                           {% if isProductionQuotaChanged and toolsQuotaStorageRequested%}
+                           {% if isToolsQuotaChanged and toolsQuotaStorageRequested%}
                            <div class="two-col"
                               style="text-align:center;font-size:0;background-color: #ffffff;  ">
                               <!--[if mso]>
@@ -1535,8 +1548,10 @@
                               </table>
                               <![endif]-->
                            </div>                          
-                           {% endif %}                           
-                           {% endif %}  
+                           {% endif %}    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+{% endif %}  
                            <div class="spacer" style="line-height:24px; height:15px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
                            </div>
                            <table role="presentation"

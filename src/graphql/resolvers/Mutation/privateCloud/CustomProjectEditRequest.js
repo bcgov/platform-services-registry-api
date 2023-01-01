@@ -4,7 +4,7 @@ import Platform from "../../enum/Platform";
 import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
-import { adminEmails, clusterNames } from "../../../../ches/emailConstants"
+import { adminEmails, clusterNames, emailData } from "../../../../ches/emailConstants"
 
 async function customPrivateCloudProjectEditRequest(_, args, context) {
   const {
@@ -144,9 +144,6 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     toolsQuota: { ...project.toolsQuota, ...toolsQuota }
   });
 
-
-  const projectData = await privateCloudProjects.findByFields({ name: requestedProject.name })
-
   const requestBody = {
     createdBy: user._id,
     status: RequestStatus.PENDING_DECISION,
@@ -200,154 +197,106 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     activeEditRequest: request._id
   });
 
+
   try {
-    // const isProductionQuotaChanged = (JSON.stringify(projectData[0].productionQuota) !== JSON.stringify(requestedProject.productionQuota)) ||
-    //   (JSON.stringify(projectData[0].developmentQuota) !== JSON.stringify(requestedProject.developmentQuota)) ||
-    //   (JSON.stringify(projectData[0].testQuota) !== JSON.stringify(requestedProject.testQuota)) ||
-    //   (JSON.stringify(projectData[0].toolsQuota) !== JSON.stringify(requestedProject.toolsQuota))
- 
-    chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/new-templates/quota-request-received-email.html",
-        {
-          consoleURLProdNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
-          isProductionQuotaChanged: JSON.stringify(projectData[0].productionQuota) !== JSON.stringify(requestedProject.productionQuota),
-          productionQuotaCPURequested: requestedProject.productionQuota.cpuRequests !== projectData[0].productionQuota.cpuRequests ? requestedProject.productionQuota.cpuRequests : null,
-          productionQuotaMemoryRequested: requestedProject.productionQuota.memoryRequests !== projectData[0].productionQuota.memoryRequests ? requestedProject.productionQuota.memoryRequests : null,
-          productionQuotaStorageRequested: requestedProject.productionQuota.storageBlock !== projectData[0].productionQuota.storageBlock ? requestedProject.productionQuota.storageBlock : null,
-          isDevelopmentQuotaChanged: JSON.stringify(projectData[0].developmentQuota) !== JSON.stringify(requestedProject.developmentQuota),
-          consoleURLDevNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
-          developmentQuotaCPURequested: requestedProject.developmentQuota.cpuRequests !== projectData[0].developmentQuota.cpuRequests ? requestedProject.developmentQuota.cpuRequests : null,
-          developmentQuotaMemoryRequested: requestedProject.developmentQuota.memoryRequests !== projectData[0].developmentQuota.memoryRequests ? requestedProject.developmentQuota.memoryRequests : null,
-          developmentQuotaStorageRequested: requestedProject.developmentQuota.storageBlock !== projectData[0].developmentQuota.storageBlock ? requestedProject.developmentQuota.storageBlock : null,
-          isTestQuotaChanged: JSON.stringify(projectData[0].testQuota) !== JSON.stringify(requestedProject.testQuota),
-          consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
-          testQuotaCPURequested: requestedProject.testQuota.cpuRequests !== projectData[0].testQuota.cpuRequests ? requestedProject.testQuota.cpuRequests : null,
-          testQuotaMemoryRequested: requestedProject.testQuota.memoryRequests !== projectData[0].testQuota.memoryRequests ? requestedProject.testQuota.memoryRequests : null,
-          testQuotaStorageRequested: requestedProject.testQuota.storageBlock !== projectData[0].testQuota.memoryRequests ? requestedProject.testQuota.memoryRequests : null,
-          isToolsQuotaChanged: JSON.stringify(projectData[0].toolsQuota) !== JSON.stringify(requestedProject.toolsQuota),
-          consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
-          toolsQuotaCPURequested: requestedProject.toolsQuota.cpuRequests !== projectData[0].toolsQuota.cpuRequests ? requestedProject.toolsQuota.cpuRequests : null,
-          toolsQuotaMemoryRequested: requestedProject.toolsQuota.memoryRequests !== projectData[0].toolsQuota.memoryRequests ? requestedProject.toolsQuota.memoryRequests : null,
-          toolsQuotaStorageRequested: requestedProject.toolsQuota.storageBlock !== projectData[0].toolsQuota.storageBlock ? requestedProject.toolsQuota.storageBlock : null,
-          productionQuotaCPUCurrent: projectData[0].productionQuota.cpuRequests,
-          productionQuotaMemoryCurrent: projectData[0].productionQuota.memoryRequests,
-          productionQuotaStorageCurrent: projectData[0].productionQuota.storageBlock,
-          developmentQuotaCPUCurrent: projectData[0].developmentQuota.cpuRequests,
-          developmentQuotaMemoryCurrent: projectData[0].developmentQuota.memoryRequests,
-          developmentQuotaStorageCurrent: projectData[0].developmentQuota.storageBlock,
-          testQuotaCPUCurrent: projectData[0].testQuota.cpuRequests,
-          testQuotaMemoryCurrent: projectData[0].testQuota.memoryRequests,
-          testQuotaStorageCurrent: projectData[0].testQuota.storageBlock,
-          toolsQuotaCPUCurrent: projectData[0].toolsQuota.cpuRequests,
-          toolsQuotaMemoryCurrent: projectData[0].toolsQuota.memoryRequests,
-          toolsQuotaStorageCurrent: projectData[0].toolsQuota.storageBlock,
-          licencePlate: requestedProject.licencePlate,
-          projectName: requestedProject.name,
-          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-          POEmail: projectOwner.email,
-          POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
-          PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
-          PriTLEmail: primaryTechnicalLead.email,
-          PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
-          SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
-          SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
-          SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-          setCluster: clusterNames.filter(item => item.name === "silver")[0].humanFriendlyName,
-        }
-      ),
-      // For all project contacts. Sent when a new quota edit request is submitted successfully.
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
-        ({ email }) => email
-      ),
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${requestedProject.name} quota change request received`,
-    });
-
-
-    chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/new-templates/super-admin-request-email.html",
-        {
-          requestType: 'Quota editing',
-          isProvisioningRequest: false,
-          isQuotaRequest: true,
-          consoleURLProdNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
-          isProductionQuotaChanged: JSON.stringify(projectData[0].productionQuota) !== JSON.stringify(requestedProject.productionQuota),
-          productionQuotaCPURequested: requestedProject.productionQuota.cpuRequests !== projectData[0].productionQuota.cpuRequests ? requestedProject.productionQuota.cpuRequests : null,
-          productionQuotaMemoryRequested: requestedProject.productionQuota.memoryRequests !== projectData[0].productionQuota.memoryRequests ? requestedProject.productionQuota.memoryRequests : null,
-          productionQuotaStorageRequested: requestedProject.productionQuota.storageBlock !== projectData[0].productionQuota.storageBlock ? requestedProject.productionQuota.storageBlock : null,
-          isDevelopmentQuotaChanged: JSON.stringify(projectData[0].developmentQuota) !== JSON.stringify(requestedProject.developmentQuota),
-          consoleURLDevNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
-          developmentQuotaCPURequested: requestedProject.developmentQuota.cpuRequests !== projectData[0].developmentQuota.cpuRequests ? requestedProject.developmentQuota.cpuRequests : null,
-          developmentQuotaMemoryRequested: requestedProject.developmentQuota.memoryRequests !== projectData[0].developmentQuota.memoryRequests ? requestedProject.developmentQuota.memoryRequests : null,
-          developmentQuotaStorageRequested: requestedProject.developmentQuota.storageBlock !== projectData[0].developmentQuota.storageBlock ? requestedProject.developmentQuota.storageBlock : null,
-          isTestQuotaChanged: JSON.stringify(projectData[0].testQuota) !== JSON.stringify(requestedProject.testQuota),
-          consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
-          testQuotaCPURequested: requestedProject.testQuota.cpuRequests !== projectData[0].testQuota.cpuRequests ? requestedProject.testQuota.cpuRequests : null,
-          testQuotaMemoryRequested: requestedProject.testQuota.memoryRequests !== projectData[0].testQuota.memoryRequests ? requestedProject.testQuota.memoryRequests : null,
-          testQuotaStorageRequested: requestedProject.testQuota.storageBlock !== projectData[0].testQuota.memoryRequests ? requestedProject.testQuota.memoryRequests : null,
-          isToolsQuotaChanged: JSON.stringify(projectData[0].toolsQuota) !== JSON.stringify(requestedProject.toolsQuota),
-          consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
-          toolsQuotaCPURequested: requestedProject.toolsQuota.cpuRequests !== projectData[0].toolsQuota.cpuRequests ? requestedProject.toolsQuota.cpuRequests : null,
-          toolsQuotaMemoryRequested: requestedProject.toolsQuota.memoryRequests !== projectData[0].toolsQuota.memoryRequests ? requestedProject.toolsQuota.memoryRequests : null,
-          toolsQuotaStorageRequested: requestedProject.toolsQuota.storageBlock !== projectData[0].toolsQuota.storageBlock ? requestedProject.toolsQuota.storageBlock : null,
-          productionQuotaCPUCurrent: projectData[0].productionQuota.cpuRequests,
-          productionQuotaMemoryCurrent: projectData[0].productionQuota.memoryRequests,
-          productionQuotaStorageCurrent: projectData[0].productionQuota.storageBlock,
-          developmentQuotaCPUCurrent: projectData[0].developmentQuota.cpuRequests,
-          developmentQuotaMemoryCurrent: projectData[0].developmentQuota.memoryRequests,
-          developmentQuotaStorageCurrent: projectData[0].developmentQuota.storageBlock,
-          testQuotaCPUCurrent: projectData[0].testQuota.cpuRequests,
-          testQuotaMemoryCurrent: projectData[0].testQuota.memoryRequests,
-          testQuotaStorageCurrent: projectData[0].testQuota.storageBlock,
-          toolsQuotaCPUCurrent: projectData[0].toolsQuota.cpuRequests,
-          toolsQuotaMemoryCurrent: projectData[0].toolsQuota.memoryRequests,
-          toolsQuotaStorageCurrent: projectData[0].toolsQuota.storageBlock,
-          licencePlate: requestedProject.licencePlate,
-          projectName: requestedProject.name,
-          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-          POEmail: projectOwner.email,
-          POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
-          PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
-          PriTLEmail: primaryTechnicalLead.email,
-          PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
-          SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
-          SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
-          SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-          setCluster: clusterNames.filter(item => item.name === "silver")[0].humanFriendlyName,
-               }
-      ),
-      //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
-      to: adminEmails,
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `New Quota editing request in Registry waiting for your approval`,
-    });
-
-
-    // chesService.send({
-    //   bodyType: "html",
-    //   body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
-    //     projectName: requestedProject.name,
-    //     POName: projectOwner.firstName + " " + projectOwner.lastName,
-    //     POEmail: projectOwner.email,
-    //     technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
-    //     setCluster: clusterNames.filter(item => item.name === "silver")[0].humanFriendlyName,
-    //     licencePlate: requestedProject.licencePlate,
-    //     showStandardFooterMessage: false, // show "love, Platform services" instead
-    //     // productMinistry: "PRODUCT MINISTRY",
-    //     // productDescription: "Product DESCRIPTION",
-    //   }),
-    //   to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(({ email }) => email),
-    //   from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-    //   subject: `${metaData.name} OCP 4 Project Set`
-    // });
+    if (((JSON.stringify(project.productionQuota) !== JSON.stringify(requestedProject.productionQuota)) ||
+      (JSON.stringify(project.developmentQuota) !== JSON.stringify(requestedProject.developmentQuota)) ||
+      (JSON.stringify(project.testQuota) !== JSON.stringify(requestedProject.testQuota)) ||
+      (JSON.stringify(project.toolsQuota) !== JSON.stringify(requestedProject.toolsQuota))) &&
+      (!requestedProjectOwner && !requestedPrimaryTechnicalLead && !requestedSecondaryTechnicalLead)) {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/quota-request-received-email.html",
+          emailData(requestedProject, project, projectOwner, primaryTechnicalLead, secondaryTechnicalLead)
+        ),
+        // For all project contacts. Sent when a new quota edit request is submitted successfully.
+        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+          ({ email }) => email
+        ),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: `${requestedProject.name} quota change request received`,
+      });
 
 
 
-  }  catch (error) {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/super-admin-request-email.html",
+          emailData(requestedProject, project, projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+            requestType: 'Quota editing',
+            isProvisioningRequest: false,
+            isQuotaRequest: true,
+          })
+        ),
+        //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
+        to: adminEmails,
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: `New Quota editing request in Registry waiting for your approval`,
+      });
+    }
+
+    if (((JSON.stringify(project.productionQuota) === JSON.stringify(requestedProject.productionQuota)) &&
+      (JSON.stringify(project.developmentQuota) === JSON.stringify(requestedProject.developmentQuota)) &&
+      (JSON.stringify(project.testQuota) === JSON.stringify(requestedProject.testQuota)) &&
+      (JSON.stringify(project.toolsQuota) === JSON.stringify(requestedProject.toolsQuota))) &&
+      (requestedProjectOwner || requestedPrimaryTechnicalLead || requestedSecondaryTechnicalLead)) {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/product-contact-change-confirmation-email.html",
+          {
+            licencePlate: requestedProject.licencePlate,
+            projectName: requestedProject.name,
+            POName: `${requestedProjectOwner.firstName} ${requestedProjectOwner.lastName}`,
+            POEmail: requestedProjectOwner.email,
+            POGitHubOrIDIR: requestedProjectOwner.POIDIR ? requestedProjectOwner.POIDIR : requestedProjectOwner.githubId,
+            PriTLName: `${requestedPrimaryTechnicalLead.firstName} ${requestedPrimaryTechnicalLead.lastName}`,
+            PriTLEmail: requestedPrimaryTechnicalLead.email,
+            PriTLGitHubOrIDIR: requestedPrimaryTechnicalLead.POIDIR ? requestedPrimaryTechnicalLead.POIDIR : requestedPrimaryTechnicalLead.githubId,
+            SecTLName: requestedSecondaryTechnicalLead ? `${requestedSecondaryTechnicalLead.firstName} ${requestedSecondaryTechnicalLead.lastName}` : null,
+            SecTLEmail: requestedSecondaryTechnicalLead ? requestedSecondaryTechnicalLead.email : null,
+            SecTLGitHubOrIDIR: requestedSecondaryTechnicalLead ? requestedSecondaryTechnicalLead.POIDIR ? requestedSecondaryTechnicalLead.POIDIR : requestedSecondaryTechnicalLead.githubId : null,
+            setCluster: clusterNames.filter(item => item.name === requestedProject.cluster)[0].humanFriendlyName,
+          }
+        ),
+        // Sent to all new, current, and prior project contacts when the Provisioner processes the request in Openshift. Contacts who were just removed should also receive this email alerting them to these changes.
+        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead, requestedProjectOwner, requestedPrimaryTechnicalLead, requestedSecondaryTechnicalLead].filter(Boolean).map(
+          ({ email }) => email
+        ),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: 'Contact information for your product on Private Cloud Openshift platform has changed',
+      });
+    }
+    if (((JSON.stringify(project.productionQuota) !== JSON.stringify(requestedProject.productionQuota)) ||
+      (JSON.stringify(project.developmentQuota) !== JSON.stringify(requestedProject.developmentQuota)) ||
+      (JSON.stringify(project.testQuota) !== JSON.stringify(requestedProject.testQuota)) ||
+      (JSON.stringify(project.toolsQuota) !== JSON.stringify(requestedProject.toolsQuota))) &&
+      (requestedProjectOwner || requestedPrimaryTechnicalLead || requestedSecondaryTechnicalLead)) {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/quota-and-tlpo-changes.html",
+          emailData(requestedProject, 
+            project, 
+            requestedProjectOwner||projectOwner, 
+            requestedPrimaryTechnicalLead||primaryTechnicalLead, 
+            requestedSecondaryTechnicalLead||secondaryTechnicalLead
+            )
+        ),
+        // Sent to all new, current, and prior project contacts upon form submit. Contacts who were just removed should also receive this email alerting them to these changes.
+        to: [requestedProjectOwner, requestedPrimaryTechnicalLead, requestedSecondaryTechnicalLead, projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+          ({ email }) => email
+        ),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: `${requestedProject.name} quota and product contact change request received`,
+      });
+    }
+
+
+
+  } catch (error) {
     console.log(error);
   }
   return request;

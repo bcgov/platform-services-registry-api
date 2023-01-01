@@ -4,7 +4,7 @@ import Platform from "../../enum/Platform";
 import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
-
+import { adminEmails, clusterNames, emailData } from "../../../../ches/emailConstants"
 async function privateCloudProjectDeleteRequest(_, args, context) {
   const { projectId } = args;
 
@@ -99,25 +99,75 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
   });
 
   try {
+
     chesService.send({
       bodyType: "html",
-      body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
-        projectName: requestedProject.name,
-        POName: projectOwner.firstName + " " + projectOwner.lastName,
-        POEmail: projectOwner.email,
-        technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
-        setCluster: requestedProject.cluster,
-        licensePlate: requestedProject.licensePlate,
-        showStandardFooterMessage: false, // show "love, Platform services" instead
-        productMinistry: "PRODUCT MINISTRY",
-        productDescription: "Product DESCRIPTION"
-      }),
-      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+      body: swig.renderFile(
+        "./src/ches/new-templates/deletion-request-confirmation-email.html",
+        {
+          productDescription: requestedProject.description,
+          productMinistry: requestedProject.ministry,
+          licencePlate: requestedProject.licencePlate,
+          projectName: requestedProject.name,
+          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+          POEmail: projectOwner.email,
+          POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
+          PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+          PriTLEmail: primaryTechnicalLead.email,
+          PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
+          SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
+          SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
+          SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
+          setCluster: clusterNames.filter(item => item.name === requestedProject.cluster)[0].humanFriendlyName,
+        }
+      ),
+      // For all project contacts. Sent when the project set deletion request is successfully submitted
+      to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
         ({ email }) => email
       ),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `${metaData.name} OCP 4 Project Set`
+      subject: `${requestedProject.name} deletion request received`,
     });
+
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/new-templates/super-admin-request-email.html",
+        emailData(requestedProject, project, projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+          requestType: 'Delete',
+          isProvisioningRequest: false,
+          isQuotaRequest: false,
+          productDescription: requestedProject.description,
+          productMinistry: requestedProject.ministry,
+        })
+      ),
+      //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
+      to: adminEmails,
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: `New Delete request in Registry waiting for your approval`,
+    });
+
+
+
+    // chesService.send({
+    //   bodyType: "html",
+    //   body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
+    //     projectName: requestedProject.name,
+    //     POName: projectOwner.firstName + " " + projectOwner.lastName,
+    //     POEmail: projectOwner.email,
+    //     technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
+    //     setCluster: requestedProject.cluster,
+    //     licensePlate: requestedProject.licensePlate,
+    //     showStandardFooterMessage: false, // show "love, Platform services" instead
+    //     productMinistry: "PRODUCT MINISTRY",
+    //     productDescription: "Product DESCRIPTION"
+    //   }),
+    //   to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
+    //     ({ email }) => email
+    //   ),
+    //   from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+    //   subject: `${metaData.name} OCP 4 Project Set`
+    // });
   } catch (error) {
     console.log(error);
   }

@@ -3,7 +3,7 @@ import RequestStatus from "../../enum/RequestStatus";
 import RequestType from "../../enum/RequestType";
 import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import swig from "swig";
-import { clusterNames } from "../../../../ches/emailConstants"
+import { clusterNames, emailData } from "../../../../ches/emailConstants"
 
 async function makePrivateCloudRequestDecision(_, args, context) {
   const { requestId, decision } = args;
@@ -53,7 +53,8 @@ async function makePrivateCloudRequestDecision(_, args, context) {
     secondaryTechnicalLeadId
   );
 
-  console.log(decision, decision === RequestDecision.REJECT)
+  const projectData = request.type === RequestType.EDIT ? await privateCloudProjects.findByFields({ name: requestedProject.name }) : null
+
   if (decision === RequestDecision.REJECT) {
     // Move request to archived requests collection
     await privateCloudActiveRequests.removeDocument(request._id);
@@ -96,95 +97,52 @@ async function makePrivateCloudRequestDecision(_, args, context) {
       { privateCloudActiveRequests: request._id }
     );
 
+
     try {
-        chesService.send({
+      chesService.send({
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/request-denial-email.html",
-          {
-            requestType: request.type === RequestType.CREATE ? "Provisioning" : "Edit",
+          emailData(requestedProject, projectData[0], projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+            requestType: request.type === RequestType.CREATE ? "Provisioning" : request.type === RequestType.EDIT ? "Edit" : "Deletion",
             humanActionComment: requestedProject.humanActionComment || null,
             isProvisioningRequest: request.type === RequestType.CREATE,
             isQuotaRequest: request.type === RequestType.EDIT,
-            consoleURLProdNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
-            isProductionQuotaChanged: null,
-            productionQuotaCPURequested: null,
-            productionQuotaMemoryRequested: null,
-            productionQuotaStorageRequested: null,
-            isDevelopmentQuotaChanged: null,
-            consoleURLDevNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
-            developmentQuotaCPURequested: null,
-            developmentQuotaMemoryRequested: null,
-            developmentQuotaStorageRequested: null,
-            isTestQuotaChanged: null,
-            consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
-            testQuotaCPURequested: null,
-            testQuotaMemoryRequested: null,
-            testQuotaStorageRequested: null,
-            isToolsQuotaChanged: null,
-            consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
-            toolsQuotaCPURequested: null,
-            toolsQuotaMemoryRequested: null,
-            toolsQuotaStorageRequested: null,
-            productionQuotaCPUCurrent: null,
-            productionQuotaMemoryCurrent: null,
-            productionQuotaStorageCurrent: null,
-            developmentQuotaCPUCurrent: null,
-            developmentQuotaMemoryCurrent: null,
-            developmentQuotaStorageCurrent: null,
-            testQuotaCPUCurrent: null,
-            testQuotaMemoryCurrent: null,
-            testQuotaStorageCurrent: null,
-            toolsQuotaCPUCurrent: null,
-            toolsQuotaMemoryCurrent: null,
-            toolsQuotaStorageCurrent: null,
-            productDescription: requestedProject.description,
-            productMinistry: requestedProject.ministry,
-            projectName: requestedProject.name,
-            POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-            POEmail: projectOwner.email,
-            POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
-            PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
-            PriTLEmail: primaryTechnicalLead.email,
-            PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
-            SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
-            SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
-            SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-            setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
-            licencePlate: requestedProject.licencePlate,
-          }
+          })
         ),
         // to all project contacts when any request (quota, provisioning, or deletion) is denied.
         to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
           ({ email }) => email
         ),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${request.type === RequestType.CREATE ? "Provisioning" : "Edit"} request has been rejected`,
+        subject: ` ${request.type === RequestType.CREATE ? "Provisioning" : request.type === RequestType.EDIT ? "Edit" : "Deletion"} request has been rejected`,
       });
 
 
-      request.type !== RequestType.CREATE && chesService.send({
-        bodyType: "html",
-        body: swig.renderFile("./src/ches/templates/request-rejected.html", {
-          humanActionComment: "",
-          projectName: requestedProject.name,
-          POName: projectOwner.firstName + " " + projectOwner.lastName,
-          POEmail: projectOwner.email,
-          technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
-          showStandardFooterMessage: true,
-        }),
-        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
-          .filter(Boolean)
-          .map(({ email }) => email),
-        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: `${requestedProject.name} OCP 4 Project Rejected`,
-        // subject: `${profile.name} OCP 4 Project Set`,
-      });
-    } catch (error) {
+      // request.type !== RequestType.CREATE && chesService.send({
+      //   bodyType: "html",
+      //   body: swig.renderFile("./src/ches/templates/request-rejected.html", {
+      //     humanActionComment: "",
+      //     projectName: requestedProject.name,
+      //     POName: projectOwner.firstName + " " + projectOwner.lastName,
+      //     POEmail: projectOwner.email,
+      //     technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean),
+      //     showStandardFooterMessage: true,
+      //   }),
+      //   to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
+      //     .filter(Boolean)
+      //     .map(({ email }) => email),
+      //   from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      //   subject: `${requestedProject.name} OCP 4 Project Rejected`,
+      //   // subject: `${profile.name} OCP 4 Project Set`,
+      // });
+    }
+    catch (error) {
       console.log(error);
     }
     return RequestStatus.REJECTED;
   } else if (decision === RequestDecision.APPROVE) {
+    console.log(decision,request.type)
     const { acknowledged } = await privateCloudActiveRequests.updateFieldsById(
       request._id,
       {
@@ -199,7 +157,6 @@ async function makePrivateCloudRequestDecision(_, args, context) {
     }
 
     try {
-      console.log(request.type, request.type === RequestType.CREATE)
       if (request.type === RequestType.CREATE) chesService.send({
         bodyType: "html",
         body: swig.renderFile(
@@ -216,7 +173,7 @@ async function makePrivateCloudRequestDecision(_, args, context) {
             SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
             SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
             SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
-            setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
+            setCluster: clusterNames.filter(item => item.name === requestedProject.cluster)[0].humanFriendlyName,
             licencePlate: requestedProject.licencePlate,
           }
         ),
@@ -228,29 +185,58 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         subject: 'Your provisioning request for Private Cloud OpenShift Platform has been completed',
       });
 
+      if (request.type === RequestType.EDIT) {
+        if ((JSON.stringify(projectData[0].productionQuota) !== JSON.stringify(requestedProject.productionQuota)) ||
+          (JSON.stringify(projectData[0].developmentQuota) !== JSON.stringify(requestedProject.developmentQuota)) ||
+          (JSON.stringify(projectData[0].testQuota) !== JSON.stringify(requestedProject.testQuota)) ||
+          (JSON.stringify(projectData[0].toolsQuota) !== JSON.stringify(requestedProject.toolsQuota))) chesService.send({
+            bodyType: "html",
+            body: swig.renderFile(
+              "./src/ches/new-templates/quota-request-completion-email.html",
+              emailData(requestedProject, projectData[0], projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+                consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
+              })
+            ),
+            // For all project contacts.
+            to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+              ({ email }) => email
+            ),
+            from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+            subject: 'Resource quota for your product in Private Cloud Openshift Platform has changed',
+          });
+      }
 
-      if (request.type !== RequestType.CREATE)  chesService.send({
+      if (request.type === RequestType.DELETE){
+        console.log(RequestType.DELETE)
+        chesService.send({
         bodyType: "html",
-        body: swig.renderFile("./src/ches/templates/provisioning-request-done.html", {
-          projectName: requestedProject.name,
-          POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
-          POEmail: projectOwner.email,
-          TCName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
-          TCEmail: primaryTechnicalLead.email,
-          setCluster: clusterNames.filter(item => item.name ===  "silver")[0].humanFriendlyName,
-          licencePlate: requestedProject.licencePlate,
-          showStandardFooterMessage: false, // show "love, Platform services" instead
-          productMinistry: "PRODUCT MINISTRY",
-          productDescription: "Product DESCRIPTION"
-        }),
-        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead]
-          .filter(Boolean)
-          .map(({ email }) => email),
+        body: swig.renderFile(
+          "./src/ches/new-templates/deletion-request-completion-email.html",
+          {
+            projectName: requestedProject.name,
+            productDescription: requestedProject.description,
+            productMinistry: requestedProject.ministry,
+            POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
+            POEmail: projectOwner.email,
+            POGitHubOrIDIR: projectOwner.POIDIR ? projectOwner.POIDIR : projectOwner.githubId,
+            PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+            PriTLEmail: primaryTechnicalLead.email,
+            PriTLGitHubOrIDIR: primaryTechnicalLead.POIDIR ? primaryTechnicalLead.POIDIR : primaryTechnicalLead.githubId,
+            SecTLName: secondaryTechnicalLead ? `${secondaryTechnicalLead.firstName} ${secondaryTechnicalLead.lastName}` : null,
+            SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead.email : null,
+            SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead.POIDIR ? secondaryTechnicalLead.POIDIR : secondaryTechnicalLead.githubId : null,
+            setCluster: clusterNames.filter(item => item.name === requestedProject.cluster)[0].humanFriendlyName,
+            licencePlate: requestedProject.licencePlate,
+          }
+        ),
+        // For all project contacts. Sent when Provisioner processes the project set deletion request in Openshift
+        to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
+          ({ email }) => email
+        ),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: `${requestedProject.name} OCP 4 Project Approved`,
-        // subject: `${profile.name} OCP 4 Project Set`,
+        subject: 'Your product deletion request has been completed',
       });
-
+}
 
     } catch (error) {
       console.log(error);
