@@ -74,22 +74,6 @@ model PrivateCloudProject {
   request                  PrivateCloudRequest? @relation("requestProject")
 }
 
-model ArchivedPrivateCloudRequest {
-  id                       String                     @id @default(auto()) @map("_id") @db.ObjectId
-  createdById              String                     @unique @db.ObjectId
-  decisionMakerId          String                     @unique @db.ObjectId
-  projectOwnerId           String                     @db.ObjectId
-  primaryTechnicalLeadId   String                     @db.ObjectId
-  secondaryTechnicalLeadId String                     @db.ObjectId
-  type                     String
-  status                   String
-  active                   Boolean
-  created                  DateTime                   @default(now())
-  decisionDate             DateTime
-  projectId                String
-  requestedProject         PrivateCloudProjectEmbeded
-}
-
 type PrivateCloudProjectEmbeded {
   name                        String
   licencePlate                String

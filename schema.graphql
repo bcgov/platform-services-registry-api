@@ -406,13 +406,8 @@ type Mutation {
 
   privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest!
 
-  makePrivateCloudRequestCreateDecision(
+  privateCloudRequestDecision(
     requestId: ID!
     decision: RequestDecision!
   ): PrivateCloudRequest @hasRole(role: "admin")
-
-  # makePrivateCloudRequestDecision(
-  #   requestId: ID!
-  #   decision: RequestDecision!
-  # ): RequestDecisionStatus! @hasRole(role: "admin")
 }

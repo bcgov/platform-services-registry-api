@@ -1,13 +1,17 @@
 import {
-  MutationMakePrivateCloudRequestCreateDecisionArgs,
+  MutationPrivateCloudRequestDecisionArgs,
   MutationResolvers
 } from "__generated__/resolvers-types";
-import { RequestDecision, RequestDecisionStatus } from "../enum.js";
+import {
+  RequestDecision,
+  RequestDecisionStatus,
+  RequestType
+} from "../enum.js";
 import { Prisma as PrismaType } from "@prisma/client";
 
-const makePrivateCloudRequestCreateDecision: MutationResolvers = async (
+const privateCloudRequestDecision: MutationResolvers = async (
   _,
-  args: MutationMakePrivateCloudRequestCreateDecisionArgs,
+  args: MutationPrivateCloudRequestDecisionArgs,
   { authRoles, authEmail, prisma }
 ) => {
   const { requestId, decision } = args;
@@ -40,7 +44,16 @@ const makePrivateCloudRequestCreateDecision: MutationResolvers = async (
     throw e;
   }
 
+  if (request.status === RequestDecision.APPROVED) {
+    // Ches emails
+    // Nats message
+  }
+
+  if (request.status === RequestDecision.REJECTED) {
+    // Ches emails
+  }
+
   return request;
 };
 
-export default makePrivateCloudRequestCreateDecision;
+export default privateCloudRequestDecision;
