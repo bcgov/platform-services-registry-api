@@ -304,9 +304,7 @@ export type Query = {
   privateCloudProject: PrivateCloudProject;
   privateCloudProjects: Array<PrivateCloudProject>;
   privateCloudProjectsById: Array<PrivateCloudProject>;
-  privateCloudProjectsCount: Scalars['Int'];
-  privateCloudProjectsPaginated: Array<PrivateCloudProject>;
-  privateCloudProjectsWithFilterSearch: Array<PrivateCloudProject>;
+  privateCloudProjectsPaginated: ProjectsPaginatedOutput;
   privateCloudRequests: Array<PrivateCloudRequest>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
@@ -351,22 +349,10 @@ export type QueryPrivateCloudProjectsByIdArgs = {
 };
 
 
-export type QueryPrivateCloudProjectsCountArgs = {
-  filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
-  search?: InputMaybe<Scalars['String']>;
-};
-
-
 export type QueryPrivateCloudProjectsPaginatedArgs = {
   filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
-  limit: Scalars['Int'];
-  offset: Scalars['Int'];
-  search?: InputMaybe<Scalars['String']>;
-};
-
-
-export type QueryPrivateCloudProjectsWithFilterSearchArgs = {
-  filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
+  page: Scalars['Int'];
+  pageSize: Scalars['Int'];
   search?: InputMaybe<Scalars['String']>;
 };
 
@@ -482,6 +468,12 @@ export type User = {
   privateCloudRequestSecondaryTechnicalLead: Array<Maybe<PrivateCloudRequest>>;
 };
 
+export type ProjectsPaginatedOutput = {
+  __typename?: 'projectsPaginatedOutput';
+  count: Scalars['Int'];
+  projects: Array<PrivateCloudProject>;
+};
+
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -589,6 +581,7 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
+  projectsPaginatedOutput: ResolverTypeWrapper<ProjectsPaginatedOutput>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -616,6 +609,7 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
   User: User;
+  projectsPaginatedOutput: ProjectsPaginatedOutput;
 }>;
 
 export type NonNullInputDirectiveArgs = { };
@@ -705,9 +699,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   privateCloudProject?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectArgs, 'projectId'>>;
   privateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   privateCloudProjectsById?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsByIdArgs>>;
-  privateCloudProjectsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, Partial<QueryPrivateCloudProjectsCountArgs>>;
-  privateCloudProjectsPaginated?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'limit' | 'offset'>>;
-  privateCloudProjectsWithFilterSearch?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsWithFilterSearchArgs>>;
+  privateCloudProjectsPaginated?: Resolver<ResolversTypes['projectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
   privateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   userByEmail?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByEmailArgs, 'email'>>;
@@ -754,6 +746,12 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['projectsPaginatedOutput'] = ResolversParentTypes['projectsPaginatedOutput']> = ResolversObject<{
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  projects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   CommonComponents?: CommonComponentsResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -764,6 +762,7 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
 }>;
 
 export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{

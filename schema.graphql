@@ -299,6 +299,11 @@ enum SortOrder {
   DESCENDING
 }
 
+type projectsPaginatedOutput {
+  projects: [PrivateCloudProject!]!
+  count: Int!
+}
+
 type Query {
   users: [User!]! @hasRole(role: "admin") @auth
   user(id: ID!): User @hasRole(role: "admin")
@@ -309,24 +314,14 @@ type Query {
   privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
 
   privateCloudProjectsPaginated(
-    offset: Int!
-    limit: Int!
+    page: Int!
+    pageSize: Int!
     filter: FilterPrivateCloudProjectsInput
     search: String
-  ): [PrivateCloudProject!]! @hasRole(role: "admin")
-
-  privateCloudProjectsCount(
-    filter: FilterPrivateCloudProjectsInput
-    search: String
-  ): Int! @hasRole(role: "admin")
+  ): projectsPaginatedOutput! @hasRole(role: "admin")
 
   privateCloudProject(projectId: ID!): PrivateCloudProject!
     @hasRole(role: "admin")
-
-  privateCloudProjectsWithFilterSearch(
-    filter: FilterPrivateCloudProjectsInput
-    search: String
-  ): [PrivateCloudProject!]! @hasRole(role: "admin")
 
   privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
