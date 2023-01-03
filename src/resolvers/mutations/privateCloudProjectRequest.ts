@@ -4,9 +4,10 @@ import {
   MutationResolvers,
   CreateUserInput
 } from "__generated__/resolvers-types";
-import { RequestType, RequestDecisionStatus } from "../enum.js";
+import { RequestType, RequestStatus } from "../enum.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
 import defaultQuota from "../../utils/defaultQuota.js";
+import { ProjectStatus } from "../enum.js";
 
 interface argsValue {
   metaData: ProjectMetaDataInput;
@@ -29,26 +30,17 @@ const privateCloudProjectRequest: MutationResolvers = async (
     secondaryTechnicalLead
   } = args;
 
-  if (
-    !Object.values(metaData).includes(authEmail) &&
-    !authRoles.includes("admin")
-  ) {
-    throw new Error(
-      "You must assign yourself as a project owner or technical lead to create a project request."
-    );
-  }
-
   const licencePlate = generateLicensePlate();
 
   const createRequest = await prisma.privateCloudRequest.create({
     data: {
       type: RequestType.CREATE,
-      status: RequestDecisionStatus.PENDING,
+      status: RequestStatus.PENDING,
       active: true,
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: metaData.projectOwnerEmail
+            email: projectOwner.email
           },
           create: projectOwner
         }
@@ -56,31 +48,34 @@ const privateCloudProjectRequest: MutationResolvers = async (
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: metaData.primaryTechnicalLeadEmail
+            email: primaryTechnicalLead.email
           },
           create: primaryTechnicalLead
         }
       },
-      secondaryTechnicalLead: {
-        connectOrCreate: {
-          where: {
-            email: metaData.secondaryTechnicalLeadEmail
-          },
-          create: secondaryTechnicalLead
-        }
-      },
+      secondaryTechnicalLead: secondaryTechnicalLead
+        ? {
+            connectOrCreate: {
+              where: {
+                email: secondaryTechnicalLead.email
+              },
+              create: secondaryTechnicalLead
+            }
+          }
+        : undefined,
       createdByEmail: authEmail,
       requestedProject: {
-        set: {
-          ...metaData,
-          createdByEmail: authEmail,
-          licencePlate: licencePlate,
-          commonComponents: commonComponents,
-          productionQuota: defaultQuota,
-          testQuota: defaultQuota,
-          toolsQuota: defaultQuota,
-          developmentQuota: defaultQuota
-        }
+        ...metaData,
+        projectOwnerEmail: projectOwner.email,
+        primaryTechnicalLeadEmail: primaryTechnicalLead.email,
+        secondaryTechnicalLeadEmail: secondaryTechnicalLead?.email,
+        status: ProjectStatus.ACTIVE,
+        licencePlate: licencePlate,
+        commonComponents: commonComponents,
+        productionQuota: defaultQuota,
+        testQuota: defaultQuota,
+        toolsQuota: defaultQuota,
+        developmentQuota: defaultQuota
       }
     }
   });

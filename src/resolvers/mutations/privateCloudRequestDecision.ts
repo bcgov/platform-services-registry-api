@@ -2,7 +2,7 @@ import {
   MutationPrivateCloudRequestDecisionArgs,
   MutationResolvers
 } from "__generated__/resolvers-types";
-import { RequestDecision, RequestDecisionStatus } from "../enum.js";
+import { RequestDecision, RequestStatus } from "../enum.js";
 import { Prisma as PrismaType } from "@prisma/client";
 
 const privateCloudRequestDecision: MutationResolvers = async (
@@ -22,7 +22,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        status: RequestDecisionStatus.PENDING
+        status: RequestStatus.PENDING
       },
       data: {
         status: decision,

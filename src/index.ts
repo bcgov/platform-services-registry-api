@@ -15,6 +15,7 @@ import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import { authDirectiveTransformer } from "./auth/directives.js";
 import { PrismaClient } from "@prisma/client";
 import { connectToDatabase } from "./db.js";
+import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
@@ -23,17 +24,17 @@ export interface ContextValue {
   prisma: PrismaClient;
 }
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
-prisma.$use(async (params, next) => {
-  if (params.model == "PrivateCloudProject") {
-    if (params.action == "findUnique" && params.args.where.id === undefined) {
-      params.action = "findFirst";
-    }
-  }
+// prisma.$use(async (params, next) => {
+//   if (params.model == "PrivateCloudProject") {
+//     if (params.action == "findUnique" && params.args.where.id === undefined) {
+//       params.action = "findFirst";
+//     }
+//   }
 
-  return next(params);
-});
+//   return next(params);
+// });
 
 // await connectToDatabase();
 
@@ -81,6 +82,8 @@ app.use(
 // The below code is important for auth to work
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.post("/namespace", provisionerCallbackHandler);
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)

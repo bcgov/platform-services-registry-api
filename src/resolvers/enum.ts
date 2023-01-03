@@ -21,7 +21,6 @@ export const Platform = {
 };
 
 export const ProjectStatus = {
-  CREATE_REQUEST: "create-request",
   ACTIVE: "active",
   INACTIVE: "inactive"
 };
@@ -67,10 +66,11 @@ export const RequestDecision = {
   REJECTED: "rejected"
 };
 
-export const RequestDecisionStatus = {
+export const RequestStatus = {
   PENDING: "pending-decision",
   APPROVED: "approved",
-  REJECTED: "rejected"
+  REJECTED: "rejected",
+  PROVISIONED: "provisioned",
 };
 
 export const RequestType = {

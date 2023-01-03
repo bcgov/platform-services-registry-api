@@ -29,12 +29,6 @@ const Project = {
       where: {
         projectId: project.id
       }
-    }),
-  createdBy: async (project, _, { prisma }) =>
-    prisma.user.findUnique({
-      where: {
-        email: project.createdByEmail
-      }
     })
 };
 

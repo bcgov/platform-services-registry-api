@@ -4,15 +4,15 @@ scalar DateTime
 scalar EmailAddress
 
 enum ProjectStatus {
-  CREATE_REQUEST
   ACTIVE
   INACTIVE
 }
 
-enum RequestDecisionStatus {
+enum RequestStatus {
   PENDING
   APPROVED
   REJECTED
+  PROVISIONED
 }
 
 enum RequestDecision {
@@ -159,7 +159,6 @@ type PrivateCloudProject {
   licencePlate: ID!
   archived: Boolean!
   created: DateTime!
-  createdBy: User!
   description: String!
   status: ProjectStatus!
   projectOwner: User!
@@ -196,8 +195,8 @@ type PrivateCloudRequest {
   createdBy: User!
   decisionMaker: User
   type: RequestType!
-  status: RequestDecisionStatus!
-  decisionStatus: RequestDecisionStatus!
+  status: RequestStatus!
+  decisionStatus: RequestStatus!
   created: DateTime!
   decisionDate: DateTime
   project: PrivateCloudProject
@@ -225,19 +224,12 @@ type User {
 input ProjectMetaDataInput {
   name: String!
   description: String!
-  projectOwnerEmail: EmailAddress!
-  primaryTechnicalLeadEmail: EmailAddress!
-  secondaryTechnicalLeadEmail: EmailAddress
   ministry: Ministry!
   cluster: Cluster!
 }
 
 input EditProjectMetaDataInput {
   name: String
-  description: String
-  projectOwnerEmail: EmailAddress
-  primaryTechnicalLeadEmail: EmailAddress
-  secondaryTechnicalLeadEmail: EmailAddress
   ministry: Ministry
   cluster: Cluster
 }
@@ -370,8 +362,8 @@ type Mutation {
   privateCloudProjectRequest(
     metaData: ProjectMetaDataInput!
     commonComponents: CommonComponentsInput!
-    projectOwner: CreateUserInput
-    primaryTechnicalLead: CreateUserInput
+    projectOwner: CreateUserInput!
+    primaryTechnicalLead: CreateUserInput!
     secondaryTechnicalLead: CreateUserInput
   ): PrivateCloudRequest! @nonNullInput @auth
 
@@ -379,6 +371,9 @@ type Mutation {
     projectId: ID!
     metaData: EditProjectMetaDataInput
     commonComponents: CommonComponentsInput
+    projectOwner: CreateUserInput
+    primaryTechnicalLead: CreateUserInput
+    secondaryTechnicalLead: CreateUserInput
     productionQuota: QuotaInput
     developmentQuota: QuotaInput
     testQuota: QuotaInput

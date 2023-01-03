@@ -44,7 +44,7 @@ model PrivateCloudRequest {
   active                   Boolean                    @default(true)
   created                  DateTime                   @default(now())
   decisionDate             DateTime?
-  projectId                String?                    @db.ObjectId 
+  projectId                String?                    @db.ObjectId
   project                  PrivateCloudProject?       @relation(fields: [projectId], references: [id])
   requestedProject         PrivateCloudProjectEmbeded
 }
@@ -52,12 +52,11 @@ model PrivateCloudRequest {
 model PrivateCloudProject {
   id                       String                @id @default(auto()) @map("_id") @db.ObjectId
   name                     String
-  licencePlate             String
-  archived                 Boolean
-  created                  DateTime              @default(now())
-  createdByEmail           String
   description              String
   status                   String
+  licencePlate             String                @unique
+  archived                 Boolean
+  created                  DateTime              @default(now())
   projectOwnerId           String                @db.ObjectId
   projectOwner             User                  @relation("projectOwner", fields: [projectOwnerId], references: [id])
   primaryTechnicalLeadId   String                @db.ObjectId
@@ -76,14 +75,14 @@ model PrivateCloudProject {
 
 type PrivateCloudProjectEmbeded {
   name                        String
+  status                      String
   licencePlate                String
   archived                    Boolean          @default(false)
   created                     DateTime         @default(now())
-  createdByEmail              String
   description                 String
   projectOwnerEmail           String
   primaryTechnicalLeadEmail   String
-  secondaryTechnicalLeadEmail String
+  secondaryTechnicalLeadEmail String?
   ministry                    String
   cluster                     String
   productionQuota             Quota
