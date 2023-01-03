@@ -1,4 +1,4 @@
-export const adminEmails = ['zhanna.kolesnyk@gov.bc.ca', 'zhanna@bcdevexchange.org']
+export const adminEmails = []
 
 export const clusterNames = [
     {

@@ -5,6 +5,7 @@ import sendNatsMessage from "../../../../nats/SendNatsMessage";
 import { ObjectId } from "mongodb";
 import swig from "swig";
 import { adminEmails, clusterNames, emailData } from "../../../../ches/emailConstants"
+
 async function privateCloudProjectDeleteRequest(_, args, context) {
   const { projectId } = args;
 
@@ -65,7 +66,7 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
 
   const requestBody = {
     createdBy: user._id,
-    status: RequestStatus.APPROVED,
+    status: RequestStatus.PENDING_DECISION,
     type: RequestType.DELETE,
     platform: Platform.PRIVATE_CLOUD,
     active: true,
@@ -147,27 +148,6 @@ async function privateCloudProjectDeleteRequest(_, args, context) {
       subject: `New Delete request in Registry waiting for your approval`,
     });
 
-
-
-    // chesService.send({
-    //   bodyType: "html",
-    //   body: swig.renderFile("./src/ches/templates/edit-request-received.html", {
-    //     projectName: requestedProject.name,
-    //     POName: projectOwner.firstName + " " + projectOwner.lastName,
-    //     POEmail: projectOwner.email,
-    //     technicalLeads: [primaryTechnicalLead, secondaryTechnicalLead],
-    //     setCluster: requestedProject.cluster,
-    //     licensePlate: requestedProject.licensePlate,
-    //     showStandardFooterMessage: false, // show "love, Platform services" instead
-    //     productMinistry: "PRODUCT MINISTRY",
-    //     productDescription: "Product DESCRIPTION"
-    //   }),
-    //   to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].map(
-    //     ({ email }) => email
-    //   ),
-    //   from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-    //   subject: `${metaData.name} OCP 4 Project Set`
-    // });
   } catch (error) {
     console.log(error);
   }

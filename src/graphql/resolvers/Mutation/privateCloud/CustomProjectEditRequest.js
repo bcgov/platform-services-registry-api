@@ -62,14 +62,14 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
   }
 
   const projectOwner = await users.findOneById(project.projectOwner);
+
   const primaryTechnicalLead = await users.findOneById(
     project.primaryTechnicalLead
   );
+
   const secondaryTechnicalLead = await users.findOneById(
     project.secondaryTechnicalLead
   );
-
-
 
   let requestedProjectOwner;
   let requestedPrimaryTechnicalLead;
@@ -122,8 +122,6 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     )
       throw new Error("Secondary technical lead not found");
   }
-
-
 
   const requestedProject = await privateCloudActiveRequestedProjects.create({
     ...project,
@@ -197,7 +195,6 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     activeEditRequest: request._id
   });
 
-
   try {
     if (((JSON.stringify(project.productionQuota) !== JSON.stringify(requestedProject.productionQuota)) ||
       (JSON.stringify(project.developmentQuota) !== JSON.stringify(requestedProject.developmentQuota)) ||
@@ -217,8 +214,6 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: `${requestedProject.name} quota change request received`,
       });
-
-
 
       chesService.send({
         bodyType: "html",
@@ -293,8 +288,6 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
         subject: `${requestedProject.name} quota and product contact change request received`,
       });
     }
-
-
 
   } catch (error) {
     console.log(error);

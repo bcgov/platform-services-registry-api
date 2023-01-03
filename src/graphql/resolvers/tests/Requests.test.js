@@ -276,10 +276,12 @@ describe("Mongo Helpers", () => {
           requestId: $requestId,
           decision: $decision
         )
+        $projectId: ID
       }`,
       variables: {
         requestId: newRequestId,
-        decision: "APPROVE"
+        decision: "APPROVE",
+        projectId: null
       }
     });
 

@@ -439,6 +439,7 @@ const typeDefs = gql`
     makePrivateCloudRequestDecision(
       requestId: ID!
       decision: RequestDecision!
+      projectId: ID
     ): RequestStatus! @hasRole(role: "admin")
   }
 `;
