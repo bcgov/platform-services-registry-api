@@ -1,6 +1,17 @@
 export const privateCloudProjects = (_, __, { prisma }) =>
   prisma.privateCloudProject.findMany();
 
+export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
+  prisma.privateCloudProject.findMany({
+    where: {
+      OR: [
+        { projectOwner: { email: authEmail } },
+        { primaryTechnicalLead: { email: authEmail } },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
+  });
+
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let { search, filter = {}, page, pageSize } = args;
   let { ministry, cluster } = filter;
