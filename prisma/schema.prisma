@@ -12,41 +12,36 @@ datasource db {
 }
 
 model User {
-  id                                        String                @id @default(auto()) @map("_id") @db.ObjectId
-  firstName                                 String
-  lastName                                  String
-  email                                     String                @unique
-  githubId                                  String
-  ministry                                  String
-  archived                                  Boolean               @default(false)
-  created                                   DateTime              @default(now())
-  lastSeen                                  DateTime              @updatedAt
-  privateCloudProjectOwner                  PrivateCloudProject[] @relation("projectOwner")
-  privateCloudProjectPrimaryTechnicalLead   PrivateCloudProject[] @relation("primaryTechnicalLead")
-  privateCloudProjectSecondaryTechnicalLead PrivateCloudProject[] @relation("secondaryTechnicalLead")
-  privateCloudRequestProjectOwner           PrivateCloudRequest[] @relation("requestProjectOwner")
-  privateCloudRequestPrimaryTechnicalLead   PrivateCloudRequest[] @relation("requestPrimaryTechnicalLead")
-  privateCloudRequestSecondaryTechnicalLead PrivateCloudRequest[] @relation("requestSecondaryTechnicalLead")
+  id                                                 String                         @id @default(auto()) @map("_id") @db.ObjectId
+  firstName                                          String
+  lastName                                           String
+  email                                              String                         @unique
+  githubId                                           String
+  ministry                                           String
+  archived                                           Boolean                        @default(false)
+  created                                            DateTime                       @default(now())
+  lastSeen                                           DateTime                       @updatedAt
+  privateCloudProjectOwner                           PrivateCloudProject[]          @relation("projectOwner")
+  privateCloudProjectPrimaryTechnicalLead            PrivateCloudProject[]          @relation("primaryTechnicalLead")
+  privateCloudProjectSecondaryTechnicalLead          PrivateCloudProject[]          @relation("secondaryTechnicalLead")
+  privateCloudRequestedProjectOwner                  PrivateCloudRequestedProject[] @relation("requestedProjectOwner")
+  privateCloudRequestedProjectPrimaryTechnicalLead   PrivateCloudRequestedProject[] @relation("requestedPrimaryTechnicalLead")
+  privateCloudRequestedProjectSecondaryTechnicalLead PrivateCloudRequestedProject[] @relation("requestedSecondaryTechnicalLead")
 }
 
 model PrivateCloudRequest {
-  id                       String                     @id @default(auto()) @map("_id") @db.ObjectId
-  createdByEmail           String
-  decisionMakerEmail       String?
-  projectOwnerId           String                     @db.ObjectId
-  projectOwner             User                       @relation("requestProjectOwner", fields: [projectOwnerId], references: [id])
-  primaryTechnicalLeadId   String                     @db.ObjectId
-  primaryTechnicalLead     User                       @relation("requestPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLeadId String?                    @db.ObjectId
-  secondaryTechnicalLead   User?                      @relation("requestSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
-  type                     String
-  status                   String
-  active                   Boolean                    @default(true)
-  created                  DateTime                   @default(now())
-  decisionDate             DateTime?
-  projectId                String?                    @db.ObjectId
-  project                  PrivateCloudProject?       @relation(fields: [projectId], references: [id])
-  requestedProject         PrivateCloudProjectEmbeded
+  id                 String                       @id @default(auto()) @map("_id") @db.ObjectId
+  createdByEmail     String
+  decisionMakerEmail String?
+  type               String
+  status             String
+  active             Boolean                      @default(true)
+  created            DateTime                     @default(now())
+  decisionDate       DateTime?
+  projectId          String?                      @db.ObjectId
+  project            PrivateCloudProject?         @relation("project", fields: [projectId], references: [id])
+  requestedProjectId String                       @unique @db.ObjectId
+  requestedProject   PrivateCloudRequestedProject @relation("requestedProject", fields: [requestedProjectId], references: [id])
 }
 
 model PrivateCloudProject {
@@ -61,8 +56,8 @@ model PrivateCloudProject {
   projectOwner             User                  @relation("projectOwner", fields: [projectOwnerId], references: [id])
   primaryTechnicalLeadId   String                @db.ObjectId
   primaryTechnicalLead     User                  @relation("primaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
-  secondaryTechnicalLeadId String                @db.ObjectId
-  secondaryTechnicalLead   User                  @relation("secondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLeadId String?               @db.ObjectId
+  secondaryTechnicalLead   User?                 @relation("secondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
   ministry                 String
   cluster                  String
   productionQuota          Quota
@@ -70,26 +65,31 @@ model PrivateCloudProject {
   developmentQuota         Quota
   toolsQuota               Quota
   commonComponents         CommonComponents
-  requests                 PrivateCloudRequest[]
+  requests                 PrivateCloudRequest[] @relation("project")
 }
 
-type PrivateCloudProjectEmbeded {
-  name                        String
-  status                      String
-  licencePlate                String
-  archived                    Boolean          @default(false)
-  created                     DateTime         @default(now())
-  description                 String
-  projectOwnerEmail           String
-  primaryTechnicalLeadEmail   String
-  secondaryTechnicalLeadEmail String?
-  ministry                    String
-  cluster                     String
-  productionQuota             Quota
-  testQuota                   Quota
-  developmentQuota            Quota
-  toolsQuota                  Quota
-  commonComponents            CommonComponents
+model PrivateCloudRequestedProject {
+  id                       String               @id @default(auto()) @map("_id") @db.ObjectId
+  name                     String
+  description              String
+  status                   String
+  licencePlate             String               @unique
+  archived                 Boolean
+  created                  DateTime             @default(now())
+  projectOwnerId           String               @db.ObjectId
+  projectOwner             User                 @relation("requestedProjectOwner", fields: [projectOwnerId], references: [id])
+  primaryTechnicalLeadId   String               @db.ObjectId
+  primaryTechnicalLead     User                 @relation("requestedPrimaryTechnicalLead", fields: [primaryTechnicalLeadId], references: [id])
+  secondaryTechnicalLeadId String?              @db.ObjectId
+  secondaryTechnicalLead   User?                @relation("requestedSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
+  ministry                 String
+  cluster                  String
+  productionQuota          Quota
+  testQuota                Quota
+  developmentQuota         Quota
+  toolsQuota               Quota
+  commonComponents         CommonComponents
+  requestedProject         PrivateCloudRequest? @relation("requestedProject")
 }
 
 type Quota {

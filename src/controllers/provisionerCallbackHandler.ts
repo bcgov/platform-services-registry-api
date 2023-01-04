@@ -6,82 +6,16 @@ const provisionerCallbackHandler = async (req, res, next) => {
   try {
     const { prefix: licencePlate } = req.body;
 
-    const request = await prisma.privateCloudRequest.findFirst({
-      where: {
-        AND: [
-          {
-            requestedProject: {
-              is: {
-                licencePlate: licencePlate
-              }
-            }
-          },
-          {
-            status: RequestStatus.APPROVED
-          },
-          {
-            active: true
-          }
-        ]
-      }
-    });
-
-    if (request.status !== RequestStatus.APPROVED) {
-      throw new Error("Request not approved.");
-    }
-
-    if (request === null) {
-      throw new Error("Request not found or not approved.");
-    }
-
-    const requestedProject = request.requestedProject;
-
-    const {
-      projectOwnerEmail,
-      primaryTechnicalLeadEmail,
-      secondaryTechnicalLeadEmail,
-      ...rest
-    } = requestedProject;
-
-    const projectOwner = {
-      connect: {
-        email: projectOwnerEmail
-      }
-    };
-
-    const primaryTechnicalLead = {
-      connect: {
-        email: primaryTechnicalLeadEmail
-      }
-    };
-
-    const secondaryTechnicalLead = secondaryTechnicalLeadEmail
-      ? {
-          connect: {
-            email: secondaryTechnicalLeadEmail
-          }
+    const { id, ...requestedProject } =
+      await prisma.privateCloudRequestedProject.findFirst({
+        where: {
+          licencePlate: licencePlate
         }
-      : undefined;
+      });
 
-    const createProjectQuery: Prisma.PrivateCloudProjectCreateInput = {
-      ...rest,
-      status: ProjectStatus.ACTIVE,
-      projectOwner,
-      primaryTechnicalLead,
-      secondaryTechnicalLead
-    };
-
-    const project = await prisma.privateCloudProject.upsert({
+    const updateRequest = prisma.privateCloudRequest.update({
       where: {
-        licencePlate: licencePlate
-      },
-      update: createProjectQuery,
-      create: createProjectQuery
-    });
-
-    const updateRequest = await prisma.privateCloudRequest.update({
-      where: {
-        id: request.id
+        requestedProjectId: id
       },
       data: {
         status: RequestStatus.PROVISIONED,
@@ -89,13 +23,21 @@ const provisionerCallbackHandler = async (req, res, next) => {
       }
     });
 
-    // // Put the above in a transaction
+    const upsertProject = prisma.privateCloudProject.upsert({
+      where: {
+        licencePlate: licencePlate
+      },
+      update: requestedProject,
+      create: requestedProject
+    });
 
-    res.status(200).end();
+    await prisma.$transaction([updateRequest, upsertProject]);
   } catch (error) {
     console.log(error);
     res.status(400).end();
   }
+
+  res.status(200).end();
 };
 
 export default provisionerCallbackHandler;

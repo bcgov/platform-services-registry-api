@@ -37,45 +37,45 @@ const privateCloudProjectRequest: MutationResolvers = async (
       type: RequestType.CREATE,
       status: RequestStatus.PENDING,
       active: true,
-      projectOwner: {
-        connectOrCreate: {
-          where: {
-            email: projectOwner.email
-          },
-          create: projectOwner
-        }
-      },
-      primaryTechnicalLead: {
-        connectOrCreate: {
-          where: {
-            email: primaryTechnicalLead.email
-          },
-          create: primaryTechnicalLead
-        }
-      },
-      secondaryTechnicalLead: secondaryTechnicalLead
-        ? {
-            connectOrCreate: {
-              where: {
-                email: secondaryTechnicalLead.email
-              },
-              create: secondaryTechnicalLead
-            }
-          }
-        : undefined,
       createdByEmail: authEmail,
       requestedProject: {
-        ...metaData,
-        projectOwnerEmail: projectOwner.email,
-        primaryTechnicalLeadEmail: primaryTechnicalLead.email,
-        secondaryTechnicalLeadEmail: secondaryTechnicalLead?.email,
-        status: ProjectStatus.ACTIVE,
-        licencePlate: licencePlate,
-        commonComponents: commonComponents,
-        productionQuota: defaultQuota,
-        testQuota: defaultQuota,
-        toolsQuota: defaultQuota,
-        developmentQuota: defaultQuota
+        create: {
+          ...metaData,
+          status: ProjectStatus.INACTIVE,
+          licencePlate: licencePlate,
+          commonComponents: commonComponents,
+          productionQuota: defaultQuota,
+          testQuota: defaultQuota,
+          toolsQuota: defaultQuota,
+          developmentQuota: defaultQuota,
+          archived: false,
+          projectOwner: {
+            connectOrCreate: {
+              where: {
+                email: projectOwner.email
+              },
+              create: projectOwner
+            }
+          },
+          primaryTechnicalLead: {
+            connectOrCreate: {
+              where: {
+                email: primaryTechnicalLead.email
+              },
+              create: primaryTechnicalLead
+            }
+          },
+          secondaryTechnicalLead: secondaryTechnicalLead
+            ? {
+                connectOrCreate: {
+                  where: {
+                    email: secondaryTechnicalLead.email
+                  },
+                  create: secondaryTechnicalLead
+                }
+              }
+            : undefined
+        }
       }
     }
   });

@@ -20,6 +20,15 @@ const Request = {
           where: {
             id: request.projectId
           }
+        }),
+
+  requestedProject: async (request, _, { prisma }) =>
+    request.requestedProjectId === null
+      ? null
+      : prisma.privateCloudRequestedProject.findUnique({
+          where: {
+            id: request.requestedProjectId
+          }
         })
 };
 
