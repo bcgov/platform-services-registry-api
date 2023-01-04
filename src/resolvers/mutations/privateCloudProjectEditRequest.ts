@@ -6,9 +6,14 @@ import {
   QuotaInput
 } from "__generated__/resolvers-types";
 import { RequestType, RequestStatus } from "../enum.js";
-import mergeProjects from "../helpers/mergeProjects.js";
+import {
+  PrivateCloudProject,
+  PrivateCloudRequest,
+  PrivateCloudRequestedProject
+} from "@prisma/client";
 
 interface argsValue {
+  projectId: string;
   metaData: ProjectMetaDataInput;
   commonComponents: CommonComponentsInput;
   projectOwner: CreateUserInput;
@@ -29,28 +34,30 @@ const mergeQuotas = (incoming, existsing) => ({
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
-  args,
+  args: argsValue,
   { authEmail, prisma }
 ) => {
-  const existingRequest = await prisma.privateCloudRequest.findFirst({
-    where: {
-      AND: [
-        { id: args.requestId },
-        { status: RequestStatus.APPROVED },
-        { active: true }
-      ]
-    }
-  });
+  const existingRequest: PrivateCloudRequest =
+    await prisma.privateCloudRequest.findFirst({
+      where: {
+        AND: [
+          { projectId: args.projectId },
+          { status: RequestStatus.APPROVED },
+          { active: true }
+        ]
+      }
+    });
 
   if (existingRequest !== null) {
     throw new Error("There is already an active request for this project.");
   }
 
-  const project = await prisma.privateCloudProject.findUnique({
-    where: {
-      id: args.projectId
-    }
-  });
+  const project: PrivateCloudProject =
+    await prisma.privateCloudProject.findUnique({
+      where: {
+        id: args.projectId
+      }
+    });
 
   const {
     id,
@@ -120,22 +127,23 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       : undefined
   };
 
-  const editRequest = await prisma.privateCloudRequest.create({
-    data: {
-      type: RequestType.EDIT,
-      status: RequestStatus.PENDING,
-      active: true,
-      createdByEmail: authEmail,
-      requestedProject: {
-        create: requestedProject
-      },
-      project: {
-        connect: {
-          id: args.projectId
+  const editRequest: PrivateCloudRequest =
+    await prisma.privateCloudRequest.create({
+      data: {
+        type: RequestType.EDIT,
+        status: RequestStatus.PENDING,
+        active: true,
+        createdByEmail: authEmail,
+        requestedProject: {
+          create: requestedProject
+        },
+        project: {
+          connect: {
+            id: args.projectId
+          }
         }
       }
-    }
-  });
+    });
 
   return editRequest;
 };
