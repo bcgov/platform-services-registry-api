@@ -301,7 +301,7 @@ enum SortOrder {
 
 type projectsPaginatedOutput {
   projects: [PrivateCloudProject!]!
-  count: Int!
+  total: Int!
 }
 
 type Query {
@@ -320,13 +320,13 @@ type Query {
     search: String
   ): projectsPaginatedOutput! @hasRole(role: "admin")
 
-  privateCloudProject(projectId: ID!): PrivateCloudProject!
+  privateCloudProjectById(projectId: ID!): PrivateCloudProject!
     @hasRole(role: "admin")
 
   privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
-  userPrivateCloudProject(projectId: ID!): PrivateCloudProject! @auth
-  userPrivateCloudProjectsById(projectIds: [ID!]): PrivateCloudProject! @auth
+  userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
+  userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
 
   privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
   privateCloudActiveRequest(requestId: ID!): PrivateCloudRequest!
@@ -335,15 +335,9 @@ type Query {
   privateCloudActiveRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
     @hasRole(role: "admin")
   userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
-  userPrivateCloudActiveRequest(requestId: ID!): PrivateCloudRequest! @auth
-  userPrivateCloudActiveRequestsById(requestIds: [ID!]): PrivateCloudRequest!
+  userPrivateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest! @auth
+  userPrivateCloudActiveRequestsByIds(requestIds: [ID!]): PrivateCloudRequest!
     @auth
-
-  privateCloudArchivedRequest(requestId: ID!): PrivateCloudRequest!
-    @hasRole(role: "admin")
-  privateCloudArchivedRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
-  privateCloudArchivedRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
-    @hasRole(role: "admin")
 
   # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
 }

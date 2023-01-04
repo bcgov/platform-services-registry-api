@@ -1,9 +1,49 @@
 export const privateCloudProjects = (_, __, { prisma }) =>
   prisma.privateCloudProject.findMany();
 
+export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
+  prisma.privateCloudProject.findUnique({
+    where: {
+      id: projectId
+    }
+  });
+
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
   prisma.privateCloudProject.findMany({
     where: {
+      OR: [
+        { projectOwner: { email: authEmail } },
+        { primaryTechnicalLead: { email: authEmail } },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
+  });
+
+export const userPrivateCloudProjectById = async (
+  _,
+  { projectId },
+  { prisma, user, authEmail }
+) =>
+  await prisma.privateCloudProject.findFirst({
+    where: {
+      id: projectId,
+      OR: [
+        { projectOwner: { email: authEmail } },
+        { primaryTechnicalLead: { email: authEmail } },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
+  });
+
+export const userPrivateCloudProjectsByIds = async (
+  _,
+  { projectIds },
+
+  { prisma, user, authEmail }
+) =>
+  await prisma.privateCloudProject.findMany({
+    where: {
+      id: { in: projectIds },
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -68,6 +108,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     skip: offset,
     take: pageSize
   });
+
   const total = await prisma.privateCloudProject.count({
     where: {
       AND: [
@@ -114,8 +155,10 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     }
   });
 
+  console.log(total)
+
   return {
     projects,
-    total: 4
+    total
   };
 };

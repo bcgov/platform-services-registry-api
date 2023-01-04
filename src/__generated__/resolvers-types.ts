@@ -298,22 +298,19 @@ export type Query = {
   privateCloudActiveRequest: PrivateCloudRequest;
   privateCloudActiveRequests: Array<PrivateCloudRequest>;
   privateCloudActiveRequestsById: Array<PrivateCloudRequest>;
-  privateCloudArchivedRequest: PrivateCloudRequest;
-  privateCloudArchivedRequests: Array<PrivateCloudRequest>;
-  privateCloudArchivedRequestsById: Array<PrivateCloudRequest>;
-  privateCloudProject: PrivateCloudProject;
+  privateCloudProjectById: PrivateCloudProject;
   privateCloudProjects: Array<PrivateCloudProject>;
   privateCloudProjectsById: Array<PrivateCloudProject>;
   privateCloudProjectsPaginated: ProjectsPaginatedOutput;
   privateCloudRequests: Array<PrivateCloudRequest>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
-  userPrivateCloudActiveRequest: PrivateCloudRequest;
+  userPrivateCloudActiveRequestById: PrivateCloudRequest;
   userPrivateCloudActiveRequests: Array<PrivateCloudRequest>;
-  userPrivateCloudActiveRequestsById: PrivateCloudRequest;
-  userPrivateCloudProject: PrivateCloudProject;
+  userPrivateCloudActiveRequestsByIds: PrivateCloudRequest;
+  userPrivateCloudProjectById: PrivateCloudProject;
   userPrivateCloudProjects: Array<PrivateCloudProject>;
-  userPrivateCloudProjectsById: PrivateCloudProject;
+  userPrivateCloudProjectsByIds: PrivateCloudProject;
   users: Array<User>;
   usersByIds: Array<User>;
 };
@@ -329,17 +326,7 @@ export type QueryPrivateCloudActiveRequestsByIdArgs = {
 };
 
 
-export type QueryPrivateCloudArchivedRequestArgs = {
-  requestId: Scalars['ID'];
-};
-
-
-export type QueryPrivateCloudArchivedRequestsByIdArgs = {
-  requestIds: Scalars['ID'];
-};
-
-
-export type QueryPrivateCloudProjectArgs = {
+export type QueryPrivateCloudProjectByIdArgs = {
   projectId: Scalars['ID'];
 };
 
@@ -367,22 +354,22 @@ export type QueryUserByEmailArgs = {
 };
 
 
-export type QueryUserPrivateCloudActiveRequestArgs = {
+export type QueryUserPrivateCloudActiveRequestByIdArgs = {
   requestId: Scalars['ID'];
 };
 
 
-export type QueryUserPrivateCloudActiveRequestsByIdArgs = {
+export type QueryUserPrivateCloudActiveRequestsByIdsArgs = {
   requestIds?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 
-export type QueryUserPrivateCloudProjectArgs = {
+export type QueryUserPrivateCloudProjectByIdArgs = {
   projectId: Scalars['ID'];
 };
 
 
-export type QueryUserPrivateCloudProjectsByIdArgs = {
+export type QueryUserPrivateCloudProjectsByIdsArgs = {
   projectIds?: InputMaybe<Array<Scalars['ID']>>;
 };
 
@@ -470,8 +457,8 @@ export type User = {
 
 export type ProjectsPaginatedOutput = {
   __typename?: 'projectsPaginatedOutput';
-  count: Scalars['Int'];
   projects: Array<PrivateCloudProject>;
+  total: Scalars['Int'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -693,22 +680,19 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   privateCloudActiveRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestArgs, 'requestId'>>;
   privateCloudActiveRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   privateCloudActiveRequestsById?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestsByIdArgs, 'requestIds'>>;
-  privateCloudArchivedRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudArchivedRequestArgs, 'requestId'>>;
-  privateCloudArchivedRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
-  privateCloudArchivedRequestsById?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<QueryPrivateCloudArchivedRequestsByIdArgs, 'requestIds'>>;
-  privateCloudProject?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectArgs, 'projectId'>>;
+  privateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectByIdArgs, 'projectId'>>;
   privateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   privateCloudProjectsById?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsByIdArgs>>;
   privateCloudProjectsPaginated?: Resolver<ResolversTypes['projectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
   privateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   userByEmail?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByEmailArgs, 'email'>>;
-  userPrivateCloudActiveRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudActiveRequestArgs, 'requestId'>>;
+  userPrivateCloudActiveRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudActiveRequestByIdArgs, 'requestId'>>;
   userPrivateCloudActiveRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
-  userPrivateCloudActiveRequestsById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, Partial<QueryUserPrivateCloudActiveRequestsByIdArgs>>;
-  userPrivateCloudProject?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudProjectArgs, 'projectId'>>;
+  userPrivateCloudActiveRequestsByIds?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, Partial<QueryUserPrivateCloudActiveRequestsByIdsArgs>>;
+  userPrivateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudProjectByIdArgs, 'projectId'>>;
   userPrivateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
-  userPrivateCloudProjectsById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, Partial<QueryUserPrivateCloudProjectsByIdArgs>>;
+  userPrivateCloudProjectsByIds?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, Partial<QueryUserPrivateCloudProjectsByIdsArgs>>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   usersByIds?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUsersByIdsArgs, 'ids'>>;
 }>;
@@ -747,8 +731,8 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
 }>;
 
 export type ProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['projectsPaginatedOutput'] = ResolversParentTypes['projectsPaginatedOutput']> = ResolversObject<{
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   projects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

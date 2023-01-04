@@ -22,3 +22,10 @@ export const userByEmail = (_, args, { prisma }) =>
       email: args.email
     }
   });
+
+export const me = (_, __, { prisma, authEmail }) =>
+  prisma.user.findUnique({
+    where: {
+      email: authEmail
+    }
+  });
