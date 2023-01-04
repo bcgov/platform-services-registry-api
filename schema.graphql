@@ -230,6 +230,7 @@ input ProjectMetaDataInput {
 
 input EditProjectMetaDataInput {
   name: String
+  description: String
   ministry: Ministry
   cluster: Cluster
 }

@@ -113,6 +113,7 @@ export enum DefaultStorageOptions {
 
 export type EditProjectMetaDataInput = {
   cluster?: InputMaybe<Cluster>;
+  description?: InputMaybe<Scalars['String']>;
   ministry?: InputMaybe<Ministry>;
   name?: InputMaybe<Scalars['String']>;
 };

@@ -20,6 +20,13 @@ interface argsValue {
   developmentQuota: QuotaInput;
 }
 
+const mergeQuotas = (incoming, existsing) => ({
+  ...existsing,
+  ...incoming?.cpu,
+  ...incoming?.memory,
+  ...incoming?.storage
+});
+
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
   args,
@@ -39,44 +46,79 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     throw new Error("There is already an active request for this project.");
   }
 
-  const users = [
-    args.projectOwner,
-    args.primaryTechnicalLead,
-    args.secondaryTechnicalLead
-  ].filter(Boolean);
-
-  // Create users if they don't exist
-  if (users.length > 0) {
-    try {
-      await prisma.user.createMany({
-        data: users
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  const {
-    projectOwner,
-    primaryTechnicalLead,
-    secondaryTechnicalLead,
-    ...project
-  } = await prisma.privateCloudProject.findUnique({
+  const project = await prisma.privateCloudProject.findUnique({
     where: {
       id: args.projectId
-    },
-    include: {
-      projectOwner: true,
-      primaryTechnicalLead: true,
-      secondaryTechnicalLead: true
     }
   });
 
-  const requestedProject = mergeProjects(project, args, {
-    projectOwner,
-    primaryTechnicalLead,
-    secondaryTechnicalLead
-  });
+  const {
+    id,
+    projectOwnerId,
+    primaryTechnicalLeadId,
+    secondaryTechnicalLeadId,
+    productionQuota,
+    testQuota,
+    toolsQuota,
+    developmentQuota,
+    ...rest
+  } = project;
+
+  const requestedProject = {
+    ...rest,
+    ...args.metaData,
+    toolsQuota: mergeQuotas(args.toolsQuota, project.toolsQuota),
+    productionQuota: mergeQuotas(args.productionQuota, project.productionQuota),
+    testQuota: mergeQuotas(args.testQuota, project.testQuota),
+    developmentQuota: mergeQuotas(
+      args.developmentQuota,
+      project.developmentQuota
+    ),
+    projectOwner: args.projectOwner
+      ? {
+          connectOrCreate: {
+            where: {
+              email: args.projectOwner.email
+            },
+            create: args.projectOwner
+          }
+        }
+      : {
+          connect: {
+            id: projectOwnerId
+          }
+        },
+    primaryTechnicalLead: args.primaryTechnicalLead
+      ? {
+          connectOrCreate: {
+            where: {
+              email: args.primaryTechnicalLead.email
+            },
+            create: args.primaryTechnicalLead
+          }
+        }
+      : {
+          connect: {
+            id: primaryTechnicalLeadId
+          }
+        },
+    secondaryTechnicalLead: args.secondaryTechnicalLead
+      ? {
+          connectOrCreate: {
+            where: {
+              email: args.secondaryTechnicalLead.email
+            },
+            create: args.secondaryTechnicalLead
+          }
+        }
+      : secondaryTechnicalLeadId
+      ? {
+          connect: {
+            id: secondaryTechnicalLeadId
+          }
+        }
+      : undefined
+  };
 
   const editRequest = await prisma.privateCloudRequest.create({
     data: {
@@ -84,29 +126,14 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       status: RequestStatus.PENDING,
       active: true,
       createdByEmail: authEmail,
+      requestedProject: {
+        create: requestedProject
+      },
       project: {
         connect: {
           id: args.projectId
         }
-      },
-      projectOwner: {
-        connect: {
-          id: project.projectOwnerId
-        }
-      },
-      primaryTechnicalLead: {
-        connect: {
-          id: project.primaryTechnicalLeadId
-        }
-      },
-      secondaryTechnicalLead: project.secondaryTechnicalLeadId
-        ? {
-            connect: {
-              id: project.secondaryTechnicalLeadId
-            }
-          }
-        : undefined,
-      requestedProject: requestedProject
+      }
     }
   });
 

@@ -73,7 +73,7 @@ model PrivateCloudRequestedProject {
   name                     String
   description              String
   status                   String
-  licencePlate             String               @unique
+  licencePlate             String
   archived                 Boolean
   created                  DateTime             @default(now())
   projectOwnerId           String               @db.ObjectId
