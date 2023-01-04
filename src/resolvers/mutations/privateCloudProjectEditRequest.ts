@@ -6,6 +6,7 @@ import {
   QuotaInput
 } from "__generated__/resolvers-types";
 import { RequestType, RequestStatus } from "../enum.js";
+import mergeProjects from "../helpers/mergeProjects.js";
 
 interface argsValue {
   metaData: ProjectMetaDataInput;
@@ -27,15 +28,9 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   const existingRequest = await prisma.privateCloudRequest.findFirst({
     where: {
       AND: [
-        {
-          id: args.requestId
-        },
-        {
-          status: RequestStatus.APPROVED
-        },
-        {
-          active: true
-        }
+        { id: args.requestId },
+        { status: RequestStatus.APPROVED },
+        { active: true }
       ]
     }
   });
@@ -62,10 +57,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   }
 
   const {
-    id,
-    projectOwnerId,
-    primaryTechnicalLeadId,
-    secondaryTechnicalLeadId,
     projectOwner,
     primaryTechnicalLead,
     secondaryTechnicalLead,
@@ -81,59 +72,11 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     }
   });
 
-  const requestedProject = { ...project, ...args.metaData };
-
-  if (args.commonComponents) {
-    requestedProject.commonComponents = args.commonComponents;
-  }
-
-  if (args.productionQuota) {
-    requestedProject.productionQuota = {
-      ...project.productionQuota,
-      ...args.productionQuota.cpu,
-      ...args.productionQuota.memory,
-      ...args.productionQuota.storage
-    };
-  }
-
-  if (args.testQuota) {
-    requestedProject.testQuota = {
-      ...project.testQuota,
-      ...args.testQuota.cpu,
-      ...args.testQuota.memory,
-      ...args.testQuota.storage
-    };
-  }
-
-  if (args.toolsQuota) {
-    requestedProject.toolsQuota = {
-      ...project.toolsQuota,
-      ...args.toolsQuota.cpu,
-      ...args.toolsQuota.memory,
-      ...args.toolsQuota.storage
-    };
-  }
-
-  if (args.developmentQuota) {
-    requestedProject.developmentQuota = {
-      ...project.developmentQuota,
-      ...args.developmentQuota.cpu,
-      ...args.developmentQuota.memory,
-      ...args.developmentQuota.storage
-    };
-  }
-
-  requestedProject.projectOwnerEmail = args.projectOwner
-    ? args.projectOwner.email
-    : projectOwner.email;
-
-  requestedProject.primaryTechnicalLeadEmail = args.primaryTechnicalLead
-    ? args.primaryTechnicalLead.email
-    : primaryTechnicalLead.email;
-
-  requestedProject.secondaryTechnicalLeadEmail = args.secondaryTechnicalLead
-    ? args.secondaryTechnicalLead.email
-    : secondaryTechnicalLead.email;
+  const requestedProject = mergeProjects(project, args, {
+    projectOwner,
+    primaryTechnicalLead,
+    secondaryTechnicalLead
+  });
 
   const editRequest = await prisma.privateCloudRequest.create({
     data: {
@@ -148,18 +91,18 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       },
       projectOwner: {
         connect: {
-          id: projectOwnerId
+          id: project.projectOwnerId
         }
       },
       primaryTechnicalLead: {
         connect: {
-          id: primaryTechnicalLeadId
+          id: project.primaryTechnicalLeadId
         }
       },
-      secondaryTechnicalLead: secondaryTechnicalLeadId
+      secondaryTechnicalLead: project.secondaryTechnicalLeadId
         ? {
             connect: {
-              id: secondaryTechnicalLeadId
+              id: project.secondaryTechnicalLeadId
             }
           }
         : undefined,
