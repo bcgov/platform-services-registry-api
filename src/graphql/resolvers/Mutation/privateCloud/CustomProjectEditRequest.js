@@ -153,14 +153,15 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
     project: ObjectId(projectId),
     requestedProject: requestedProject._id
   };
-
   // If there is no requested quota change, we do not need admin approval and can proceed to provision
   if (
-    productionQuota === undefined &&
-    developmentQuota == undefined &&
-    testQuota == undefined &&
-    toolsQuota === undefined
+    Object.keys(productionQuota).length===0 &&
+    Object.keys(developmentQuota).length===0 &&
+      Object.keys(testQuota).length===0 &&
+        Object.keys(toolsQuota).length===0
   ) {
+    console.log('ffff', testQuota, developmentQuota, toolsQuota)
+
     requestBody.status = RequestStatus.APPROVED;
 
     await sendNatsMessage(
