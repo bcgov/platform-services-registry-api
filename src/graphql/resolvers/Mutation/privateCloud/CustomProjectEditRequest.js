@@ -237,6 +237,9 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       (JSON.stringify(project.testQuota) === JSON.stringify(requestedProject.testQuota)) &&
       (JSON.stringify(project.toolsQuota) === JSON.stringify(requestedProject.toolsQuota))) &&
       (requestedProjectOwner || requestedPrimaryTechnicalLead || requestedSecondaryTechnicalLead)) {
+        const PO = requestedProjectOwner ? requestedProjectOwner : projectOwner;
+        const PTL = requestedPrimaryTechnicalLead ? requestedPrimaryTechnicalLead : primaryTechnicalLead;
+        const STL = requestedSecondaryTechnicalLead ? requestedSecondaryTechnicalLead : secondaryTechnicalLead;
       chesService.send({
         bodyType: "html",
         body: swig.renderFile(
@@ -244,15 +247,15 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
           {
             licencePlate: requestedProject.licencePlate,
             projectName: requestedProject.name,
-            POName: `${requestedProjectOwner.firstName} ${requestedProjectOwner.lastName}`,
-            POEmail: requestedProjectOwner.email,
-            POGitHubOrIDIR: requestedProjectOwner.POIDIR ? requestedProjectOwner.POIDIR : requestedProjectOwner.githubId,
-            PriTLName: `${requestedPrimaryTechnicalLead.firstName} ${requestedPrimaryTechnicalLead.lastName}`,
-            PriTLEmail: requestedPrimaryTechnicalLead.email,
-            PriTLGitHubOrIDIR: requestedPrimaryTechnicalLead.POIDIR ? requestedPrimaryTechnicalLead.POIDIR : requestedPrimaryTechnicalLead.githubId,
-            SecTLName: requestedSecondaryTechnicalLead ? `${requestedSecondaryTechnicalLead.firstName} ${requestedSecondaryTechnicalLead.lastName}` : null,
-            SecTLEmail: requestedSecondaryTechnicalLead ? requestedSecondaryTechnicalLead.email : null,
-            SecTLGitHubOrIDIR: requestedSecondaryTechnicalLead ? requestedSecondaryTechnicalLead.POIDIR ? requestedSecondaryTechnicalLead.POIDIR : requestedSecondaryTechnicalLead.githubId : null,
+            POName: `${PO.firstName} ${PO.lastName}`,
+            POEmail: PO.email,
+            POGitHubOrIDIR: PO.POIDIR ? PO.POIDIR : PO.githubId,
+            PriTLName: `${PTL.firstName} ${PTL.lastName}`,
+            PriTLEmail: PTL.email,
+            PriTLGitHubOrIDIR: PTL.POIDIR ? PTL.POIDIR : PTL.githubId,
+            SecTLName: STL ? `${STL.firstName} ${STL.lastName}` : null,
+            SecTLEmail: STL ? STL.email : null,
+            SecTLGitHubOrIDIR: STL ? STL.POIDIR ? STL.POIDIR : STL.githubId : null,
             setCluster: clusterNames.filter(item => item.name === requestedProject.cluster)[0].humanFriendlyName,
           }
         ),
@@ -269,6 +272,22 @@ async function customPrivateCloudProjectEditRequest(_, args, context) {
       (JSON.stringify(project.testQuota) !== JSON.stringify(requestedProject.testQuota)) ||
       (JSON.stringify(project.toolsQuota) !== JSON.stringify(requestedProject.toolsQuota))) &&
       (requestedProjectOwner || requestedPrimaryTechnicalLead || requestedSecondaryTechnicalLead)) {
+        chesService.send({
+          bodyType: "html",
+          body: swig.renderFile(
+            "./src/ches/new-templates/super-admin-request-email.html",
+            emailData(requestedProject, project, projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+              requestType: 'Quota editing',
+              isProvisioningRequest: false,
+              isQuotaRequest: true,
+            })
+          ),
+          //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
+          to: adminEmails,
+          from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+          subject: `New Quota editing request in Registry waiting for your approval`,
+        });
+
       chesService.send({
         bodyType: "html",
         body: swig.renderFile(

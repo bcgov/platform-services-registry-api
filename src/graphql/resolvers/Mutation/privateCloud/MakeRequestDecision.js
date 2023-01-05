@@ -103,8 +103,10 @@ async function makePrivateCloudRequestDecision(_, args, context) {
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/request-denial-email.html",
-          emailData(requestedProject, project, projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
-            requestType: request.type === RequestType.CREATE ? "Provisioning" : request.type === RequestType.EDIT ? "Edit" : "Deletion",
+          emailData(requestedProject, Object.keys(project).length>0?project:null, projectOwner, primaryTechnicalLead, secondaryTechnicalLead, {
+            requestType: request.type === RequestType.CREATE ? 
+            "Provisioning" : request.type === RequestType.EDIT ? 
+            "Edit" : "Deletion",
             humanActionComment: requestedProject.humanActionComment || null,
             isProvisioningRequest: request.type === RequestType.CREATE,
             isQuotaRequest: request.type === RequestType.EDIT,
