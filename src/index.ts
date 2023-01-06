@@ -14,7 +14,6 @@ import configureKeycloak from "./auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import { authDirectiveTransformer } from "./auth/directives.js";
 import { PrismaClient } from "@prisma/client";
-import { connectToDatabase } from "./db.js";
 import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });

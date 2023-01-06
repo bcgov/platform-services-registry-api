@@ -20,19 +20,25 @@ const User = {
   privateCloudRequestProjectOwner: (user, _, { prisma }) =>
     prisma.privateCloudRequest.findMany({
       where: {
-        projectOwnerId: user.id
+        requestedProject: {
+          projectOwnerId: user.id
+        }
       }
     }),
   privateCloudRequestPrimaryTechnicalLead: (user, _, { prisma }) =>
     prisma.privateCloudRequest.findMany({
       where: {
-        primaryTechnicalLeadId: user.id
+        requestedProject: {
+          primaryTechnicalLeadId: user.id
+        }
       }
     }),
   privateCloudRequestSecondaryTechnicalLead: (user, _, { prisma }) =>
     prisma.privateCloudRequest.findMany({
       where: {
-        secondaryTechnicalLeadId: user.id
+        requestedProject: {
+          secondaryTechnicalLeadId: user.id
+        }
       }
     })
 };

@@ -24,7 +24,7 @@ export const userPrivateCloudProjectById = async (
   { projectId },
   { prisma, user, authEmail }
 ) =>
-  await prisma.privateCloudProject.findFirst({
+  await prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
       OR: [

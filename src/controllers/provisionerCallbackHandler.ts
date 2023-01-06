@@ -1,5 +1,4 @@
 import { prisma } from "../index.js";
-import { Prisma } from "@prisma/client";
 import { RequestStatus, ProjectStatus } from "../resolvers/enum.js";
 
 const provisionerCallbackHandler = async (req, res, next) => {

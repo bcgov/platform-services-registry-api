@@ -66,6 +66,7 @@ model PrivateCloudProject {
   toolsQuota               Quota
   commonComponents         CommonComponents
   requests                 PrivateCloudRequest[] @relation("project")
+  profileId                String?               
 }
 
 model PrivateCloudRequestedProject {

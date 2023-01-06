@@ -127,11 +127,23 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       : undefined
   };
 
+  // Quota changes require approval
+  let requestStatus = RequestStatus.APPROVED;
+
+  if (
+    "toolsQuota" in args ||
+    "developmentQuota" in args ||
+    "testQuota" in args ||
+    "productionQuota" in args
+  ) {
+    requestStatus = RequestStatus.PENDING;
+  }
+
   const editRequest: PrivateCloudRequest =
     await prisma.privateCloudRequest.create({
       data: {
         type: RequestType.EDIT,
-        status: RequestStatus.PENDING,
+        status: requestStatus,
         active: true,
         createdByEmail: authEmail,
         requestedProject: {

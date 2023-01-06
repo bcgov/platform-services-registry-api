@@ -1,0 +1,355 @@
+name,description,status,created,ministry
+RSBC CARMA API,"Road Safety BC (RSBC) Case and Records Management Application (CARMA) API is the micro services API integration layer used for to create a link between the VIPS driver prohibition system of record and the CARMA case management system built on the AG PSSG sector Enterprise Case Management (ECM) PaaS. ",active,2021-02-12T17:05:13.394Z,PSSG
+Business Recovery Grant,A grant application system used as part of the Small and Medium Sized Business Recovery Grant program.,active,2021-01-23T09:24:43.934Z,JEDC
+Dormant Sites Reclamation Program,Dormant Sites Reclamation Program offers opportunities for oil and natural gas service sector contractors in British Columbia to apply for a financial contribution to undertake and complete work on dormant site reclamation.,active,2021-03-24T05:40:11.073Z,EMPR
+Performance,An enhanced platform to support a revised approach to Performance Development in the BCPS,active,2021-01-13T06:13:09.996Z,PSA
+Moodle Platform,A learning management system to develop and deliver learning content in an integrated way.,active,2021-01-13T04:54:40.011Z,PSA
+SBC PAY,Application housing the payment services that are used by the other service BC applications.,active,2021-10-15T04:30:33.631Z,CITZ
+BC Open Location  Services Geocoder,"The BC Address Geocoder is a REST API that can be used to resolve the physical locations of addresses and place names in British Columbia. It also provides additional capability, such as correcting and standardizing civic and non civic addresses, reverse geocoding addresses within areas of interest, locating intersections and identifying parcels associated with specific addresses. https://github.com/bcgov-dss/loc-tools/blob/main/ocp-namespace-docs/988040-namespace.md",active,2021-04-21T04:44:02.778Z,CITZ
+Resource Tuning App,AIOps application to predict and recommend resource tuning to project teams to optimize the usage of Private Cloud.,active,2021-08-17T01:34:09.715Z,CITZ
+AGautomate,A project set to work out how to manage a project with configuration via ArgoCD,active,2021-12-10T08:07:44.585Z,AG
+arctiq Sandbox,A sandbox project set for Arctiq Team,active,2021-09-02T02:38:00.645Z,CITZ
+JBOSS OpenShift Operator POC,To be updated,active,2021-08-25T02:05:32.428Z,AG
+AutoMergeTest,This is a test.,active,2021-11-27T01:38:48.214Z,CITZ
+FOI reporting,"New reporting application for FOI statistics. Information Access Operations provides supports to internal stakeholders and ministry clients on the management of FOI requests. 
+
+This application will replace the current reporting process which is largely done in Excel.",active,2022-01-06T05:19:46.652Z,CITZ
+AG PSSG JUSTIN Reports to Crown Council,"The AG PSSG JUSTIN Reports to Crown Council Integration API allows police officials to submit Reports to Crown Council in the JUSTIN application.  ",active,2021-01-12T17:20:09.029Z,AG
+CSB Court of Appeal Integration,"CSB Court of Appeal Integration serves as the interface between the Court of Appeal and the Justice Common Object Repository.  It handles the storing and retrieval of documents related to filing an appeal. 
+
+",active,2021-12-23T07:16:44.798Z,AG
+Digital Trust Services Trust Over IP,A shared environment for hosted agents and resources being administered   by the Digital Trust Services team for teams and clients.,active,2021-01-15T00:10:56.135Z,CITZ
+LEAR,Project provides services for Registries business applications,active,2021-01-27T02:33:37.713Z,CITZ
+BC Corrections CORNET Dynamics API,"The BC Corrections CORNET Dynamics API provides services to support data integration between CORNET application and the Corrections branch MS Dynamics based application to enhance client case management. ",active,2021-03-12T08:47:49.694Z,PSSG
+JSB ServeBC,The Justice Services Branch (JSB) ServeBC application (formerly called NCQ Notice of Constitutional Question) is a front end portal that allows citizens to access to submit and track the status of constitutional question notices posed to the Attorney General. There is also a back end portal for Gov staff to log receipt of the NCQ and take ownership.,active,2021-12-24T07:45:46.428Z,AG
+Victim Services COAST App Services,"BC Victim Services Enhanced Citizen Service Delivery COAST application services hosts APIs and front end portals used for integration with the AG PSSG ECM PaaS as a backend, and other Attorney General and Public Safety IT Systems.",active,2021-01-12T18:05:23.935Z,PSSG
+FOI Report Download,An intranet web app allowing authenticated users to download a filtered FOI report in PDF or Excel format.,active,2021-01-05T03:32:23.507Z,CITZ
+Common Services Observability,"A central place for us aggregate logs from our other projects, and make them accessible for troubleshooting, metrics and monitoring.",active,2021-01-29T02:52:58.850Z,FLNR
+AGPSSG Keycloak,"AGPSSG Keycloak (formerly known as Shared Integration Services) will host shared services that are common to API integrations across the AG and PSSG sectors. Common services such as a sector instance of Keycloak, Prometheus, Graphana and Zipkin are used by a variety of integration services hosted across multiple OpenShift integration projects. ",active,2021-01-12T18:14:01.299Z,AG
+Platform Services Test Product,Product namespace for the Platform Services team to test functionality.,active,2021-01-13T03:10:32.976Z,CITZ
+names examination,"Registry Name Examination for requested business names ",active,2021-01-27T02:36:46.839Z,CITZ
+SPD Pill Press Licensing and Compliance,An application used for the issuance of licenses for businesses to own and operate Pill Presses and the ability of the branch to monitor those licensees for compliance with the government regulations.,active,2021-01-15T16:57:49.710Z,PSSG
+Air Quality Subscription Service,The air quality subscription service is an existing active web application currently running on OCP3. The program is aimed at improving communication between governments and citizens during air quality events.,active,2021-01-08T02:20:18.178Z,ENV
+Digital Trust Demo Apps,Demo and PoC applications created by the Digital Trust Services team for their clients and user community.,active,2021-01-07T03:53:40.817Z,CITZ
+CSB Court Digital Display Integration,"CDDS is a CSB system consisting of a server operated by ISB and a number of remote devices connected to TV screens located at courthouses around the province. This integration service integrates the CDDS application with CEIS and JUSTIN databases. ",active,2021-09-06T02:01:51.445Z,AG
+FOI Request Form,"Platform to submit FOI Requests to BC Government
+License plate number for OCP3 project is 6ni3xg",active,2021-01-29T02:58:39.763Z,CITZ
+ISD Forms POC,ISD Obreon POC with webMethod API gateway,active,2021-02-11T07:11:25.578Z,SDPR
+"KEDA Operator Testing ",This is a test project set for AG team to test the Keda Openshift operator.,active,2021-11-26T08:42:36.191Z,AG
+EMBC Emergency Support Services Portal,"Current EMBC Emergency Support Services Portal release 1. This citizen facing POC is currently running the production ess.gov.bc.ca portal. ",active,2021-01-15T16:48:03.614Z,PSSG
+SPD Cannabis Security Screening,"A paperless solution for Cannabis Security Screening and Enhanced Security Screening request management and fulfillment for the Security Programs Division. This solution is composed of a portal for data input and an API for communication with other BC Gov IT systems. ",active,2021-01-15T17:05:29.882Z,PSSG
+Single Signon Sandbox,Sandbox for RedHat Single SignOn (Keycloak),active,2021-01-08T05:45:31.023Z,CITZ
+Min of Ag Licensing System 2,"The Ministry of Agriculture Licensing System (MALS) was created with intent of being a single licensing application, replacing various disparate Animal Industry Branch licensing applications.",active,2021-01-29T03:02:50.763Z,AGRI
+Justice Services Branch FAMS3,"The Justice Services Branch FAMS3 project provides an integration layer facilitating requests for information from external third APIs on persons sought as a part of the FMEP process. ",active,2021-03-12T08:26:06.446Z,PSSG
+DevOps Verifiable Credentials,Verifiable Credentials for Privileged Users on the DevOps Platform,active,2021-03-06T00:42:20.493Z,CITZ
+Executive Support System,A Drupal application to enable the day to day operations of a senior executive office,active,2022-02-04T02:12:55.693Z,FIN
+BC Parks,"A cutting edge web platform that will function as a highly accessible, unified source of open information for BC Parks, while providing the utmost convenience and efficiency for both BC Parks visitors and staff.",active,2021-03-16T07:10:08.161Z,ENV
+BCGNWS Static Content Servers,"The BC Geographical Names Web Service (BCGNWS) offers searchable access to geographical names of British Columbia sourced from the BC Geographical Names Information System.
+Dev, Test, Prod namespaces host static file servers (while other components of the app still run in oficat tomcat server on phecda, megrez and alkaid respectively). See https://github.com/bcgov-dss/loc-tools/blob/main/ocp-namespace-docs/e80f9d-namespace.md",active,2022-02-24T07:08:23.314Z,CITZ
+CSB Sheriff Scheduling System,Court Services Branch Sheriff Scheduling System is an online scheduling system allowing Sheriff's to schedule staff into their duty roster.,active,2021-02-12T16:39:49.079Z,AG
+Cloud Pathfinder,"Utilities for Cloud Pathfinder team.  Please use license plate ""tnfhhm""",active,2021-01-15T09:30:52.280Z,CITZ
+CAPS Analytics Gateway,A gateway service to the Snowplow analytics service for BCGov OpenShift projects.,active,2021-04-27T02:43:33.358Z,CITZ
+Student Aid Drupal,"StudentAid BC helps eligible students with the cost of their post secondary education through loans, grants, scholarships, and other programs.",active,2021-06-23T00:23:23.847Z,AEST
+Data Science Lab,Toolset to support Data Science workflows..,active,2021-04-30T06:53:20.313Z,CITZ
+TAFT,Tobacco And Fuel Tax Exemption Simplification Project,active,2021-07-06T06:24:28.582Z,FIN
+Forest Operations Map,"The Forest Operations Map is a software application developed to meet legislative requirements resulting from Bill 21 Forest and Range Practices Amendment Act. Subsequent to Bill 21, new requirements in the Forest Planning and Practices Regulation (FPPR) to produce a Forest Operations Map (FOM) will come into force. In order to ensure compliance with new legislation and associated regulations, an online application to host FOM data is required.",active,2021-03-02T03:46:47.540Z,FLNR
+BCSC Onboarding Self Service,Resources for teams to integrate an application or service with BC Services Card authentication services.,active,2021-02-24T04:57:48.982Z,CITZ
+RSBC Driver Fitness Program,"Driver Fitness Program is a Case Management System solution serving primarily RSBC Adjudication Management for Medical Fitness review. The application will support various stakeholders including Drivers seeking information, Law Enforcement submitting reports, Licensed Healthcare Professionals submitting reviews, ICBC Agents seeking information and updates, and RSBC Agents adjudicating the results of medical fitness reviews.",active,2021-04-02T01:52:10.409Z,PSSG
+PSAIntranetSites,Intranet sites for use by the Public Service Agency.,active,2021-06-03T01:14:04.158Z,PSA
+Todays News Online,A news aggregation system that takes in news sources of varying types and provides a single location for clients to access the data.,active,2021-09-30T04:06:18.182Z,CITZ
+GCPE Corporate Calendar,BC Government Corporate Calendar web application,active,2021-11-25T08:25:22.226Z,CITZ
+AppAssessment,Provide immediate feedback on an app's compliance to BC Gov best practices for app configuration in OpenShift.,active,2021-11-10T03:11:37.079Z,CITZ
+EForms Platform,"An electronic forms environment to support operations at RCYBC and BCOHRC, using the FormsFlow.io platform.",active,2021-10-14T03:04:46.043Z,CITZ
+EnterpriseConnector,Ministry API Gateway that will host and catalogue the API inventory or the Ministry of Transportation.,active,2021-09-23T03:47:05.648Z,TRAN
+Stack Development,A project for developing full stack applications such as PERN.,active,2021-08-26T01:41:43.065Z,CITZ
+"CSB Prov Court Scheduling Integration ","A web application for Provincial Court staff to that is used as the provincial court schedule system (PCSS). Managed by Provincial Judiciary except for the web services to the JUSTIN database.
+This is also used by Crown Counsel Schedule System (CCSS), A2A and DARS.",active,2021-09-06T02:04:31.924Z,AG
+Traction,A multi tenanted enterprise digital wallet with an open api for accessing the capabilities to issue verify and hold verifiable credentials. powered by hyperledger aries. This is intended to be a hosted service for all of government  but will start out with a limited pilot in EMLI and ENV.,active,2021-11-30T23:38:42.556Z,EMPR
+CSB eFiling API HUB,"The Court Services Branch generic file submission API enables efiling within the court system. This service will accept submissions from the Family Law Act Application in to the court system. ",active,2021-03-12T08:52:42.919Z,AG
+Employee Relations,Public Service Agency case management tool,active,2021-11-27T05:35:53.314Z,PSA
+Business Partner Agent,"A digital wallet solution using Hyperledger and Sovrin to issue verifiable credential directly to private digital wallets.  Exchange of verifiable credentials and digital proofs of those VCs is possible via a secure connection established between each BPA instance.  This component also enable peer to peer notifications, and features for publishing a public profile.",active,2021-03-06T03:18:17.646Z,EMPR
+CSB eDivorce application,Court Services Branch eDivorce application is an interactive online application to walk a user through plain language questions to apply for and file a divorce application.,active,2021-02-12T16:44:50.792Z,AG
+SPD Electronic Criminal Records Check,"The Security Programs Division Electronic Criminal Records Check allows applicants to apply for an eCRC through an online portal using their BC Services Card. ",active,2021-03-12T08:38:25.947Z,PSSG
+Electronic Site Registry Application,"The province of British Columbia has a statutory requirement to make contaminated site information available to the public.  This is currently served by a mainframe app hosted on BC  Online.  That application will be redeveloped and deployed here
+",active,2021-10-27T03:02:13.244Z,ENV
+Health Career Access Program,The existing web app hcapparticipants.gov.bc.ca is being migrated to OCP4. This is a registration portal to express interest in the Health Career Access Program.,active,2021-04-07T03:00:36.138Z,HLTH
+Platform Services Tools,A project set with quota to host some of the smaller platform services tools such as devhub and just ask,active,2021-04-28T23:18:14.336Z,CITZ
+FOI Modernization,New system to modernize how government manages and responds to FOI requests.,active,2021-04-21T06:16:54.295Z,CITZ
+BC Open Location  Services Route Planner,"The BC Route Planner is a REST web service that offers vehicle route plans that are based on the BC Digital Road Atlas. The BC Route Planner computes the shortest or fastest route between start and end points and returns the route, distance, time, and directions. The Route Planner can be used by any B.C. Government application. https://github.com/bcgov-dss/loc-tools/blob/main/ocp-namespace-docs/1475a9-namespace.md",active,2021-04-21T04:16:27.030Z,CITZ
+OSBC Learning Portal,"A website to manage registration and account management for OSBC's online learning platform. ",active,2021-05-28T01:25:43.848Z,EDUC
+MOH VVC ISSUER,Ministry of Health Verifiable Vaccination Credential Issuer,active,2021-05-12T04:47:45.099Z,HLTH
+BCROS OPS,Namespace required from operational tools to support our cloud platform apps,active,2021-04-30T22:43:06.304Z,CITZ
+CTHUB,"The Clean Transportation Data Hub provides an evidence base for the Clean Transportation Branch through data storage, analysis and visualization, that improves decision making to increase energy efficiency and decarbonise the transportation system. It aims to be the most comprehensive, reliable and accessible data management system for clean transportation in the world.",active,2021-09-25T00:44:19.336Z,EMPR
+HNI Modernization Project,"Modernizing 20 year old software, middleware and infrastructure to support applications connecting to Ministry of Health systems.",active,2021-05-20T03:38:20.366Z,HLTH
+FCBC Fider,"FrontCounter BC and Authorizations Provincial Team wants to implement Fider to collect, upvote, discuss and organize staff feedback. Fider would replace the current process of manually entering all feedback into an excel spreadsheet hosted on the FrontCounter BC SharePoint site.",active,2021-11-02T07:42:53.456Z,FLNR
+CSB Supreme Court Scheduling Integration,"The Supreme Court Scheduling System (SCSS) is an application used by the Supreme Court Judiciary (SCJ) for scheduling and tracking court case information. This integration service integrates the SCSS application with the CEIS database. ",active,2021-09-06T01:54:48.271Z,AG
+Common Hosted Anti Virus,"A hosted API for running virus scans on documents. ",active,2021-05-04T23:52:27.572Z,ENV
+Time Machine,"A Project and Time Tracking application for cost recovery business areas.
+
+The Treasury Board mandates that all provincial government procurement specialists use Time Machine to track their projects.",active,2021-03-27T06:55:18.015Z,CITZ
+CAS AR Invoicing,A proof of concept project to demonstrate feasibility of direct connection to CAS to improve fee collection process.,active,2021-04-29T23:53:53.370Z,FLNR
+JSB Child Support Recalculation Services,The JSB Chile Support Recalculation services portal will host eligibility assessment questionnaire and enable users to upload documents related to child support cases.,active,2021-10-27T00:03:41.757Z,AG
+CSB Secure File Transfer,"The Court Services Branch Secure File Transfer project will provide services that allow the secure movement of Justice and Public Safety documents amongst the various actors within the sector. These services provide the ability to securely move files via API, GUI and Federation with other Secure File Transfer services. ",active,2021-07-20T09:16:02.378Z,AG
+WHIS,"The Wildlife Health Information System (WHIS) is a key information technology component of the B.C. Wildlife Health Program, which aims to improve our understanding of factors affecting wild animal health in Britisih Columbia. The data housed in this system will be used to explore the effects of diseases and parasites upon animal populations over time, and to show how such changes relate to changes in the environment.",active,2021-10-15T01:17:37.745Z,ENV
+WALLY,"Water data and hydrological modeling to support water allocation decision making. ",active,2021-03-18T05:07:07.815Z,ENV
+BC Employment and Assistance Forecast,SDPR Research Branch web application for comparisons and analysis of numerous predictive models with regards to the BC Employment and Assistance program caseload for consumption by SDPR Executive and FASB.  This will be a Meteor web application.,active,2021-10-23T04:40:17.474Z,SDPR
+BCDC,The BC Data Catalogue is the provincial government's leading source of governmental data sets.,active,2021-01-06T08:16:23.862Z,CITZ
+CITZ DST capstone 2021,"A dashboard for Quarterly Reports ",active,2021-04-29T23:10:04.991Z,CITZ
+WIST,A test drive of the openshift environment to evaluate fit for future WIST related projects,active,2021-04-09T04:17:28.414Z,AEST
+Dormant Site Reclamation Program,Dormant Sites Reclamation Program offers opportunities for oil and natural gas service sector contractors in British Columbia to apply for a financial contribution to undertake and complete work on dormant site reclamation.,active,2021-04-22T00:39:44.887Z,FLNR
+Corporate Recognition,"A suite of applications for corporate recognition programs administered by the Public Service Agency (e.g. Premier's Awards, Long Service Awards, Service Pins)",active,2021-06-03T22:45:12.071Z,PSA
+Digital Journeys,PSA Forms system,active,2021-12-18T02:31:23.038Z,PSA
+Lobbyist Registration System,The Lobbyist Registration System is a web based application using Java J2EE that allows for the creation and management of lobbying reports as per the Lobbyists Transparency Act,active,2021-03-12T08:41:13.405Z,AG
+RSBC Integrated Digital Ecosystem,"Road Safety BC (RSBC) Integrated Digital Ecosystem will be used to provide an integrated ecosystem with a collection of API and assets that can be used by business applications in RSBC. The plan is to provide these as a common services that are not limited to just eTicketing and Digital forms but can be exposed to other applications within RSBC.  ",active,2021-02-12T16:54:55.648Z,PSSG
+ORBC,Commercial Vehicle Permitting System,active,2021-10-07T00:27:10.996Z,TRAN
+BCROS MHR,Mobile home registration site,active,2021-08-13T22:52:44.571Z,CITZ
+Superior Courts Judiciary Court Viewer,"The Superior Courts Viewer is an initiative to provide Court resources with more efficient and effective access to case details. This is an online application that facilitates, and streamlines viewing of case details and documents by providing electronic access to these artifacts. ",active,2021-03-12T08:19:02.176Z,AG
+Geomark,"Geomark is used to mark geographic extent of the proposed activity on a map via polygon shapes. Major clients are FLNROD, FrontCounter BC, eReferral. 
+Tools contains pipeline
+Test contains integration test build
+Dev contains stable build
+Prod is not used, as we deploy to alkaid",active,2021-11-17T00:40:45.290Z,CITZ
+CSB Courts Digital Display System,"The Courts Digital Display System (CDDS) is a Web Application that connects with JUSTIN and CEIS to display today's list of Provincial and Supreme court appearances at a courthouse that hears provincial matters, by room. CDDS is available in a web browser view and is also displayed on TVs at select courthouses.",active,2021-07-29T15:04:23.539Z,AG
+Health Gateway POC,"A project set for Health Gateway for deployment of proof of concepts and other future services for BC residents to manage their health care. ",active,2021-07-10T07:07:17.112Z,HLTH
+My Keycloak Custom Realm Profile,This application provides the Pathfinder SSO team with access to a client roster helping us connect with our clients making use of Custom Keycloak Realms,active,2021-10-19T05:04:07.649Z,CITZ
+Curriculum Web Service,A web service for BC Curriculum,active,2021-03-13T03:59:15.278Z,EDUC
+MOHPIDP,"Ministry of Health Provider Identity Portal. A system for registering, enrolling, and being provisioned into health systems",active,2021-11-23T08:46:11.423Z,HLTH
+ITVR,"Income Test Verification Rebate programme ",active,2022-01-14T02:45:18.559Z,EMPR
+Forestry Worker Jobs,Labour Forestry Worker Job Coordination Program to help impacted workers find jobs by matching their skills to new employment.,active,2021-04-16T04:52:50.934Z,LBR
+BC Geographical Names Web Service,The BC Geographical Names Web Service (BCGNWS) offers searchable access to geographical names of British Columbia sourced from the BC Geographical Names Information System. https://github.com/bcgov-dss/loc-tools/blob/main/app-playbooks/BCGNWS/,active,2021-04-21T04:58:09.725Z,CITZ
+Water Notations Data Pipeline,"A postgres database that will host a copy of the freshwater atlas, and various analytical functions that are used to perform queries (analysis) on linear networks (rivers and streams).  A cronjob will exist that will pull stream notation data from the BC geographic warehouse, load it to the database run an analysis and then copy the results of the data to object storage.",active,2021-05-17T22:44:00.401Z,FLNR
+CSB Court Clerk Display Integration,"CCD is used in live court sessions by court clerks to capture an audio recording of court hearings, to create a time stamped hearing log sheet of hearing events, and to pull and push data entries in court case tracking databases. This integration service integrates the CCD application with CEIS and JUSTIN databases.",active,2021-09-06T01:58:36.320Z,AG
+CRD Bike Count,Map based visualization of the bicycle volumes at various checkpoints throughout the Capital Regional District,active,2021-03-30T01:25:47.864Z,CITZ
+JUSTIN API services,"The JUSTIN API Services is a set of APIs that allow programatic access to data within the JUSTIN IT system, such as allowing disputes to be registered in the JUSTIN system of record, or fetching court lists. ",active,2021-05-27T04:17:25.004Z,AG
+BCROS ANALYTICS,Namespace to provide analytics from our cloud platform apps.,active,2021-04-30T22:45:36.401Z,CITZ
+WRF,"Weather Research Forecasting (WRF) is a simple geographic front end to meteorological data that is being maintained in object storage.  The app will use a leaflet based web map with a grid of the various meteorological cells, the user will, click on the map, select a bounding box size and date range.  The app will then bundle up the requested data and provide to the user.",active,2021-08-06T00:21:13.301Z,FLNR
+Enterpris Hosting Architecture Team Test,This is a test project set for John Ruperto from the architecture team in Enterprise Hosting.,active,2021-08-17T01:08:42.894Z,CITZ
+intranet Website  CMF,Hosting of the intranet.gov.bc.ca site as part of the CMF (Content Management Framework),active,2021-09-16T00:10:33.117Z,CITZ
+PSP,"The purpose of the Property Services Project (PSP) is to implement a solution that will record, track and manage
+information about all property interests of MoTI BCTFA and enable efficient operation of the Ministry's associated property business processes.",active,2021-01-13T05:25:55.341Z,TRAN
+CleanBC Industry Fund,A suite of digital tools supporting the CleanBC Industry Fund,active,2021-10-04T23:17:13.079Z,ENV
+CS IMIT Portal,The main Corporate Services Information Management / Information Technology Portal for staff,active,2021-10-26T05:48:09.671Z,CITZ
+BC Wildfire Public Mobile,"An unsecured mobile application that the public can visualize important information based on their current location. Data might include fire perimeters, orders and alerts, bans and restrictions, highway closures etc..
+
+The application will provide situational awareness to the public. Only data that is classified as public will be shared via this application. 
+
+Project make use of OCP for CI and CD aspects for application deployment.
+
+Migrating from OCP3
+Targeting February 26 for migration completion.
+
+",active,2021-02-02T03:28:45.806Z,FLNR
+SBC PAY,"Application housing the payment services that are used by the other service BC applications.
+",active,2021-02-03T07:17:20.798Z,CITZ
+Repomountie,The repo mountie is a bot to help mange cultural policies relevant to our GitHub organization.,active,2021-01-30T06:29:53.003Z,CITZ
+FSAAPI,Forestry Services Applications API,active,2022-01-28T03:08:32.363Z,FLNR
+School Bus Inspection System,"The School Bus application tracks that inspections are performed in a timely fashion. For each school bus, the application tracks information about the bus (including data from ICBC, NSC, etc.), it's past and next inspection dates and results, contacts, and the inspector responsible for next inspecting the bus.",active,2021-02-11T03:42:32.861Z,TRAN
+OCWA,Output Checking Workflow Application,active,2021-02-18T06:33:41.193Z,CITZ
+CSB Representation Grant,"Court Services Branch Representation Grant is an interactive online application to walk a user through plain language questions to apply for a representation grant.
+
+(OCP3 Migration)",active,2021-02-08T17:46:43.776Z,AG
+OIDCSSO,This is for the Pathfinder SSO Keycloak instance on GOLD,active,2022-01-06T03:41:33.539Z,CITZ
+ACS Policy Testing,"For testing out ACS policies before we break things in Silver.
+Nick and Ryan fun",active,2022-02-04T08:24:40.414Z,AG
+AG PSSG JADE Platform,AG PSSG JADE Platform is the Integration Services Platform for the Justice and Public Safety sector. This platform will be used to provide integration services within the sector using the Red Hat Integration Operators,active,2022-02-24T08:25:09.237Z,AG
+CSB Role Registry Integration,CSB Role Registry Integration is part of Court Services Online serving as an integration point to access what roles applications and individuals are permitted.,active,2021-12-23T07:22:11.158Z,AG
+ELMSD Analytics,A collection of analytics tools for ELMSD Analytics team,active,2022-02-17T01:28:52.356Z,SDPR
+RocketChat DR,The RocketChat application is used to facilitate fast and effective communication among the growing community of teams utilizing the OpenShift Container Platform.,active,2021-08-25T06:36:00.130Z,CITZ
+TACGM,"The Tourism Sector Strategy Division (Tourism Division) within the B.C. Ministry of Tourism, Arts, Culture and Sport (TACS) is responsible for supporting COVID 19 recovery efforts in B.C. 
+
+Recently, a large part of the division's responsibilities have been developing, administering, and managing COVID 19 recovery funding grants. The Tourism Division managed grant programs with a combination of fillable PDFs and Excel.",active,2022-02-09T10:14:31.528Z,TCA
+New Job Survey,"The New Job Survey is an administration tool that collects information from recent hires within the BC Public Service ",active,2021-07-06T06:06:19.309Z,CITZ
+TIDDCMS,A scalable CMS platform for Trade and Industry Development Division promoting BC around the world,active,2022-02-15T04:53:38.910Z,JEDC
+Connectivity Intake,"Intake application for OCIO Connectivity funding program. ",active,2021-12-24T04:53:25.144Z,CITZ
+Education Data Exchange,"New project for secure transfer of documents between schools and the education Ministry. ",active,2022-01-18T06:54:10.159Z,EDUC
+ABI toolset,"Toolsets for The Analytics and Business Intelligence team provides the Service Delivery Division with operational, performance and business intelligence data reporting and scheduling and workload management and analysis based on a variety of data sources and tools.",active,2022-02-01T08:21:06.191Z,SDPR
+OIDCDEVSSO,This is for the Pathfinder SSO DEV Keycloak instance on GOLD,active,2022-01-06T04:59:49.581Z,CITZ
+DIO registry,Tool to help teams explore and discover resources to build new digital services,active,2022-02-10T09:16:16.775Z,CITZ
+JSB OSPG Application,The Justice Services Branch (JSB) OSPG Application is the Office of the Superintendent of Professional Governance (OSPG) application that will help this business area track cases (topics of concern) and communications received for a specific issued. OSPG is responsible for oversight of systemic or general matters relating to professional governance of the regulatory bodies under the Professional Governance Act (PGA) and acting to protect the public interest.,active,2021-12-24T07:28:49.363Z,AG
+FSADT1 Old Growth,Old Growth Forest Deferral Field Verification,active,2022-03-02T03:45:31.603Z,FLNR
+Common Object Management Service,A microservice for managing and sharing s3 objects with a JWT based user access control layer,active,2022-01-26T06:44:33.524Z,ENV
+TransAction,"The TransAction is a workplace healthy challenge website that allows staffs of the MoTI to participate in individual or group physical activities, record the duration of the activities they engage in within a specific period of time. ",active,2021-02-10T01:51:23.535Z,TRAN
+Single Signon,RedHat Single SignOn (Keycloak),active,2021-01-07T02:49:50.672Z,CITZ
+Tantalis CDOGS Integration,"Integration between Tantalis (Crown Land Registry) and IITD common document generation service (CDOGS). Current Doc Gen solution is based on server and client side word macros. Regular disruption to users can take place due to age of components and impact from windows updates, existing solution requires replacement.",active,2022-02-11T03:11:47.973Z,FLNR
+BCTW,The BC Telemetry Warehouse (BCTW) is the authoritative source for all provincial telemetry information and will be the sole source for both ministry staff and third parties.,active,2021-01-20T06:21:11.227Z,ENV
+Tracks,"Tracks, formerly known as the Tenured Recreational Activity on Crownland Knowledge System (TRACKS), has been created to understand the impacts from recreational commercial operations on tenured land to species at risk and potential species at risk.",active,2021-02-04T07:27:56.646Z,ENV
+cMF virtual assistant API,Enables the connection between Confluence and DialogFlow,active,2021-01-22T05:06:39.500Z,HLTH
+Personal Property Registry,"Application used to register leans. 
+
+This migration should be very fast with 2 weeks as the existing namespace has only prototypes.",active,2021-02-03T07:12:08.533Z,CITZ
+CSB Traffic Courts Online,"This project will host portals, API  and integration components as a part of the Online Traffic Courts solution being offered by the Court Services Branch. ",active,2021-01-20T08:22:04.330Z,AG
+CAPS Analytics Gateway,A gateway service to the Snowplow analytics service for BCGov OpenShift projects,active,2021-01-05T03:33:25.386Z,CITZ
+Hired Equipment Tracking System,"The BC Ministry of Transportation's Hired Equipment Program is for owners and operators who have a dump truck, bulldozer, back hoe or other piece of equipment they want to hire out to the Transportation Ministry for day labour and emergency projects. The Hired Equipment Program distributes available work to local equipment owners. The program is based on seniority and is designed to deliver work to registered users fairly and efficiently through the development of local area call out lists.",active,2021-03-05T04:56:38.776Z,TRAN
+BC Developers Exchange,"The BC developers exchange website is the front door to platform services, the  Lab, and services offered by the wider community such as learning opportunities and community.",active,2021-01-15T03:54:49.246Z,CITZ
+AG PSSG Document Processing System,"AG PSSG Document Processing System API micro services are used for retrieving, processing and validating fax to email documents received from OCIO AccuRoute service, and or have been processed by the Kofax subsystem for OCR and ICR. ",active,2021-01-12T17:33:59.867Z,AG
+Create a new Business,Portal to Registry Business Applications,active,2021-01-27T02:30:56.567Z,CITZ
+USER ID MGMT,This application is used for managing roles and description across the education ministry.,active,2021-02-12T05:34:42.816Z,EDUC
+Sbc Auth,Authentication and other services used by Service BC applications,active,2021-01-06T04:06:20.676Z,CITZ
+AG PSSG ECM Administration and Licensing,"This application provides AG PSSG sectors with User Administration and Licensing tooling for the AG PSSG Enterprise Case Management (ECM) PaaS. It interacts with solution component APIs such as MS Dynamics and MS SharePoint to centralize User Management and Licensing in to one place, facilitating delegated user management to the sectors ISB.",active,2021-01-12T17:53:31.619Z,AG
+SPI,"Species Inventory System SPI,WIOF,SIWE",active,2021-02-11T01:49:33.334Z,ENV
+PECSF 1,"Charitable giving application for BC Public Service employees to sign up for payroll deductions, support annual giving campaigns and connect with other employee volunteers. ",active,2021-01-15T06:40:54.620Z,PSA
+CeeVee,Frontend to NRM Vulnerability Detection tooling,active,2022-03-03T02:31:28.325Z,EAO
+EMBC Emergency Support Services,"EMBC Emergency evacuee and registration assistance tool. Using the various portals as a part of this application evacuees can pre resister themselves, volunteers can assist evacuees, and suppliers are able to submit their invoice and documents. These namespaces will host the R2 production release that is integrated with with sectors ECM PaaS. ",active,2021-03-23T15:49:57.717Z,PSSG
+Capstone,An OpenShift hosted responsive web solution demonstrating the use of telemetry to validate the CITZ IMB Solution Playbook,active,2021-03-26T03:25:05.130Z,CITZ
+names examination,Registry Name Examination for requested business names,active,2021-10-15T03:36:38.438Z,CITZ
+Prov Court Scheduling System Integration,"PCSS is a web application for Provincial Court staff to that is used as the provincial court schedule system. Managed by Provincial Judiciary except for the web services to the JUSTIN database. ",active,2021-10-16T15:42:44.521Z,AG
+OpenShift Lab Training,OCP Namespaces that will host assorted Platform Services OCP Lab Training,active,2021-10-27T23:29:02.421Z,CITZ
+BCROS MHR,Mobile home registration site,active,2021-10-15T04:41:05.692Z,CITZ
+Argo Tools Playground,A Project for developers to get some practice with argo tools,active,2021-10-27T02:49:42.319Z,CITZ
+Digital Tools,A cutting edge web platform to modernize the ministry's applications.,active,2021-07-15T00:34:03.961Z,AEST
+API Management Service,"Enterprise API gateway solution that supports client teams with easily publishing, discovering, mediating, governing and managing access to their APIs to improve utilization, security and control over access to digital services and data through APIs. Based on Kong Community Edition API management solution.",active,2021-10-23T02:36:56.721Z,CITZ
+BCROS EDB,"A new platform to enable citizens to start and maintain a business as well as manage multiple accounts and business. Access Personal Property Registry, Manufactured Home Registry and other applications.",active,2021-10-15T03:04:25.960Z,CITZ
+GDX Agreements Tracker,A web based replacement for the current GDX Project Management Office database (currently in MS Access).,active,2021-11-02T03:37:56.621Z,CITZ
+Personal Property Registry,"Application used to register leans. ",active,2021-10-15T03:39:19.707Z,CITZ
+RedHat Integration Suite Test,A test project created for the AG Integration Team to test out RedHat Integration Suite products in the LAB environment.,active,2021-11-05T04:36:33.219Z,AG
+BCROS MINIO,Data and backup storage  for  BCROS applications,active,2021-10-21T20:52:35.013Z,CITZ
+BCROS OPS,Namespace required from operational tools to support our cloud platform apps,active,2021-10-15T04:36:22.789Z,CITZ
+AG PSSG ISB DevOps LAB GOLD,"The AG PSSG ISB DevOps LAB GOLD is a set of namespace for the sector to use to complete testing, demos, RnD, POC, experiment and discover in an environment that does not contain citizen facing applications or PI data using the OCP Gold cluster. As this is a LAB space for the sector we will potentially connect or consume a variety of services over time.
+
+",active,2021-10-16T15:46:50.573Z,AG
+AG PSSG Automatic Xerox Fax Processor,"AG PSSG Automatic Xerox Fax Processor presents a Fax API that exposes the JUSTIN and SCMS SOAP APIs as document distribution services. This API will accept Fax requests from AG PSSG Oracle forms application JUSTIN and SCMS. 
+It will allow for the tracking outgoing messages and also deliver the fax messages to an email in Microsoft Exchange for Shared Services. There is Notification Worker that communicates the fax statuses including success and failure. ",active,2021-07-08T01:45:05.773Z,AG
+Create a new Business,Portal to Registry Business Applications,active,2021-10-15T03:30:02.805Z,CITZ
+CSB Court Clerk Display Integration,"CCD is used in live court sessions by court clerks to capture an audio recording of court hearings, to create a time stamped hearing log sheet of hearing events, and to pull and push data entries in court case tracking databases. This integration service integrates the CCD application with CEIS and JUSTIN databases.",active,2021-10-16T15:39:44.892Z,AG
+LEAR,Project provides services for Registries business applications,active,2021-10-15T03:33:45.943Z,CITZ
+PlatformSecurityTesting,"Test project to figure out IDIR, Azure AD integration and migration activities for existing GitHub users.",active,2021-10-05T06:23:20.675Z,CITZ
+Sbc Auth,Authentication and other services used by Service BC applications,active,2021-10-15T03:24:26.494Z,CITZ
+CSB Supreme Court Scheduling Integration,The Supreme Court Scheduling System (SCSS) is an application used by the Supreme Court Judiciary (SCJ) for scheduling and tracking court case information. This integration service integrates the SCSS application with the CEIS database.,active,2021-10-16T15:24:55.748Z,AG
+CSB Court Digital Display Integration,CDDS is a CSB system consisting of a server operated by ISB and a number of remote devices connected to TV screens located at courthouses around the province. This integration service integrates the CDDS application with CEIS and JUSTIN databases.,active,2021-10-16T15:22:16.933Z,AG
+ACRFD,This site contains Crown land application information posted by the Province. Public participation in the administration of Crown land is encouraged and this site offers a platform for members of the public to submit comments for consideration.,active,2021-03-04T07:55:03.866Z,FLNR
+AdvSol MCS Test,AdvSol MCS Test,active,2021-11-02T00:05:21.018Z,CITZ
+BCROS ANALYTICS,Namespace to provide analytics from our cloud platform apps.,active,2021-10-15T04:38:44.180Z,CITZ
+Health Gateway,"An application which empowers citizens to manage their health care by providing access to their own health information. ",active,2021-12-02T07:48:34.588Z,HLTH
+Human Rights Tribunal,The Human Rights Tribunal (HRT) system is one many applications being developed under the Tribunal Transformation Initiative (TTI) project. Intake forms to allow users to submit a complaint to the Human Rights Tribunal. Form data is passed to the case management system built in Salesforce.,active,2021-02-22T19:06:18.305Z,AG
+EMBC OnLine Expense Authorization Forms,"Emergency Management BC (EMBC) OnLine Expense Authorization Forms (EAFs) provide a front end  form for integration with the EMBC ETeams application. ",active,2021-02-22T19:02:12.340Z,PSSG
+CSB Court of Appeal,"Courts Services Branch Court of Appeal is an interactive online application to walk a user through plain language questions to apply for appeals.
+
+(OCP3 Migration)",active,2021-02-08T17:49:24.752Z,AG
+RSBC Digital Forms Back End,"Road Safety BC (RSBC) Digital Forms is an online forms application for review and dispute processes for citizen facing forms such as Immediate Roadside Prohibitions (IRP), ADP and Unlicensed Driver impounds. The backend API components work in unison with the front end forms to create a cohesive solution for RSBC",active,2021-02-22T18:58:14.012Z,PSSG
+Superior Courts Judiciary Online Booking,"Superior Courts Judiciary Online Booking allows external users to access information from the Superior Courts so that they can book a particular hearing using the online website. For the Supreme Court, the bookings are related to conference hearings such that the process minimizes the current wait times for standard phone bookings. For the Court of Appeal, the bookings will be related to the booking of a hearing of appeal.",active,2021-02-22T18:43:40.381Z,AG
+PSD Community Safety Act Application,"Police Services Division Community Safety Act application portal component for a cases management system to manage compliance and enforcement of the Community Safety Act. ",active,2021-02-22T18:46:48.185Z,PSSG
+BioHub,"BioHub will be the platform for hosting of the British Columbia's species inventory and habitat for internal and external stakeholders. The platform will also provide common services like taxonomy information, code management, data security, data sharing agreements admin, user and user group management and advanced searching capabilities.
+
+The 4 current projects will be using the platform for data exchange, taxonomy, codes, data analysis, data security and data sharing agreements.",active,2022-03-25T00:13:30.135Z,ENV
+HybridWorkPlace,A cutting edge web site to foster aspiring leaders and continuous learning,active,2022-03-29T01:10:59.575Z,CITZ
+CCBC Metabase,"A namespace for our cutting edge open source data analytics tool, so that it can be used across applications in the cluster.",active,2022-03-30T00:04:27.901Z,CITZ
+Habitat restoration Tracker,"Restoration Tracker is a system which supports the planning, implementation and monitoring of restoration projects in British Columbia. The initial release (March 2022) collects project and treatment details for caribou herd restoration initiatives in the north east of the province. Future development will support all restoration projects within the province and will assist with planning and monitoring the effectiveness of these projects.",active,2022-03-29T00:09:23.733Z,ENV
+Modern Engagement Tools,"A common component for public engagement starting with EAO, EMLI and GDX.",active,2022-04-02T05:23:40.424Z,EAO
+FINtranet,"Ministry of Finance intranet, an employee portal and corporate financial services hub.",active,2022-04-20T23:27:46.535Z,FIN
+BC Corrections Community Corrections CMS,"The BC Corrections Community Corrections Case Management System will host portals, apis, local keycloak realm, workflow engine and other supporting services to enable an open source case management platform.",active,2022-04-08T17:23:13.521Z,PSSG
+Openshift 201 Lab,This project set is used for the LAB part of the Openshift 201 training.,active,2022-04-02T02:39:15.808Z,CITZ
+Mineral Titles Branch Metabase Instance,"We have been working with IIT to develop an instance of the Metabase application to be used to serve out Dashboards, queries and reports from the Mineral Titles Online database (MTOPROD). IIT has indicated that I will need to configure a namespace for Openshift.",active,2022-04-15T03:23:57.713Z,EMPR
+AG PSSG BC PARIS Integration,"The AG PSSG BC PARIS Integration API allows police officials to access ICBC (vehicle and driver) and POR (Protection Order Registry) information in realtime (from the roadside, etc).  ",active,2021-01-12T17:15:11.042Z,AG
+CONN CCBC Portal,"An application platform that allows applicants to apply to the Connecting Communities BC Program. ",active,2022-04-05T04:13:54.197Z,CITZ
+SDPR Research Website,"Research Branch Web Portal
+The Ministry Research Branch makes use of a website  to disseminate research material. The website is available at research.sd.gov.bc.ca and is available to all Ministry staff. ",active,2022-04-04T23:58:19.520Z,SDPR
+FOI Help,This is the application to host our help section for government staff for the FOI management system.,active,2022-05-03T03:00:46.005Z,CITZ
+BC Corrections ICON2 Integration,"The BC Corrections ICON2 (Integrated Corrections Operational Network) Integration provides an interface to database resources to support the ICON portal interface via the implementation of a number of APIs. ",active,2022-05-04T15:50:47.432Z,PSSG
+Vault Test project,A test project set created to test Vault service.,active,2022-04-28T01:28:01.631Z,CITZ
+Content Management Framework,"Hosting of public and internal websites managed through CMF ",active,2022-04-06T23:18:17.997Z,CITZ
+EducationClients,This namespace will be used for hosting application for other Ministry clients.,active,2022-04-28T06:20:59.399Z,EDUC
+Citizen Engagement,"Tools to support Citizen Engagement (engage.gov.bc.ca) with their outreach to BC Citizens, including Lime Survey and other future micro services.",active,2022-05-03T04:13:46.052Z,CITZ
+Test CrunchyDB,This is a test project set to experiment with CrunchyDB config and resource settings.,active,2022-05-03T04:15:21.068Z,CITZ
+BC Corrections StaffNet Integration,"The BC Corrections StaffNet application allows BC Corrections to maintain employee roles with the CORNET application, print ID cards, and is being extended to allow enrolment of staff biometrics into the on premise Electronic Security and Control System which provides surveillance, communication, and door control to secure the custody centres.  This integration provides access to data sources to support this application via the implementation of several APIs.",active,2022-05-04T16:03:12.776Z,PSSG
+Education Database,"We are planning to move our DB's to Cloud. 
+Requesting a namespace for hosting Cloud DB's.",active,2022-05-07T01:40:43.966Z,EDUC
+Concurrent Processing Framework,The Concurrent Processing Framework (CPF) is utility software that extends the web services paradigm by adding support for batching of multiple business application requests into a job for asynchronous processing.,active,2022-05-18T11:39:25.304Z,CITZ
+API Versioning Test for PIMS,This is a test environment for PIMS app (Silver license plate is 354028),active,2022-05-10T05:36:12.782Z,CITZ
+SDPR Access Portal,Common login solution for SDPR using KeyCloak,active,2022-05-12T01:17:04.798Z,SDPR
+API Versioning Test for ServiceBC,TheQ And Formsflowai Apps by ServiceBC,active,2022-05-12T03:33:17.376Z,CITZ
+BCPS DEMS,"The BC Prosecution Services (BCPS) Digital Evidence Management System (DEMS) is a set of products within the broader DEMS ecosystem. In particular this set of namespaces will host Identity and Access Management related solutions. ",active,2022-05-19T16:15:43.583Z,AG
+Forms Common Components,"Forms design and submissions team is an opensource based program that enables users to design forms for submitting data, process and notify that data, and store and manage and access the data in a managed and secure environment",active,2022-05-21T01:12:31.628Z,CITZ
+Demo Monolith to Microservices App,This app demonstrates a proof of concept to convert monolithic apps to microservices and host them on the OpenShift Platform. This will only require a maximum of 2 namespaces. One namespace should also be sufficient.,active,2022-06-07T03:51:18.910Z,CITZ
+EPICFLOW,Formsflow.ai administrative enhancements for EAO supporting EPIC,active,2022-05-28T00:04:57.718Z,EAO
+Digital Consulting Sandbox,A R and D area for Gary and the Digital Consulting team to prove out new best practices.,active,2022-06-16T03:55:20.933Z,CITZ
+OpenShift 201 Test Project 1,201 training namespace,active,2022-06-17T22:15:22.111Z,CITZ
+Vault Test project,A test project set created to test Vault service.,active,2022-06-15T02:16:32.767Z,CITZ
+Vault Test project,A test project set created to test Vault service.,active,2022-06-15T00:49:02.768Z,CITZ
+OpenShift 201 Test Project 4,201 training namespace,active,2022-06-17T22:19:20.787Z,CITZ
+API Versioning Test for APS,a test project set to test the API Versioning changes in OCP 4.9 for APS team,active,2022-06-01T07:05:55.732Z,CITZ
+OpenShift 201 Test Project 7,201 training namespace,active,2022-06-17T22:32:07.642Z,CITZ
+OpenShift 201 Test Project 8,201 training namespace,active,2022-06-17T22:33:12.579Z,CITZ
+OpenShift 201 Test Project 5,201 training namespace,active,2022-06-17T22:22:38.431Z,CITZ
+OpenShift 201 Test Project 6,201 training namespace,active,2022-06-17T22:25:05.204Z,CITZ
+OpenShift 201 Test Project 10,201 training namespace,active,2022-06-17T22:36:57.033Z,CITZ
+Vault Test project,A test project set created to test Vault service.,active,2022-06-15T00:50:24.560Z,CITZ
+OpenShift 201 Test Project 2,201 training namespace,active,2022-06-17T22:16:40.578Z,CITZ
+GRAD Business APIs,GRAD Business functionality will be hosted on this namespace,active,2022-06-18T01:43:52.292Z,EDUC
+OpenShift 201 Test Project 19,201 training namespace,active,2022-06-17T22:50:17.731Z,CITZ
+OpenShift 201 Test Project 18,201 training namespace,active,2022-06-17T22:49:18.734Z,CITZ
+OpenShift 201 Test Project 11,201 training namespace,active,2022-06-17T22:38:12.901Z,CITZ
+OpenShift 201 Test Project 12,201 training namespace,active,2022-06-17T22:39:38.132Z,CITZ
+OpenShift 201 Test Project 14,201 training namespace,active,2022-06-17T22:43:05.737Z,CITZ
+OpenShift 201 Test Project 17,201 training namespace,active,2022-06-17T22:47:05.432Z,CITZ
+OpenShift 201 Test Project 15,201 training namespace,active,2022-06-17T22:44:26.431Z,CITZ
+OpenShift 201 Test Project 20,201 training namespace,active,2022-06-17T22:51:36.828Z,CITZ
+OpenShift 201 Test Project 13,201 training namespace,active,2022-06-17T22:41:47.033Z,CITZ
+OpenShift 201 Test Project 9,201 training namespace,active,2022-06-17T22:35:14.299Z,CITZ
+Anti Racism Data Survey,"A web platform allowing for the secure collection of demographic information on race, ethnicity, faith, gender, sex, ability, income and other social identity markers.",active,2022-07-06T00:45:25.059Z,CITZ
+ALCS,"The Agricultural Land Commission (ALC) System will assist ALC staff and Commissioners to review and decide on Applications and Notices of Intents, which propose non-adhering land uses in the Agricultural Land Reserve.",active,2022-07-16T05:07:54.571Z,ALC
+OpenShift 201 Test Project 16,201 training namespace,active,2022-06-17T22:45:56.128Z,CITZ
+FSADT2 Seed Planning,"Forest application for managing Seed Planning and Registry System ",active,2022-07-26T22:04:40.212Z,FLNR
+NRM vault token broker,"An application which enhances the security of credentials stored on NRM vault by authenticating callers, validating requests for vault tokens against business rules, and providing an audit trail of requests and responses",active,2022-07-20T02:59:49.932Z,ENV
+Test PREFECT ETL Tool,a test project set created for FOI Modernization team to test our a new ETL tool - PREFECT,active,2022-07-05T04:26:53.072Z,CITZ
+Digital Consulting Automated Testing,"A demo space to build samples, configuration, pipelines to enable teams to better incorporate end-to-end testing on their Agile products.
+
+This is used in integration with:
+- https://github.com/bcgov/automated-testing
+- https://github.com/bcgov/automated-testing/ workspaces/work-62d6e8044841bf00111cdf04/board",active,2022-07-27T05:07:48.655Z,CITZ
+onRouteBC,A permitting system that allows for automated commercial and overheight/overweight private vehicle travel permits to be issued.,active,2022-09-15T00:59:20.202Z,TRAN
+CCOF,Childcare funding project,active,2022-09-16T05:37:21.873Z,EDUC
+Ian KLAB2 Test,This is a test,active,2022-09-16T01:48:33.896Z,CITZ
+CSB CEIS CRDP Integration,The business goal of the CEIS-CRDP integration is to enable BC-registered divorces to be certified Federally. The general solution approach is enable the CEIS application to publish BC-registered divorces to the CRDP application. The technical approach is to exchange files between CEIS (JAG) and CRDP (DOJ) via the Managed Secure File Transfer (MSFT) service operated by SharedServices Canada (SSC).,active,2022-09-17T04:39:44.830Z,AG
+Alex C KLAB 2 test,For testing KLAB 2 stuff,active,2022-09-16T04:59:37.563Z,AGRI
+HNI Modernization Project,"Modernizing 20 years old software, middleware and infrastructure to support applications connecting to Ministry of Health systems. We had been using silver cluster for all our applications. We need to migrate to Gold cluster for our applications to use the GoldDR features for HA applications.
+",active,2022-08-09T03:35:49.438Z,HLTH
+CITZ IMB Sandbox,"Creating a sandbox for IMB resources to learn more about Openshift, third party tools and integrations into project environments.",active,2022-08-10T00:15:15.131Z,CITZ
+Digital Privacy Impact Assessment,This project will leverage service design findings to build a novel product that reimagines the Privacy Impact Assessment tools to support streamlined business processes and improved user experience.,active,2022-06-18T03:21:49.234Z,CITZ
+GRAD UI,"On this Namespace we will be hosting UI for a new application called GRAD (Student Graduation) ",active,2022-06-18T01:42:17.931Z,EDUC
+OpenShift 201 Test Project 3,201 training namespace,active,2022-06-17T22:18:09.031Z,CITZ
+OpenShift 201 Test Project 21,201 training namespace,active,2022-08-10T04:06:11.760Z,CITZ
+SDPR Research Branch map generator,Allows users to build a Choropleth map of BC or Canada given an uploaded data set,active,2022-08-12T05:42:29.873Z,SDPR
+KLAB2 Test,This is a test of provisioner updates for KLAB2. Edited for testing editing,active,2022-09-08T01:10:50.258Z,AEST
+Payment common component,"This common component will streamline the processes and technology required for Ministries to send and receive payments, as well as providing a more consistent experience for British Columbians.",active,2022-08-24T00:58:37.541Z,CITZ
+Alex C KLAB 2 test,.,active,2022-09-16T07:19:15.580Z,AGRI
+EPD Digital Services,A suite of apps to help admin staff of EPD(Environment Protection Division) and the public with various aspects related to EPD.,active,2022-08-30T06:03:28.798Z,ENV
+RunWhen PoC,This is a test project set that will be used to test RunWhen SRE Framework components,active,2022-09-21T06:56:55.754Z,CITZ
+Online Cloud Security Schedule,New Cloud Security Schedule with logic and plain language to make completing the schedule simpler based on user context.,active,2022-09-22T23:41:37.988Z,CITZ
+AG PSSG ISB DevOps LAB,"The AG/PSSG ISB DevOps LAB is a set of namespace for the sector to use to complete testing, demos, RnD, POC, experiment and discover in an environment that does not contain citizen facing applications or PI data. As this is a LAB space for the sector we will potentially connect or consume a variety of services over time.",active,2022-09-24T02:51:39.621Z,AG
+SPD Security Screening and services,"The Security Programs Division (SPD) Security Screening and Service will provide functionality to facilitate the processing of public requests for Security Screenings and Security Services.
+
+",active,2022-09-24T04:40:17.369Z,PSSG
+BCPS DEMS,The BC Prosecution Services (BCPS) Digital Evidence Management System (DEMS) is a set of products within the broader DEMS ecosystem. In particular this set of namespaces will host Identity and Access Management related solutions.,active,2022-09-24T04:47:57.458Z,AG
+Vault Test project,A test project set created to test Vault service.,active,2022-09-23T06:16:25.855Z,CITZ
+AG PSSG JADE Platform,AG PSSG JADE Platform is the Integration Services Platform for the Justice and Public Safety sector. This platform will be used to provide integration services within the sector using the Red Hat Integration Operators,active,2022-09-24T04:57:10.175Z,AG
+CSB Courts Fees and Fines MS,"The Court Services Branch (CSB) Courts Fees and Fines management system (CFFMS) hosts services that enable the broader CFFMS application functionality. This consists of APIs, Adapters and other services that work with the core MS Dynamics Finance and Operations backend hosted by AG/PSSG ISB. ",active,2022-09-24T04:53:53.774Z,AG
+SCJ Supreme Court Viewer,"The Supreme Court Judiciary (SCJ) Supreme Court Viewer is an application that allows the Judiciary to view, select and download court documents. ",active,2022-09-24T04:31:01.718Z,AG
+AdvSol Testing,A place for AdvSol to test in,active,2022-09-28T05:47:55.349Z,CITZ
+PSS ECommerce Microservices,Microservices environmnet to be used by the new Procurement and Supply Services ECommerce platform.,active,2022-09-28T04:52:44.956Z,CITZ
+BC Corrections Community Corrections DAL,"The BC Corrections Community Corrections Data Access Layer will host an API that allows the BC CCCMS application (hosted in Gold) to access CORENET data via this data access layer in the Emerald Cluster. ",active,2022-09-28T01:42:46.177Z,PSSG
+DOMO,A document management web-interface that uses the COMS API and object storage,active,2022-10-11T23:59:16.090Z,FLNR
+Document Reviewer,"An application for the review and redaction of FOI records.
+
+We are early adopters of Emerald where this app will ultimately reside. However, as we cannot onboard onto Emerald until November, we would like to provision a Silver Cluster namespace for now so our development is not blocked. 
+
+We will migrate to Emerald when it is available.
+",active,2022-09-30T07:44:16.554Z,CITZ
+ISDincubator,"A development space to test, iterate and refine applications built by the Sector Priorities Digital Design and Development team.",active,2022-10-14T01:25:31.887Z,SDPR
+Provincial Prescription Management,Electronic prescription management capabilities in British Columbia using HTTPS transport and modern OAuth2 authentication and authorization standards.,active,2022-10-13T05:02:52.363Z,HLTH
+Plugin and site Delivery Automation,A collection of tools to provide CI/CD for WordPress Plugins and Engaging Sites.,active,2022-10-13T05:08:31.283Z,CITZ
+Document Reviewer,"Review, redaction and deduplication of FOI records including Protected C data.",active,2022-10-27T00:31:40.065Z,CITZ
+Vault Test project,A test project set created to test Vault service.,active,2022-10-29T06:58:02.999Z,CITZ
+PSA DIO Data Science,Building data science and machine learning use cases for PSA corporate initiatives.,active,2022-10-28T04:43:17.372Z,PSA
+Soil Relocation Information System,"Soil Relocation Information System manages soil relocation notifications and high volume receiving site registration and  gives access to Indigenous Nations, municipalities, and other interested parties to access information on soil relocation through a mapping application.  Interested parties can subscribe to be automatically notified of soil relocation or high volume receiving site registrations in their area(s).",active,2022-10-13T23:19:03.927Z,ENV
+BC Laws,"BC Laws provides access for citizens and ministries to view, search, print, all Laws, Acts, Regulations, Gazette publications and more. The platform also provides an API that specifies how to search and retrieve from the library's collection in either form: website or XML. BC Laws is published by the King's Printer for British Columbia in partnership with the Ministry of Attorney General and Legislative Assembly.",active,2022-10-19T00:21:49.668Z,CITZ
+Hydrometric Rating Curve,"A hydrometric rating curve describes the mathematical relationship between stage and discharge. The rating curve app allows users to upload any stage and discharge datasets, develop and optimize rating models as well as save and compare results from previous sessions.",active,2022-11-03T05:07:08.255Z,ENV
+AdvSol Testing,Test project for AdvSol in KLAB2,active,2022-11-11T05:33:04.257Z,CITZ
+PBGP,This application will replace BC Air Access and Active Transportation Infrastructure Grant Program's paper-based process.,active,2022-10-14T04:36:28.497Z,TRAN
+IPS,Project Management Application,active,2022-11-22T00:22:59.982Z,TRAN
+BMC Remedy Helix,"BMC Remedy Helix ",active,2022-12-14T03:54:26.973Z,CITZ
+CHEFS,"The Common Hosted Form Service (CHEFS) is Web-based application for creating Web forms and managing the data you collect. This request is to cover components of CHEFS that are specific to, and need to be managed by the Ministry of Health.",active,2022-12-15T07:11:35.170Z,HLTH
+DriveBC PoC,This is a proof of concept project for DriveBC team to evaluate Openshift as a potential new hosting environment for DriveBC app.,active,2022-12-09T03:58:17.194Z,TRAN
+BC Corrections CMSINT PAC Integration,The BC Corrections CMSINT-PAC Integration serves to keep correction's client information up to date and consistent between CORNET and the PHSA.,active,2022-11-30T08:24:49.666Z,PSSG
+PTAP,Grant portal to support a new MOTI funding program that will increase/enhance passenger transportation services for the accessibility community.,active,2022-12-07T03:59:34.660Z,TRAN
+Digital Privacy Impact Assessment,Onboarding into Emerald Cluster for eventual migration. Project already exists in silver (b996e6).,active,2022-11-18T04:44:40.159Z,CITZ
+BCBox,A Web user interface for managing and sharing documents in object Storage by leveraging the COMS API.,active,2022-12-15T09:01:13.271Z,FLNR

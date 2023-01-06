@@ -41,7 +41,7 @@ const privateCloudProjectRequest: MutationResolvers = async (
       requestedProject: {
         create: {
           ...metaData,
-          status: ProjectStatus.INACTIVE,
+          status: ProjectStatus.ACTIVE,
           licencePlate: licencePlate,
           commonComponents: commonComponents,
           productionQuota: defaultQuota,
