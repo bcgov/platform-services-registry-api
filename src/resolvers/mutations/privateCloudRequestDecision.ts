@@ -3,7 +3,8 @@ import {
   MutationResolvers
 } from "__generated__/resolvers-types";
 import { RequestDecision, RequestStatus } from "../enum.js";
-import { Prisma as PrismaType } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import sendNatsMessage from "../../nats/sendNatsMessage.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -29,10 +30,26 @@ const privateCloudRequestDecision: MutationResolvers = async (
         active: decision === RequestDecision.APPROVED,
         decisionDate: new Date(),
         decisionMakerEmail: authEmail
+      },
+      include: {
+        project: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        },
+        requestedProject: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        }
       }
     });
   } catch (e) {
-    if (e instanceof PrismaType.PrismaClientKnownRequestError) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2025") {
         throw new Error("Request not found or already has a decision.");
       }
@@ -40,9 +57,13 @@ const privateCloudRequestDecision: MutationResolvers = async (
     throw e;
   }
 
+  // const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+  //   request.requestedProject;
+
   if (request.status === RequestDecision.APPROVED) {
     // Ches emails
     // Nats message
+    await sendNatsMessage(request.type, request.requestedProject);
   }
 
   if (request.status === RequestDecision.REJECTED) {

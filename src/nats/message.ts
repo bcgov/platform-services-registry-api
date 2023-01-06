@@ -1,14 +1,8 @@
 // Create a test env variable that prefix the namespace name with "t"
 
-function message(
-  action,
-  projectOwner,
-  primaryTechnicalLead,
-  secondaryTechnicalLead,
-  requestedProject
-) {
+function message(action, requestedProject) {
   const {
-    _id, // Use ID from actaul project, not from requested project
+    id, // Use ID from actaul project, not from requested project
     licencePlate,
     name,
     description,
@@ -17,7 +11,10 @@ function message(
     productionQuota,
     developmentQuota,
     testQuota,
-    toolsQuota
+    toolsQuota,
+    projectOwner,
+    primaryTechnicalLead,
+    secondaryTechnicalLead
   } = requestedProject;
 
   console.log("Requested Project");
@@ -82,7 +79,7 @@ function message(
 
   const request = {
     action,
-    profile_id: _id,
+    profile_id: id,
     // cluster_id: cluster,
     cluster_name: cluster,
     display_name: name,

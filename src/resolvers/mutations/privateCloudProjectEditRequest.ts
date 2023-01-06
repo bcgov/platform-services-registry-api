@@ -3,14 +3,17 @@ import {
   CommonComponentsInput,
   MutationResolvers,
   CreateUserInput,
-  QuotaInput
+  QuotaInput,
+  Quota
 } from "__generated__/resolvers-types";
+import { Prisma } from "@prisma/client";
 import { RequestType, RequestStatus } from "../enum.js";
 import {
   PrivateCloudProject,
   PrivateCloudRequest,
   PrivateCloudRequestedProject
 } from "@prisma/client";
+import sendNatsMessage from "../../nats/sendNatsMessage.js";
 
 interface argsValue {
   projectId: string;
@@ -25,8 +28,8 @@ interface argsValue {
   developmentQuota: QuotaInput;
 }
 
-const mergeQuotas = (incoming, existsing) => ({
-  ...existsing,
+const mergeQuotas = (incoming, existing: Quota): Quota => ({
+  ...existing,
   ...incoming?.cpu,
   ...incoming?.memory,
   ...incoming?.storage
@@ -49,7 +52,9 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     });
 
   if (existingRequest !== null) {
-    throw new Error("There is already an active request for this project.");
+    throw new Error(
+      "This project already has an active request or it does not exist."
+    );
   }
 
   const project: PrivateCloudProject =
@@ -129,18 +134,19 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   // Quota changes require approval
   let requestStatus = RequestStatus.APPROVED;
+  let editRequest;
 
-  if (
-    "toolsQuota" in args ||
-    "developmentQuota" in args ||
-    "testQuota" in args ||
-    "productionQuota" in args
-  ) {
-    requestStatus = RequestStatus.PENDING;
-  }
+  try {
+    if (
+      "toolsQuota" in args ||
+      "developmentQuota" in args ||
+      "testQuota" in args ||
+      "productionQuota" in args
+    ) {
+      requestStatus = RequestStatus.PENDING;
+    }
 
-  const editRequest: PrivateCloudRequest =
-    await prisma.privateCloudRequest.create({
+    editRequest = await prisma.privateCloudRequest.create({
       data: {
         type: RequestType.EDIT,
         status: requestStatus,
@@ -154,8 +160,34 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
             id: args.projectId
           }
         }
+      },
+      include: {
+        project: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        },
+        requestedProject: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        }
       }
     });
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(e.message);
+    }
+    throw e;
+  }
+
+  if (requestStatus === RequestStatus.APPROVED) {
+    await sendNatsMessage("edit", editRequest.requestedProject);
+  }
 
   return editRequest;
 };
