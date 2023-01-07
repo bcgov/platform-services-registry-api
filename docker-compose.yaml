@@ -1,0 +1,48 @@
+version: "3.7"
+x-env: &defaults
+  NODE_ENV: development
+  MONGODB_USERNAME: 
+  MONGODB_PASSWORD:
+  MONGODB_HOST: registry-mongo
+  MONGODB_NAME:
+  AUTH_RELM:
+  AUTH_SERVER_URL:
+  AUTH_RESOURCE:
+  AUTH_SECRET:
+  NATS_HOST:
+  NATS_PORT:
+  NATS_SUBJECT:
+  NATS_SKIP:
+  CHES_TOKEN_URL:
+  CHES_CLIENT_ID:
+  CHES_CLIENT_SECRET:
+  CHES_API_URL:
+services:
+  mongo:
+    container_name: registry-mongo
+    image: registry/db
+    build:
+      context: db/
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./mongo_data
+        target: /data/db
+      - type: bind
+        source: ./db
+        target: /opt/db
+    ports:
+      - 27017:27017
+    environment: *defaults
+  # api:
+  #   container_name: registry-api-new
+  #   image: registry-api-new/api
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 4222:4222
+
+  #   environment:
+  #     <<: *defaults
+  #     PORT: 4222

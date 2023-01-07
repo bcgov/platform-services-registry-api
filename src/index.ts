@@ -12,7 +12,8 @@ import resolvers from "./resolvers/index.js";
 import { readFileSync } from "fs";
 import configureKeycloak from "./auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import { authDirectiveTransformer } from "./auth/directives.js";
+// import { authDirectiveTransformer } from "./auth/directives.js";
+import applyDirectiveTransformers from "./transformers/index.js";
 import { PrismaClient } from "@prisma/client";
 import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
 
@@ -42,7 +43,7 @@ let schema = makeExecutableSchema({
   resolvers
 });
 
-schema = authDirectiveTransformer(schema, "auth");
+schema = applyDirectiveTransformers(schema);
 
 const app = express();
 const { keycloak } = configureKeycloak(app, "/graphql");

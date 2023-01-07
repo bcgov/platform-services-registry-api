@@ -15,7 +15,6 @@ export const authDirectiveTransformer = (schema, directiveName = "auth") => {
         const { resolve = defaultFieldResolver } = fieldConfig;
         fieldConfig.resolve = auth(resolve);
       }
-      console.log(fieldConfig)
       return fieldConfig;
     }
   });

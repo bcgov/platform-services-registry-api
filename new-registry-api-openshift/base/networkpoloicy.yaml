@@ -1,0 +1,19 @@
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   labels:
+#     app: registry-api-new
+#   name: allow-from-openshift-ingress-registry-api-new
+#   namespace: 101ed4-dev
+# spec:
+#   ingress:
+#   - from:
+#     - namespaceSelector:
+#         matchLabels:
+#           network.openshift.io/policy-group: ingress
+#   podSelector: {}
+#   policyTypes:
+#   - Ingress
+
+
+# Not in use

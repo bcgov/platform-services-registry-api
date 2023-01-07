@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: 101ed4-dev
+bases:
+  - ../../base
+patches:
+  - deployment.api_env.patch.yaml
+  - route.dev.yaml
+images:
+  - name:  platsrv-registry-api-main-build
+    newName: image-registry.openshift-image-registry.svc:5000/101ed4-tools/platsrv-registry-api-feature-branch
+    newTag: "dev"
