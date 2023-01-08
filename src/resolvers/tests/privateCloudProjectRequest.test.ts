@@ -1,25 +1,27 @@
-import "../../../env";
-import resolvers from "../../index";
+import "../../env";
+import {
+  ProjectMetaDataInput,
+  Cluster,
+  Ministry,
+  CommonComponentsInput,
+  CreateUserInput
+} from "../../__generated__/resolvers-types.js";
+import resolvers from "../index";
 import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
-import express from "express";
-import http from "http";
-import cors from "cors";
-import bodyParser from "body-parser";
 import { readFileSync } from "fs";
-import configureKeycloak from "../../../auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "../../../transformers/index.js";
+import applyDirectiveTransformers from "../../transformers/index.js";
 import { PrismaClient } from "@prisma/client";
-import provisionerCallbackHandler from "../../../controllers/provisionerCallbackHandler.js";
-import req from "../../../auth/kauthContextMock.js";
+import req from "../../auth/kauthContextMock.js";
+import assert from "assert";
 
 interface ContextValue {
   kauth: KeycloakContext;
   prisma: PrismaClient;
+  authEmail: string;
+  authRoles: string[];
 }
 
 const prisma = new PrismaClient();
@@ -27,7 +29,9 @@ const prisma = new PrismaClient();
 const contextValue: ContextValue = {
   prisma: prisma,
   // @ts-ignore
-  kauth: new KeycloakContext({ req })
+  kauth: new KeycloakContext({ req }),
+  authEmail: "oamar.kanji@gmail.com",
+  authRoles: ["admin"]
 };
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
@@ -43,7 +47,7 @@ const server = new ApolloServer<ContextValue>({
   schema
 });
 
-describe("User tests", () => {
+describe("Request tests", () => {
   beforeAll(async () => {});
 
   test("creates a private cloud project request", async () => {
@@ -65,36 +69,41 @@ describe("User tests", () => {
       }
     }`;
 
-    const res = await server.executeOperation(
+    const metaData: ProjectMetaDataInput = {
+      cluster: "CLAB" as Cluster,
+      description: "test description",
+      ministry: "AGRI" as Ministry,
+      name: "test project"
+    };
+
+    const commonComponents: CommonComponentsInput = {
+      other: "test"
+    };
+
+    const projectOwner: CreateUserInput = {
+      email: "oamar.kanji@gov.bc.ca",
+      firstName: "Oamar",
+      githubId: "okanji",
+      lastName: "Kanji",
+      ministry: "AGRI" as Ministry
+    };
+
+    const primaryTechnicalLead: CreateUserInput = {
+      email: "xyz@test.com",
+      firstName: "Jane",
+      githubId: "test123",
+      lastName: "Smith",
+      ministry: "FIN" as Ministry
+    };
+
+    const response = await server.executeOperation(
       {
         query: CREATE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
-          metaData: {
-            cluster: "CLAB",
-            description: "test description",
-            ministry: "AGRI",
-            name: "test project"
-            // "projectOwnerEmail": "oamar.kanji@gov.bc.ca",
-            // "primaryTechnicalLeadEmail": "xyz@test.com",
-            // "secondaryTechnicalLeadEmail": "testsecondarytechnicallead@test.com"
-          },
-          commonComponents: {
-            other: "test"
-          },
-          projectOwner: {
-            email: "oamar.kanji@gov.bc.ca",
-            firstName: "Oamar",
-            githubId: "okanji",
-            lastName: "Kanji",
-            ministry: "AGRI"
-          },
-          primaryTechnicalLead: {
-            email: "xyz@test.com",
-            firstName: "Jane",
-            githubId: "test123",
-            lastName: "Smith",
-            ministry: "FIN"
-          }
+          metaData,
+          commonComponents,
+          projectOwner,
+          primaryTechnicalLead
         }
       },
       {
@@ -102,6 +111,14 @@ describe("User tests", () => {
       }
     );
 
-    expect(res).toMatchSnapshot();
+    assert(response.body.kind === "single");
+    expect(response.body.singleResult.errors).toBeUndefined();
+    expect(response).toMatchSnapshot();
+   
+    // const newRequest = await prisma.privateCloudRequest.findUnique({
+    //   where: {
+    // });
+
+    // 
   });
 });

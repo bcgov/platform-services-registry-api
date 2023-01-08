@@ -9,12 +9,14 @@
     "compile": "npm run generate && tsc",
     "postinstall": "npm run compile",
     "start": "npm run migrate-prod && npm run compile && node ./dist/index.js",
-    "dev": "npm run migrate-dev && npm run migrate-test && npm run compile && node ./dist/index.js", 
+    "dev": "npm run compile && dotenv -e .env.dev -- node ./dist/index.js", 
     "watch": "dotenv -e .env.dev concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch 'src/**/*.ts'\"  \"tsc -w \" \"nodemon ./dist/index.js \"",
     "test": "jest",
+    "generate-dev": "dotenv -e .env.dev -- npx prisma generate",
     "migrate-dev": "dotenv -e .env.dev -- npx prisma generate && dotenv -e .env.dev -- npx prisma db push",
     "migrate-test": "dotenv -e .env.test -- npx prisma generate && dotenv -e .env.test -- npx prisma db push",
-    "migrate-prod": "npx prisma generate && npx prisma db push"
+    "migrate-prod": "npx prisma generate && npx prisma db push",
+    "dev:test": "rm -rf ./dist && npm run compile && jest"
   },
   "keywords": [],
   "author": "",

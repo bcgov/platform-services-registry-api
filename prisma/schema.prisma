@@ -8,8 +8,8 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
-  // url      = "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/v2?retryWrites=true&w=majority"
+  url      = "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/test?retryWrites=true&w=majority"
+  // url      = env("DATABASE_URL")
 }
 
 model User {
@@ -67,7 +67,7 @@ model PrivateCloudProject {
   toolsQuota               Quota
   commonComponents         CommonComponents
   requests                 PrivateCloudRequest[] @relation("project")
-  profileId                String?               
+  profileId                String?
 }
 
 model PrivateCloudRequestedProject {
