@@ -6,7 +6,7 @@ import {
   CommonComponentsInput,
   CreateUserInput
 } from "../../__generated__/resolvers-types.js";
-import resolvers from "../index";
+import resolvers from "../index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
@@ -114,11 +114,11 @@ describe("Request tests", () => {
     assert(response.body.kind === "single");
     expect(response.body.singleResult.errors).toBeUndefined();
     expect(response).toMatchSnapshot();
-   
+
     // const newRequest = await prisma.privateCloudRequest.findUnique({
     //   where: {
     // });
 
-    // 
+    //
   });
 });

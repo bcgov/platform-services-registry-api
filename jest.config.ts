@@ -1,8 +1,10 @@
 module.exports = {
-  roots: ['<rootDir>/dist'],
+  modulePaths: ["<rootDir>/src"],
   testEnvironment: "node",
   preset: "ts-jest",
   transform: { "^.+\\.(ts|js)x?$": "ts-jest" },
-  testRegex: '.*\\.test\\.js$',
-
+  moduleNameMapper: {
+    "(.+)\\.js": "$1"
+  },
+  extensionsToTreatAsEsm: [".ts"]
 };
