@@ -1,21 +1,8 @@
-// /** @type {import('ts-jest').JestConfigWithTsJest} */
-// module.exports = {
-//   preset: "ts-jest",
-//   testEnvironment: "node",
-//   transform: {
-//     "^.+\\.(ts|tsx)?$": "ts-jest",
-//     "^.+\\.(js|jsx)$": "babel-jest"
-//   }
-// };
-
-import { Config } from "@jest/types";
-
-const config: Config.InitialOptions = {
-  preset: "ts-jest",
+module.exports = {
+  roots: ['<rootDir>/dist'],
   testEnvironment: "node",
-  transform: {
-    "^.+\\.(ts|tsx)?$": "ts-jest",
-    "^.+\\.(js|jsx)$": "babel-jest"
-  }
-};
+  preset: "ts-jest",
+  transform: { "^.+\\.(ts|js)x?$": "ts-jest" },
+  testRegex: '.*\\.test\\.js$',
 
+};

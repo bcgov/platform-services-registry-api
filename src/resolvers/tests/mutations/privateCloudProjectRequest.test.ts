@@ -1,4 +1,5 @@
-import "../../../env.js";
+import "../../../env";
+import resolvers from "../../index";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
@@ -8,7 +9,6 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
-import resolvers from "../../index.js";
 import { readFileSync } from "fs";
 import configureKeycloak from "../../../auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
@@ -40,14 +40,13 @@ let schema = makeExecutableSchema({
 schema = applyDirectiveTransformers(schema);
 
 const server = new ApolloServer<ContextValue>({
-  typeDefs,
-  resolvers
+  schema
 });
 
 describe("User tests", () => {
   beforeAll(async () => {});
 
-  it("creates a private cloud project request", async () => {
+  test("creates a private cloud project request", async () => {
     const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectRequest(
         $metaData: ProjectMetaDataInput!,
         $commonComponents: CommonComponentsInput!,
@@ -103,6 +102,6 @@ describe("User tests", () => {
       }
     );
 
-    // expect(res).toMatchSnapshot();
+    expect(res).toMatchSnapshot();
   });
 });

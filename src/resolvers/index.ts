@@ -2,7 +2,7 @@ import {
   QueryResolvers,
   MutationResolvers,
   Resolvers
-} from "../__generated__/resolvers-types";
+} from "../__generated__/resolvers-types.js";
 import * as userMutations from "./mutations/users.js";
 import privateCloudProjectRequest from "./mutations/privateCloudProjectRequest.js";
 import privateCloudRequestDecision from "./mutations/privateCloudRequestDecision.js";

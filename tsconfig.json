@@ -11,9 +11,15 @@
     "esModuleInterop": true,
     "declaration": true,
     "declarationMap": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "skipLibCheck": true
   },
   "typeAcquisition": { "include": ["jest"] },
-  "include": ["src/**/*.ts", "src/scripts/projectDataToCsv/index.js", "src/env.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/scripts/projectDataToCsv/index.js",
+    "src/env.ts",
+    "dist"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
 }
