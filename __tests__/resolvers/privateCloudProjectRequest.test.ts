@@ -1,19 +1,19 @@
-import "../../env";
+import "../../src/env";
 import {
   Cluster,
   Ministry,
   CommonComponentsInput,
   CreateUserInput
-} from "../../__generated__/resolvers-types.js";
-import resolvers from "../index.js";
+} from "../../src/__generated__/resolvers-types.js";
+import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { readFileSync } from "fs";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "../../transformers/index.js";
+import applyDirectiveTransformers from "../../src/transformers/index.js";
 import { PrismaClient } from "@prisma/client";
-import req from "../../auth/kauthContextMock.js";
+import req from "../../src/auth/kauthContextMock.js";
 import assert from "assert";
 
 interface ContextValue {

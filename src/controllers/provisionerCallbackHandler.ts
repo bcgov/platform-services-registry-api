@@ -1,6 +1,5 @@
 import { prisma } from "../index.js";
 
-// import { DecisionStatus } from "__generated__/resolvers-types";
 import { DecisionStatus } from "../__generated__/resolvers-types.js";
 
 const provisionerCallbackHandler = async (req, res) => {

@@ -12,14 +12,15 @@
     "declaration": true,
     "declarationMap": true,
     "types": ["node", "jest"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "src",
   },
   "typeAcquisition": { "include": ["jest"] },
   "include": [
     "src/**/*.ts",
     "src/scripts/projectDataToCsv/index.js",
     "src/env.ts",
-    "dist"
+    "../__tests__/**/*"
   ],
-  "exclude": ["node_modules", "**/*.spec.ts", "dist"]
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
