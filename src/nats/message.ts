@@ -1,5 +1,6 @@
-// Create a test env variable that prefix the namespace name with "t"
+import { Cluster, RequestType } from "./constants.js";
 
+// Create a test env variable that prefix the namespace name with "t"
 function message(action, requestedProject) {
   const {
     id, // Use ID from actaul project, not from requested project
@@ -78,10 +79,10 @@ function message(action, requestedProject) {
   }));
 
   const request = {
-    action,
+    action: RequestType[action],
     profile_id: id,
     // cluster_id: cluster,
-    cluster_name: cluster,
+    cluster_name: Cluster[cluster],
     display_name: name,
     description: description,
     ministry_id: ministry,

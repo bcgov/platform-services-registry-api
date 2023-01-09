@@ -1,49 +1,48 @@
 import {
-  ProjectMetaDataInput,
-  CommonComponentsInput,
   MutationResolvers,
-  CreateUserInput
-} from "__generated__/resolvers-types";
-import { RequestType, RequestStatus } from "../enum.js";
+  ProjectStatus,
+  RequestType,
+  DecisionStatus,
+  MutationPrivateCloudProjectRequestArgs
+} from "../../__generated__/resolvers-types.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
 import defaultQuota from "../../utils/defaultQuota.js";
-import { ProjectStatus } from "../enum.js";
-
-interface argsValue {
-  metaData: ProjectMetaDataInput;
-  commonComponents: CommonComponentsInput;
-  projectOwner: CreateUserInput;
-  primaryTechnicalLead: CreateUserInput;
-  secondaryTechnicalLead: CreateUserInput;
-}
 
 const privateCloudProjectRequest: MutationResolvers = async (
   _,
-  args: argsValue,
+  args: MutationPrivateCloudProjectRequestArgs,
   { authRoles, authEmail, prisma }
 ) => {
-  const {
-    metaData,
-    commonComponents,
-    projectOwner,
-    primaryTechnicalLead,
-    secondaryTechnicalLead
-  } = args;
+  if (
+    ![
+      args.projectOwner.email,
+      args.primaryTechnicalLead.email,
+      args.secondaryTechnicalLead?.email
+    ].includes(authEmail) &&
+    !authRoles.includes("admin")
+  ) {
+    throw new Error(
+      "You need to assign yourself to this project in order to create it."
+    );
+  }
 
   const licencePlate = generateLicensePlate();
 
   const createRequest = await prisma.privateCloudRequest.create({
     data: {
-      type: RequestType.CREATE,
-      status: RequestStatus.PENDING,
+      type: RequestType.Create,
+      decisionStatus: DecisionStatus.Pending,
       active: true,
       createdByEmail: authEmail,
       requestedProject: {
         create: {
-          ...metaData,
-          status: ProjectStatus.ACTIVE,
+          name: args.name,
+          description: args.description,
+          cluster: args.cluster,
+          ministry: args.ministry,
+          status: ProjectStatus.Active,
           licencePlate: licencePlate,
-          commonComponents: commonComponents,
+          commonComponents: args.commonComponents,
           productionQuota: defaultQuota,
           testQuota: defaultQuota,
           toolsQuota: defaultQuota,
@@ -52,26 +51,26 @@ const privateCloudProjectRequest: MutationResolvers = async (
           projectOwner: {
             connectOrCreate: {
               where: {
-                email: projectOwner.email
+                email: args.projectOwner.email
               },
-              create: projectOwner
+              create: args.projectOwner
             }
           },
           primaryTechnicalLead: {
             connectOrCreate: {
               where: {
-                email: primaryTechnicalLead.email
+                email: args.primaryTechnicalLead.email
               },
-              create: primaryTechnicalLead
+              create: args.primaryTechnicalLead
             }
           },
-          secondaryTechnicalLead: secondaryTechnicalLead
+          secondaryTechnicalLead: args.secondaryTechnicalLead
             ? {
                 connectOrCreate: {
                   where: {
-                    email: secondaryTechnicalLead.email
+                    email: args.secondaryTechnicalLead.email
                   },
-                  create: secondaryTechnicalLead
+                  create: args.secondaryTechnicalLead
                 }
               }
             : undefined

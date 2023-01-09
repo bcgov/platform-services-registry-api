@@ -1,8 +1,9 @@
 import {
   MutationPrivateCloudRequestDecisionArgs,
-  MutationResolvers
-} from "__generated__/resolvers-types";
-import { RequestDecision, RequestStatus } from "../enum.js";
+  MutationResolvers,
+  DecisionStatus,
+  RequestDecision
+} from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 
@@ -23,11 +24,11 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        status: RequestStatus.PENDING
+        decisionStatus: DecisionStatus.Pending
       },
       data: {
         status: decision,
-        active: decision === RequestDecision.APPROVED,
+        active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
         decisionMakerEmail: authEmail
       },
@@ -57,16 +58,13 @@ const privateCloudRequestDecision: MutationResolvers = async (
     throw e;
   }
 
-  // const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
-  //   request.requestedProject;
-
-  if (request.status === RequestDecision.APPROVED) {
+  if (request.status === RequestDecision.Approved) {
     // Ches emails
     // Nats message
     await sendNatsMessage(request.type, request.requestedProject);
   }
 
-  if (request.status === RequestDecision.REJECTED) {
+  if (request.status === RequestDecision.Rejected) {
     // Ches emails
   }
 

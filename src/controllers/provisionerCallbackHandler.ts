@@ -1,7 +1,9 @@
 import { prisma } from "../index.js";
-import { RequestStatus, ProjectStatus } from "../resolvers/enum.js";
 
-const provisionerCallbackHandler = async (req, res, next) => {
+// import { DecisionStatus } from "__generated__/resolvers-types";
+import { DecisionStatus } from "../__generated__/resolvers-types.js";
+
+const provisionerCallbackHandler = async (req, res) => {
   try {
     const { prefix: licencePlate } = req.body;
 
@@ -17,7 +19,7 @@ const provisionerCallbackHandler = async (req, res, next) => {
         requestedProjectId: id
       },
       data: {
-        status: RequestStatus.PROVISIONED,
+        decisionStatus: DecisionStatus.Approved,
         active: false
       }
     });

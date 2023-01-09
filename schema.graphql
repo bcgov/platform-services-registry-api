@@ -8,7 +8,7 @@ enum ProjectStatus {
   INACTIVE
 }
 
-enum RequestStatus {
+enum DecisionStatus {
   PENDING
   APPROVED
   REJECTED
@@ -195,8 +195,7 @@ type PrivateCloudRequest {
   createdBy: User!
   decisionMaker: User
   type: RequestType!
-  status: RequestStatus!
-  decisionStatus: RequestStatus!
+  decisionStatus: DecisionStatus!
   created: DateTime!
   decisionDate: DateTime
   project: PrivateCloudProject
@@ -219,20 +218,6 @@ type User {
   privateCloudRequestProjectOwner: [PrivateCloudRequest]!
   privateCloudRequestPrimaryTechnicalLead: [PrivateCloudRequest]!
   privateCloudRequestSecondaryTechnicalLead: [PrivateCloudRequest]!
-}
-
-input ProjectMetaDataInput {
-  name: String!
-  description: String!
-  ministry: Ministry!
-  cluster: Cluster!
-}
-
-input EditProjectMetaDataInput {
-  name: String
-  description: String
-  ministry: Ministry
-  cluster: Cluster
 }
 
 input CommonComponentsInput {
@@ -350,7 +335,10 @@ type Mutation {
   # updateUser(input: UpdateUserInput!): User!
 
   privateCloudProjectRequest(
-    metaData: ProjectMetaDataInput!
+    name: String!
+    description: String!
+    cluster: Cluster!
+    ministry: Ministry!
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
@@ -359,7 +347,10 @@ type Mutation {
 
   privateCloudProjectEditRequest(
     projectId: ID!
-    metaData: EditProjectMetaDataInput
+    name: String
+    description: String
+    cluster: Cluster
+    ministry: Ministry
     commonComponents: CommonComponentsInput
     projectOwner: CreateUserInput
     primaryTechnicalLead: CreateUserInput
@@ -371,7 +362,10 @@ type Mutation {
   ): PrivateCloudRequest! @nonNullInput @auth
 
   customPrivateCloudProjectRequest(
-    metaData: ProjectMetaDataInput!
+    name: String!
+    description: String!
+    cluster: Cluster!
+    ministry: Ministry!
     commonComponents: CommonComponentsInput!
     productionQuota: CustomQuotaInput
     developmentQuota: CustomQuotaInput
@@ -381,7 +375,10 @@ type Mutation {
 
   customPrivateCloudProjectEditRequest(
     projectId: ID!
-    metaData: EditProjectMetaDataInput
+    name: String
+    description: String
+    cluster: Cluster
+    ministry: Ministry
     commonComponents: CommonComponentsInput!
     productionQuota: CustomQuotaInput
     developmentQuota: CustomQuotaInput

@@ -7,11 +7,13 @@ const Request = {
     }),
 
   decisionMaker: (request, _, { prisma }) =>
-    prisma.user.findUnique({
-      where: {
-        email: request.decisionMakerEmail
-      }
-    }),
+    request.decisionMakerEmail === null
+      ? null
+      : prisma.user.findUnique({
+          where: {
+            email: request.decisionMakerEmail
+          }
+        }),
 
   project: async (request, _, { prisma }) =>
     request.projectId === null

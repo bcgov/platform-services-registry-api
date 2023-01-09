@@ -1,32 +1,16 @@
 import {
-  ProjectMetaDataInput,
   CommonComponentsInput,
   MutationResolvers,
   CreateUserInput,
   QuotaInput,
-  Quota
-} from "__generated__/resolvers-types";
+  Quota,
+  RequestType,
+  DecisionStatus,
+  MutationPrivateCloudProjectEditRequestArgs
+} from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
-import { RequestType, RequestStatus } from "../enum.js";
-import {
-  PrivateCloudProject,
-  PrivateCloudRequest,
-  PrivateCloudRequestedProject
-} from "@prisma/client";
+import { PrivateCloudProject, PrivateCloudRequest } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
-
-interface argsValue {
-  projectId: string;
-  metaData: ProjectMetaDataInput;
-  commonComponents: CommonComponentsInput;
-  projectOwner: CreateUserInput;
-  primaryTechnicalLead: CreateUserInput;
-  secondaryTechnicalLead: CreateUserInput;
-  productionQuota: QuotaInput;
-  testQuota: QuotaInput;
-  toolsQuota: QuotaInput;
-  developmentQuota: QuotaInput;
-}
 
 const mergeQuotas = (incoming, existing: Quota): Quota => ({
   ...existing,
@@ -37,7 +21,7 @@ const mergeQuotas = (incoming, existing: Quota): Quota => ({
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
-  args: argsValue,
+  args: MutationPrivateCloudProjectEditRequestArgs,
   { authEmail, prisma }
 ) => {
   const existingRequest: PrivateCloudRequest =
@@ -45,7 +29,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       where: {
         AND: [
           { projectId: args.projectId },
-          { status: RequestStatus.APPROVED },
+          { status: DecisionStatus.Approved },
           { active: true }
         ]
       }
@@ -78,7 +62,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   const requestedProject = {
     ...rest,
-    ...args.metaData,
+    name: args.name,
+    description: args.description,
     toolsQuota: mergeQuotas(args.toolsQuota, project.toolsQuota),
     productionQuota: mergeQuotas(args.productionQuota, project.productionQuota),
     testQuota: mergeQuotas(args.testQuota, project.testQuota),
@@ -133,7 +118,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   };
 
   // Quota changes require approval
-  let requestStatus = RequestStatus.APPROVED;
+  let decisionStatus = DecisionStatus.Approved;
   let editRequest;
 
   try {
@@ -143,13 +128,13 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       "testQuota" in args ||
       "productionQuota" in args
     ) {
-      requestStatus = RequestStatus.PENDING;
+      decisionStatus = DecisionStatus.Pending;
     }
 
     editRequest = await prisma.privateCloudRequest.create({
       data: {
-        type: RequestType.EDIT,
-        status: requestStatus,
+        type: RequestType.Edit,
+        decisionStatus: decisionStatus,
         active: true,
         createdByEmail: authEmail,
         requestedProject: {
@@ -185,7 +170,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     throw e;
   }
 
-  if (requestStatus === RequestStatus.APPROVED) {
+  if (decisionStatus === DecisionStatus.Approved) {
     await sendNatsMessage("edit", editRequest.requestedProject);
   }
 

@@ -1,34 +1,34 @@
-export const Cluster = {
-  CLAB: "clab",
-  KLAB: "klab",
-  SILVER: "silver",
-  GOLD: "gold",
-  GOLDDR: "golddr",
-  KLAB2: "klab2",
-  EMERALD: "emerald"
-};
+// export const Cluster = {
+//   CLAB: "clab",
+//   KLAB: "klab",
+//   SILVER: "silver",
+//   GOLD: "gold",
+//   GOLDDR: "golddr",
+//   KLAB2: "klab2",
+//   EMERALD: "emerald"
+// };
 
-export const Environment = {
-  PRODUCTION: "production",
-  TEST: "test",
-  DEVELOPMENT: "development",
-  TOOLS: "tools"
-};
+// export const Environment = {
+//   PRODUCTION: "production",
+//   TEST: "test",
+//   DEVELOPMENT: "development",
+//   TOOLS: "tools"
+// };
 
-export const Platform = {
-  PRIVATE_CLOUD: "private-cloud",
-  PUBLIC_CLOUD: "public-cloud"
-};
+// export const Platform = {
+//   PRIVATE_CLOUD: "private-cloud",
+//   PUBLIC_CLOUD: "public-cloud"
+// };
 
-export const ProjectStatus = {
-  ACTIVE: "active",
-  INACTIVE: "inactive"
-};
+// export const ProjectStatus = {
+//   ACTIVE: "active",
+//   INACTIVE: "inactive"
+// };
 
-export const PublicCloudPlatform = {
-  GOOGLE: "google-cloud",
-  AWS: "amazon-web-services"
-};
+// export const PublicCloudPlatform = {
+//   GOOGLE: "google-cloud",
+//   AWS: "amazon-web-services"
+// };
 
 export const DefaultCpuOptions = {
   CPU_REQUEST_0_5_LIMIT_1_5: { cpuRequests: 0.5, cpuLimits: 1.5 },
@@ -61,23 +61,23 @@ export const DefaultStorageOptions = {
   STORAGE_512: { storageFile: 512 }
 };
 
-export const RequestDecision = {
-  APPROVED: "approved",
-  REJECTED: "rejected"
-};
+// export const RequestDecision = {
+//   APPROVED: "approved",
+//   REJECTED: "rejected"
+// };
 
-export const RequestStatus = {
-  PENDING: "pending-decision",
-  APPROVED: "approved",
-  REJECTED: "rejected",
-  PROVISIONED: "provisioned",
-};
+// export const DecisionStatus = {
+//   PENDING: "pending-decision",
+//   APPROVED: "approved",
+//   REJECTED: "rejected",
+//   PROVISIONED: "provisioned"
+// };
 
-export const RequestType = {
-  CREATE: "create",
-  EDIT: "edit",
-  DELETE: "delete"
-};
+// export const RequestType = {
+//   CREATE: "create",
+//   EDIT: "edit",
+//   DELETE: "delete"
+// };
 
 export const SortOrder = {
   ASCENDING: 1,

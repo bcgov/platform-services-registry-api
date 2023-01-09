@@ -7,7 +7,14 @@ exports[`Request tests creates a private cloud project request 1`] = `
     "singleResult": {
       "data": {
         "privateCloudProjectRequest": {
-          "id": "63bacabc9b4af0585352989e",
+          "active": true,
+          "createdBy": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionDate": null,
+          "decisionMaker": null,
+          "decisionStatus": "PENDING",
+          "project": null,
         },
       },
       "errors": undefined,

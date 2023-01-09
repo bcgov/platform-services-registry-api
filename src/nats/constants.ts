@@ -1,3 +1,20 @@
+export const Cluster = {
+  CLAB: "clab",
+  KLAB: "klab",
+  SILVER: "silver",
+  GOLD: "gold",
+  GOLDDR: "golddr",
+  KLAB2: "klab2",
+  EMERALD: "emerald"
+};
+
+export const RequestType = {
+  CREATE: "create",
+  EDIT: "edit",
+  DELETE: "delete"
+};
+
+
 const testMessage = {
   action: "create",
   profile_id: 6,

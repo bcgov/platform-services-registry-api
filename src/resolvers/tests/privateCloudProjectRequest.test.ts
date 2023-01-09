@@ -1,6 +1,5 @@
 import "../../env";
 import {
-  ProjectMetaDataInput,
   Cluster,
   Ministry,
   CommonComponentsInput,
@@ -30,7 +29,7 @@ const contextValue: ContextValue = {
   prisma: prisma,
   // @ts-ignore
   kauth: new KeycloakContext({ req }),
-  authEmail: "oamar.kanji@gmail.com",
+  authEmail: "oamar.kanji@gov.bc.ca",
   authRoles: ["admin"]
 };
 
@@ -52,29 +51,46 @@ describe("Request tests", () => {
 
   test("creates a private cloud project request", async () => {
     const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectRequest(
-        $metaData: ProjectMetaDataInput!,
+        $name: String!,
+        $description: String!,
+        $ministry: Ministry!,
+        $cluster: Cluster!,
         $commonComponents: CommonComponentsInput!,
         $projectOwner: CreateUserInput!,
         $primaryTechnicalLead: CreateUserInput!,
         $secondaryTechnicalLead: CreateUserInput
       ) {
         privateCloudProjectRequest(
-          metaData: $metaData,
+          name: $name,
+          description: $description,
+          ministry: $ministry,
+          cluster: $cluster,
           commonComponents: $commonComponents,
           projectOwner: $projectOwner,
           primaryTechnicalLead: $primaryTechnicalLead,
           secondaryTechnicalLead: $secondaryTechnicalLead
         ) {
-        id
+          active
+          createdBy {
+            email
+          }
+          decisionDate
+          decisionMaker {
+            email
+          }
+          decisionStatus
+          project {
+            name
+          }
       }
     }`;
 
-    const metaData: ProjectMetaDataInput = {
-      cluster: "CLAB" as Cluster,
-      description: "test description",
-      ministry: "AGRI" as Ministry,
-      name: "test project"
-    };
+    console.log("DATABASE URL: ", process.env.DATABASE_URL);
+
+    const name: string = "Test Project";
+    const description: string = "Test Description";
+    const ministry: Ministry = Ministry.Agri;
+    const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
       other: "test"
@@ -100,7 +116,10 @@ describe("Request tests", () => {
       {
         query: CREATE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
-          metaData,
+          name,
+          description,
+          ministry,
+          cluster,
           commonComponents,
           projectOwner,
           primaryTechnicalLead
