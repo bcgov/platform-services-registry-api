@@ -6,5 +6,11 @@ module.exports = {
   moduleNameMapper: {
     "(.+)\\.js": "$1"
   },
-  extensionsToTreatAsEsm: [".ts"]
+  extensionsToTreatAsEsm: [".ts"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.cache/",
+    "/build/",
+    "/dist/",
+  ]
 };

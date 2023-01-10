@@ -27,7 +27,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending
       },
       data: {
-        status: decision,
+        decisionStatus: decision,
         active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
         decisionMakerEmail: authEmail

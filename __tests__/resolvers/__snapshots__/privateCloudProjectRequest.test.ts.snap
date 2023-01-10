@@ -1,6 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Request tests creates a private cloud project request 1`] = `
+exports[`Request tests Approve a private cloud project request 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "privateCloudRequestDecision": {
+          "active": true,
+          "createdBy": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionMaker": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionStatus": "APPROVED",
+          "id": Any<String>,
+          "type": "CREATE",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`Request tests creates a private cloud project request with secondary technical lead 1`] = `
 {
   "body": {
     "kind": "single",
@@ -14,7 +45,41 @@ exports[`Request tests creates a private cloud project request 1`] = `
           "decisionDate": null,
           "decisionMaker": null,
           "decisionStatus": "PENDING",
+          "id": Any<String>,
           "project": null,
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`Request tests creates a private cloud project request without secondary technical lead 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "privateCloudProjectRequest": {
+          "active": true,
+          "createdBy": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionDate": null,
+          "decisionMaker": null,
+          "decisionStatus": "PENDING",
+          "id": Any<String>,
+          "project": null,
+          "requestedProject": {
+            "id": Any<String>,
+          },
         },
       },
       "errors": undefined,
