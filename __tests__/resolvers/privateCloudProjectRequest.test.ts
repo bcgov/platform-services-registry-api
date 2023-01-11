@@ -621,21 +621,6 @@ describe("Request tests", () => {
       }
     });
 
-    console.log("RequestedProject");
-    console.log(request?.requestedProject?.productionQuota);
-
-    console.log("Expected");
-    console.log({
-      ...mockProject.productionQuota,
-      ...DefaultCpuOptions[variables.productionQuota.cpu],
-      ...DefaultMemoryOptions[variables.productionQuota.memory]
-    });
-
-    console.log("Mock Project");
-    console.log(mockProject.productionQuota);
-
-    console.log(DefaultCpuOptions[variables.productionQuota.cpu]);
-
     expect(request).not.toBeNull();
     expect(request?.active).toBe(true);
     expect(request?.type).toBe(RequestType.Edit);
