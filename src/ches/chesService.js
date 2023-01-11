@@ -1,5 +1,4 @@
-// @ts-nocheck
-import ClientConnection from "./clientConnection.js";
+import ClientConnection from "./clientConnection";
 
 const SERVICE = "CHES";
 
@@ -16,7 +15,7 @@ export default class ChesService {
     this.connection = new ClientConnection({
       tokenUrl,
       clientId,
-      clientSecret
+      clientSecret,
     });
     this.axios = this.connection.axios;
     this.apiUrl = apiUrl;
@@ -26,8 +25,8 @@ export default class ChesService {
     try {
       const { data, status } = await this.axios.get(`${this.apiUrl}/health`, {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       });
       return { data, status };
     } catch (e) {
@@ -42,8 +41,8 @@ export default class ChesService {
           `${this.apiUrl}/status/${params.msgId}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -51,8 +50,8 @@ export default class ChesService {
         const { data, status } = await this.axios.get(`${this.apiUrl}/status`, {
           params: query,
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         });
         return { data, status };
       }
@@ -68,8 +67,8 @@ export default class ChesService {
           `${this.apiUrl}/cancel/${params.msgId}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -79,8 +78,8 @@ export default class ChesService {
           {
             params: query,
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -97,10 +96,10 @@ export default class ChesService {
         email,
         {
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
@@ -116,10 +115,10 @@ export default class ChesService {
         mergeData,
         {
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
@@ -135,10 +134,10 @@ export default class ChesService {
         mergeData,
         {
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           maxContentLength: Infinity,
-          maxBodyLength: Infinity
+          maxBodyLength: Infinity,
         }
       );
       return { data, status };
@@ -154,8 +153,8 @@ export default class ChesService {
           `${this.apiUrl}/promote/${params.msgId}`,
           {
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };
@@ -165,8 +164,8 @@ export default class ChesService {
           {
             params: query,
             headers: {
-              "Content-Type": "application/json"
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
         return { data, status };

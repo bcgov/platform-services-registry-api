@@ -3,13 +3,15 @@ import {
   roleDirectiveTransformer,
   permissionDirectiveTransformer
 } from "./auth.js";
-
 import { nonNullInputDirectiveTransformer } from "./noNullInput.js";
+import { flattenDefaultQuotaTransformer } from "./flattenDefaultQuota.js";
 
 const applyDirectiveTransformers = (schema) => {
   return authDirectiveTransformer(
     roleDirectiveTransformer(
-      permissionDirectiveTransformer(nonNullInputDirectiveTransformer(schema))
+      permissionDirectiveTransformer(
+        flattenDefaultQuotaTransformer(nonNullInputDirectiveTransformer(schema))
+      )
     )
   );
 };

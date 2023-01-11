@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import ChesService from "./chesService.js";
+import ChesService from "./chesService";
 
 export default new ChesService({
   tokenUrl: process.env.CHES_TOKEN_URL,

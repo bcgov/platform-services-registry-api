@@ -593,6 +593,10 @@ export type ResolversParentTypes = ResolversObject<{
   projectsPaginatedOutput: ProjectsPaginatedOutput;
 }>;
 
+export type FlattenDefaultQuotaInputDirectiveArgs = { };
+
+export type FlattenDefaultQuotaInputDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = FlattenDefaultQuotaInputDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type NonNullInputDirectiveArgs = { };
 
 export type NonNullInputDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = NonNullInputDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
@@ -743,5 +747,6 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
 }>;
 
 export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{
+  flattenDefaultQuotaInput?: FlattenDefaultQuotaInputDirectiveResolver<any, any, ContextType>;
   nonNullInput?: NonNullInputDirectiveResolver<any, any, ContextType>;
 }>;

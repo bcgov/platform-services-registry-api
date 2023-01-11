@@ -1,6 +1,5 @@
 import {
   MutationResolvers,
-  Quota,
   RequestType,
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs
@@ -8,13 +7,7 @@ import {
 import { Prisma } from "@prisma/client";
 import { PrivateCloudProject, PrivateCloudRequest } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
-
-const mergeQuotas = (incoming, existing: Quota): Quota => ({
-  ...existing,
-  ...incoming?.cpu,
-  ...incoming?.memory,
-  ...incoming?.storage
-});
+import { sendEditRequestEmails } from "../../ches/generateEmailData.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
@@ -95,10 +88,10 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     const requestedProject = {
       ...restProject,
       ...restArgs,
-      toolsQuota: mergeQuotas(toolsQuotaFromArgs, toolsQuota),
-      productionQuota: mergeQuotas(productionQuotaFromArgs, productionQuota),
-      testQuota: mergeQuotas(testQuotaFromArgs, testQuota),
-      developmentQuota: mergeQuotas(developmentQuotaFromArgs, developmentQuota),
+      toolsQuota: { ...toolsQuota, ...toolsQuotaFromArgs },
+      productionQuota: { ...productionQuota, ...productionQuotaFromArgs },
+      testQuota: { ...testQuota, ...testQuotaFromArgs },
+      developmentQuota: { ...developmentQuota, ...developmentQuotaFromArgs },
       commonComponents: { ...commonComponents, ...commonComponentsFromArgs },
       projectOwner: projectOwner
         ? {
@@ -190,6 +183,12 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         }
       }
     });
+
+    await sendEditRequestEmails(
+      editRequest.project,
+      editRequest.requestedProject,
+      args
+    );
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       throw new Error(e.message);
