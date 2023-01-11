@@ -1,8 +1,5 @@
 import {
-  CommonComponentsInput,
   MutationResolvers,
-  CreateUserInput,
-  QuotaInput,
   Quota,
   RequestType,
   DecisionStatus,
@@ -25,17 +22,13 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   { authEmail, prisma, authRoles }
 ) => {
   let editRequest;
-  let decisionStatus; // Quota changes require approval
+  let decisionStatus;
 
   try {
     const existingRequest: PrivateCloudRequest =
       await prisma.privateCloudRequest.findFirst({
         where: {
-          AND: [
-            { projectId: args.projectId },
-            { status: DecisionStatus.Approved },
-            { active: true }
-          ]
+          AND: [{ projectId: args.projectId }, { active: true }]
         }
       });
 
@@ -61,17 +54,27 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       testQuota,
       toolsQuota,
       developmentQuota,
-      ...rest
+      commonComponents,
+      ...restProject
     } = project;
+
+    const {
+      projectId,
+      projectOwner,
+      primaryTechnicalLead,
+      secondaryTechnicalLead,
+      toolsQuota: toolsQuotaFromArgs,
+      productionQuota: productionQuotaFromArgs,
+      testQuota: testQuotaFromArgs,
+      developmentQuota: developmentQuotaFromArgs,
+      commonComponents: commonComponentsFromArgs,
+      ...restArgs
+    } = args;
 
     const users = await prisma.user.findMany({
       where: {
         id: {
-          in: [
-            project.projectOwnerId,
-            project.primaryTechnicalLeadId,
-            project.secondaryTechnicalLeadId
-          ]
+          in: [projectOwnerId, primaryTechnicalLeadId, secondaryTechnicalLeadId]
         }
       },
       select: {
@@ -84,31 +87,26 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       !authRoles.includes("admin")
     ) {
       throw new Error(
-        "You need to be a contact on this project in order to delete it."
+        "You need to be a contact on this project or an administrator in order to delete it."
       );
     }
 
+    // Merge the existing project with the new values from the request arguments
     const requestedProject = {
-      ...rest,
-      name: args.name,
-      description: args.description,
-      toolsQuota: mergeQuotas(args.toolsQuota, project.toolsQuota),
-      productionQuota: mergeQuotas(
-        args.productionQuota,
-        project.productionQuota
-      ),
-      testQuota: mergeQuotas(args.testQuota, project.testQuota),
-      developmentQuota: mergeQuotas(
-        args.developmentQuota,
-        project.developmentQuota
-      ),
-      projectOwner: args.projectOwner
+      ...restProject,
+      ...restArgs,
+      toolsQuota: mergeQuotas(toolsQuotaFromArgs, toolsQuota),
+      productionQuota: mergeQuotas(productionQuotaFromArgs, productionQuota),
+      testQuota: mergeQuotas(testQuotaFromArgs, testQuota),
+      developmentQuota: mergeQuotas(developmentQuotaFromArgs, developmentQuota),
+      commonComponents: { ...commonComponents, ...commonComponentsFromArgs },
+      projectOwner: projectOwner
         ? {
             connectOrCreate: {
               where: {
-                email: args.projectOwner.email
+                email: projectOwner.email
               },
-              create: args.projectOwner
+              create: projectOwner
             }
           }
         : {
@@ -116,13 +114,13 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
               id: projectOwnerId
             }
           },
-      primaryTechnicalLead: args.primaryTechnicalLead
+      primaryTechnicalLead: primaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: args.primaryTechnicalLead.email
+                email: primaryTechnicalLead.email
               },
-              create: args.primaryTechnicalLead
+              create: primaryTechnicalLead
             }
           }
         : {
@@ -130,13 +128,13 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
               id: primaryTechnicalLeadId
             }
           },
-      secondaryTechnicalLead: args.secondaryTechnicalLead
+      secondaryTechnicalLead: secondaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: args.secondaryTechnicalLead.email
+                email: secondaryTechnicalLead.email
               },
-              create: args.secondaryTechnicalLead
+              create: secondaryTechnicalLead
             }
           }
         : secondaryTechnicalLeadId
@@ -148,6 +146,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         : undefined
     };
 
+    // If any of the quotas are being changed, the request needs to be approved
     if (
       "toolsQuota" in args ||
       "developmentQuota" in args ||
@@ -155,6 +154,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       "productionQuota" in args
     ) {
       decisionStatus = DecisionStatus.Pending;
+    } else {
+      decisionStatus = DecisionStatus.Approved;
     }
 
     editRequest = await prisma.privateCloudRequest.create({

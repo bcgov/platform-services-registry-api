@@ -1,7 +1,10 @@
-import { Ministry, Cluster, ProjectStatus } from "../src/__generated__/resolvers-types.js";
+import {
+  Ministry,
+  Cluster,
+  ProjectStatus
+} from "../src/__generated__/resolvers-types.js";
 
 export const mockProject = {
-  id: "63bdbf13ebdb8eee19ad4615",
   name: "test project",
   description: "test description",
   status: ProjectStatus.Active,

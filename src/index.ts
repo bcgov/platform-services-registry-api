@@ -16,12 +16,16 @@ import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import applyDirectiveTransformers from "./transformers/index.js";
 import { PrismaClient } from "@prisma/client";
 import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
+import chesService from "./ches/index.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
 export interface ContextValue {
   kauth: KeycloakContext;
   prisma: PrismaClient;
+  authRoles: string[];
+  authEmail: string;
+  chesService: typeof chesService;
 }
 
 export const prisma = new PrismaClient();
@@ -71,11 +75,11 @@ app.use(
         roles: []
       };
       return {
-        // @ts-ignore
         kauth: kauth,
         prisma,
         authRoles: roles,
-        authEmail: email
+        authEmail: email,
+        chesService
       };
     }
   })

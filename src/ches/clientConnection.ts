@@ -1,3 +1,4 @@
+// @ts-nocheck
 import axios from "axios";
 import oauth from "axios-oauth-client";
 import tokenProvider from "axios-token-interceptor";

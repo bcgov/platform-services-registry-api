@@ -5,8 +5,15 @@ import {
   CommonComponentsInput,
   CreateUserInput,
   RequestDecision,
-  RequestType
+  RequestType,
+  CommonComponentsOptions,
+  DefaultCpuOptions,
+  DefaultMemoryOptions
 } from "../../src/__generated__/resolvers-types.js";
+import {
+  DefaultCpuOptions as DefaultCpuOptionsEnum,
+  DefaultMemoryOptions as DefaultMemoryOptionsEnum
+} from "../../src/resolvers/enum";
 import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -57,7 +64,8 @@ const server = new ApolloServer<ContextValue>({
 
 let requestAId;
 let requestBId;
-let projectId;
+let projectCId;
+let projectDId;
 
 describe("Request tests", () => {
   beforeAll(async () => {
@@ -69,11 +77,18 @@ describe("Request tests", () => {
       ]
     });
 
-    const project = await prisma.privateCloudProject.create({
+    const projectC = await prisma.privateCloudProject.create({
       data: mockProject
     });
 
-    projectId = project.id;
+    const mockProjectB = { ...mockProject, licencePlate: "t9d68bd" };
+
+    const projectD = await prisma.privateCloudProject.create({
+      data: mockProjectB
+    });
+
+    projectCId = projectC.id;
+    projectDId = projectD.id;
   });
 
   afterAll(async () => {
@@ -252,7 +267,7 @@ describe("Request tests", () => {
     );
   });
 
-  test("creates a private cloud project request with secondary technical lead", async () => {
+  test("Creates a private cloud project request with secondary technical lead", async () => {
     const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectRequest(
         $name: String!,
         $description: String!,
@@ -515,7 +530,7 @@ describe("Request tests", () => {
       {
         query: DELETE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
-          projectId: projectId
+          projectId: projectCId
         }
       },
       {
@@ -545,5 +560,105 @@ describe("Request tests", () => {
     expect(request).not.toBeNull();
     expect(request?.active).toBe(true);
     expect(request?.type).toBe(RequestType.Delete);
+  });
+
+  test("Makes an edit request", async () => {
+    const EDIT_REQUEST = `mutation Mutation($projectId: ID!, $name: String, $description: String, $cluster: Cluster, $commonComponents: CommonComponentsInput, $productionQuota: QuotaInput) {
+      privateCloudProjectEditRequest(projectId: $projectId, name: $name, description: $description, cluster: $cluster, commonComponents: $commonComponents, productionQuota: $productionQuota) {
+        id
+        active
+        type
+        createdBy {
+          email
+        }
+      }
+    }`;
+
+    const variables = {
+      projectId: projectDId,
+      name: "new name",
+      description: "new description",
+      cluster: Cluster.Gold,
+      commonComponents: {
+        identityManagement: CommonComponentsOptions.PlanningToUse
+      },
+      productionQuota: {
+        cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128
+      }
+    };
+
+    const response = await server.executeOperation(
+      {
+        query: EDIT_REQUEST,
+        variables
+      },
+      {
+        contextValue
+      }
+    );
+
+    expect(response).toMatchSnapshot({
+      body: {
+        singleResult: {
+          data: {
+            privateCloudProjectEditRequest: {
+              id: expect.any(String)
+            }
+          }
+        }
+      }
+    });
+
+    const request = await prisma.privateCloudRequest.findUnique({
+      where: {
+        // @ts-ignore
+        id: response.body.singleResult.data.privateCloudProjectEditRequest.id
+      },
+      include: {
+        project: true,
+        requestedProject: true
+      }
+    });
+
+    console.log("RequestedProject");
+    console.log(request?.requestedProject?.productionQuota);
+
+    console.log("Expected");
+    console.log({
+      ...mockProject.productionQuota,
+      ...DefaultCpuOptions[variables.productionQuota.cpu],
+      ...DefaultMemoryOptions[variables.productionQuota.memory]
+    });
+
+    console.log("Mock Project");
+    console.log(mockProject.productionQuota);
+
+    console.log(DefaultCpuOptions[variables.productionQuota.cpu]);
+
+    expect(request).not.toBeNull();
+    expect(request?.active).toBe(true);
+    expect(request?.type).toBe(RequestType.Edit);
+    expect(request?.project?.name).toBe(mockProject.name);
+    expect(request?.requestedProject?.name).toBe(variables.name);
+    expect(request?.project?.description).toBe(mockProject.description);
+    expect(request?.requestedProject?.description).toBe(variables.description);
+    expect(request?.project?.cluster).toBe(mockProject.cluster);
+    expect(request?.requestedProject?.cluster).toBe(variables.cluster);
+    expect(request?.project?.commonComponents).toEqual(
+      mockProject.commonComponents
+    );
+    expect(request?.requestedProject?.commonComponents).toEqual({
+      ...mockProject.commonComponents,
+      ...variables.commonComponents
+    });
+    expect(request?.project?.productionQuota).toEqual(
+      mockProject.productionQuota
+    );
+    expect(request?.requestedProject?.productionQuota).toEqual({
+      ...mockProject.productionQuota,
+      ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
+      ...DefaultMemoryOptionsEnum[variables.productionQuota.memory]
+    });
   });
 });
