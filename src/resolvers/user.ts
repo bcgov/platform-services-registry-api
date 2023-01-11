@@ -1,46 +1,52 @@
 const User = {
   privateCloudProjectOwner: (user, _, { prisma }) =>
-    prisma.privateCloudProject.findMany({
-      where: {
-        projectOwnerId: user.id
-      }
-    }),
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
+        }
+      })
+      .privateCloudProjectOwner(),
   privateCloudProjectPrimaryTechnicalLead: (user, _, { prisma }) =>
-    prisma.privateCloudProject.findMany({
-      where: {
-        primaryTechnicalLeadId: user.id
-      }
-    }),
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
+        }
+      })
+      .privateCloudProjectPrimaryTechnicalLead(),
   privateCloudProjectSecondaryTechnicalLead: (user, _, { prisma }) =>
-    prisma.privateCloudProject.findMany({
-      where: {
-        secondaryTechnicalLeadId: user.id
-      }
-    }),
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
+        }
+      })
+      .privateCloudProjectSecondaryTechnicalLead(),
   privateCloudRequestProjectOwner: (user, _, { prisma }) =>
-    prisma.privateCloudRequest.findMany({
-      where: {
-        requestedProject: {
-          projectOwnerId: user.id
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
         }
-      }
-    }),
+      })
+      .privateCloudRequestedProjectOwner(),
   privateCloudRequestPrimaryTechnicalLead: (user, _, { prisma }) =>
-    prisma.privateCloudRequest.findMany({
-      where: {
-        requestedProject: {
-          primaryTechnicalLeadId: user.id
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
         }
-      }
-    }),
+      })
+      .privateCloudRequestedProjectPrimaryTechnicalLead(),
   privateCloudRequestSecondaryTechnicalLead: (user, _, { prisma }) =>
-    prisma.privateCloudRequest.findMany({
-      where: {
-        requestedProject: {
-          secondaryTechnicalLeadId: user.id
+    prisma.user
+      .findUnique({
+        where: {
+          id: user.id
         }
-      }
-    })
+      })
+      .privateCloudRequestedProjectSecondaryTechnicalLead()
 };
 
 export default User;
