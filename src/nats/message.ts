@@ -18,9 +18,6 @@ function message(action, requestedProject) {
     secondaryTechnicalLead
   } = requestedProject;
 
-  console.log("Requested Project");
-  console.log(requestedProject);
-
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",

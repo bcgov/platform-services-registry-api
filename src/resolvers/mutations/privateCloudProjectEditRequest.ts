@@ -197,7 +197,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   }
 
   if (decisionStatus === DecisionStatus.Approved) {
-    await sendNatsMessage("edit", editRequest.requestedProject);
+    await sendNatsMessage(editRequest.type, editRequest.requestedProject);
   }
 
   return editRequest;
