@@ -38,7 +38,6 @@ export const userPrivateCloudProjectById = async (
 export const userPrivateCloudProjectsByIds = async (
   _,
   { projectIds },
-
   { prisma, user, authEmail }
 ) =>
   await prisma.privateCloudProject.findMany({
@@ -154,8 +153,6 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       ]
     }
   });
-
-  console.log(total)
 
   return {
     projects,
