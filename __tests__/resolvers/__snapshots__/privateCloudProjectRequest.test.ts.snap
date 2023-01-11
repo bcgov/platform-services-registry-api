@@ -31,6 +31,70 @@ exports[`Request tests Approve a private cloud project request 1`] = `
 }
 `;
 
+exports[`Request tests Delete reqeust 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "privateCloudProjectDeleteRequest": {
+          "active": true,
+          "createdBy": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionDate": null,
+          "decisionMaker": null,
+          "decisionStatus": "PENDING",
+          "id": Any<String>,
+          "project": {
+            "name": "test project",
+          },
+          "type": "DELETE",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`Request tests Reject a private cloud project request 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "privateCloudRequestDecision": {
+          "active": false,
+          "createdBy": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionMaker": {
+            "email": "oamar.kanji@gov.bc.ca",
+          },
+          "decisionStatus": "REJECTED",
+          "id": Any<String>,
+          "type": "CREATE",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
 exports[`Request tests creates a private cloud project request with secondary technical lead 1`] = `
 {
   "body": {

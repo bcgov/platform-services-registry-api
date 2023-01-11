@@ -4,7 +4,8 @@ import {
   Ministry,
   CommonComponentsInput,
   CreateUserInput,
-  RequestDecision
+  RequestDecision,
+  RequestType
 } from "../../src/__generated__/resolvers-types.js";
 import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
@@ -16,6 +17,13 @@ import applyDirectiveTransformers from "../../src/transformers/index.js";
 import { PrismaClient } from "@prisma/client";
 import req from "../../src/auth/kauthContextMock.js";
 import assert from "assert";
+import supertest from "supertest";
+import {
+  mockProjectOwner,
+  mockPrimaryTechnicalLead,
+  mockSecondaryTechnicalLead,
+  mockProject
+} from "../../__mocks__/constants.js";
 
 interface ContextValue {
   kauth: KeycloakContext;
@@ -47,10 +55,26 @@ const server = new ApolloServer<ContextValue>({
   schema
 });
 
-let requestId;
+let requestAId;
+let requestBId;
+let projectId;
 
 describe("Request tests", () => {
-  beforeAll(async () => {});
+  beforeAll(async () => {
+    const users = await prisma.user.createMany({
+      data: [
+        mockProjectOwner,
+        mockPrimaryTechnicalLead,
+        mockSecondaryTechnicalLead
+      ]
+    });
+
+    const project = await prisma.privateCloudProject.create({
+      data: mockProject
+    });
+
+    projectId = project.id;
+  });
 
   afterAll(async () => {
     const deleteRequests = prisma.privateCloudRequest.deleteMany();
@@ -168,6 +192,11 @@ describe("Request tests", () => {
         }
       }
     });
+
+    // prettier-ignore
+    // @ts-ignore
+    requestAId = response.body.singleResult.data.privateCloudProjectRequest.id;
+
     const requests = await prisma.privateCloudRequest.findMany();
     expect(requests.length).toBe(1);
 
@@ -189,6 +218,38 @@ describe("Request tests", () => {
     expect(requestedProject?.description).toBe(description);
     expect(requestedProject?.ministry).toBe(ministry);
     expect(requestedProject?.cluster).toBe(cluster);
+
+    const projectOwnerUser = await prisma.user.findUnique({
+      where: {
+        email: projectOwner.email
+      }
+    });
+
+    expect(projectOwnerUser).not.toBeNull();
+    expect(projectOwnerUser?.firstName).toBe(projectOwner.firstName);
+    expect(projectOwnerUser?.lastName).toBe(projectOwner.lastName);
+    expect(projectOwnerUser?.githubId).toBe(projectOwner.githubId);
+    expect(projectOwnerUser?.ministry).toBe(projectOwner.ministry);
+
+    const primaryTechnicalLeadUser = await prisma.user.findUnique({
+      where: {
+        email: primaryTechnicalLead.email
+      }
+    });
+
+    expect(primaryTechnicalLeadUser).not.toBeNull();
+    expect(primaryTechnicalLeadUser?.firstName).toBe(
+      primaryTechnicalLead.firstName
+    );
+    expect(primaryTechnicalLeadUser?.lastName).toBe(
+      primaryTechnicalLead.lastName
+    );
+    expect(primaryTechnicalLeadUser?.githubId).toBe(
+      primaryTechnicalLead.githubId
+    );
+    expect(primaryTechnicalLeadUser?.ministry).toBe(
+      primaryTechnicalLead.ministry
+    );
   });
 
   test("creates a private cloud project request with secondary technical lead", async () => {
@@ -282,7 +343,7 @@ describe("Request tests", () => {
 
     // prettier-ignore
     // @ts-ignore
-    requestId = response.body.singleResult.data.privateCloudProjectRequest.id;
+    requestBId = response.body.singleResult.data.privateCloudProjectRequest.id;
 
     assert(response.body.kind === "single");
     expect(response.body.singleResult.errors).toBeUndefined();
@@ -300,10 +361,30 @@ describe("Request tests", () => {
 
     const requests = await prisma.privateCloudRequest.findMany();
     expect(requests.length).toBe(2);
+
+    const secondaryTechnicalLeadUser = await prisma.user.findUnique({
+      where: {
+        email: secondaryTechnicalLead.email
+      }
+    });
+
+    expect(secondaryTechnicalLeadUser).not.toBeNull();
+    expect(secondaryTechnicalLeadUser?.firstName).toBe(
+      secondaryTechnicalLead.firstName
+    );
+    expect(secondaryTechnicalLeadUser?.lastName).toBe(
+      secondaryTechnicalLead.lastName
+    );
+    expect(secondaryTechnicalLeadUser?.githubId).toBe(
+      secondaryTechnicalLead.githubId
+    );
+    expect(secondaryTechnicalLeadUser?.ministry).toBe(
+      secondaryTechnicalLead.ministry
+    );
   });
 
   test("Approve a private cloud project request", async () => {
-    const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `mutation MakePrivateCloudRequestCreateDecision(
+    const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `mutation PrivateCloudRequestDecision(
       $requestId: ID!,
       $decision: RequestDecision!) {
       privateCloudRequestDecision(requestId: $requestId, decision: $decision) {
@@ -325,7 +406,7 @@ describe("Request tests", () => {
         query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
         variables: {
           decision: RequestDecision.Approved,
-          requestId: requestId
+          requestId: requestAId
         }
       },
       {
@@ -335,7 +416,7 @@ describe("Request tests", () => {
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
-        id: requestId
+        id: requestAId
       }
     });
 
@@ -354,5 +435,115 @@ describe("Request tests", () => {
     expect(request).not.toBeNull();
     expect(request?.decisionStatus).toBe(RequestDecision.Approved);
     expect(request?.createdByEmail).toBe(contextValue.authEmail);
+  });
+
+  test("Reject a private cloud project request", async () => {
+    const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `mutation PrivateCloudRequestDecision(
+      $requestId: ID!,
+      $decision: RequestDecision!) {
+      privateCloudRequestDecision(requestId: $requestId, decision: $decision) {
+        id
+        decisionMaker {
+          email
+        }
+        active
+        createdBy {
+          email
+        }
+        type
+        decisionStatus
+      }
+    }`;
+
+    const response = await server.executeOperation(
+      {
+        query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
+        variables: {
+          decision: RequestDecision.Rejected,
+          requestId: requestBId
+        }
+      },
+      {
+        contextValue
+      }
+    );
+
+    const request = await prisma.privateCloudRequest.findUnique({
+      where: {
+        id: requestBId
+      }
+    });
+
+    expect(response).toMatchSnapshot({
+      body: {
+        singleResult: {
+          data: {
+            privateCloudRequestDecision: {
+              id: expect.any(String)
+            }
+          }
+        }
+      }
+    });
+
+    expect(request).not.toBeNull();
+    expect(request?.decisionStatus).toBe(RequestDecision.Rejected);
+    expect(request?.createdByEmail).toBe(contextValue.authEmail);
+  });
+
+  test("Delete request", async () => {
+    const DELETE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectDeleteRequest($projectId: ID!) {
+      privateCloudProjectDeleteRequest(projectId: $projectId) {
+        id
+        active
+        createdBy {
+          email
+        }
+        decisionDate
+        decisionMaker {
+          email
+        }
+        type
+        decisionStatus
+        project {
+          name
+        }
+      }
+    }`;
+
+    const response = await server.executeOperation(
+      {
+        query: DELETE_PRIVATE_CLOUD_PROJECT_REQUEST,
+        variables: {
+          projectId: projectId
+        }
+      },
+      {
+        contextValue
+      }
+    );
+
+    const request = await prisma.privateCloudRequest.findUnique({
+      where: {
+        // @ts-ignore
+        id: response.body.singleResult.data.privateCloudProjectDeleteRequest.id
+      }
+    });
+
+    expect(response).toMatchSnapshot({
+      body: {
+        singleResult: {
+          data: {
+            privateCloudProjectDeleteRequest: {
+              id: expect.any(String)
+            }
+          }
+        }
+      }
+    });
+
+    expect(request).not.toBeNull();
+    expect(request?.active).toBe(true);
+    expect(request?.type).toBe(RequestType.Delete);
   });
 });

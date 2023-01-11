@@ -47,7 +47,6 @@ const privateCloudProjectRequest: MutationResolvers = async (
           testQuota: defaultQuota,
           toolsQuota: defaultQuota,
           developmentQuota: defaultQuota,
-          archived: false,
           projectOwner: {
             connectOrCreate: {
               where: {

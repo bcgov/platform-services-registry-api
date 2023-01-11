@@ -45,14 +45,16 @@ let schema = makeExecutableSchema({
 
 schema = applyDirectiveTransformers(schema);
 
-const app = express();
+export const app = express();
 const { keycloak } = configureKeycloak(app, "/graphql");
 const httpServer = http.createServer(app);
-const server = new ApolloServer<ContextValue>({
+
+export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   introspection: true
 });
+
 await server.start();
 
 app.use(

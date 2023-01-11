@@ -50,7 +50,6 @@ model PrivateCloudProject {
   description              String
   status                   ProjectStatus
   licencePlate             String                @unique
-  archived                 Boolean
   created                  DateTime              @default(now())
   projectOwnerId           String                @db.ObjectId
   projectOwner             User                  @relation("projectOwner", fields: [projectOwnerId], references: [id])
@@ -65,8 +64,8 @@ model PrivateCloudProject {
   developmentQuota         Quota
   toolsQuota               Quota
   commonComponents         CommonComponents
-  requests                 PrivateCloudRequest[] @relation("project")
   profileId                String?
+  requests                 PrivateCloudRequest[] @relation("project")
 }
 
 model PrivateCloudRequestedProject {
@@ -75,7 +74,6 @@ model PrivateCloudRequestedProject {
   description              String
   status                   ProjectStatus
   licencePlate             String
-  archived                 Boolean
   created                  DateTime             @default(now())
   projectOwnerId           String               @db.ObjectId
   projectOwner             User                 @relation("requestedProjectOwner", fields: [projectOwnerId], references: [id])
@@ -90,6 +88,7 @@ model PrivateCloudRequestedProject {
   developmentQuota         Quota
   toolsQuota               Quota
   commonComponents         CommonComponents
+  profileId                String?
   requestedProject         PrivateCloudRequest? @relation("requestedProject")
 }
 
