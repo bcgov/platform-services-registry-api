@@ -92,7 +92,7 @@ export const mockProject = {
 
 export const mockProjectOwner = {
   id: "63bd0a56e7df3f190dfe89fc",
-  email: "testA@test.com",
+  email: "oamarkanji@gmail.com",
   firstName: "testA",
   lastName: "testA",
   githubId: "testA",

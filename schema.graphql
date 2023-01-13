@@ -1,4 +1,5 @@
 directive @nonNullInput on FIELD_DEFINITION
+directive @flattenDefaultQuotaInput on FIELD_DEFINITION
 
 scalar DateTime
 scalar EmailAddress
@@ -359,7 +360,7 @@ type Mutation {
     developmentQuota: QuotaInput
     testQuota: QuotaInput
     toolsQuota: QuotaInput
-  ): PrivateCloudRequest! @nonNullInput @auth
+  ): PrivateCloudRequest! @nonNullInput @auth @flattenDefaultQuotaInput
 
   customPrivateCloudProjectRequest(
     name: String!
@@ -371,7 +372,7 @@ type Mutation {
     developmentQuota: CustomQuotaInput
     testQuota: CustomQuotaInput
     toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
+  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput 
 
   customPrivateCloudProjectEditRequest(
     projectId: ID!
