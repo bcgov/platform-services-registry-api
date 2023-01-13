@@ -6,6 +6,7 @@ import {
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
+import { sendMakeDecisionEmails } from "ches/emailHandlers.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -59,14 +60,14 @@ const privateCloudRequestDecision: MutationResolvers = async (
   }
 
   if (request.status === RequestDecision.Approved) {
-    // Ches emails
-    // Nats message
     await sendNatsMessage(request.type, request.requestedProject);
   }
 
-  if (request.status === RequestDecision.Rejected) {
-    // Ches emails
-  }
+  sendMakeDecisionEmails(
+    request.project,
+    request.requestedProject,
+    request.decisionStatus
+  );
 
   return request;
 };

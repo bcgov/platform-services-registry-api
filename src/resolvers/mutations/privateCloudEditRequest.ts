@@ -7,7 +7,7 @@ import {
 import { Prisma } from "@prisma/client";
 import { PrivateCloudProject, PrivateCloudRequest } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
-import { sendEditRequestEmails } from "../../ches/generateEmailData.js";
+import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
@@ -183,12 +183,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         }
       }
     });
-
-    await sendEditRequestEmails(
-      editRequest.project,
-      editRequest.requestedProject,
-      args
-    );
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       throw new Error(e.message);
@@ -199,6 +193,12 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   if (decisionStatus === DecisionStatus.Approved) {
     await sendNatsMessage(editRequest.type, editRequest.requestedProject);
   }
+
+  await sendEditRequestEmails(
+    editRequest.project,
+    editRequest.requestedProject,
+    args
+  );
 
   return editRequest;
 };
