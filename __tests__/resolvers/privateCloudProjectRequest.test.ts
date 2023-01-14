@@ -158,7 +158,7 @@ describe("Request tests", () => {
     };
 
     const projectOwner: CreateUserInput = {
-      email: "oamar.kanji@gov.bc.ca",
+      email: "oamarkanji@gmail.com",
       firstName: "Oamar",
       githubId: "okanji",
       lastName: "Kanji",
@@ -330,7 +330,7 @@ describe("Request tests", () => {
     };
 
     const secondaryTechnicalLead: CreateUserInput = {
-      email: "abc@test.goc.bc.ca",
+      email: "oamarkanji@gmail.com",
       firstName: "John",
       githubId: "test456",
       lastName: "Doe",

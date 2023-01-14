@@ -46,10 +46,10 @@ const clusterNames = [
   }
 ];
 
-const generateEmailTemplateData = (
+export const generateEmailTemplateData = (
   project,
   requestedProject,
-  args,
+  args = {},
   other = {}
 ) => {
   const projectOwner = project.projectOwner;
@@ -112,7 +112,7 @@ const generateEmailTemplateData = (
     POEmail: projectOwner.email,
     POGitHubOrIDIR: projectOwner?.POIDIR || projectOwner?.githubId,
 
-    PriTLName: `${primaryTechnicalLead.firstName} ${primaryTechnicalLead.lastName}`,
+    PriTLName: `${primaryTechnicalLead?.firstName} ${primaryTechnicalLead?.lastName}`,
     PriTLEmail: primaryTechnicalLead?.email,
     PriTLGitHubOrIDIR:
       primaryTechnicalLead?.POIDIR || primaryTechnicalLead?.githubId,
@@ -122,8 +122,8 @@ const generateEmailTemplateData = (
       : null,
     SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead?.email : null,
     SecTLGitHubOrIDIR: secondaryTechnicalLead?.POIDIR
-      ? secondaryTechnicalLead.POIDIR
-      : secondaryTechnicalLead.githubId,
+      ? secondaryTechnicalLead?.POIDIR
+      : secondaryTechnicalLead?.githubId,
 
     setCluster: clusterNames.filter(
       (item) => item.name === requestedProject?.cluster
@@ -260,6 +260,7 @@ export const sendEditRequestEmails = async (
 };
 
 export const sendCreateRequestEmails = async (requestedProject) => {
+  console.log("*** CREATE ***")
   const project = requestedProject; // For consistency with the other functions, even though a create request does not have a project yet.
 
   try {
@@ -323,13 +324,18 @@ export const sendDeleteRequestEmails = async (project) => {
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/super-admin-request-email.html",
-        generateEmailTemplateData(project, requestedProject, _, {
-          requestType: "Delete",
-          isProvisioningRequest: false,
-          isQuotaRequest: false,
-          productDescription: requestedProject.description,
-          productMinistry: requestedProject.ministry
-        })
+        generateEmailTemplateData(
+          project,
+          requestedProject,
+          {},
+          {
+            requestType: "Delete",
+            isProvisioningRequest: false,
+            isQuotaRequest: false,
+            productDescription: requestedProject.description,
+            productMinistry: requestedProject.ministry
+          }
+        )
       ),
       //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
       to: adminEmails,
@@ -341,25 +347,16 @@ export const sendDeleteRequestEmails = async (project) => {
   }
 };
 
-export const sendMakeDecisionEmails = async (
-  project,
-  requestedProject,
-  requestDecision
-) => {
-  const quotaChanged =
-    "toolsQuota" in args ||
-    "developmentQuota" in args ||
-    "testQuota" in args ||
-    "productionQuota" in args;
-
+export const sendMakeDecisionEmails = async (request) => {
+  const { requestType, requestDecision, requestedProject, project } = request;
   try {
     if (requestDecision === RequestDecision.Approved) {
-      if (request.type === RequestType.Create) {
+      if (requestType === RequestType.Create) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/provisioning-request-completion-email.html",
-            generateEmailTemplateData(project, requestedProject)
+            generateEmailTemplateData(requestedProject, requestedProject)
           ),
           //For all project contacts. Sent when the provisioner application has finished provisioning the new namespaces for a product.
           to: [
@@ -375,39 +372,43 @@ export const sendMakeDecisionEmails = async (
         });
       }
 
-      if (request.type === RequestType.Edit) {
-        if (quotaChanged)
-          chesService.send({
-            bodyType: "html",
-            body: swig.renderFile(
-              "./src/ches/new-templates/quota-request-completion-email.html",
-              generateEmailTemplateData(requestedProject, project, _, {
+      if (requestType === RequestType.Edit) {
+        chesService.send({
+          bodyType: "html",
+          body: swig.renderFile(
+            "./src/ches/new-templates/quota-request-completion-email.html",
+            generateEmailTemplateData(
+              requestedProject,
+              project,
+              {},
+              {
                 consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`
-              })
-            ),
-            // For all project contacts.
-            to: [
-              requestedProject.projectOwner,
-              requestedProject.primaryTechnicalLead,
-              requestedProject.secondaryTechnicalLead,
-              project.projectOwner,
-              project.primaryTechnicalLead,
-              project.secondaryTechnicalLead
-            ]
-              .filter(Boolean)
-              .map(({ email }) => email),
-            from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-            subject:
-              "Resource quota for your product in Private Cloud Openshift Platform has changed"
-          });
+              }
+            )
+          ),
+          // For all project contacts.
+          to: [
+            requestedProject.projectOwner,
+            requestedProject.primaryTechnicalLead,
+            requestedProject.secondaryTechnicalLead,
+            project.projectOwner,
+            project.primaryTechnicalLead,
+            project.secondaryTechnicalLead
+          ]
+            .filter(Boolean)
+            .map(({ email }) => email),
+          from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+          subject:
+            "Resource quota for your product in Private Cloud Openshift Platform has changed"
+        });
       }
 
-      if (request.type === RequestType.Delete) {
+      if (requestType === RequestType.Delete) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/deletion-request-completion-email.html",
-            generateEmailTemplateData(project, requestedProject)
+            generateEmailTemplateData(project, project)
           ),
           // For all project contacts. Sent when Provisioner processes the project set deletion request in Openshift
           to: [
@@ -430,14 +431,14 @@ export const sendMakeDecisionEmails = async (
           "./src/ches/new-templates/request-denial-email.html",
           generateEmailTemplateData(project, requestedProject, {
             requestType:
-              request.type === RequestType.Create
+              requestType === RequestType.Create
                 ? "Provisioning"
-                : request.type === RequestType.Edit
+                : requestType === RequestType.Edit
                 ? "Edit"
                 : "Deletion",
             humanActionComment: requestedProject.humanActionComment || null,
-            isProvisioningRequest: request.type === RequestType.Create,
-            isQuotaRequest: request.type === RequestType.Edit,
+            isProvisioningRequest: requestType === RequestType.Create,
+            isQuotaRequest: requestType === RequestType.Edit,
             productDescription: requestedProject.description,
             productMinistry: requestedProject.ministry
           })
@@ -452,9 +453,9 @@ export const sendMakeDecisionEmails = async (
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: ` ${
-          request.type === RequestType.Create
+          requestType === RequestType.Create
             ? "Provisioning"
-            : request.type === RequestType.Edit
+            : requestType === RequestType.Edit
             ? "Edit"
             : "Deletion"
         } request has been rejected`

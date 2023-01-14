@@ -82,7 +82,13 @@ const privateCloudProjectRequest: MutationResolvers = async (
         }
       },
       include: {
-        requestedProject: true
+        requestedProject: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        }
       }
     });
   } catch (e) {

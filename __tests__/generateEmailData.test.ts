@@ -4,7 +4,7 @@
 //   args
 // );
 
-import { generateEmailTemplateData } from "../src/ches/generateEmailData.js";
+import { generateEmailTemplateData } from "../src/ches/emailHandlers.js";
 
 const project = {
   id: "63bf2cca4a18633df22cc6af",

@@ -64,7 +64,13 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         }
       },
       include: {
-        project: true
+        project: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true
+          }
+        }
       }
     });
   } catch (e) {
