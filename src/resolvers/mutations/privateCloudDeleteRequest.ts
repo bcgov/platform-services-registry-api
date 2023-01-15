@@ -29,7 +29,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
             project.projectOwnerId,
             project.primaryTechnicalLeadId,
             project.secondaryTechnicalLeadId
-          ]
+          ].filter(Boolean)
         }
       },
       select: {

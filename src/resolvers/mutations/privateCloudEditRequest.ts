@@ -67,7 +67,11 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     const users = await prisma.user.findMany({
       where: {
         id: {
-          in: [projectOwnerId, primaryTechnicalLeadId, secondaryTechnicalLeadId]
+          in: [
+            projectOwnerId,
+            primaryTechnicalLeadId,
+            secondaryTechnicalLeadId
+          ].filter(Boolean)
         }
       },
       select: {
