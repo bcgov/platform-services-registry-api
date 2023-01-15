@@ -24,12 +24,14 @@ const Request = {
           }
         }),
 
-  requestedProject: async (request, _, { prisma }) =>
-    prisma.privateCloudRequestedProject.findUnique({
+  requestedProject: async (request, _, { prisma }) => {
+    // console.log(request.requestedProjectId);
+    return prisma.privateCloudRequestedProject.findUnique({
       where: {
         id: request.requestedProjectId
       }
-    })
+    });
+  }
 };
 
 export default Request;

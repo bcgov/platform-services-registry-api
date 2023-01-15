@@ -1,4 +1,4 @@
-import ClientConnection from "./clientConnection";
+import ClientConnection from "./clientConnection.js";
 
 const SERVICE = "CHES";
 

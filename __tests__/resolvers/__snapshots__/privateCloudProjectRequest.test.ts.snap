@@ -101,12 +101,7 @@ exports[`Request tests Makes an edit request 1`] = `
     "singleResult": {
       "data": {
         "privateCloudProjectEditRequest": {
-          "active": true,
-          "createdBy": {
-            "email": "oamar.kanji@gov.bc.ca",
-          },
           "id": Any<String>,
-          "type": "EDIT",
         },
       },
       "errors": undefined,

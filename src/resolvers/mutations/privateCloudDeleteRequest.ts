@@ -6,7 +6,7 @@ import {
   MutationPrivateCloudProjectDeleteRequestArgs
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
-import { sendDeleteRequestEmails } from "ches/emailHandlers.js";
+import { sendDeleteRequestEmails } from "../../ches/emailHandlers.js";
 
 const privateCloudProjectDeleteRequest: MutationResolvers = async (
   _,
@@ -54,6 +54,9 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending,
         active: true,
         createdByEmail: authEmail,
+        users: {
+          connect: users.map((user) => ({ email: user.email }))
+        },
         requestedProject: {
           create: project
         },

@@ -8,7 +8,7 @@ import {
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
 import defaultQuota from "../../utils/defaultQuota.js";
 import { Prisma } from "@prisma/client";
-import { sendCreateRequestEmails } from "ches/emailHandlers.js";
+import { sendCreateRequestEmails } from "../../ches/emailHandlers.js";
 
 const privateCloudProjectRequest: MutationResolvers = async (
   _,
@@ -39,6 +39,30 @@ const privateCloudProjectRequest: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending,
         active: true,
         createdByEmail: authEmail,
+        users: {
+          connectOrCreate: [
+            {
+              where: {
+                email: args.projectOwner.email
+              },
+              create: args.projectOwner
+            },
+            {
+              where: {
+                email: args.primaryTechnicalLead.email
+              },
+              create: args.primaryTechnicalLead
+            },
+            args.secondaryTechnicalLead
+              ? {
+                  where: {
+                    email: args.secondaryTechnicalLead?.email
+                  },
+                  create: args.secondaryTechnicalLead
+                }
+              : undefined
+          ]
+        },
         requestedProject: {
           create: {
             name: args.name,

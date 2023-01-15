@@ -556,11 +556,6 @@ describe("Request tests", () => {
     const EDIT_REQUEST = `mutation Mutation($projectId: ID!, $name: String, $description: String, $cluster: Cluster, $commonComponents: CommonComponentsInput, $productionQuota: QuotaInput) {
       privateCloudProjectEditRequest(projectId: $projectId, name: $name, description: $description, cluster: $cluster, commonComponents: $commonComponents, productionQuota: $productionQuota) {
         id
-        active
-        type
-        createdBy {
-          email
-        }
       }
     }`;
 

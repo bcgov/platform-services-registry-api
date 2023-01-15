@@ -6,7 +6,7 @@ import {
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
-import { sendMakeDecisionEmails } from "ches/emailHandlers.js";
+import { sendMakeDecisionEmails } from "../../ches/emailHandlers.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,

@@ -445,12 +445,10 @@ export type User = {
   lastName: Scalars['String'];
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Ministry>;
+  privateCloudActiveRquests: Array<Maybe<PrivateCloudRequest>>;
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
-  privateCloudRequestPrimaryTechnicalLead: Array<Maybe<PrivateCloudRequest>>;
-  privateCloudRequestProjectOwner: Array<Maybe<PrivateCloudRequest>>;
-  privateCloudRequestSecondaryTechnicalLead: Array<Maybe<PrivateCloudRequest>>;
 };
 
 export type ProjectsPaginatedOutput = {
@@ -718,12 +716,10 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['Ministry']>, ParentType, ContextType>;
+  privateCloudActiveRquests?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
-  privateCloudRequestPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
-  privateCloudRequestProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
-  privateCloudRequestSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

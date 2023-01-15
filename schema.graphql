@@ -216,9 +216,7 @@ type User {
   privateCloudProjectOwner: [PrivateCloudProject]!
   privateCloudProjectPrimaryTechnicalLead: [PrivateCloudProject]!
   privateCloudProjectSecondaryTechnicalLead: [PrivateCloudProject]!
-  privateCloudRequestProjectOwner: [PrivateCloudRequest]!
-  privateCloudRequestPrimaryTechnicalLead: [PrivateCloudRequest]!
-  privateCloudRequestSecondaryTechnicalLead: [PrivateCloudRequest]!
+  privateCloudActiveRquests: [PrivateCloudRequest]!
 }
 
 input CommonComponentsInput {
