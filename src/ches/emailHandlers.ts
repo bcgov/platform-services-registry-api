@@ -260,7 +260,6 @@ export const sendEditRequestEmails = async (
 };
 
 export const sendCreateRequestEmails = async (requestedProject) => {
-  console.log("*** CREATE ***")
   const project = requestedProject; // For consistency with the other functions, even though a create request does not have a project yet.
 
   try {

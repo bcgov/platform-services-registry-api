@@ -29,7 +29,8 @@ import {
   mockProjectOwner,
   mockPrimaryTechnicalLead,
   mockSecondaryTechnicalLead,
-  mockProject
+  mockProjectA,
+  mockProjectB
 } from "../../__mocks__/constants.js";
 
 interface ContextValue {
@@ -62,14 +63,12 @@ const server = new ApolloServer<ContextValue>({
   schema
 });
 
-let requestAId;
-let requestBId;
-let projectCId;
-let projectDId;
+let createRequestIdA;
+let createRequestIdB;
 
 describe("Request tests", () => {
   beforeAll(async () => {
-    const users = await prisma.user.createMany({
+    await prisma.user.createMany({
       data: [
         mockProjectOwner,
         mockPrimaryTechnicalLead,
@@ -77,18 +76,13 @@ describe("Request tests", () => {
       ]
     });
 
-    const projectC = await prisma.privateCloudProject.create({
-      data: mockProject
+    await prisma.privateCloudProject.create({
+      data: mockProjectA
     });
 
-    const mockProjectB = { ...mockProject, licencePlate: "t9d68bd" };
-
-    const projectD = await prisma.privateCloudProject.create({
+    await prisma.privateCloudProject.create({
       data: mockProjectB
     });
-
-    projectCId = projectC.id;
-    projectDId = projectD.id;
   });
 
   afterAll(async () => {
@@ -158,7 +152,7 @@ describe("Request tests", () => {
     };
 
     const projectOwner: CreateUserInput = {
-      email: "oamarkanji@gmail.com",
+      email: "oamar.kanji@gov.bc.ca",
       firstName: "Oamar",
       githubId: "okanji",
       lastName: "Kanji",
@@ -210,21 +204,17 @@ describe("Request tests", () => {
 
     // prettier-ignore
     // @ts-ignore
-    requestAId = response.body.singleResult.data.privateCloudProjectRequest.id;
+    createRequestIdA = response.body.singleResult.data.privateCloudProjectRequest.id;
 
     const requests = await prisma.privateCloudRequest.findMany();
     expect(requests.length).toBe(1);
 
-    const requestedProjectId =
-      // prettier-ignore
-      // @ts-ignore
-      response.body.singleResult.data.privateCloudProjectRequest?.requestedProject?.id;
-
     const requestedProject =
       await prisma.privateCloudRequestedProject.findUnique({
         where: {
+          // prettier-ignore
           // @ts-ignore
-          id: requestedProjectId
+          id: response.body.singleResult.data.privateCloudProjectRequest.requestedProject.id
         }
       });
 
@@ -330,7 +320,7 @@ describe("Request tests", () => {
     };
 
     const secondaryTechnicalLead: CreateUserInput = {
-      email: "oamarkanji@gmail.com",
+      email: "testSecondaryTechnicalLead@test.com",
       firstName: "John",
       githubId: "test456",
       lastName: "Doe",
@@ -356,10 +346,6 @@ describe("Request tests", () => {
       }
     );
 
-    // prettier-ignore
-    // @ts-ignore
-    requestBId = response.body.singleResult.data.privateCloudProjectRequest.id;
-
     assert(response.body.kind === "single");
     expect(response.body.singleResult.errors).toBeUndefined();
     expect(response).toMatchSnapshot({
@@ -382,6 +368,10 @@ describe("Request tests", () => {
         email: secondaryTechnicalLead.email
       }
     });
+
+    // @ts-ignore
+    // prettier-ignore
+    createRequestIdB = response.body.singleResult.data.privateCloudProjectRequest.id;
 
     expect(secondaryTechnicalLeadUser).not.toBeNull();
     expect(secondaryTechnicalLeadUser?.firstName).toBe(
@@ -421,7 +411,7 @@ describe("Request tests", () => {
         query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
         variables: {
           decision: RequestDecision.Approved,
-          requestId: requestAId
+          requestId: createRequestIdA
         }
       },
       {
@@ -431,7 +421,7 @@ describe("Request tests", () => {
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
-        id: requestAId
+        id: createRequestIdA
       }
     });
 
@@ -475,7 +465,7 @@ describe("Request tests", () => {
         query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
         variables: {
           decision: RequestDecision.Rejected,
-          requestId: requestBId
+          requestId: createRequestIdB
         }
       },
       {
@@ -485,7 +475,7 @@ describe("Request tests", () => {
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
-        id: requestBId
+        id: createRequestIdB
       }
     });
 
@@ -530,7 +520,7 @@ describe("Request tests", () => {
       {
         query: DELETE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
-          projectId: projectCId
+          projectId: mockProjectA.id
         }
       },
       {
@@ -575,7 +565,7 @@ describe("Request tests", () => {
     }`;
 
     const variables = {
-      projectId: projectDId,
+      projectId: mockProjectB.id,
       name: "new name",
       description: "new description",
       cluster: Cluster.Gold,
@@ -624,24 +614,24 @@ describe("Request tests", () => {
     expect(request).not.toBeNull();
     expect(request?.active).toBe(true);
     expect(request?.type).toBe(RequestType.Edit);
-    expect(request?.project?.name).toBe(mockProject.name);
+    expect(request?.project?.name).toBe(mockProjectB.name);
     expect(request?.requestedProject?.name).toBe(variables.name);
-    expect(request?.project?.description).toBe(mockProject.description);
+    expect(request?.project?.description).toBe(mockProjectB.description);
     expect(request?.requestedProject?.description).toBe(variables.description);
-    expect(request?.project?.cluster).toBe(mockProject.cluster);
+    expect(request?.project?.cluster).toBe(mockProjectB.cluster);
     expect(request?.requestedProject?.cluster).toBe(variables.cluster);
     expect(request?.project?.commonComponents).toEqual(
-      mockProject.commonComponents
+      mockProjectB.commonComponents
     );
     expect(request?.requestedProject?.commonComponents).toEqual({
-      ...mockProject.commonComponents,
+      ...mockProjectB.commonComponents,
       ...variables.commonComponents
     });
     expect(request?.project?.productionQuota).toEqual(
-      mockProject.productionQuota
+      mockProjectB.productionQuota
     );
     expect(request?.requestedProject?.productionQuota).toEqual({
-      ...mockProject.productionQuota,
+      ...mockProjectB.productionQuota,
       ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
       ...DefaultMemoryOptionsEnum[variables.productionQuota.memory]
     });
