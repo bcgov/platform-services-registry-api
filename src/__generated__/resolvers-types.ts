@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { ContextValue } from '../index';
+import * as yup from 'yup'
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -300,7 +301,7 @@ export enum PublicCloudPlatform {
 export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
-  privateCloudActiveRequest: PrivateCloudRequest;
+  privateCloudActiveRequestById: PrivateCloudRequest;
   privateCloudActiveRequests: Array<PrivateCloudRequest>;
   privateCloudActiveRequestsById: Array<PrivateCloudRequest>;
   privateCloudProjectById: PrivateCloudProject;
@@ -321,7 +322,7 @@ export type Query = {
 };
 
 
-export type QueryPrivateCloudActiveRequestArgs = {
+export type QueryPrivateCloudActiveRequestByIdArgs = {
   requestId: Scalars['ID'];
 };
 
@@ -672,7 +673,7 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
 
 export type QueryResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  privateCloudActiveRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestArgs, 'requestId'>>;
+  privateCloudActiveRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestByIdArgs, 'requestId'>>;
   privateCloudActiveRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   privateCloudActiveRequestsById?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestsByIdArgs, 'requestIds'>>;
   privateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectByIdArgs, 'projectId'>>;
@@ -746,3 +747,106 @@ export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{
   flattenDefaultQuotaInput?: FlattenDefaultQuotaInputDirectiveResolver<any, any, ContextType>;
   nonNullInput?: NonNullInputDirectiveResolver<any, any, ContextType>;
 }>;
+
+
+export const ClusterSchema = yup.mixed().oneOf([Cluster.Clab, Cluster.Emerald, Cluster.Gold, Cluster.Golddr, Cluster.Klab, Cluster.Klab2, Cluster.Silver]);
+
+export function CommonComponentsInputSchema(): yup.SchemaOf<CommonComponentsInput> {
+  return yup.object({
+    addressAndGeolocation: CommonComponentsOptionsSchema,
+    businessIntelligence: CommonComponentsOptionsSchema,
+    documentManagement: CommonComponentsOptionsSchema,
+    endUserNotificationAndSubscription: CommonComponentsOptionsSchema,
+    formDesignAndSubmission: CommonComponentsOptionsSchema,
+    identityManagement: CommonComponentsOptionsSchema,
+    other: yup.string(),
+    paymentServices: CommonComponentsOptionsSchema,
+    publishing: CommonComponentsOptionsSchema,
+    workflowManagement: CommonComponentsOptionsSchema
+  })
+}
+
+export const CommonComponentsOptionsSchema = yup.mixed().oneOf([CommonComponentsOptions.Implemented, CommonComponentsOptions.PlanningToUse]);
+
+export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
+  return yup.object({
+    email: yup.mixed().defined(),
+    firstName: yup.string().defined(),
+    githubId: yup.string().defined(),
+    lastName: yup.string().defined(),
+    ministry: MinistrySchema
+  })
+}
+
+export function CustomQuotaInputSchema(): yup.SchemaOf<CustomQuotaInput> {
+  return yup.object({
+    cpuLimits: yup.number(),
+    cpuRequests: yup.number(),
+    memoryLimits: yup.number(),
+    memoryRequests: yup.number(),
+    snapshotCount: yup.number(),
+    storageBackup: yup.number(),
+    storageBlock: yup.number(),
+    storageCapacity: yup.number(),
+    storageFile: yup.number(),
+    storagePvcCount: yup.number()
+  })
+}
+
+export const DecisionStatusSchema = yup.mixed().oneOf([DecisionStatus.Approved, DecisionStatus.Pending, DecisionStatus.Provisioned, DecisionStatus.Rejected]);
+
+export const DefaultCpuOptionsSchema = yup.mixed().oneOf([DefaultCpuOptions.CpuRequest_0_5Limit_1_5, DefaultCpuOptions.CpuRequest_1Limit_2, DefaultCpuOptions.CpuRequest_2Limit_4, DefaultCpuOptions.CpuRequest_4Limit_8, DefaultCpuOptions.CpuRequest_8Limit_16, DefaultCpuOptions.CpuRequest_16Limit_32, DefaultCpuOptions.CpuRequest_32Limit_64]);
+
+export const DefaultMemoryOptionsSchema = yup.mixed().oneOf([DefaultMemoryOptions.MemoryRequest_2Limit_4, DefaultMemoryOptions.MemoryRequest_4Limit_8, DefaultMemoryOptions.MemoryRequest_8Limit_16, DefaultMemoryOptions.MemoryRequest_16Limit_32, DefaultMemoryOptions.MemoryRequest_32Limit_64, DefaultMemoryOptions.MemoryRequest_64Limit_128]);
+
+export const DefaultStorageOptionsSchema = yup.mixed().oneOf([DefaultStorageOptions.Storage_1, DefaultStorageOptions.Storage_2, DefaultStorageOptions.Storage_4, DefaultStorageOptions.Storage_16, DefaultStorageOptions.Storage_32, DefaultStorageOptions.Storage_64, DefaultStorageOptions.Storage_124, DefaultStorageOptions.Storage_256, DefaultStorageOptions.Storage_512]);
+
+export const EnvironmentSchema = yup.mixed().oneOf([Environment.Development, Environment.Production, Environment.Test, Environment.Tools]);
+
+export function FilterPrivateCloudProjectsInputSchema(): yup.SchemaOf<FilterPrivateCloudProjectsInput> {
+  return yup.object({
+    cluster: ClusterSchema,
+    ministry: MinistrySchema
+  })
+}
+
+export const MinistrySchema = yup.mixed().oneOf([Ministry.Aest, Ministry.Ag, Ministry.Agri, Ministry.Alc, Ministry.Bcpc, Ministry.Citz, Ministry.Dbc, Ministry.Eao, Ministry.Educ, Ministry.Embc, Ministry.Empr, Ministry.Env, Ministry.Fin, Ministry.Flnr, Ministry.Hlth, Ministry.Irr, Ministry.Jedc, Ministry.Lbr, Ministry.Ldb, Ministry.Mah, Ministry.Mcf, Ministry.Mmha, Ministry.Psa, Ministry.Pssg, Ministry.Sdpr, Ministry.Tca, Ministry.Tran]);
+
+export const PlatformSchema = yup.mixed().oneOf([Platform.PrivateCloud, Platform.PublicCloud]);
+
+export const ProjectStatusSchema = yup.mixed().oneOf([ProjectStatus.Active, ProjectStatus.Inactive]);
+
+export const PublicCloudPlatformSchema = yup.mixed().oneOf([PublicCloudPlatform.Aws, PublicCloudPlatform.Google]);
+
+export function QuotaInputSchema(): yup.SchemaOf<QuotaInput> {
+  return yup.object({
+    cpu: DefaultCpuOptionsSchema,
+    memory: DefaultMemoryOptionsSchema,
+    storage: DefaultStorageOptionsSchema
+  })
+}
+
+export const RequestDecisionSchema = yup.mixed().oneOf([RequestDecision.Approved, RequestDecision.Rejected]);
+
+export const RequestTypeSchema = yup.mixed().oneOf([RequestType.Create, RequestType.Delete, RequestType.Edit]);
+
+export function SignUpInputSchema(): yup.SchemaOf<SignUpInput> {
+  return yup.object({
+    githubId: yup.string().defined(),
+    ministry: MinistrySchema.defined()
+  })
+}
+
+export const SortOrderSchema = yup.mixed().oneOf([SortOrder.Ascending, SortOrder.Descending]);
+
+export function UpdateUserInputSchema(): yup.SchemaOf<UpdateUserInput> {
+  return yup.object({
+    archived: yup.boolean(),
+    email: yup.mixed(),
+    firstName: yup.string(),
+    lastName: yup.string(),
+    lastSeen: yup.mixed(),
+    projectOwner: yup.array().of(yup.string().defined()).optional(),
+    technicalLead: yup.array().of(yup.string().defined()).optional()
+  })
+}

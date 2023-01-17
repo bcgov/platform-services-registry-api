@@ -314,7 +314,7 @@ type Query {
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
 
   privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
-  privateCloudActiveRequest(requestId: ID!): PrivateCloudRequest!
+  privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
     @hasRole(role: "admin")
   privateCloudActiveRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
   privateCloudActiveRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
@@ -370,7 +370,7 @@ type Mutation {
     developmentQuota: CustomQuotaInput
     testQuota: CustomQuotaInput
     toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput 
+  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
 
   customPrivateCloudProjectEditRequest(
     projectId: ID!

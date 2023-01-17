@@ -12,13 +12,15 @@ const Project = {
       }
     }),
   secondaryTechnicalLead: async (project, _, { prisma }) =>
-    prisma.user.findUnique({
-      where: {
-        id: project.secondaryTechnicalLeadId
-      }
-    }),
+    project.secondaryTechnicalLeadId == null
+      ? null
+      : prisma.user.findUnique({
+          where: {
+            id: project.secondaryTechnicalLeadId
+          }
+        }),
   activeEditRequest: async (project, _, { prisma }) =>
-    prisma.privateCloudRequest.findUnique({
+    prisma.privateCloudRequest.findFirst({
       where: {
         projectId: project.id,
         active: true

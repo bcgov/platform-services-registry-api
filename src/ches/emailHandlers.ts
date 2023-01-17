@@ -6,7 +6,7 @@ import {
   RequestDecision
 } from "../__generated__/resolvers-types.js";
 
-const adminEmails = ["Zhanna.Kolesnyk@gov.bc.ca"];
+const adminEmails = [];
 
 const clusterNames = [
   {
