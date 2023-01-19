@@ -76,7 +76,6 @@ export const roleDirectiveTransformer = (schema, directiveName = "hasRole") => {
           if (typeof role === "string") role = [role];
           if (Array.isArray(role)) {
             role = role.map((val) => String(val));
-            console.log(role)
           } else {
             throw new Error(
               "invalid hasRole args. role must be a String or an Array of Strings"

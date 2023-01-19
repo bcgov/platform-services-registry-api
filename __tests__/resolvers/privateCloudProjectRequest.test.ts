@@ -148,7 +148,8 @@ describe("Request tests", () => {
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
-      other: "test"
+      other: "test",
+      noServices: false
     };
 
     const projectOwner: CreateUserInput = {
@@ -258,41 +259,42 @@ describe("Request tests", () => {
   });
 
   test("Creates a private cloud project request with secondary technical lead", async () => {
-    const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectRequest(
-        $name: String!,
-        $description: String!,
-        $ministry: Ministry!,
-        $cluster: Cluster!,
-        $commonComponents: CommonComponentsInput!,
-        $projectOwner: CreateUserInput!,
-        $primaryTechnicalLead: CreateUserInput!,
-        $secondaryTechnicalLead: CreateUserInput
+    const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `
+    mutation PrivateCloudProjectRequest(
+      $name: String!,
+      $description: String!,
+      $ministry: Ministry!,
+      $cluster: Cluster!,
+      $commonComponents: CommonComponentsInput!,
+      $projectOwner: CreateUserInput!,
+      $primaryTechnicalLead: CreateUserInput!,
+      $secondaryTechnicalLead: CreateUserInput
+    ) {
+      privateCloudProjectRequest(
+        name: $name,
+        description: $description,
+        ministry: $ministry,
+        cluster: $cluster,
+        commonComponents: $commonComponents,
+        projectOwner: $projectOwner,
+        primaryTechnicalLead: $primaryTechnicalLead,
+        secondaryTechnicalLead: $secondaryTechnicalLead
       ) {
-        privateCloudProjectRequest(
-          name: $name,
-          description: $description,
-          ministry: $ministry,
-          cluster: $cluster,
-          commonComponents: $commonComponents,
-          projectOwner: $projectOwner,
-          primaryTechnicalLead: $primaryTechnicalLead,
-          secondaryTechnicalLead: $secondaryTechnicalLead
-        ) {
-          id
-          active
-          createdBy {
-            email
-          }
-          decisionDate
-          decisionMaker {
-            email
-          }
-          decisionStatus
-          project {
-            name
-          }
-      }
-    }`;
+        id
+        active
+        createdBy {
+          email
+        }
+        decisionDate
+        decisionMaker {
+          email
+        }
+        decisionStatus
+        project {
+          name
+        }
+    }
+  }`;
 
     const name: string = "Test Project";
     const description: string = "Test Description";
@@ -300,7 +302,8 @@ describe("Request tests", () => {
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
-      other: "test"
+      other: "test",
+      noServices: false
     };
 
     const projectOwner: CreateUserInput = {
@@ -565,7 +568,8 @@ describe("Request tests", () => {
       description: "new description",
       cluster: Cluster.Gold,
       commonComponents: {
-        identityManagement: CommonComponentsOptions.PlanningToUse
+        identityManagement: CommonComponentsOptions.PlanningToUse,
+        noServices: false
       },
       productionQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,

@@ -1,3 +1,5 @@
+import { selectedDefaultQuota } from "../utils/defaultQuota.js";
+
 const Project = {
   projectOwner: async (project, _, { prisma }) =>
     prisma.user.findUnique({
@@ -31,7 +33,15 @@ const Project = {
       where: {
         projectId: project.id
       }
-    })
+    }),
+  productionQuotaSelected: (project, _, __) =>
+    selectedDefaultQuota(project.productionQuota),
+  developmentQuotaSelected: (project, _, __) =>
+    selectedDefaultQuota(project.developmentQuota),
+  testQuotaSelected: (project, _, __) =>
+    selectedDefaultQuota(project.testQuota),
+  toolsQuotaSelected: (project, _, __) =>
+    selectedDefaultQuota(project.toolsQuota)
 };
 
 export default Project;

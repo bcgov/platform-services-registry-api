@@ -17,17 +17,22 @@ export const privateCloudActiveRequestById = async (
     }
   });
 
-export const userPrivateCloudActiveRequests = async (
+export const userPrivateCloudActiveRequests = (
   _,
-  __,
+  request,
   { prisma, authEmail }
 ) =>
-  await prisma.privateCloudRequest.findMany({
-    where: {
-      user: { email: authEmail },
-      active: true
-    }
-  });
+  prisma.user
+    .findUnique({
+      where: {
+        email: authEmail
+      }
+    })
+    .privateCloudRequests({
+      where: {
+        active: true
+      }
+    });
 
 export const userPrivateCloudActiveRequestById = async (
   _,

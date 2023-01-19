@@ -6,7 +6,7 @@ import {
   MutationPrivateCloudProjectRequestArgs
 } from "../../__generated__/resolvers-types.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
-import defaultQuota from "../../utils/defaultQuota.js";
+import { defaultQuota } from "../../utils/defaultQuota.js";
 import { Prisma } from "@prisma/client";
 import { sendCreateRequestEmails } from "../../ches/emailHandlers.js";
 

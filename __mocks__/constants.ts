@@ -86,6 +86,7 @@ export const mockProjectA = {
     endUserNotificationAndSubscription: null,
     publishing: null,
     businessIntelligence: null,
+    noServices: false,
     other: "test"
   },
   profileId: null
@@ -173,6 +174,7 @@ export const mockProjectB = {
     endUserNotificationAndSubscription: null,
     publishing: null,
     businessIntelligence: null,
+    noServices: false,
     other: "test"
   },
   profileId: null

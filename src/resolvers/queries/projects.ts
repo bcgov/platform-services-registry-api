@@ -154,8 +154,6 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     }
   });
 
-  console.log(projects, total)
-
   return {
     projects,
     total

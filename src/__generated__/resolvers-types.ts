@@ -36,6 +36,7 @@ export type CommonComponents = {
   endUserNotificationAndSubscription?: Maybe<CommonComponentsOptions>;
   formDesignAndSubmission?: Maybe<CommonComponentsOptions>;
   identityManagement?: Maybe<CommonComponentsOptions>;
+  noServices: Scalars['Boolean'];
   other?: Maybe<Scalars['String']>;
   paymentServices?: Maybe<CommonComponentsOptions>;
   publishing?: Maybe<CommonComponentsOptions>;
@@ -49,6 +50,7 @@ export type CommonComponentsInput = {
   endUserNotificationAndSubscription?: InputMaybe<CommonComponentsOptions>;
   formDesignAndSubmission?: InputMaybe<CommonComponentsOptions>;
   identityManagement?: InputMaybe<CommonComponentsOptions>;
+  noServices: Scalars['Boolean'];
   other?: InputMaybe<Scalars['String']>;
   paymentServices?: InputMaybe<CommonComponentsOptions>;
   publishing?: InputMaybe<CommonComponentsOptions>;
@@ -65,7 +67,7 @@ export type CreateUserInput = {
   firstName: Scalars['String'];
   githubId: Scalars['String'];
   lastName: Scalars['String'];
-  ministry?: InputMaybe<Ministry>;
+  ministry: Ministry;
 };
 
 export type CustomQuotaInput = {
@@ -260,18 +262,22 @@ export type PrivateCloudProject = {
   created: Scalars['DateTime'];
   description: Scalars['String'];
   developmentQuota: Quota;
+  developmentQuotaSelected?: Maybe<SelectedDefaultQuota>;
   id: Scalars['ID'];
   licencePlate: Scalars['ID'];
   ministry: Ministry;
   name: Scalars['String'];
   primaryTechnicalLead: User;
   productionQuota: Quota;
+  productionQuotaSelected?: Maybe<SelectedDefaultQuota>;
   projectOwner: User;
   requestHistory: Array<Maybe<PrivateCloudRequest>>;
   secondaryTechnicalLead?: Maybe<User>;
   status: ProjectStatus;
   testQuota: Quota;
+  testQuotaSelected?: Maybe<SelectedDefaultQuota>;
   toolsQuota: Quota;
+  toolsQuotaSelected?: Maybe<SelectedDefaultQuota>;
 };
 
 export type PrivateCloudRequest = {
@@ -415,6 +421,13 @@ export enum RequestType {
   Edit = 'EDIT'
 }
 
+export type SelectedDefaultQuota = {
+  __typename?: 'SelectedDefaultQuota';
+  cpu?: Maybe<Scalars['String']>;
+  memory?: Maybe<Scalars['String']>;
+  storage?: Maybe<Scalars['String']>;
+};
+
 export type SignUpInput = {
   githubId: Scalars['String'];
   ministry: Ministry;
@@ -441,11 +454,11 @@ export type User = {
   created: Scalars['DateTime'];
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
-  githubId?: Maybe<Scalars['String']>;
+  githubId: Scalars['String'];
   id: Scalars['ID'];
   lastName: Scalars['String'];
   lastSeen?: Maybe<Scalars['DateTime']>;
-  ministry?: Maybe<Ministry>;
+  ministry: Ministry;
   privateCloudActiveRquests: Array<Maybe<PrivateCloudRequest>>;
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
@@ -558,6 +571,7 @@ export type ResolversTypes = ResolversObject<{
   QuotaInput: QuotaInput;
   RequestDecision: RequestDecision;
   RequestType: RequestType;
+  SelectedDefaultQuota: ResolverTypeWrapper<SelectedDefaultQuota>;
   SignUpInput: SignUpInput;
   SortOrder: SortOrder;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -585,6 +599,7 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Quota: Quota;
   QuotaInput: QuotaInput;
+  SelectedDefaultQuota: SelectedDefaultQuota;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
@@ -607,6 +622,7 @@ export type CommonComponentsResolvers<ContextType = ContextValue, ParentType ext
   endUserNotificationAndSubscription?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
   formDesignAndSubmission?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
   identityManagement?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
+  noServices?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   other?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   paymentServices?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
   publishing?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
@@ -642,18 +658,22 @@ export type PrivateCloudProjectResolvers<ContextType = ContextValue, ParentType 
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   developmentQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  developmentQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   licencePlate?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   primaryTechnicalLead?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   productionQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  productionQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   projectOwner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   requestHistory?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
   secondaryTechnicalLead?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProjectStatus'], ParentType, ContextType>;
   testQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  testQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   toolsQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  toolsQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -707,16 +727,23 @@ export type QuotaResolvers<ContextType = ContextValue, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type SelectedDefaultQuotaResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['SelectedDefaultQuota'] = ResolversParentTypes['SelectedDefaultQuota']> = ResolversObject<{
+  cpu?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  memory?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  storage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UserResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  githubId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  githubId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  ministry?: Resolver<Maybe<ResolversTypes['Ministry']>, ParentType, ContextType>;
+  ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
   privateCloudActiveRquests?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
@@ -739,6 +766,7 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   PrivateCloudRequest?: PrivateCloudRequestResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
+  SelectedDefaultQuota?: SelectedDefaultQuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
 }>;
@@ -759,6 +787,7 @@ export function CommonComponentsInputSchema(): yup.SchemaOf<CommonComponentsInpu
     endUserNotificationAndSubscription: CommonComponentsOptionsSchema,
     formDesignAndSubmission: CommonComponentsOptionsSchema,
     identityManagement: CommonComponentsOptionsSchema,
+    noServices: yup.boolean().defined(),
     other: yup.string(),
     paymentServices: CommonComponentsOptionsSchema,
     publishing: CommonComponentsOptionsSchema,
@@ -774,7 +803,7 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
     firstName: yup.string().defined(),
     githubId: yup.string().defined(),
     lastName: yup.string().defined(),
-    ministry: MinistrySchema
+    ministry: MinistrySchema.defined()
   })
 }
 

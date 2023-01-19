@@ -25,7 +25,6 @@ const Request = {
         }),
 
   requestedProject: async (request, _, { prisma }) => {
-    // console.log(request.requestedProjectId);
     return prisma.privateCloudRequestedProject.findUnique({
       where: {
         id: request.requestedProjectId

@@ -76,8 +76,7 @@ app.use(
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
         roles: []
       };
-      console.log("CONTEXT");
-      console.log({ email, roles });
+
       return {
         kauth: kauth,
         prisma,

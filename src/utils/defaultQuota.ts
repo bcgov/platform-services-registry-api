@@ -1,4 +1,11 @@
-const defaultQuota = {
+import {
+  SelectedDefaultQuota,
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions
+} from "../__generated__/resolvers-types.js";
+
+export const defaultQuota = {
   cpuRequests: 0.5,
   cpuLimits: 1.5,
   memoryRequests: 2,
@@ -11,4 +18,28 @@ const defaultQuota = {
   snapshotCount: 5
 };
 
-export default defaultQuota;
+const cpuToDefaultOption = (quota) =>
+  `CpuRequest_${quota.cpuRequests}Limit_${quota.cpuLimits}`.replaceAll(
+    ".",
+    "_"
+  );
+
+const memoryToDefaultOption = (quota) =>
+  `MemoryRequest_${quota.memoryRequests}Limit_${quota.memoryLimits}`.replaceAll(
+    ".",
+    "_"
+  );
+
+const storageToDefaultOption = (quota) =>
+  `Storage_${quota.storageFile}`.replaceAll(".", "_");
+
+export const selectedDefaultQuota = (quota) =>
+  ({
+    cpu: DefaultCpuOptions[cpuToDefaultOption(quota)] as DefaultCpuOptions,
+    memory: DefaultMemoryOptions[
+      memoryToDefaultOption(quota)
+    ] as DefaultMemoryOptions,
+    storage: DefaultStorageOptions[
+      storageToDefaultOption(quota)
+    ] as DefaultStorageOptions
+  } as SelectedDefaultQuota);

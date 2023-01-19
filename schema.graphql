@@ -84,6 +84,11 @@ enum PublicCloudPlatform {
   AWS
 }
 
+enum CommonComponentsOptions {
+  IMPLEMENTED
+  PLANNING_TO_USE
+}
+
 enum DefaultCpuOptions {
   CPU_REQUEST_0_5_LIMIT_1_5
   CPU_REQUEST_1_LIMIT_2
@@ -92,11 +97,6 @@ enum DefaultCpuOptions {
   CPU_REQUEST_8_LIMIT_16
   CPU_REQUEST_16_LIMIT_32
   CPU_REQUEST_32_LIMIT_64
-}
-
-enum CommonComponentsOptions {
-  IMPLEMENTED
-  PLANNING_TO_USE
 }
 
 enum DefaultMemoryOptions {
@@ -171,23 +171,14 @@ type PrivateCloudProject {
   testQuota: Quota!
   developmentQuota: Quota!
   toolsQuota: Quota!
+  productionQuotaSelected: SelectedDefaultQuota
+  testQuotaSelected: SelectedDefaultQuota
+  developmentQuotaSelected: SelectedDefaultQuota
+  toolsQuotaSelected: SelectedDefaultQuota
   requestHistory: [PrivateCloudRequest]!
   activeEditRequest: PrivateCloudRequest
   count: Int
   commonComponents: CommonComponents!
-}
-
-type CommonComponents {
-  addressAndGeolocation: CommonComponentsOptions
-  workflowManagement: CommonComponentsOptions
-  formDesignAndSubmission: CommonComponentsOptions
-  identityManagement: CommonComponentsOptions
-  paymentServices: CommonComponentsOptions
-  documentManagement: CommonComponentsOptions
-  endUserNotificationAndSubscription: CommonComponentsOptions
-  publishing: CommonComponentsOptions
-  businessIntelligence: CommonComponentsOptions
-  other: String
 }
 
 type PrivateCloudRequest {
@@ -208,8 +199,8 @@ type User {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  githubId: String
-  ministry: Ministry
+  githubId: String!
+  ministry: Ministry!
   archived: Boolean!
   created: DateTime!
   lastSeen: DateTime
@@ -229,6 +220,21 @@ input CommonComponentsInput {
   endUserNotificationAndSubscription: CommonComponentsOptions
   publishing: CommonComponentsOptions
   businessIntelligence: CommonComponentsOptions
+  noServices: Boolean!
+  other: String
+}
+
+type CommonComponents {
+  addressAndGeolocation: CommonComponentsOptions
+  workflowManagement: CommonComponentsOptions
+  formDesignAndSubmission: CommonComponentsOptions
+  identityManagement: CommonComponentsOptions
+  paymentServices: CommonComponentsOptions
+  documentManagement: CommonComponentsOptions
+  endUserNotificationAndSubscription: CommonComponentsOptions
+  publishing: CommonComponentsOptions
+  businessIntelligence: CommonComponentsOptions
+  noServices: Boolean!
   other: String
 }
 
@@ -236,7 +242,7 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  ministry: Ministry
+  ministry: Ministry!
   githubId: String!
 }
 
@@ -259,6 +265,12 @@ input QuotaInput {
   cpu: DefaultCpuOptions
   memory: DefaultMemoryOptions
   storage: DefaultStorageOptions
+}
+
+type SelectedDefaultQuota {
+  cpu: String
+  memory: String
+  storage: String
 }
 
 input CustomQuotaInput {
@@ -342,7 +354,7 @@ type Mutation {
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
     secondaryTechnicalLead: CreateUserInput
-  ): PrivateCloudRequest! @nonNullInput @auth
+  ): PrivateCloudRequest! @auth
 
   privateCloudProjectEditRequest(
     projectId: ID!
