@@ -49,7 +49,6 @@ const clusterNames = [
 export const generateEmailTemplateData = (
   project,
   requestedProject,
-  args = {},
   other = {}
 ) => {
   const projectOwner = project.projectOwner;
@@ -62,28 +61,46 @@ export const generateEmailTemplateData = (
     consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
     consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
 
-    isProductionQuotaChanged: "productionQuota" in args,
-    productionQuotaCPURequested: args?.productionQuota?.cpuRequests || null,
+    isProductionQuotaChanged: !(
+      JSON.stringify(requestedProject.productionQuota) ===
+      JSON.stringify(project.productionQuota)
+    ),
+    productionQuotaCPURequested:
+      requestedProject?.productionQuota?.cpuRequests || null,
     productionQuotaMemoryRequested:
-      args?.productionQuota?.memoryRequests || null,
-    productionQuotaStorageRequested: args?.productionQuota?.storageFile || null,
+      requestedProject?.productionQuota?.memoryRequests || null,
+    productionQuotaStorageRequested:
+      requestedProject?.productionQuota?.storageFile || null,
 
-    isDevelopmentQuotaChanged: "developmentQuota" in args,
-    developmentQuotaCPURequested: args?.developmentQuota?.cpuRequests || null,
+    isDevelopmentQuotaChanged: !(
+      JSON.stringify(requestedProject.developmentQuota) ===
+      JSON.stringify(project.developmentQuota)
+    ),
+    developmentQuotaCPURequested:
+      requestedProject?.developmentQuota?.cpuRequests || null,
     developmentQuotaMemoryRequested:
-      args?.developmentQuota?.memoryRequests || null,
+      requestedProject?.developmentQuota?.memoryRequests || null,
     developmentQuotaStorageRequested:
-      args?.developmentQuota?.storageFile || null,
+      requestedProject?.developmentQuota?.storageFile || null,
 
-    isTestQuotaChanged: "testQuota" in args,
-    testQuotaCPURequested: args?.testQuota?.cpuRequests || null,
-    testQuotaMemoryRequested: args?.testQuota?.memoryRequests || null,
-    testQuotaStorageRequested: args?.testQuota?.storageFile || null,
+    isTestQuotaChanged: !(
+      JSON.stringify(requestedProject.testQuota) ===
+      JSON.stringify(project.testQuota)
+    ),
+    testQuotaCPURequested: requestedProject?.testQuota?.cpuRequests || null,
+    testQuotaMemoryRequested:
+      requestedProject?.testQuota?.memoryRequests || null,
+    testQuotaStorageRequested: requestedProject?.testQuota?.storageFile || null,
 
-    isToolsQuotaChanged: "toolsQuota" in args,
-    toolsQuotaCPURequested: args?.toolsQuota?.cpuRequests || null,
-    toolsQuotaMemoryRequested: args?.toolsQuota?.memoryRequests || null,
-    toolsQuotaStorageRequested: args?.toolsQuota?.storageFile || null,
+    isToolsQuotaChanged: !(
+      JSON.stringify(requestedProject.toolsQuota) ===
+      JSON.stringify(project.toolsQuota)
+    ),
+    toolsQuotaCPURequested: requestedProject?.toolsQuota?.cpuRequests || null,
+    toolsQuotaMemoryRequested:
+      requestedProject?.toolsQuota?.memoryRequests || null,
+    toolsQuotaStorageRequested:
+      requestedProject?.toolsQuota?.storageFile || null,
 
     productionQuotaCPUCurrent: project?.productionQuota?.cpuRequests || null,
     productionQuotaMemoryCurrent:
@@ -132,21 +149,21 @@ export const generateEmailTemplateData = (
   };
 };
 
-export const sendEditRequestEmails = async (
-  project,
-  requestedProject,
-  args
-) => {
-  const quotaChanged =
-    "toolsQuota" in args ||
-    "developmentQuota" in args ||
-    "testQuota" in args ||
-    "productionQuota" in args;
+export const sendEditRequestEmails = async (project, requestedProject) => {
+  const quotaChanged = !(
+    requestedProject.productionQuota === project.productionQuota &&
+    requestedProject.testQuota === project.testQuota &&
+    requestedProject.developmentQuota === project.developmentQuota &&
+    requestedProject.toolsQuota === project.toolsQuota
+  );
 
-  const contactChanged =
-    "projectOwner" in args ||
-    "primaryTechnicalLead" in args ||
-    "secondaryTechnicalLead" in args;
+  const contactChanged = !(
+    requestedProject.projectOwner.email === project.projectOwner.email &&
+    requestedProject.primaryTechnicalLead.email ===
+      project.primaryTechnicalLead.email &&
+    requestedProject.secondaryTechnicalLead?.email ===
+      project.secondaryTechnicalLeadId
+  );
 
   try {
     // *** Quota Changed and no Contact changed
@@ -155,7 +172,7 @@ export const sendEditRequestEmails = async (
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/quota-request-received-email.html",
-          generateEmailTemplateData(project, requestedProject, args)
+          generateEmailTemplateData(project, requestedProject)
         ),
         // For all project contacts. Sent when a new quota edit request is submitted successfully.
         to: [
@@ -173,7 +190,7 @@ export const sendEditRequestEmails = async (
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/super-admin-request-email.html",
-          generateEmailTemplateData(project, requestedProject, args, {
+          generateEmailTemplateData(project, requestedProject, {
             requestType: "Quota editing",
             isProvisioningRequest: false,
             isQuotaRequest: true
@@ -194,7 +211,7 @@ export const sendEditRequestEmails = async (
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/product-contact-change-confirmation-email.html",
-          generateEmailTemplateData(requestedProject, project, args)
+          generateEmailTemplateData(requestedProject, project)
         ),
         // Sent to all new, current, and prior project contacts when the Provisioner processes the request in Openshift. Contacts who were just removed should also receive this email alerting them to these changes.
         to: [
@@ -219,7 +236,7 @@ export const sendEditRequestEmails = async (
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/super-admin-request-email.html",
-          generateEmailTemplateData(project, requestedProject, args, {
+          generateEmailTemplateData(project, requestedProject, {
             requestType: "Quota editing",
             isProvisioningRequest: false,
             isQuotaRequest: true
@@ -235,7 +252,7 @@ export const sendEditRequestEmails = async (
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/quota-and-tlpo-changes.html",
-          generateEmailTemplateData(project, requestedProject, args)
+          generateEmailTemplateData(project, requestedProject)
         ),
         // Sent to all new, current, and prior project contacts upon form submit. Contacts who were just removed should also receive this email alerting them to these changes.
         to: [
@@ -326,7 +343,7 @@ export const sendDeleteRequestEmails = async (project) => {
         generateEmailTemplateData(
           project,
           requestedProject,
-          {},
+
           {
             requestType: "Delete",
             isProvisioningRequest: false,
@@ -376,14 +393,9 @@ export const sendMakeDecisionEmails = async (request) => {
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/quota-request-completion-email.html",
-            generateEmailTemplateData(
-              requestedProject,
-              project,
-              {},
-              {
-                consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`
-              }
-            )
+            generateEmailTemplateData(requestedProject, project, {
+              consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`
+            })
           ),
           // For all project contacts.
           to: [

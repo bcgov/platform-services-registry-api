@@ -358,44 +358,18 @@ type Mutation {
 
   privateCloudProjectEditRequest(
     projectId: ID!
-    name: String
-    description: String
-    cluster: Cluster
-    ministry: Ministry
-    commonComponents: CommonComponentsInput
-    projectOwner: CreateUserInput
-    primaryTechnicalLead: CreateUserInput
-    secondaryTechnicalLead: CreateUserInput
-    productionQuota: QuotaInput
-    developmentQuota: QuotaInput
-    testQuota: QuotaInput
-    toolsQuota: QuotaInput
-  ): PrivateCloudRequest! @nonNullInput @auth @flattenDefaultQuotaInput
-
-  customPrivateCloudProjectRequest(
     name: String!
     description: String!
-    cluster: Cluster!
     ministry: Ministry!
     commonComponents: CommonComponentsInput!
-    productionQuota: CustomQuotaInput
-    developmentQuota: CustomQuotaInput
-    testQuota: CustomQuotaInput
-    toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
-
-  customPrivateCloudProjectEditRequest(
-    projectId: ID!
-    name: String
-    description: String
-    cluster: Cluster
-    ministry: Ministry
-    commonComponents: CommonComponentsInput!
-    productionQuota: CustomQuotaInput
-    developmentQuota: CustomQuotaInput
-    testQuota: CustomQuotaInput
-    toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @nonNullInput @hasRole(role: "admin")
+    projectOwner: CreateUserInput!
+    primaryTechnicalLead: CreateUserInput!
+    secondaryTechnicalLead: CreateUserInput
+    productionQuota: QuotaInput!
+    developmentQuota: QuotaInput!
+    testQuota: QuotaInput!
+    toolsQuota: QuotaInput!
+  ): PrivateCloudRequest! @auth @flattenDefaultQuotaInput
 
   privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest!
 
@@ -403,4 +377,34 @@ type Mutation {
     requestId: ID!
     decision: RequestDecision!
   ): PrivateCloudRequest @hasRole(role: "admin")
+
+  customPrivateCloudProjectEditRequest(
+    projectId: ID!
+    name: String
+    description: String
+    ministry: Ministry
+    projectOwner: CreateUserInput
+    primaryTechnicalLead: CreateUserInput
+    secondaryTechnicalLead: CreateUserInput
+    commonComponents: CommonComponentsInput!
+    productionQuota: CustomQuotaInput
+    developmentQuota: CustomQuotaInput
+    testQuota: CustomQuotaInput
+    toolsQuota: CustomQuotaInput
+  ): PrivateCloudRequest! @nonNullInput @hasRole(role: "admin")
+
+  customPrivateCloudProjectRequest(
+    name: String!
+    description: String!
+    cluster: Cluster!
+    ministry: Ministry!
+    projectOwner: CreateUserInput
+    primaryTechnicalLead: CreateUserInput
+    secondaryTechnicalLead: CreateUserInput
+    commonComponents: CommonComponentsInput!
+    productionQuota: CustomQuotaInput
+    developmentQuota: CustomQuotaInput
+    testQuota: CustomQuotaInput
+    toolsQuota: CustomQuotaInput
+  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
 }

@@ -8,11 +8,13 @@ import {
   RequestType,
   CommonComponentsOptions,
   DefaultCpuOptions,
-  DefaultMemoryOptions
+  DefaultMemoryOptions,
+  DefaultStorageOptions
 } from "../../src/__generated__/resolvers-types.js";
 import {
   DefaultCpuOptions as DefaultCpuOptionsEnum,
-  DefaultMemoryOptions as DefaultMemoryOptionsEnum
+  DefaultMemoryOptions as DefaultMemoryOptionsEnum,
+  DefaultStorageOptions as DefaultStorageOptionsEnum
 } from "../../src/resolvers/enum";
 import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
@@ -32,6 +34,7 @@ import {
   mockProjectA,
   mockProjectB
 } from "../../__mocks__/constants.js";
+import { defaultQuota } from "../../src/utils/defaultQuota";
 
 interface ContextValue {
   kauth: KeycloakContext;
@@ -556,8 +559,34 @@ describe("Request tests", () => {
   });
 
   test("Makes an edit request", async () => {
-    const EDIT_REQUEST = `mutation Mutation($projectId: ID!, $name: String, $description: String, $cluster: Cluster, $commonComponents: CommonComponentsInput, $productionQuota: QuotaInput) {
-      privateCloudProjectEditRequest(projectId: $projectId, name: $name, description: $description, cluster: $cluster, commonComponents: $commonComponents, productionQuota: $productionQuota) {
+    const EDIT_REQUEST = `mutation Mutation(
+      $projectId: ID!,
+      $name: String!,
+      $description: String!,
+      $ministry: Ministry!,
+      $commonComponents: CommonComponentsInput!,
+      $projectOwner: CreateUserInput!,
+      $primaryTechnicalLead: CreateUserInput!,
+      $secondaryTechnicalLead: CreateUserInput
+      $testQuota: QuotaInput!,
+      $productionQuota: QuotaInput!,
+      $developmentQuota: QuotaInput!,
+      $toolsQuota: QuotaInput!,
+    ) {
+      privateCloudProjectEditRequest(
+        projectId: $projectId,
+        name: $name,
+        description: $description,
+        ministry: $ministry,
+        commonComponents: $commonComponents,
+        projectOwner: $projectOwner,
+        primaryTechnicalLead: $primaryTechnicalLead,
+        secondaryTechnicalLead: $secondaryTechnicalLead
+        testQuota: $testQuota,
+        productionQuota: $productionQuota,
+        developmentQuota: $developmentQuota,
+        toolsQuota: $toolsQuota,
+      ) {
         id
       }
     }`;
@@ -566,15 +595,45 @@ describe("Request tests", () => {
       projectId: mockProjectB.id,
       name: "new name",
       description: "new description",
-      cluster: Cluster.Gold,
+      projectOwner: {
+        email: "oamarkanji@gmail.com",
+        firstName: "testA",
+        lastName: "testA",
+        githubId: "testA",
+        ministry: Ministry.Agri
+      },
+      primaryTechnicalLead: {
+        email: "new@test.com",
+        firstName: "testA",
+        lastName: "testA",
+        githubId: "testA",
+        ministry: Ministry.Agri
+      },
       commonComponents: {
         identityManagement: CommonComponentsOptions.PlanningToUse,
         noServices: false
       },
       productionQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
-        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128
-      }
+        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+        storage: DefaultStorageOptions.Storage_16
+      },
+      testQuota: {
+        cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+        storage: DefaultStorageOptions.Storage_16
+      },
+      developmentQuota: {
+        cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+        storage: DefaultStorageOptions.Storage_16
+      },
+      toolsQuota: {
+        cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+        memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+        storage: DefaultStorageOptions.Storage_16
+      },
+      ministry: Ministry.Agri
     };
 
     const response = await server.executeOperation(
@@ -618,21 +677,31 @@ describe("Request tests", () => {
     expect(request?.project?.description).toBe(mockProjectB.description);
     expect(request?.requestedProject?.description).toBe(variables.description);
     expect(request?.project?.cluster).toBe(mockProjectB.cluster);
-    expect(request?.requestedProject?.cluster).toBe(variables.cluster);
+    expect(request?.requestedProject?.cluster).toBe(mockProjectB.cluster);
     expect(request?.project?.commonComponents).toEqual(
       mockProjectB.commonComponents
     );
     expect(request?.requestedProject?.commonComponents).toEqual({
-      ...mockProjectB.commonComponents,
-      ...variables.commonComponents
+      addressAndGeolocation: null,
+      workflowManagement: null,
+      formDesignAndSubmission: null,
+      identityManagement: "PLANNING_TO_USE",
+      paymentServices: null,
+      documentManagement: null,
+      endUserNotificationAndSubscription: null,
+      publishing: null,
+      businessIntelligence: null,
+      other: null,
+      noServices: false
     });
     expect(request?.project?.productionQuota).toEqual(
       mockProjectB.productionQuota
     );
     expect(request?.requestedProject?.productionQuota).toEqual({
-      ...mockProjectB.productionQuota,
+      ...defaultQuota,
       ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
-      ...DefaultMemoryOptionsEnum[variables.productionQuota.memory]
+      ...DefaultMemoryOptionsEnum[variables.productionQuota.memory],
+      ...DefaultStorageOptionsEnum[variables.productionQuota.storage]
     });
   });
 });

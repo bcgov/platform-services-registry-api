@@ -182,14 +182,16 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationCustomPrivateCloudProjectEditRequestArgs = {
-  cluster?: InputMaybe<Cluster>;
   commonComponents: CommonComponentsInput;
   description?: InputMaybe<Scalars['String']>;
   developmentQuota?: InputMaybe<CustomQuotaInput>;
   ministry?: InputMaybe<Ministry>;
   name?: InputMaybe<Scalars['String']>;
+  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
   productionQuota?: InputMaybe<CustomQuotaInput>;
   projectId: Scalars['ID'];
+  projectOwner?: InputMaybe<CreateUserInput>;
+  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
   testQuota?: InputMaybe<CustomQuotaInput>;
   toolsQuota?: InputMaybe<CustomQuotaInput>;
 };
@@ -202,7 +204,10 @@ export type MutationCustomPrivateCloudProjectRequestArgs = {
   developmentQuota?: InputMaybe<CustomQuotaInput>;
   ministry: Ministry;
   name: Scalars['String'];
+  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
   productionQuota?: InputMaybe<CustomQuotaInput>;
+  projectOwner?: InputMaybe<CreateUserInput>;
+  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
   testQuota?: InputMaybe<CustomQuotaInput>;
   toolsQuota?: InputMaybe<CustomQuotaInput>;
 };
@@ -214,19 +219,18 @@ export type MutationPrivateCloudProjectDeleteRequestArgs = {
 
 
 export type MutationPrivateCloudProjectEditRequestArgs = {
-  cluster?: InputMaybe<Cluster>;
-  commonComponents?: InputMaybe<CommonComponentsInput>;
-  description?: InputMaybe<Scalars['String']>;
-  developmentQuota?: InputMaybe<QuotaInput>;
-  ministry?: InputMaybe<Ministry>;
-  name?: InputMaybe<Scalars['String']>;
-  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  productionQuota?: InputMaybe<QuotaInput>;
+  commonComponents: CommonComponentsInput;
+  description: Scalars['String'];
+  developmentQuota: QuotaInput;
+  ministry: Ministry;
+  name: Scalars['String'];
+  primaryTechnicalLead: CreateUserInput;
+  productionQuota: QuotaInput;
   projectId: Scalars['ID'];
-  projectOwner?: InputMaybe<CreateUserInput>;
+  projectOwner: CreateUserInput;
   secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  testQuota?: InputMaybe<QuotaInput>;
-  toolsQuota?: InputMaybe<QuotaInput>;
+  testQuota: QuotaInput;
+  toolsQuota: QuotaInput;
 };
 
 
@@ -643,7 +647,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
   customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
-  privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'projectId'>>;
+  privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'description' | 'developmentQuota' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'productionQuota' | 'projectId' | 'projectOwner' | 'testQuota' | 'toolsQuota'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;

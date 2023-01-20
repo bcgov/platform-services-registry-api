@@ -4,16 +4,23 @@ import {
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs
 } from "../../__generated__/resolvers-types.js";
-import { Prisma } from "@prisma/client";
-import { PrivateCloudProject, PrivateCloudRequest } from "@prisma/client";
+import {
+  Prisma,
+  PrivateCloudProject,
+  PrivateCloudRequest
+} from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
+import { defaultQuota } from "../../utils/defaultQuota.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
   args: MutationPrivateCloudProjectEditRequestArgs,
   { authEmail, prisma, authRoles }
 ) => {
+  // TODO: Add types
+  // See this for prisma types with relations:
+  // https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety/operating-against-partial-structures-of-model-types
   let editRequest;
   let decisionStatus;
 
@@ -31,56 +38,23 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       );
     }
 
-    const project: PrivateCloudProject =
-      await prisma.privateCloudProject.findUnique({
-        where: {
-          id: args.projectId
-        }
-      });
-
-    const {
-      id,
-      projectOwnerId,
-      primaryTechnicalLeadId,
-      secondaryTechnicalLeadId,
-      productionQuota,
-      testQuota,
-      toolsQuota,
-      developmentQuota,
-      commonComponents,
-      ...restProject
-    } = project;
-
-    const {
-      projectId,
-      projectOwner,
-      primaryTechnicalLead,
-      secondaryTechnicalLead,
-      toolsQuota: toolsQuotaFromArgs,
-      productionQuota: productionQuotaFromArgs,
-      testQuota: testQuotaFromArgs,
-      developmentQuota: developmentQuotaFromArgs,
-      commonComponents: commonComponentsFromArgs,
-      ...restArgs
-    } = args;
-
-    const users = await prisma.user.findMany({
+    const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: {
-          in: [
-            projectOwnerId,
-            primaryTechnicalLeadId,
-            secondaryTechnicalLeadId
-          ].filter(Boolean)
-        }
+        id: args.projectId
       },
-      select: {
-        email: true
+      include: {
+        projectOwner: true,
+        primaryTechnicalLead: true,
+        secondaryTechnicalLead: true
       }
     });
 
     if (
-      !users.map((user) => user.email).includes(authEmail) &&
+      ![
+        project.projectOwner.email,
+        project.primaryTechnicalLead.email,
+        project.secondaryTechnicalLead.email
+      ].includes(authEmail) &&
       !authRoles.includes("admin")
     ) {
       throw new Error(
@@ -88,68 +62,57 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       );
     }
 
-    // Merge the existing project with the new values from the request arguments
     const requestedProject = {
-      ...restProject,
-      ...restArgs,
-      toolsQuota: { ...toolsQuota, ...toolsQuotaFromArgs },
-      productionQuota: { ...productionQuota, ...productionQuotaFromArgs },
-      testQuota: { ...testQuota, ...testQuotaFromArgs },
-      developmentQuota: { ...developmentQuota, ...developmentQuotaFromArgs },
-      commonComponents: { ...commonComponents, ...commonComponentsFromArgs },
-      projectOwner: projectOwner
-        ? {
-            connectOrCreate: {
-              where: {
-                email: projectOwner.email
-              },
-              create: projectOwner
-            }
-          }
-        : {
-            connect: {
-              id: projectOwnerId
-            }
+      name: args.name,
+      description: args.description,
+      cluster: project.cluster,
+      ministry: args.ministry,
+      status: project.status,
+      licencePlate: project.licencePlate,
+      commonComponents: args.commonComponents,
+      productionQuota: { ...defaultQuota, ...args.productionQuota },
+      testQuota: { ...defaultQuota, ...args.testQuota },
+      toolsQuota: { ...defaultQuota, ...args.toolsQuota },
+      developmentQuota: { ...defaultQuota, ...args.developmentQuota },
+      profileId: project.profileId || null,
+      created: project.created,
+      projectOwner: {
+        connectOrCreate: {
+          where: {
+            email: args.projectOwner.email
           },
-      primaryTechnicalLead: primaryTechnicalLead
-        ? {
-            connectOrCreate: {
-              where: {
-                email: primaryTechnicalLead.email
-              },
-              create: primaryTechnicalLead
-            }
-          }
-        : {
-            connect: {
-              id: primaryTechnicalLeadId
-            }
+          create: args.projectOwner
+        }
+      },
+      primaryTechnicalLead: {
+        connectOrCreate: {
+          where: {
+            email: args.primaryTechnicalLead.email
           },
-      secondaryTechnicalLead: secondaryTechnicalLead
+          create: args.primaryTechnicalLead
+        }
+      },
+      secondaryTechnicalLead: args.secondaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: secondaryTechnicalLead.email
+                email: args.secondaryTechnicalLead.email
               },
-              create: secondaryTechnicalLead
-            }
-          }
-        : secondaryTechnicalLeadId
-        ? {
-            connect: {
-              id: secondaryTechnicalLeadId
+              create: args.secondaryTechnicalLead
             }
           }
         : undefined
     };
 
+    const isQuotaChanged = !(
+      args.productionQuota === project.productionQuota &&
+      args.testQuota === project.testQuota &&
+      args.developmentQuota === project.developmentQuota &&
+      args.toolsQuota === project.toolsQuota
+    );
+
     // If any of the quotas are being changed, the request needs to be approved
-    if (
-      "toolsQuota" in args ||
-      "developmentQuota" in args ||
-      "testQuota" in args ||
-      "productionQuota" in args
-    ) {
+    if (isQuotaChanged) {
       decisionStatus = DecisionStatus.Pending;
     } else {
       decisionStatus = DecisionStatus.Approved;
@@ -162,7 +125,11 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         active: true,
         createdByEmail: authEmail,
         users: {
-          connect: users.map((user) => ({ email: user.email }))
+          connect: [
+            { email: project.projectOwner.email },
+            { email: project.primaryTechnicalLead.email },
+            { email: project.secondaryTechnicalLead.email }
+          ]
         },
         requestedProject: {
           create: requestedProject
@@ -203,8 +170,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   await sendEditRequestEmails(
     editRequest.project,
-    editRequest.requestedProject,
-    args
+    editRequest.requestedProject
   );
 
   return editRequest;

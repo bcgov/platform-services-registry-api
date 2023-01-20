@@ -39,9 +39,8 @@ export const userPrivateCloudActiveRequestById = async (
   { requestId },
   { prisma, authEmail }
 ) =>
-  await prisma.privateCloudRequest.findFirst({
+  await prisma.privateCloudRequest.findUnique({
     where: {
-      user: { email: authEmail },
       id: requestId,
       active: true
     }
