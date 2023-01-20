@@ -1,7 +1,7 @@
 version: "3.7"
 x-env: &defaults
   NODE_ENV: development
-  MONGODB_USERNAME: 
+  MONGODB_USERNAME:
   MONGODB_PASSWORD:
   MONGODB_HOST: registry-mongo
   MONGODB_NAME:
@@ -34,15 +34,15 @@ services:
     ports:
       - 27017:27017
     environment: *defaults
-  # api:
-  #   container_name: registry-api-new
-  #   image: registry-api-new/api
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 4222:4222
+  api:
+    container_name: registry-api-new
+    image: registry-api-new/api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4222:4222
 
-  #   environment:
-  #     <<: *defaults
-  #     PORT: 4222
+    environment:
+      <<: *defaults
+      PORT: 4222
