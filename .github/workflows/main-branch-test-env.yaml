@@ -88,7 +88,7 @@ jobs:
     #       CI: "true"
 
   api_s2i-build:
-    needs: api_build
+    # needs: api_build
     runs-on: ubuntu-latest
     concurrency: platsrv-registry-api
     defaults:
