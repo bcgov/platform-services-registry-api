@@ -14,7 +14,6 @@ export const RequestType = {
   DELETE: "delete"
 };
 
-
 const testMessage = {
   action: "create",
   profile_id: 6,
@@ -32,7 +31,7 @@ const testMessage = {
         cpu: "cpu-request-0.5-limit-1.5",
         memory: "memory-request-2-limit-4",
         storage: "storage-1", // the one refers to the file
-        snapshot: "snapshot-5",
+        snapshot: "snapshot-5"
       },
       quotas: {
         cpu: { requests: 0.5, limits: 1.5 },
@@ -42,10 +41,10 @@ const testMessage = {
           file: "1Gi",
           backup: "512Mi",
           capacity: "1Gi",
-          pvc_count: 60,
+          pvc_count: 60
         },
-        snapshot: { count: 5 },
-      },
+        snapshot: { count: 5 }
+      }
     },
     {
       namespace_id: 22,
@@ -54,7 +53,7 @@ const testMessage = {
         cpu: "cpu-request-0.5-limit-1.5",
         memory: "memory-request-2-limit-4",
         storage: "storage-1",
-        snapshot: "snapshot-5",
+        snapshot: "snapshot-5"
       },
       quotas: {
         cpu: { requests: 0.5, limits: 1.5 },
@@ -64,10 +63,10 @@ const testMessage = {
           file: "1Gi",
           backup: "512Mi",
           capacity: "1Gi",
-          pvc_count: 60,
+          pvc_count: 60
         },
-        snapshot: { count: 5 },
-      },
+        snapshot: { count: 5 }
+      }
     },
     {
       namespace_id: 23,
@@ -76,7 +75,7 @@ const testMessage = {
         cpu: "cpu-request-0.5-limit-1.5",
         memory: "memory-request-2-limit-4",
         storage: "storage-1",
-        snapshot: "snapshot-5",
+        snapshot: "snapshot-5"
       },
       quotas: {
         cpu: { requests: 0.5, limits: 1.5 },
@@ -86,10 +85,10 @@ const testMessage = {
           file: "1Gi",
           backup: "512Mi",
           capacity: "1Gi",
-          pvc_count: 60,
+          pvc_count: 60
         },
-        snapshot: { count: 5 },
-      },
+        snapshot: { count: 5 }
+      }
     },
     {
       namespace_id: 24,
@@ -98,7 +97,7 @@ const testMessage = {
         cpu: "cpu-request-0.5-limit-1.5",
         memory: "memory-request-2-limit-4",
         storage: "storage-1",
-        snapshot: "snapshot-5",
+        snapshot: "snapshot-5"
       },
       quotas: {
         cpu: { requests: 0.5, limits: 1.5 },
@@ -108,11 +107,11 @@ const testMessage = {
           file: "1Gi",
           backup: "512Mi",
           capacity: "1Gi",
-          pvc_count: 60,
+          pvc_count: 60
         },
-        snapshot: { count: 5 },
-      },
-    },
+        snapshot: { count: 5 }
+      }
+    }
   ],
   contacts: [
     {
@@ -120,17 +119,16 @@ const testMessage = {
       provider: "github",
       email: "billy.li@gov.bc.ca",
       rocketchat_username: null,
-      role: "lead",
+      role: "lead"
     },
     {
       user_id: "w8896699",
       provider: "github",
       email: "billy.li@gov.bc.ca",
       rocketchat_username: null,
-      role: "owner",
-    },
-  ],
+      role: "owner"
+    }
+  ]
 };
 
-
-export {testMessage}
+export { testMessage };

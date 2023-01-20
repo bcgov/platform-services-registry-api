@@ -5,7 +5,7 @@ WORKDIR /var/opt/build
 
 COPY . .
 
-RUN npm install
+RUN npm install -f
 RUN npm run build
 # RUN rm -rf src
 
