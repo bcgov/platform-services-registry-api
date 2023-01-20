@@ -53,7 +53,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       ![
         project.projectOwner.email,
         project.primaryTechnicalLead.email,
-        project.secondaryTechnicalLead.email
+        project?.secondaryTechnicalLead?.email
       ].includes(authEmail) &&
       !authRoles.includes("admin")
     ) {
@@ -128,8 +128,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
           connect: [
             { email: project.projectOwner.email },
             { email: project.primaryTechnicalLead.email },
-            { email: project.secondaryTechnicalLead.email }
-          ]
+            { email: project?.secondaryTechnicalLead?.email }
+          ].filter(({ email }) => Boolean(email))
         },
         requestedProject: {
           create: requestedProject
@@ -159,7 +159,9 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new Error(e.message);
+      if (e.code === "P2002") {
+        throw new Error("There is already an active request for this project.");
+      }
     }
     throw e;
   }

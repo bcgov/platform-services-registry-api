@@ -78,7 +78,9 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new Error(e.message);
+      if (e.code === "P2002") {
+        throw new Error("There is already an active request for this project.");
+      }
     }
     throw e;
   }
