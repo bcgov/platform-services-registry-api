@@ -262,15 +262,15 @@ input UpdateUserInput {
 }
 
 input QuotaInput {
-  cpu: DefaultCpuOptions
-  memory: DefaultMemoryOptions
-  storage: DefaultStorageOptions
+  cpu: DefaultCpuOptions!
+  memory: DefaultMemoryOptions!
+  storage: DefaultStorageOptions!
 }
 
 type SelectedDefaultQuota {
-  cpu: String
-  memory: String
-  storage: String
+  cpu: String!
+  memory: String!
+  storage: String!
 }
 
 input CustomQuotaInput {

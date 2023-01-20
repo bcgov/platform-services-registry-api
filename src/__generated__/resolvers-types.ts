@@ -409,9 +409,9 @@ export type Quota = {
 };
 
 export type QuotaInput = {
-  cpu?: InputMaybe<DefaultCpuOptions>;
-  memory?: InputMaybe<DefaultMemoryOptions>;
-  storage?: InputMaybe<DefaultStorageOptions>;
+  cpu: DefaultCpuOptions;
+  memory: DefaultMemoryOptions;
+  storage: DefaultStorageOptions;
 };
 
 export enum RequestDecision {
@@ -427,9 +427,9 @@ export enum RequestType {
 
 export type SelectedDefaultQuota = {
   __typename?: 'SelectedDefaultQuota';
-  cpu?: Maybe<Scalars['String']>;
-  memory?: Maybe<Scalars['String']>;
-  storage?: Maybe<Scalars['String']>;
+  cpu: Scalars['String'];
+  memory: Scalars['String'];
+  storage: Scalars['String'];
 };
 
 export type SignUpInput = {
@@ -732,9 +732,9 @@ export type QuotaResolvers<ContextType = ContextValue, ParentType extends Resolv
 }>;
 
 export type SelectedDefaultQuotaResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['SelectedDefaultQuota'] = ResolversParentTypes['SelectedDefaultQuota']> = ResolversObject<{
-  cpu?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  memory?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  storage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  cpu?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  memory?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  storage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -853,9 +853,9 @@ export const PublicCloudPlatformSchema = yup.mixed().oneOf([PublicCloudPlatform.
 
 export function QuotaInputSchema(): yup.SchemaOf<QuotaInput> {
   return yup.object({
-    cpu: DefaultCpuOptionsSchema,
-    memory: DefaultMemoryOptionsSchema,
-    storage: DefaultStorageOptionsSchema
+    cpu: DefaultCpuOptionsSchema.defined(),
+    memory: DefaultMemoryOptionsSchema.defined(),
+    storage: DefaultStorageOptionsSchema.defined()
   })
 }
 
