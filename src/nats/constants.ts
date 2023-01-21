@@ -14,12 +14,12 @@ export const RequestType = {
   DELETE: "delete"
 };
 
-const testMessage = {
+export const testMessage = {
   action: "create",
   profile_id: 6,
-  cluster_id: 3,
-  cluster_name: "silver",
-  display_name: "Mautic test",
+  cluster_id: 1,
+  cluster_name: "clab",
+  display_name: "Oamar test",
   description: "asdf",
   ministry_id: "AGRI",
   merge_type: "auto",
@@ -115,9 +115,9 @@ const testMessage = {
   ],
   contacts: [
     {
-      user_id: "w8896699",
+      user_id: "okanji",
       provider: "github",
-      email: "billy.li@gov.bc.ca",
+      email: "oamar.kanji@gov.bc.ca",
       rocketchat_username: null,
       role: "lead"
     },
@@ -130,5 +130,3 @@ const testMessage = {
     }
   ]
 };
-
-export { testMessage };

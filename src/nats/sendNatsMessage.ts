@@ -1,5 +1,6 @@
 import { connect, StringCodec, JSONCodec } from "nats";
 import message from "./message.js";
+import { testMessage } from "./constants.js";
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 
@@ -15,7 +16,8 @@ async function sendNatsMessage(action, requestedProject) {
   const sc = StringCodec();
   const jc = JSONCodec();
 
-  const messageBody = message(action, requestedProject);
+  // const messageBody = message(action, requestedProject);
+  const messageBody = testMessage;
 
   const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${requestedProject.cluster}`;
 
