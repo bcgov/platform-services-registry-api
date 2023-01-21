@@ -41,7 +41,7 @@
     "keycloak-connect": "^20.0.2",
     "keycloak-connect-graphql": "^0.7.0",
     "mongodb": "^4.13.0",
-    "nats": "^2.10.2",
+    "nats": "^2.6.1",
     "swig": "^1.4.2",
     "yup": "^0.32.11"
   },

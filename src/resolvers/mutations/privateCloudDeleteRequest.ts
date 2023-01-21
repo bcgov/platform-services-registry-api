@@ -85,7 +85,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
     throw e;
   }
 
-  sendDeleteRequestEmails(createRequest.project);
+  // sendDeleteRequestEmails(createRequest.project);
 
   return createRequest;
 };
