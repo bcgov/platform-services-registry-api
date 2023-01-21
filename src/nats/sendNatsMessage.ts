@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { connect, StringCodec, JSONCodec } from "nats";
 import message from "./message.js";
-import { testMessage, RequestType } from "./constants.js";
+import { testMessage, Cluster } from "./constants.js";
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 
@@ -23,7 +23,7 @@ async function sendNatsMessage(action, requestedProject) {
   console.log(jc.encode(messageBody));
 
   const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${
-    RequestType[requestedProject.cluster]
+    Cluster[requestedProject.cluster]
   }`;
 
   nc.publish(natsSubject, jc.encode(messageBody));
