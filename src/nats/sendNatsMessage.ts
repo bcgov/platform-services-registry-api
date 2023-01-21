@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { connect, StringCodec, JSONCodec } from "nats";
 import message from "./message.js";
 
