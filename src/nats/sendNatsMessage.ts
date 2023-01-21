@@ -21,6 +21,9 @@ async function sendNatsMessage(action, requestedProject) {
 
   nc.publish(natsSubject, jc.encode(messageBody));
 
+  console.log("url");
+  console.log(serverURL);
+
   console.log("Nats Subject");
   console.log(natsSubject);
 
