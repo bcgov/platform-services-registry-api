@@ -11,31 +11,17 @@ const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 async function sendNatsMessage(action, requestedProject) {
   const nc = await connect({ servers: serverURL });
 
-  console.log("Nats Connection");
-  console.log(nc);
-
   // const sc = StringCodec();
   const jc = JSONCodec();
-  console.log(jc);
 
-  // const messageBody = message(action, requestedProject);
-  const messageBody = testMessage;
-  console.log(jc.encode(messageBody));
+  const messageBody = message(action, requestedProject);
+  // const messageBody = testMessage;
 
   const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${
     Cluster[requestedProject.cluster]
   }`;
 
   nc.publish(natsSubject, jc.encode(messageBody));
-
-  console.log("url");
-  console.log(serverURL);
-
-  console.log("Nats Subject");
-  console.log(natsSubject);
-
-  console.log("Nats Message");
-  console.log(messageBody);
 
   await nc.drain();
 }

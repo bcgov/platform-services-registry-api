@@ -21,14 +21,14 @@ model User {
   archived                                           Boolean                        @default(false)
   created                                            DateTime                       @default(now())
   lastSeen                                           DateTime                       @updatedAt
+  privateCloudRequestsIds                            String[]                       @db.ObjectId
+  privateCloudRequests                               PrivateCloudRequest[]          @relation("request", fields: [privateCloudRequestsIds], references: [id])
   privateCloudProjectOwner                           PrivateCloudProject[]          @relation("projectOwner")
   privateCloudProjectPrimaryTechnicalLead            PrivateCloudProject[]          @relation("primaryTechnicalLead")
   privateCloudProjectSecondaryTechnicalLead          PrivateCloudProject[]          @relation("secondaryTechnicalLead")
   privateCloudRequestedProjectOwner                  PrivateCloudRequestedProject[] @relation("requestedProjectOwner")
   privateCloudRequestedProjectPrimaryTechnicalLead   PrivateCloudRequestedProject[] @relation("requestedPrimaryTechnicalLead")
   privateCloudRequestedProjectSecondaryTechnicalLead PrivateCloudRequestedProject[] @relation("requestedSecondaryTechnicalLead")
-  privateCloudRequestsIds                            String[]                       @db.ObjectId
-  privateCloudRequests                               PrivateCloudRequest[]          @relation("request", fields: [privateCloudRequestsIds], references: [id])
 }
 
 model PrivateCloudRequest {
