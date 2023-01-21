@@ -22,19 +22,19 @@ const User = {
           id: user.id
         }
       })
-      .privateCloudProjectSecondaryTechnicalLead(),
-  privateCloudActiveRquests: (user, _, { prisma }) =>
-    prisma.user
-      .findUnique({
-        where: {
-          id: user.id
-        }
-      })
-      .privateCloudRequests({
-        where: {
-          active: true
-        }
-      })
+      .privateCloudProjectSecondaryTechnicalLead()
 };
+// privateCloudActiveRquests: (user, _, { prisma }) =>
+//   prisma.user
+//     .findUnique({
+//       where: {
+//         id: user.id
+//       }
+//     })
+//     .privateCloudRequests({
+//       where: {
+//         active: true
+//       }
+//     })
 
 export default User;

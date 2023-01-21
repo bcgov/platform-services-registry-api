@@ -395,7 +395,8 @@ describe("Request tests", () => {
   });
 
   test("Approve a private cloud project request", async () => {
-    const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `mutation PrivateCloudRequestDecision(
+    const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `
+    mutation PrivateCloudRequestDecision(
       $requestId: ID!,
       $decision: RequestDecision!) {
       privateCloudRequestDecision(requestId: $requestId, decision: $decision) {
@@ -445,7 +446,6 @@ describe("Request tests", () => {
 
     // @ts-ignore
     const responseErrors = response?.body?.singleResult?.errors;
-    console.log(responseErrors);
 
     expect(request).not.toBeNull();
     expect(request?.decisionStatus).toBe(RequestDecision.Approved);

@@ -124,13 +124,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         decisionStatus: decisionStatus,
         active: true,
         createdByEmail: authEmail,
-        users: {
-          connect: [
-            { email: project.projectOwner.email },
-            { email: project.primaryTechnicalLead.email },
-            { email: project?.secondaryTechnicalLead?.email }
-          ].filter(({ email }) => Boolean(email))
-        },
         requestedProject: {
           create: requestedProject
         },

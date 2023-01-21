@@ -39,30 +39,6 @@ const privateCloudProjectRequest: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending,
         active: true,
         createdByEmail: authEmail,
-        users: {
-          connectOrCreate: [
-            {
-              where: {
-                email: args.projectOwner.email
-              },
-              create: args.projectOwner
-            },
-            {
-              where: {
-                email: args.primaryTechnicalLead.email
-              },
-              create: args.primaryTechnicalLead
-            },
-            args.secondaryTechnicalLead
-              ? {
-                  where: {
-                    email: args.secondaryTechnicalLead?.email
-                  },
-                  create: args.secondaryTechnicalLead
-                }
-              : undefined
-          ]
-        },
         requestedProject: {
           create: {
             name: args.name,

@@ -6,6 +6,8 @@ const provisionerCallbackHandler = async (req, res) => {
   try {
     const { prefix: licencePlate } = req.body;
 
+    console.log(req)
+
     const { id, ...requestedProject } =
       await prisma.privateCloudRequestedProject.findFirst({
         where: {
