@@ -443,6 +443,10 @@ describe("Request tests", () => {
       }
     });
 
+    // @ts-ignore
+    const responseErrors = response?.body?.singleResult?.errors;
+    console.log(responseErrors);
+
     expect(request).not.toBeNull();
     expect(request?.decisionStatus).toBe(RequestDecision.Approved);
     expect(request?.createdByEmail).toBe(contextValue.authEmail);

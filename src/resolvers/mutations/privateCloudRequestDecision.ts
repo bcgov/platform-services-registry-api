@@ -61,6 +61,8 @@ const privateCloudRequestDecision: MutationResolvers = async (
 
   if (request.decisionStatus === RequestDecision.Approved) {
     console.log("Sending nats message");
+    console.log("action", request.type);
+    console.log("project", request.requestedProject);
     await sendNatsMessage(request.type, request.requestedProject);
   }
 

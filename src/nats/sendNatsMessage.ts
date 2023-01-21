@@ -9,17 +9,18 @@ const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 // const serverURL = `nats://localhost:4222`
 
 async function sendNatsMessage(action, requestedProject) {
-  if (process.env.NATS_SKIP === "skip") {
-    return;
-  }
-
   const nc = await connect({ servers: serverURL });
 
-  const sc = StringCodec();
+  console.log("Nats Connection");
+  console.log(nc);
+
+  // const sc = StringCodec();
   const jc = JSONCodec();
+  console.log(jc);
 
   // const messageBody = message(action, requestedProject);
   const messageBody = testMessage;
+  console.log(jc.encode(messageBody));
 
   const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${requestedProject.cluster}`;
 
