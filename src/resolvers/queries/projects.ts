@@ -60,47 +60,38 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   cluster = cluster === null ? undefined : cluster;
 
   const offset = (page - 1) * pageSize;
+
   const projects = await prisma.privateCloudProject.findMany({
     where: {
       AND: [
         {
           OR: [
+            { projectOwner: { email: { contains: search } } },
+            { projectOwner: { firstName: { contains: search } } },
+            { projectOwner: { lastName: { contains: search } } },
+            { projectOwner: { githubId: { contains: search } } },
+            { primaryTechnicalLead: { email: { contains: search } } },
+            { primaryTechnicalLead: { firstName: { contains: search } } },
+            { primaryTechnicalLead: { lastName: { contains: search } } },
+            { primaryTechnicalLead: { githubId: { contains: search } } },
+            { secondaryTechnicalLead: { email: { contains: search } } },
+            { secondaryTechnicalLead: { firstName: { contains: search } } },
+            { secondaryTechnicalLead: { lastName: { contains: search } } },
+            { secondaryTechnicalLead: { githubId: { contains: search } } },
             { name: { contains: search } },
-            {
-              projectOwner: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            {
-              primaryTechnicalLead: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            {
-              secondaryTechnicalLead: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            { licencePlate: { contains: search } },
-            { ministry: { contains: search } },
-            { cluster: { contains: search } },
-            { description: { contains: search } }
+            { description: { contains: search } },
+            { licencePlate: { contains: search } }
           ]
         },
         {
-          OR: [
-            { ministry: { contains: ministry } },
-            { cluster: { contains: cluster } }
-          ]
+          ministry: {
+            in: ministry
+          }
+        },
+        {
+          cluster: {
+            in: cluster
+          }
         }
       ]
     },
@@ -108,54 +99,8 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     take: pageSize
   });
 
-  const total = await prisma.privateCloudProject.count({
-    where: {
-      AND: [
-        {
-          OR: [
-            { name: { contains: search } },
-            {
-              projectOwner: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            {
-              primaryTechnicalLead: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            {
-              secondaryTechnicalLead: {
-                email: { contains: search },
-                firstName: { contains: search },
-                lastName: { contains: search },
-                githubId: { contains: search }
-              }
-            },
-            { licencePlate: { contains: search } },
-            { ministry: { contains: search } },
-            { cluster: { contains: search } },
-            { description: { contains: search } }
-          ]
-        },
-        {
-          OR: [
-            { ministry: { contains: ministry } },
-            { cluster: { contains: cluster } }
-          ]
-        }
-      ]
-    }
-  });
-
   return {
     projects,
-    total
+    total: projects.length
   };
 };
