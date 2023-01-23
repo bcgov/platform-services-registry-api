@@ -22,17 +22,31 @@ export const userPrivateCloudActiveRequests = (
   request,
   { prisma, authEmail }
 ) =>
-  prisma.user
-    .findUnique({
-      where: {
-        email: authEmail
-      }
-    })
-    .privateCloudRequests({
-      where: {
-        active: true
-      }
-    });
+  prisma.privateCloudRequest.findMany({
+    where: {
+      active: true,
+      OR: [
+        {
+          requestedProject: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } }
+            ]
+          }
+        },
+        {
+          project: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } }
+            ]
+          }
+        }
+      ]
+    }
+  });
 
 export const userPrivateCloudActiveRequestById = async (
   _,

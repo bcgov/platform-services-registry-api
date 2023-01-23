@@ -341,7 +341,7 @@ type Query {
 type Mutation {
   signUp: User! @auth
 
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): User! @auth
   # updateUser(input: UpdateUserInput!): User!
 
   privateCloudProjectRequest(
@@ -370,7 +370,7 @@ type Mutation {
     toolsQuota: QuotaInput!
   ): PrivateCloudRequest! @auth @flattenDefaultQuotaInput
 
-  privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest!
+  privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest! @auth
 
   privateCloudRequestDecision(
     requestId: ID!
