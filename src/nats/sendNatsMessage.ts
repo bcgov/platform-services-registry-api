@@ -31,3 +31,115 @@ async function sendNatsMessage(action, requestedProject) {
 }
 
 export default sendNatsMessage;
+
+const test = {
+  action: "create",
+  profile_id: "63cdc7cf990baeb2e97cbab9",
+  cluster_name: "clab",
+  display_name: "Oamar New test provisioner",
+  description: "test",
+  ministry_id: "PSA",
+  merge_type: "auto",
+  namespaces: [
+    {
+      name: "a59936-tools",
+      quota: {
+        cpu: "cpu-request-0.5-limit-1.5",
+        memory: "memory-request-2-limit-4",
+        storage: "storage-1",
+        snapshot: "snapshot-5"
+      },
+      quotas: {
+        cpu: { requests: 0.5, limits: 1.5 },
+        memory: { requests: "2Gi", limits: "4Gi" },
+        storage: {
+          block: "1Gi",
+          file: "1Gi",
+          backup: "512Mi",
+          capacity: "1Gi",
+          pvc_count: "60"
+        },
+        snapshot: { count: 5 }
+      }
+    },
+    {
+      name: "a59936-prod",
+      quota: {
+        cpu: "cpu-request-0.5-limit-1.5",
+        memory: "memory-request-2-limit-4",
+        storage: "storage-1",
+        snapshot: "snapshot-5"
+      },
+      quotas: {
+        cpu: { requests: 0.5, limits: 1.5 },
+        memory: { requests: "2Gi", limits: "4Gi" },
+        storage: {
+          block: "1Gi",
+          file: "1Gi",
+          backup: "512Mi",
+          capacity: "1Gi",
+          pvc_count: "60"
+        },
+        snapshot: { count: 5 }
+      }
+    },
+    {
+      name: "a59936-dev",
+      quota: {
+        cpu: "cpu-request-0.5-limit-1.5",
+        memory: "memory-request-2-limit-4",
+        storage: "storage-1",
+        snapshot: "snapshot-5"
+      },
+      quotas: {
+        cpu: { requests: 0.5, limits: 1.5 },
+        memory: { requests: "2Gi", limits: "4Gi" },
+        storage: {
+          block: "1Gi",
+          file: "1Gi",
+          backup: "512Mi",
+          capacity: "1Gi",
+          pvc_count: "60"
+        },
+        snapshot: { count: 5 }
+      }
+    },
+    {
+      name: "a59936-test",
+      quota: {
+        cpu: "cpu-request-0.5-limit-1.5",
+        memory: "memory-request-2-limit-4",
+        storage: "storage-1",
+        snapshot: "snapshot-5"
+      },
+      quotas: {
+        cpu: { requests: 0.5, limits: 1.5 },
+        memory: { requests: "2Gi", limits: "4Gi" },
+        storage: {
+          block: "1Gi",
+          file: "1Gi",
+          backup: "512Mi",
+          capacity: "1Gi",
+          pvc_count: "60"
+        },
+        snapshot: { count: 5 }
+      }
+    }
+  ],
+  contacts: [
+    {
+      user_id: "okanji",
+      provider: "github",
+      email: "oamar.kanji@gov.bc.ca",
+      rocketchat_username: null,
+      role: "owner"
+    },
+    {
+      user_id: "okanji",
+      provider: "github",
+      email: "oamar.kanji@gov.bc.ca",
+      rocketchat_username: null,
+      role: "lead"
+    }
+  ]
+};
