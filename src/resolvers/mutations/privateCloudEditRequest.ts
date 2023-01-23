@@ -164,10 +164,10 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     await sendNatsMessage(editRequest.type, editRequest.requestedProject);
   }
 
-  // await sendEditRequestEmails(
-  //   editRequest.project,
-  //   editRequest.requestedProject
-  // );
+  await sendEditRequestEmails(
+    editRequest.project,
+    editRequest.requestedProject
+  );
 
   return editRequest;
 };
