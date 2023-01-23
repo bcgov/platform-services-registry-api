@@ -1,20 +1,11 @@
-# Apollo Server and GraphQL Code Generator example
+## How to run the project locally
 
-GraphQL Code Generator generates our types in the `src/__generated___/resolvers.ts` file. Take a look at the `src/resolver.ts` file to see how we use the generated types to set up type checking for our resolvers.
+- First install packages with `npm i -f`. Note the use of the `-f` flag. This is required as some of the keyclaok packages are outdated and throw warnings that halts the installation. The `-f` flag forces the installation.
 
-## Run locally
+- Make sure you have a `.env.dev` and a `.env.test` file in the root folder of this repository.
 
-To run this example locally:
+- Execute `npm run compile`. This will automatically generate typescript types from the graphql shcema and also compile the typescript files.
 
-```bash
-npm i && npm start
-```
+- Execute `npm run prisma-generate-dev` and then `npm run prisma-generate-test`. This will create the necessary Prisma assets for the app. 
 
-When your server is up you can navigate to [http://localhost:4000/](http://localhost:4000/) in your favorite browser and use the [Apollo Sandbox](https://www.apollographql.com/docs/studio/explorer/sandbox/) to perform GraphQL operations against the server.
-
-## Prisma
-
-```bash
-npx prisma generate
-npx prisma db push
-```
+- `npm run watch` to start the API.

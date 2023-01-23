@@ -14,6 +14,7 @@
     "watch": "dotenv -e .env.dev concurrently  --names \"CodeGen,TS,Nodemon\" -c \"bgYellow,bgBlue,bgMagenta\" \"graphql-codegen --watch 'src/**/*.ts'\"  \"tsc -w \" \"nodemon ./dist/index.js \"",
     "test": "dotenv -e .env.test -- jest",
     "prisma-generate-dev": "dotenv -e .env.dev -- npx prisma generate",
+    "prisma-generate-test": "dotenv -e .env.test -- npx prisma generate",
     "prisma-migrate-dev": "dotenv -e .env.dev -- npx prisma generate && dotenv -e .env.dev -- npx prisma db push",
     "prisma-migrate-test": "dotenv -e .env.test -- npx prisma generate && dotenv -e .env.test -- npx prisma db push",
     "prisma-migrate-prod": "npx prisma generate && npx prisma db push"
