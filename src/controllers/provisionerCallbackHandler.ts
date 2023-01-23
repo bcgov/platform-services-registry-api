@@ -25,7 +25,7 @@ const provisionerCallbackHandler = async (req, res) => {
     });
 
     console.log("** Requested Project **")
-    console.log(requestedProject);›
+    console.log(requestedProject);
 
     const updateRequest = prisma.privateCloudRequest.update({
       where: {
