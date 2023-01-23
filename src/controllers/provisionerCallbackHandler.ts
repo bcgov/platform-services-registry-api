@@ -9,15 +9,23 @@ const provisionerCallbackHandler = async (req, res) => {
     console.log("** Request Body **")
     console.log(req.body);
 
+
+    const request = await prisma.privateCloudRequest.findFirst({
+      where: {
+        licencePlate: licencePlate,
+        active: true
+      }
+    });
+
     const { id, ...requestedProject } =
-      await prisma.privateCloudRequestedProject.findFirst({
-        where: {
-          licencePlate: licencePlate
-        }
-      });
+    await prisma.privateCloudRequestedProject.findFirst({
+      where: {
+       id: request.requestedProjectId 
+      }
+    });
 
     console.log("** Requested Project **")
-    console.log(requestedProject);
+    console.log(requestedProject);›
 
     const updateRequest = prisma.privateCloudRequest.update({
       where: {
@@ -39,9 +47,6 @@ const provisionerCallbackHandler = async (req, res) => {
       update: requestedProject,
       create: requestedProject
     });
-
-    console.log("** Upsert Project **")
-    console.log(upsertProject);
 
     await prisma.$transaction([updateRequest, upsertProject]);
   } catch (error) {

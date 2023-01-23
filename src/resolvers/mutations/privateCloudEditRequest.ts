@@ -124,6 +124,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         decisionStatus: decisionStatus,
         active: true,
         createdByEmail: authEmail,
+        licencePlate: project.licencePlate,
         requestedProject: {
           create: requestedProject
         },

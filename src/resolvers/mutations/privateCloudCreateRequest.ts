@@ -39,6 +39,7 @@ const privateCloudProjectRequest: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending,
         active: true,
         createdByEmail: authEmail,
+        licencePlate,
         requestedProject: {
           create: {
             name: args.name,

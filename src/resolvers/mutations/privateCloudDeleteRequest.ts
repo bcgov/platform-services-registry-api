@@ -54,6 +54,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         decisionStatus: DecisionStatus.Pending,
         active: true,
         createdByEmail: authEmail,
+        licencePlate: project.licencePlate,
         requestedProject: {
           create: project
         },
