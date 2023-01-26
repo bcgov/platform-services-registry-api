@@ -383,7 +383,7 @@ export const sendMakeDecisionEmails = async (request) => {
           ),
           //For all project contacts. Sent when the provisioner application has finished provisioning the new namespaces for a product.
           to: [
-            requestedProject.requestedProjectOwner,
+            requestedProject.projectOwner,
             requestedProject.primaryTechnicalLead,
             requestedProject.secondaryTechnicalLead
           ]
