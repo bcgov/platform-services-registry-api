@@ -6,7 +6,7 @@ import {
   RequestDecision
 } from "../__generated__/resolvers-types.js";
 
-const adminEmails = [];
+const adminEmails = ['zhanna.kolesnyk@gov.bc.ca'];
 
 const clusterNames = [
   {
@@ -125,6 +125,8 @@ export const generateEmailTemplateData = (
     licencePlate: requestedProject.licencePlate,
 
     projectName: requestedProject.name,
+    productDescription: requestedProject.description,
+            productMinistry: requestedProject.ministry,
     POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
     POEmail: projectOwner.email,
     POGitHubOrIDIR: projectOwner?.POIDIR || projectOwner?.githubId,
@@ -138,12 +140,12 @@ export const generateEmailTemplateData = (
       ? `${secondaryTechnicalLead?.firstName} ${secondaryTechnicalLead.lastName}`
       : null,
     SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead?.email : null,
-    SecTLGitHubOrIDIR: secondaryTechnicalLead?.POIDIR
+    SecTLGitHubOrIDIR: secondaryTechnicalLead ? secondaryTechnicalLead?.POIDIR
       ? secondaryTechnicalLead?.POIDIR
-      : secondaryTechnicalLead?.githubId,
+      : secondaryTechnicalLead?.githubId : null,
 
     setCluster: clusterNames.filter(
-      (item) => item.name === requestedProject?.cluster
+      item => item.name.toLowerCase() === requestedProject?.cluster.toLowerCase()
     )[0]?.humanFriendlyName,
     ...other
   };
@@ -284,7 +286,11 @@ export const sendCreateRequestEmails = async (requestedProject) => {
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/super-admin-request-email.html",
-        generateEmailTemplateData(project, requestedProject)
+        generateEmailTemplateData(project, requestedProject, {
+          requestType: 'Provisioning',
+        isProvisioningRequest: true,
+        isQuotaRequest: false,
+      })
       ),
       //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
       to: adminEmails,
@@ -348,8 +354,7 @@ export const sendDeleteRequestEmails = async (project) => {
             requestType: "Delete",
             isProvisioningRequest: false,
             isQuotaRequest: false,
-            productDescription: requestedProject.description,
-            productMinistry: requestedProject.ministry
+            
           }
         )
       ),
