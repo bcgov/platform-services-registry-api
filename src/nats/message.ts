@@ -26,7 +26,17 @@ function message(action, requestedProject) {
     role: "owner"
   };
 
-  const allianceLabel = (ministry as string).toLocaleLowerCase() == 'ag' ? "JAG" : "none";
+  const allianceLabel = (() => {
+    switch ((ministry as string).toLocaleLowerCase()) {
+      case 'ag':
+      case 'pssg':
+      case 'embc':
+      case 'mah':
+        return 'JAG';
+      default:
+        return 'none';
+    }
+  });//ministry as string).toLocaleLowerCase() == 'ag' ? "JAG" : "none";
 
   const primaryTechnicalLeadContact = {
     user_id: primaryTechnicalLead.githubId,
@@ -86,7 +96,7 @@ function message(action, requestedProject) {
     description: description,
     ministry_id: ministry,
     merge_type: "auto", // Make this a variable
-    alliance: allianceLabel, // "JAG" for Justice Attornies Group, else "none"
+    alliance: allianceLabel(), // "JAG" for Justice Attornies Group, else "none"
     namespaces,
     contacts: [
       projectOwnerContact,
