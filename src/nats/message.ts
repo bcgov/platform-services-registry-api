@@ -36,7 +36,7 @@ function message(action, requestedProject) {
       default:
         return 'none';
     }
-  });//ministry as string).toLocaleLowerCase() == 'ag' ? "JAG" : "none";
+  });
 
   const primaryTechnicalLeadContact = {
     user_id: primaryTechnicalLead.githubId,
