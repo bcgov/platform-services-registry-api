@@ -26,6 +26,8 @@ function message(action, requestedProject) {
     role: "owner"
   };
 
+  const allianceLabel = (ministry as string).toLocaleLowerCase() == 'ag' ? "JAG" : "none";
+
   const primaryTechnicalLeadContact = {
     user_id: primaryTechnicalLead.githubId,
     provider: "github",
@@ -84,6 +86,7 @@ function message(action, requestedProject) {
     description: description,
     ministry_id: ministry,
     merge_type: "auto", // Make this a variable
+    alliance: allianceLabel, // "JAG" for Justice Attornies Group, else "none"
     namespaces,
     contacts: [
       projectOwnerContact,
