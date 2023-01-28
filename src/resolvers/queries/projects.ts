@@ -4,8 +4,8 @@ export const privateCloudProjects = (_, __, { prisma }) =>
 export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
   prisma.privateCloudProject.findUnique({
     where: {
-      id: projectId
-    }
+      id: projectId,
+    },
   });
 
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
@@ -14,9 +14,9 @@ export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } }
-      ]
-    }
+        { secondaryTechnicalLead: { email: authEmail } },
+      ],
+    },
   });
 
 export const userPrivateCloudProjectById = async (
@@ -30,9 +30,9 @@ export const userPrivateCloudProjectById = async (
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } }
-      ]
-    }
+        { secondaryTechnicalLead: { email: authEmail } },
+      ],
+    },
   });
 
 export const userPrivateCloudProjectsByIds = async (
@@ -46,9 +46,9 @@ export const userPrivateCloudProjectsByIds = async (
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } }
-      ]
-    }
+        { secondaryTechnicalLead: { email: authEmail } },
+      ],
+    },
   });
 
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
@@ -80,27 +80,78 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
             { secondaryTechnicalLead: { githubId: { contains: search } } },
             { name: { contains: search } },
             { description: { contains: search } },
-            { licencePlate: { contains: search } }
-          ]
+            { licencePlate: { contains: search } },
+          ],
         },
         {
           ministry: {
-            in: ministry
-          }
+            in: ministry,
+          },
         },
         {
           cluster: {
-            in: cluster
-          }
-        }
-      ]
+            in: cluster,
+          },
+        },
+      ],
     },
     skip: offset,
-    take: pageSize
+    take: pageSize,
   });
 
   return {
     projects,
-    total: projects.length
+    total: projects.length,
   };
+};
+
+export const privateCloudProjectsWithFilterSearch = async (
+  _,
+  args,
+  { prisma }
+) => {
+  let { search, filter = {} } = args;
+  let { ministry, cluster } = filter;
+
+  search = search === null ? undefined : search;
+  ministry = ministry === null ? undefined : ministry;
+  cluster = cluster === null ? undefined : cluster;
+
+  const projects = await prisma.privateCloudProject.findMany({
+    where: {
+      AND: [
+        {
+          OR: [
+            { projectOwner: { email: { contains: search } } },
+            { projectOwner: { firstName: { contains: search } } },
+            { projectOwner: { lastName: { contains: search } } },
+            { projectOwner: { githubId: { contains: search } } },
+            { primaryTechnicalLead: { email: { contains: search } } },
+            { primaryTechnicalLead: { firstName: { contains: search } } },
+            { primaryTechnicalLead: { lastName: { contains: search } } },
+            { primaryTechnicalLead: { githubId: { contains: search } } },
+            { secondaryTechnicalLead: { email: { contains: search } } },
+            { secondaryTechnicalLead: { firstName: { contains: search } } },
+            { secondaryTechnicalLead: { lastName: { contains: search } } },
+            { secondaryTechnicalLead: { githubId: { contains: search } } },
+            { name: { contains: search } },
+            { description: { contains: search } },
+            { licencePlate: { contains: search } },
+          ],
+        },
+        {
+          ministry: {
+            in: ministry,
+          },
+        },
+        {
+          cluster: {
+            in: cluster,
+          },
+        },
+      ],
+    },
+  });
+
+  return projects;
 };
