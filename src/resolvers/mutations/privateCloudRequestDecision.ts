@@ -2,11 +2,12 @@ import {
   MutationPrivateCloudRequestDecisionArgs,
   MutationResolvers,
   DecisionStatus,
-  RequestDecision
+  RequestDecision,
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendMakeDecisionEmails } from "../../ches/emailHandlers.js";
+import inviteUsersToGithubOrgs from "../../github/index.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -25,30 +26,30 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        decisionStatus: DecisionStatus.Pending
+        decisionStatus: DecisionStatus.Pending,
       },
       data: {
         decisionStatus: decision,
         active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
-        decisionMakerEmail: authEmail
+        decisionMakerEmail: authEmail,
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -61,6 +62,16 @@ const privateCloudRequestDecision: MutationResolvers = async (
 
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject);
+
+    // Invite conacts to BC gov github orgs
+    const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+      request.requestedProject;
+
+    inviteUsersToGithubOrgs([
+      projectOwner.githubId,
+      primaryTechnicalLead.githubId,
+      secondaryTechnicalLead.githubId,
+    ]);
   }
 
   sendMakeDecisionEmails(request);
