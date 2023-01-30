@@ -126,7 +126,7 @@ export const generateEmailTemplateData = (
 
     projectName: requestedProject.name,
     productDescription: requestedProject.description,
-            productMinistry: requestedProject.ministry,
+    productMinistry: requestedProject.ministry,
     POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
     POEmail: projectOwner.email,
     POGitHubOrIDIR: projectOwner?.POIDIR || projectOwner?.githubId,
@@ -162,9 +162,9 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
   const contactChanged = !(
     requestedProject.projectOwner.email === project.projectOwner.email &&
     requestedProject.primaryTechnicalLead.email ===
-      project.primaryTechnicalLead.email &&
+    project.primaryTechnicalLead.email &&
     requestedProject.secondaryTechnicalLead?.email ===
-      project.secondaryTechnicalLeadId
+    project.secondaryTechnicalLeadId
   );
 
   try {
@@ -288,9 +288,9 @@ export const sendCreateRequestEmails = async (requestedProject) => {
         "./src/ches/new-templates/super-admin-request-email.html",
         generateEmailTemplateData(project, requestedProject, {
           requestType: 'Provisioning',
-        isProvisioningRequest: true,
-        isQuotaRequest: false,
-      })
+          isProvisioningRequest: true,
+          isQuotaRequest: false,
+        })
       ),
       //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
       to: adminEmails,
@@ -354,7 +354,7 @@ export const sendDeleteRequestEmails = async (project) => {
             requestType: "Delete",
             isProvisioningRequest: false,
             isQuotaRequest: false,
-            
+
           }
         )
       ),
@@ -450,8 +450,8 @@ export const sendMakeDecisionEmails = async (request) => {
               requestType === RequestType.Create
                 ? "Provisioning"
                 : requestType === RequestType.Edit
-                ? "Edit"
-                : "Deletion",
+                  ? "Edit"
+                  : "Deletion",
             humanActionComment: requestedProject.humanActionComment || null,
             isProvisioningRequest: requestType === RequestType.Create,
             isQuotaRequest: requestType === RequestType.Edit,
@@ -468,13 +468,12 @@ export const sendMakeDecisionEmails = async (request) => {
           .filter(Boolean)
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${
-          requestType === RequestType.Create
+        subject: ` ${requestType === RequestType.Create
             ? "Provisioning"
             : requestType === RequestType.Edit
-            ? "Edit"
-            : "Deletion"
-        } request has been rejected`
+              ? "Edit"
+              : "Deletion"
+          } request has been rejected`
       });
     }
   } catch (error) {
