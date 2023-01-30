@@ -54,38 +54,38 @@ jobs:
       #     curl -X POST -H 'Content-Type: application/json' --data '{"text":"${{ env.ROCKETCHAT_MESSAGE }}"}' "${{ secrets.ROCKETCHAT_HOOK_URL }}"
       #     exit 1
 
-  api_build:
-    # needs: api_test
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: .
-    steps:
-      - uses: actions/checkout@v1
-        with:
-          ref: api-devops
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: Cache node modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
-      - name: npm install and build
-        run: |
-          npm install -f
-          npm ci
-          npm run build --force
-        env:
-          CI: "true"
+  # api_build:
+  #   # needs: api_test
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: .
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #       with:
+  #         ref: api-devops
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 16
+  #     - name: Cache node modules
+  #       uses: actions/cache@v1
+  #       with:
+  #         path: node_modules
+  #         key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.OS }}-build-${{ env.cache-name }}-
+  #           ${{ runner.OS }}-build-
+  #           ${{ runner.OS }}-
+  #     - name: npm install and build
+  #       run: |
+  #         npm install
+  #         npm ci
+  #         npm run build --force
+  #       env:
+  #         CI: "true"
 
   api_s2i-build:
-    needs: api_build
+    # needs: api_build
     runs-on: ubuntu-latest
     concurrency: platsrv-registry-api
     defaults:
