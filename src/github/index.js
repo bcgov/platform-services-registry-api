@@ -4,24 +4,24 @@ import { Octokit } from "@octokit/core";
 // Auth documentation: https://github.com/octokit/octokit.js#authentication
 // Install an app on a GitHub organization: https://github.com/settings/apps
 
-const appOctokit = new Octokit({
-  authStrategy: createAppAuth,
-  auth: {
-    appId: process.env.GITHUB_APP_ID,
-    privateKey: process.env.GITHUB_PRIVATE_KEY,
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  },
-});
-
-const getInstallations = await appOctokit.request(
-  "GET /app/installations{?per_page,page,since,outdated}",
-  {}
-);
-
-const installations = getInstallations.data;
-
 async function inviteUsersToGithubOrgs(users) {
+  const appOctokit = new Octokit({
+    authStrategy: createAppAuth,
+    auth: {
+      appId: process.env.GITHUB_APP_ID,
+      privateKey: process.env.GITHUB_PRIVATE_KEY,
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    },
+  });
+
+  const getInstallations = await appOctokit.request(
+    "GET /app/installations{?per_page,page,since,outdated}",
+    {}
+  );
+
+  const installations = getInstallations.data;
+
   for (let installation of installations) {
     const installationOctokit = new Octokit({
       authStrategy: createAppAuth,
