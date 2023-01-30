@@ -369,31 +369,32 @@ export const sendDeleteRequestEmails = async (project) => {
 };
 
 export const sendMakeDecisionEmails = async (request) => {
-  const { requestType, requestDecision, requestedProject, project } = request;
+  const { type, decisionStatus, requestedProject, project } = request;
   try {
-    if (requestDecision === RequestDecision.Approved) {
-      if (requestType === RequestType.Create) {
+    if (decisionStatus === RequestDecision.Approved) {
+      if (type === RequestType.Create) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/provisioning-request-completion-email.html",
-            generateEmailTemplateData(requestedProject, requestedProject)
+            generateEmailTemplateData(requestedProject, requestedProject, {
+              consoleURL:`https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
+            })
           ),
           //For all project contacts. Sent when the provisioner application has finished provisioning the new namespaces for a product.
           to: [
-            project.projectOwner,
-            project.primaryTechnicalLead,
-            project.secondaryTechnicalLead
+            requestedProject.projectOwner,
+            requestedProject.primaryTechnicalLead,
+            requestedProject.secondaryTechnicalLead
           ]
             .filter(Boolean)
             .map(({ email }) => email),
           from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-          subject:
-            "Your provisioning request for Private Cloud OpenShift Platform has been completed"
+          subject: "Your provisioning request for Private Cloud OpenShift Platform has been completed"
         });
       }
 
-      if (requestType === RequestType.Edit) {
+      if (type === RequestType.Edit) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
@@ -419,7 +420,7 @@ export const sendMakeDecisionEmails = async (request) => {
         });
       }
 
-      if (requestType === RequestType.Delete) {
+      if (type === RequestType.Delete) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
@@ -440,7 +441,7 @@ export const sendMakeDecisionEmails = async (request) => {
       }
     }
 
-    if (requestDecision === RequestDecision.Rejected) {
+    if (decisionStatus === RequestDecision.Rejected) {
       chesService.send({
         bodyType: "html",
         body: swig.renderFile(
