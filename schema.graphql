@@ -219,7 +219,6 @@ input CommonComponentsInput {
   endUserNotificationAndSubscription: CommonComponentsOptions
   publishing: CommonComponentsOptions
   businessIntelligence: CommonComponentsOptions
-  noServices: Boolean!
   other: String
 }
 
