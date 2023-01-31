@@ -432,8 +432,6 @@ describe("Request tests", () => {
       },
     });
 
-    console.log(request);
-
     expect(response).toMatchSnapshot({
       body: {
         singleResult: {
