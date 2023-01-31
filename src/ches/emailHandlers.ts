@@ -448,9 +448,9 @@ export const sendMakeDecisionEmails = async (request) => {
           "./src/ches/new-templates/request-denial-email.html",
           generateEmailTemplateData(project, requestedProject, {
             requestType:
-              requestType === RequestType.Create
+            type === RequestType.Create
                 ? "Provisioning"
-                : requestType === RequestType.Edit
+                : type === RequestType.Edit
                   ? "Edit"
                   : "Deletion",
             humanActionComment: requestedProject.humanActionComment || null,
@@ -469,9 +469,9 @@ export const sendMakeDecisionEmails = async (request) => {
           .filter(Boolean)
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${requestType === RequestType.Create
+        subject: ` ${type === RequestType.Create
             ? "Provisioning"
-            : requestType === RequestType.Edit
+            : type === RequestType.Edit
               ? "Edit"
               : "Deletion"
           } request has been rejected`
