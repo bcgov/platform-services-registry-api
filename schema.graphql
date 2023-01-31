@@ -329,6 +329,9 @@ type Query {
   userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
 
+  userPrivateCloudRequests: [PrivateCloudRequest!]! @auth
+  userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest! @auth
+
   privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
     @hasRole(role: "admin")
