@@ -50,6 +50,7 @@ export type CommonComponentsInput = {
   endUserNotificationAndSubscription?: InputMaybe<CommonComponentsOptions>;
   formDesignAndSubmission?: InputMaybe<CommonComponentsOptions>;
   identityManagement?: InputMaybe<CommonComponentsOptions>;
+  noServices?: InputMaybe<Scalars['Boolean']>;
   other?: InputMaybe<Scalars['String']>;
   paymentServices?: InputMaybe<CommonComponentsOptions>;
   publishing?: InputMaybe<CommonComponentsOptions>;
@@ -796,6 +797,7 @@ export function CommonComponentsInputSchema(): yup.SchemaOf<CommonComponentsInpu
     endUserNotificationAndSubscription: CommonComponentsOptionsSchema,
     formDesignAndSubmission: CommonComponentsOptionsSchema,
     identityManagement: CommonComponentsOptionsSchema,
+    noServices: yup.boolean(),
     other: yup.string(),
     paymentServices: CommonComponentsOptionsSchema,
     publishing: CommonComponentsOptionsSchema,

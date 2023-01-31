@@ -99,7 +99,6 @@ const privateCloudProjectRequest: MutationResolvers = async (
     throw e;
   }
 
-  // Send emails
   sendCreateRequestEmails(createRequest.requestedProject);
 
   return createRequest;

@@ -70,7 +70,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
     inviteUsersToGithubOrgs([
       projectOwner.githubId,
       primaryTechnicalLead.githubId,
-      secondaryTechnicalLead.githubId,
+      secondaryTechnicalLead?.githubId,
     ]);
   }
 
