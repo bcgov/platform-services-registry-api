@@ -9,12 +9,12 @@ import {
   CommonComponentsOptions,
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions
+  DefaultStorageOptions,
 } from "../../src/__generated__/resolvers-types.js";
 import {
   DefaultCpuOptions as DefaultCpuOptionsEnum,
   DefaultMemoryOptions as DefaultMemoryOptionsEnum,
-  DefaultStorageOptions as DefaultStorageOptionsEnum
+  DefaultStorageOptions as DefaultStorageOptionsEnum,
 } from "../../src/resolvers/enum";
 import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
@@ -32,7 +32,7 @@ import {
   mockPrimaryTechnicalLead,
   mockSecondaryTechnicalLead,
   mockProjectA,
-  mockProjectB
+  mockProjectB,
 } from "../../__mocks__/constants.js";
 import { defaultQuota } from "../../src/utils/defaultQuota";
 
@@ -50,20 +50,20 @@ const contextValue: ContextValue = {
   // @ts-ignore
   kauth: new KeycloakContext({ req }),
   authEmail: "oamar.kanji@gov.bc.ca",
-  authRoles: ["admin"]
+  authRoles: ["admin"],
 };
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers
+  resolvers,
 });
 
 schema = applyDirectiveTransformers(schema);
 
 const server = new ApolloServer<ContextValue>({
-  schema
+  schema,
 });
 
 let createRequestIdA;
@@ -75,16 +75,16 @@ describe("Request tests", () => {
       data: [
         mockProjectOwner,
         mockPrimaryTechnicalLead,
-        mockSecondaryTechnicalLead
-      ]
+        mockSecondaryTechnicalLead,
+      ],
     });
 
     await prisma.privateCloudProject.create({
-      data: mockProjectA
+      data: mockProjectA,
     });
 
     await prisma.privateCloudProject.create({
-      data: mockProjectB
+      data: mockProjectB,
     });
   });
 
@@ -99,7 +99,7 @@ describe("Request tests", () => {
       deleteRequests,
       deleteProjects,
       deleteRequestedProjects,
-      deleteUsers
+      deleteUsers,
     ]);
 
     await prisma.$disconnect();
@@ -152,7 +152,7 @@ describe("Request tests", () => {
 
     const commonComponents: CommonComponentsInput = {
       other: "test",
-      noServices: false
+      noServices: false,
     };
 
     const projectOwner: CreateUserInput = {
@@ -160,7 +160,7 @@ describe("Request tests", () => {
       firstName: "Oamar",
       githubId: "okanji",
       lastName: "Kanji",
-      ministry: Ministry.Agri
+      ministry: Ministry.Agri,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
@@ -168,7 +168,7 @@ describe("Request tests", () => {
       firstName: "Jane",
       githubId: "test123",
       lastName: "Smith",
-      ministry: Ministry.Psa
+      ministry: Ministry.Psa,
     };
 
     const response = await server.executeOperation(
@@ -181,11 +181,11 @@ describe("Request tests", () => {
           cluster,
           commonComponents,
           projectOwner,
-          primaryTechnicalLead
-        }
+          primaryTechnicalLead,
+        },
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
@@ -198,12 +198,12 @@ describe("Request tests", () => {
             privateCloudProjectRequest: {
               id: expect.any(String),
               requestedProject: {
-                id: expect.any(String)
-              }
-            }
-          }
-        }
-      }
+                id: expect.any(String),
+              },
+            },
+          },
+        },
+      },
     });
 
     // prettier-ignore
@@ -218,8 +218,8 @@ describe("Request tests", () => {
         where: {
           // prettier-ignore
           // @ts-ignore
-          id: response.body.singleResult.data.privateCloudProjectRequest.requestedProject.id
-        }
+          id: response.body.singleResult.data.privateCloudProjectRequest.requestedProject.id,
+        },
       });
 
     expect(requestedProject).not.toBeNull();
@@ -230,8 +230,8 @@ describe("Request tests", () => {
 
     const projectOwnerUser = await prisma.user.findUnique({
       where: {
-        email: projectOwner.email
-      }
+        email: projectOwner.email,
+      },
     });
 
     expect(projectOwnerUser).not.toBeNull();
@@ -242,8 +242,8 @@ describe("Request tests", () => {
 
     const primaryTechnicalLeadUser = await prisma.user.findUnique({
       where: {
-        email: primaryTechnicalLead.email
-      }
+        email: primaryTechnicalLead.email,
+      },
     });
 
     expect(primaryTechnicalLeadUser).not.toBeNull();
@@ -306,7 +306,7 @@ describe("Request tests", () => {
 
     const commonComponents: CommonComponentsInput = {
       other: "test",
-      noServices: false
+      noServices: false,
     };
 
     const projectOwner: CreateUserInput = {
@@ -314,7 +314,7 @@ describe("Request tests", () => {
       firstName: "Oamar",
       githubId: "okanji",
       lastName: "Kanji",
-      ministry: Ministry.Agri
+      ministry: Ministry.Agri,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
@@ -322,7 +322,7 @@ describe("Request tests", () => {
       firstName: "Jane",
       githubId: "test123",
       lastName: "Smith",
-      ministry: Ministry.Psa
+      ministry: Ministry.Psa,
     };
 
     const secondaryTechnicalLead: CreateUserInput = {
@@ -330,7 +330,7 @@ describe("Request tests", () => {
       firstName: "John",
       githubId: "test456",
       lastName: "Doe",
-      ministry: Ministry.Psa
+      ministry: Ministry.Psa,
     };
 
     const response = await server.executeOperation(
@@ -344,11 +344,11 @@ describe("Request tests", () => {
           commonComponents,
           projectOwner,
           primaryTechnicalLead,
-          secondaryTechnicalLead
-        }
+          secondaryTechnicalLead,
+        },
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
@@ -359,11 +359,11 @@ describe("Request tests", () => {
         singleResult: {
           data: {
             privateCloudProjectRequest: {
-              id: expect.any(String)
-            }
-          }
-        }
-      }
+              id: expect.any(String),
+            },
+          },
+        },
+      },
     });
 
     const requests = await prisma.privateCloudRequest.findMany();
@@ -371,8 +371,8 @@ describe("Request tests", () => {
 
     const secondaryTechnicalLeadUser = await prisma.user.findUnique({
       where: {
-        email: secondaryTechnicalLead.email
-      }
+        email: secondaryTechnicalLead.email,
+      },
     });
 
     // @ts-ignore
@@ -418,18 +418,18 @@ describe("Request tests", () => {
         query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
         variables: {
           decision: RequestDecision.Approved,
-          requestId: createRequestIdA
-        }
+          requestId: createRequestIdA,
+        },
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
-        id: createRequestIdA
-      }
+        id: createRequestIdA,
+      },
     });
 
     expect(response).toMatchSnapshot({
@@ -437,11 +437,11 @@ describe("Request tests", () => {
         singleResult: {
           data: {
             privateCloudRequestDecision: {
-              id: expect.any(String)
-            }
-          }
-        }
-      }
+              id: expect.any(String),
+            },
+          },
+        },
+      },
     });
 
     // @ts-ignore
@@ -475,18 +475,18 @@ describe("Request tests", () => {
         query: MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION,
         variables: {
           decision: RequestDecision.Rejected,
-          requestId: createRequestIdB
-        }
+          requestId: createRequestIdB,
+        },
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
-        id: createRequestIdB
-      }
+        id: createRequestIdB,
+      },
     });
 
     expect(response).toMatchSnapshot({
@@ -494,11 +494,11 @@ describe("Request tests", () => {
         singleResult: {
           data: {
             privateCloudRequestDecision: {
-              id: expect.any(String)
-            }
-          }
-        }
-      }
+              id: expect.any(String),
+            },
+          },
+        },
+      },
     });
 
     expect(request).not.toBeNull();
@@ -530,19 +530,19 @@ describe("Request tests", () => {
       {
         query: DELETE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
-          projectId: mockProjectA.id
-        }
+          projectId: mockProjectA.id,
+        },
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
         // @ts-ignore
-        id: response.body.singleResult.data.privateCloudProjectDeleteRequest.id
-      }
+        id: response.body.singleResult.data.privateCloudProjectDeleteRequest.id,
+      },
     });
 
     expect(response).toMatchSnapshot({
@@ -550,11 +550,11 @@ describe("Request tests", () => {
         singleResult: {
           data: {
             privateCloudProjectDeleteRequest: {
-              id: expect.any(String)
-            }
-          }
-        }
-      }
+              id: expect.any(String),
+            },
+          },
+        },
+      },
     });
 
     expect(request).not.toBeNull();
@@ -604,49 +604,49 @@ describe("Request tests", () => {
         firstName: "testA",
         lastName: "testA",
         githubId: "testA",
-        ministry: Ministry.Agri
+        ministry: Ministry.Agri,
       },
       primaryTechnicalLead: {
         email: "new@test.com",
         firstName: "testA",
         lastName: "testA",
         githubId: "testA",
-        ministry: Ministry.Agri
+        ministry: Ministry.Agri,
       },
       commonComponents: {
         identityManagement: CommonComponentsOptions.PlanningToUse,
-        noServices: false
+        noServices: false,
       },
       productionQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
         memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
-        storage: DefaultStorageOptions.Storage_16
+        storage: DefaultStorageOptions.Storage_16,
       },
       testQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
         memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
-        storage: DefaultStorageOptions.Storage_16
+        storage: DefaultStorageOptions.Storage_16,
       },
       developmentQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
         memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
-        storage: DefaultStorageOptions.Storage_16
+        storage: DefaultStorageOptions.Storage_16,
       },
       toolsQuota: {
         cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
         memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
-        storage: DefaultStorageOptions.Storage_16
+        storage: DefaultStorageOptions.Storage_16,
       },
-      ministry: Ministry.Agri
+      ministry: Ministry.Agri,
     };
 
     const response = await server.executeOperation(
       {
         query: EDIT_REQUEST,
-        variables
+        variables,
       },
       {
-        contextValue
+        contextValue,
       }
     );
 
@@ -655,22 +655,22 @@ describe("Request tests", () => {
         singleResult: {
           data: {
             privateCloudProjectEditRequest: {
-              id: expect.any(String)
-            }
-          }
-        }
-      }
+              id: expect.any(String),
+            },
+          },
+        },
+      },
     });
 
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
         // @ts-ignore
-        id: response.body.singleResult.data.privateCloudProjectEditRequest.id
+        id: response.body.singleResult.data.privateCloudProjectEditRequest.id,
       },
       include: {
         project: true,
-        requestedProject: true
-      }
+        requestedProject: true,
+      },
     });
 
     expect(request).not.toBeNull();
@@ -696,7 +696,7 @@ describe("Request tests", () => {
       publishing: null,
       businessIntelligence: null,
       other: null,
-      noServices: false
+      noServices: false,
     });
     expect(request?.project?.productionQuota).toEqual(
       mockProjectB.productionQuota
@@ -705,7 +705,7 @@ describe("Request tests", () => {
       ...defaultQuota,
       ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
       ...DefaultMemoryOptionsEnum[variables.productionQuota.memory],
-      ...DefaultStorageOptionsEnum[variables.productionQuota.storage]
+      ...DefaultStorageOptionsEnum[variables.productionQuota.storage],
     });
   });
 });

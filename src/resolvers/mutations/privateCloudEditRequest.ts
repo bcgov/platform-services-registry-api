@@ -2,16 +2,17 @@ import {
   MutationResolvers,
   RequestType,
   DecisionStatus,
-  MutationPrivateCloudProjectEditRequestArgs
+  MutationPrivateCloudProjectEditRequestArgs,
 } from "../../__generated__/resolvers-types.js";
 import {
   Prisma,
   PrivateCloudProject,
-  PrivateCloudRequest
+  PrivateCloudRequest,
 } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
 import { defaultQuota } from "../../utils/defaultQuota.js";
+import inviteUsersToGithubOrgs from "../../github/index.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
@@ -28,8 +29,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     const existingRequest: PrivateCloudRequest =
       await prisma.privateCloudRequest.findFirst({
         where: {
-          AND: [{ projectId: args.projectId }, { active: true }]
-        }
+          AND: [{ projectId: args.projectId }, { active: true }],
+        },
       });
 
     if (existingRequest !== null) {
@@ -40,20 +41,20 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
     const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: args.projectId
+        id: args.projectId,
       },
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLead: true
-      }
+        secondaryTechnicalLead: true,
+      },
     });
 
     if (
       ![
         project.projectOwner.email,
         project.primaryTechnicalLead.email,
-        project?.secondaryTechnicalLead?.email
+        project?.secondaryTechnicalLead?.email,
       ].includes(authEmail) &&
       !authRoles.includes("admin")
     ) {
@@ -79,29 +80,29 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: args.projectOwner.email
+            email: args.projectOwner.email,
           },
-          create: args.projectOwner
-        }
+          create: args.projectOwner,
+        },
       },
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: args.primaryTechnicalLead.email
+            email: args.primaryTechnicalLead.email,
           },
-          create: args.primaryTechnicalLead
-        }
+          create: args.primaryTechnicalLead,
+        },
       },
       secondaryTechnicalLead: args.secondaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: args.secondaryTechnicalLead.email
+                email: args.secondaryTechnicalLead.email,
               },
-              create: args.secondaryTechnicalLead
-            }
+              create: args.secondaryTechnicalLead,
+            },
           }
-        : undefined
+        : undefined,
     };
 
     const isQuotaChanged = !(
@@ -126,30 +127,30 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
         requestedProject: {
-          create: requestedProject
+          create: requestedProject,
         },
         project: {
           connect: {
-            id: args.projectId
-          }
-        }
+            id: args.projectId,
+          },
+        },
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -162,6 +163,16 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   if (decisionStatus === DecisionStatus.Approved) {
     await sendNatsMessage(editRequest.type, editRequest.requestedProject);
+
+    // Invite conacts to BC gov github orgs
+    const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
+      editRequest.requestedProject;
+
+    inviteUsersToGithubOrgs([
+      projectOwner.githubId,
+      primaryTechnicalLead.githubId,
+      secondaryTechnicalLead?.githubId,
+    ]);
   }
 
   await sendEditRequestEmails(
