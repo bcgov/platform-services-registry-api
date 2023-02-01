@@ -10,6 +10,7 @@ COPY . .
 
 RUN npm install -f
 RUN npm run build
+RUN chmod +x ./start.sh
 # RUN rm -rf src
 
 RUN apk update && \
@@ -20,4 +21,4 @@ RUN apk update && \
 
 EXPOSE 4000
 
-CMD [ "node", "dist/index.js" ]
+CMD ["./start.sh"]
