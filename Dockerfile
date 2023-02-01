@@ -1,14 +1,14 @@
-FROM node:16.19-alpine
+FROM node:19.5-alpine
 
-ARG NODE_MAJOR_VERSION=16
-ARG NODE_VERSION=16.19.x
+ARG NODE_MAJOR_VERSION=19
+ARG NODE_VERSION=19.5.x
 
 RUN mkdir /var/opt/build
 WORKDIR /var/opt/build
 
 COPY . .
 
-RUN npm install -f
+RUN npm install 
 RUN npm run build
 # RUN rm -rf src
 
