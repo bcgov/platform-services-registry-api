@@ -3,7 +3,7 @@ import {
   ProjectStatus,
   RequestType,
   DecisionStatus,
-  MutationPrivateCloudProjectRequestArgs
+  MutationPrivateCloudProjectRequestArgs,
 } from "../../__generated__/resolvers-types.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
 import { defaultQuota } from "../../utils/defaultQuota.js";
@@ -19,7 +19,7 @@ const privateCloudProjectRequest: MutationResolvers = async (
     ![
       args.projectOwner.email,
       args.primaryTechnicalLead.email,
-      args.secondaryTechnicalLead?.email
+      args.secondaryTechnicalLead?.email,
     ].includes(authEmail) &&
     !authRoles.includes("admin")
   ) {
@@ -56,41 +56,41 @@ const privateCloudProjectRequest: MutationResolvers = async (
             projectOwner: {
               connectOrCreate: {
                 where: {
-                  email: args.projectOwner.email
+                  email: args.projectOwner.email,
                 },
-                create: args.projectOwner
-              }
+                create: args.projectOwner,
+              },
             },
             primaryTechnicalLead: {
               connectOrCreate: {
                 where: {
-                  email: args.primaryTechnicalLead.email
+                  email: args.primaryTechnicalLead.email,
                 },
-                create: args.primaryTechnicalLead
-              }
+                create: args.primaryTechnicalLead,
+              },
             },
             secondaryTechnicalLead: args.secondaryTechnicalLead
               ? {
                   connectOrCreate: {
                     where: {
-                      email: args.secondaryTechnicalLead.email
+                      email: args.secondaryTechnicalLead.email,
                     },
-                    create: args.secondaryTechnicalLead
-                  }
+                    create: args.secondaryTechnicalLead,
+                  },
                 }
-              : undefined
-          }
-        }
+              : undefined,
+          },
+        },
       },
       include: {
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

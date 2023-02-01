@@ -50,7 +50,7 @@ export type CommonComponentsInput = {
   endUserNotificationAndSubscription?: InputMaybe<CommonComponentsOptions>;
   formDesignAndSubmission?: InputMaybe<CommonComponentsOptions>;
   identityManagement?: InputMaybe<CommonComponentsOptions>;
-  noServices: Scalars['Boolean'];
+  noServices?: InputMaybe<Scalars['Boolean']>;
   other?: InputMaybe<Scalars['String']>;
   paymentServices?: InputMaybe<CommonComponentsOptions>;
   publishing?: InputMaybe<CommonComponentsOptions>;
@@ -318,6 +318,7 @@ export type Query = {
   privateCloudProjects: Array<PrivateCloudProject>;
   privateCloudProjectsById: Array<PrivateCloudProject>;
   privateCloudProjectsPaginated: ProjectsPaginatedOutput;
+  privateCloudProjectsWithFilterSearch: Array<PrivateCloudProject>;
   privateCloudRequests: Array<PrivateCloudRequest>;
   user?: Maybe<User>;
   userByEmail?: Maybe<User>;
@@ -327,6 +328,8 @@ export type Query = {
   userPrivateCloudProjectById: PrivateCloudProject;
   userPrivateCloudProjects: Array<PrivateCloudProject>;
   userPrivateCloudProjectsByIds: PrivateCloudProject;
+  userPrivateCloudRequestById: PrivateCloudRequest;
+  userPrivateCloudRequests: Array<PrivateCloudRequest>;
   users: Array<User>;
   usersByIds: Array<User>;
 };
@@ -360,6 +363,12 @@ export type QueryPrivateCloudProjectsPaginatedArgs = {
 };
 
 
+export type QueryPrivateCloudProjectsWithFilterSearchArgs = {
+  filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
+  search?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryUserArgs = {
   id: Scalars['ID'];
 };
@@ -387,6 +396,11 @@ export type QueryUserPrivateCloudProjectByIdArgs = {
 
 export type QueryUserPrivateCloudProjectsByIdsArgs = {
   projectIds?: InputMaybe<Array<Scalars['ID']>>;
+};
+
+
+export type QueryUserPrivateCloudRequestByIdArgs = {
+  requestId: Scalars['ID'];
 };
 
 
@@ -703,6 +717,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   privateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   privateCloudProjectsById?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsByIdArgs>>;
   privateCloudProjectsPaginated?: Resolver<ResolversTypes['projectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
+  privateCloudProjectsWithFilterSearch?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsWithFilterSearchArgs>>;
   privateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   userByEmail?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByEmailArgs, 'email'>>;
@@ -712,6 +727,8 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   userPrivateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudProjectByIdArgs, 'projectId'>>;
   userPrivateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   userPrivateCloudProjectsByIds?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, Partial<QueryUserPrivateCloudProjectsByIdsArgs>>;
+  userPrivateCloudRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudRequestByIdArgs, 'requestId'>>;
+  userPrivateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   usersByIds?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUsersByIdsArgs, 'ids'>>;
 }>;
@@ -789,7 +806,7 @@ export function CommonComponentsInputSchema(): yup.SchemaOf<CommonComponentsInpu
     endUserNotificationAndSubscription: CommonComponentsOptionsSchema,
     formDesignAndSubmission: CommonComponentsOptionsSchema,
     identityManagement: CommonComponentsOptionsSchema,
-    noServices: yup.boolean().defined(),
+    noServices: yup.boolean(),
     other: yup.string(),
     paymentServices: CommonComponentsOptionsSchema,
     publishing: CommonComponentsOptionsSchema,

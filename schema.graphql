@@ -219,7 +219,7 @@ input CommonComponentsInput {
   endUserNotificationAndSubscription: CommonComponentsOptions
   publishing: CommonComponentsOptions
   businessIntelligence: CommonComponentsOptions
-  noServices: Boolean!
+  noServices: Boolean
   other: String
 }
 
@@ -316,6 +316,11 @@ type Query {
     search: String
   ): projectsPaginatedOutput! @hasRole(role: "admin")
 
+  privateCloudProjectsWithFilterSearch(
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+  ): [PrivateCloudProject!]! @hasRole(role: "admin")
+
   privateCloudProjectById(projectId: ID!): PrivateCloudProject!
     @hasRole(role: "admin")
 
@@ -323,6 +328,9 @@ type Query {
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
   userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
+
+  userPrivateCloudRequests: [PrivateCloudRequest!]! @auth
+  userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest! @auth
 
   privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!

@@ -117,7 +117,7 @@ type CommonComponents {
   publishing                         CommonComponentsOptions?
   businessIntelligence               CommonComponentsOptions?
   other                              String?
-  noServices                         Boolean
+  noServices                         Boolean?
 }
 
 enum ProjectStatus {

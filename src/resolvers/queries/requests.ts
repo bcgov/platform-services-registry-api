@@ -1,8 +1,8 @@
 export const privateCloudActiveRequests = async (_, __, { prisma }) =>
   await prisma.privateCloudRequest.findMany({
     where: {
-      active: true
-    }
+      active: true,
+    },
   });
 
 export const privateCloudActiveRequestById = async (
@@ -13,9 +13,67 @@ export const privateCloudActiveRequestById = async (
   await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
-      active: true
-    }
+      active: true,
+    },
   });
+
+export const userPrivateCloudRequestById = async (
+  _,
+  { requestId },
+  { prisma, authEmail }
+) =>
+  await prisma.privateCloudRequest.findUnique({
+    where: {
+      id: requestId,
+      OR: [
+        {
+          requestedProject: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
+        },
+        {
+          project: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
+        },
+      ],
+    },
+  });
+
+export const userPrivateCloudRequests = (_, __, { prisma, authEmail }) => {
+  return prisma.privateCloudRequest.findMany({
+    where: {
+      OR: [
+        {
+          requestedProject: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
+        },
+        {
+          project: {
+            OR: [
+              { projectOwner: { email: authEmail } },
+              { primaryTechnicalLead: { email: authEmail } },
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
+        },
+      ],
+    },
+  });
+};
 
 export const userPrivateCloudActiveRequests = (
   _,
@@ -31,21 +89,21 @@ export const userPrivateCloudActiveRequests = (
             OR: [
               { projectOwner: { email: authEmail } },
               { primaryTechnicalLead: { email: authEmail } },
-              { secondaryTechnicalLead: { email: authEmail } }
-            ]
-          }
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
         },
         {
           project: {
             OR: [
               { projectOwner: { email: authEmail } },
               { primaryTechnicalLead: { email: authEmail } },
-              { secondaryTechnicalLead: { email: authEmail } }
-            ]
-          }
-        }
-      ]
-    }
+              { secondaryTechnicalLead: { email: authEmail } },
+            ],
+          },
+        },
+      ],
+    },
   });
 
 export const userPrivateCloudActiveRequestById = async (
@@ -56,8 +114,8 @@ export const userPrivateCloudActiveRequestById = async (
   await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
-      active: true
-    }
+      active: true,
+    },
   });
 
 export const userPrivateCloudActiveRequestsByIds = async (
@@ -69,6 +127,6 @@ export const userPrivateCloudActiveRequestsByIds = async (
     where: {
       user: { email: authEmail },
       id: { in: requestIds },
-      active: true
-    }
+      active: true,
+    },
   });

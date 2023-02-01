@@ -6,46 +6,36 @@ const provisionerCallbackHandler = async (req, res) => {
   try {
     const { prefix: licencePlate } = req.body;
 
-    console.log("** Request Body **")
-    console.log(req.body);
-
-
     const request = await prisma.privateCloudRequest.findFirst({
       where: {
         licencePlate: licencePlate,
-        active: true
-      }
+        active: true,
+      },
     });
 
     const { id, ...requestedProject } =
-    await prisma.privateCloudRequestedProject.findFirst({
-      where: {
-       id: request.requestedProjectId 
-      }
-    });
-
-    console.log("** Requested Project **")
-    console.log(requestedProject);
+      await prisma.privateCloudRequestedProject.findFirst({
+        where: {
+          id: request.requestedProjectId,
+        },
+      });
 
     const updateRequest = prisma.privateCloudRequest.update({
       where: {
-        requestedProjectId: id
+        requestedProjectId: id,
       },
       data: {
-        decisionStatus: DecisionStatus.Approved,
-        active: false
-      }
+        decisionStatus: DecisionStatus.Provisioned,
+        active: false,
+      },
     });
-
-    console.log("** Update Request **")
-    console.log(updateRequest);
 
     const upsertProject = prisma.privateCloudProject.upsert({
       where: {
-        licencePlate: licencePlate
+        licencePlate: licencePlate,
       },
       update: requestedProject,
-      create: requestedProject
+      create: requestedProject,
     });
 
     await prisma.$transaction([updateRequest, upsertProject]);
