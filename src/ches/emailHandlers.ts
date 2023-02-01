@@ -2,7 +2,7 @@
 import chesService from "./index.js";
 import swig from "swig";
 import { RequestType, RequestDecision } from "../__generated__/resolvers-types.js";
-const adminEmails = ['zhanna.kolesnyk@gov.bc.ca'];
+const adminEmails = [];
 const clusterNames = [
   {
     id: 1,
@@ -107,13 +107,11 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
     requestedProject.primaryTechnicalLead.email ===
     project.primaryTechnicalLead.email &&
     requestedProject.secondaryTechnicalLead?.email ===
-    project.secondaryTechnicalLeadId?.email);
-  console.log('Quota Changed', quotaChanged, contactChanged)
+    project.secondaryTechnicalLead?.email);
 
   try {
     // *** Quota Changed and no Contact changed
     if (quotaChanged && !contactChanged) {
-      console.log('Quota Changed and no Contact changed')
       await chesService.send({
         bodyType: "html",
         body: swig.renderFile("./src/ches/new-templates/quota-request-received-email.html", generateEmailTemplateData(project, requestedProject)),
