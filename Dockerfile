@@ -1,7 +1,7 @@
-FROM node:16.19-alpine
+FROM node:16.15.0-alpine
 
 ARG NODE_MAJOR_VERSION=16
-ARG NODE_VERSION=16.19.x
+ARG NODE_VERSION=16.15.0
 
 RUN mkdir /var/opt/build
 WORKDIR /var/opt/build
