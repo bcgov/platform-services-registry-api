@@ -17,7 +17,7 @@
     "prisma-generate-test": "dotenv -e .env.test -- npx prisma generate",
     "prisma-migrate-dev": "dotenv -e .env.dev -- npx prisma generate && dotenv -e .env.dev -- npx prisma db push",
     "prisma-migrate-test": "dotenv -e .env.test -- npx prisma generate && dotenv -e .env.test -- npx prisma db push",
-    "prisma-migrate-prod": "npx prisma generate && npx prisma db push"
+    "prisma-migrate-prod": "prisma generate && prisma db push"
   },
   "keywords": [],
   "author": "",
