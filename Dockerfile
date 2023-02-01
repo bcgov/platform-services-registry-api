@@ -10,7 +10,6 @@ COPY . .
 
 RUN npm install -f
 RUN npm run build
-RUN chmod +x ./start.sh
 # RUN rm -rf src
 
 RUN apk update && \
@@ -21,4 +20,4 @@ RUN apk update && \
 
 EXPOSE 4000
 
-CMD ["./start.sh"]
+CMD [ "npm", "start" ]
