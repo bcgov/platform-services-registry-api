@@ -171,10 +171,6 @@ type PrivateCloudProject {
   testQuota: Quota!
   developmentQuota: Quota!
   toolsQuota: Quota!
-  # productionQuotaSelected: SelectedDefaultQuota
-  # testQuotaSelected: SelectedDefaultQuota
-  # developmentQuotaSelected: SelectedDefaultQuota
-  # toolsQuotaSelected: SelectedDefaultQuota
   requestHistory: [PrivateCloudRequest]!
   activeEditRequest: PrivateCloudRequest
   count: Int
@@ -271,31 +267,6 @@ type Quota {
   memory: DefaultMemoryOptions!
   storage: DefaultStorageOptions!
 }
-
-# type Cpu {
-#   name:        String
-#   cpuRequests: String
-#   cpuLimits:   String
-# }
-
-# type Memory {
-#   name:           String
-#   memoryRequests: String
-#   memoryLimits:   String
-# }
-
-# type Storage {
-#   name:            String
-#   storagePvcCount: String
-#   storageFile:     String
-#   storageBackup:   String
-# }
-
-# type Quota {
-#   cpu: Cpu!
-#   memory: Memory!
-#   storage: Storage!
-# }
 
 input CustomQuotaInput {
   cpuRequests: Float

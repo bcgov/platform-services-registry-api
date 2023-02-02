@@ -62,8 +62,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       );
     }
 
-    console.log(args.testQuota)
-
     const requestedProject = {
       name: args.name,
       description: args.description,
@@ -106,12 +104,19 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         : undefined,
     };
 
+    console.log(args.productionQuota);
+    console.log(project.productionQuota);
+
     const isQuotaChanged = !(
-      args.productionQuota === project.productionQuota &&
-      args.testQuota === project.testQuota &&
-      args.developmentQuota === project.developmentQuota &&
-      args.toolsQuota === project.toolsQuota
+      JSON.stringify(args.productionQuota) ===
+        JSON.stringify(project.productionQuota) &&
+      JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
+      JSON.stringify(args.developmentQuota) ===
+        JSON.stringify(project.developmentQuota) &&
+      JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
     );
+
+    console.log(isQuotaChanged);
 
     // If any of the quotas are being changed, the request needs to be approved
     if (isQuotaChanged) {
