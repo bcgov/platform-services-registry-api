@@ -94,17 +94,42 @@ model PrivateCloudRequestedProject {
 }
 
 type Quota {
-  cpuRequests     Float @default(0.5)
-  cpuLimits       Float @default(1.5)
-  memoryRequests  Int   @default(2)
-  memoryLimits    Int   @default(4)
-  storageBlock    Int   @default(1)
-  storageFile     Int   @default(1)
-  storageBackup   Int   @default(512)
-  storageCapacity Int   @default(1)
-  storagePvcCount Int   @default(5)
-  snapshotCount   Int   @default(5)
+  cpu     DefaultCpuOptions
+  memory  DefaultMemoryOptions
+  storage DefaultStorageOptions
 }
+
+// type Cpu {
+//   name        String
+//   cpuRequests String
+//   cpuLimits   String
+// }
+
+// type Memory {
+//   name           String
+//   memoryRequests String
+//   memoryLimits   String
+// }
+
+// type Storage {
+//   name            String
+//   storagePvcCount String
+//   storageFile     String
+//   storageBackup   String
+// }
+
+// type Quota {
+//   cpuRequests     Float @default(0.5)
+//   cpuLimits       Float @default(1.5)
+//   memoryRequests  Int   @default(2)
+//   memoryLimits    Int   @default(4)
+//   storageBlock    Int   @default(1)
+//   storageFile     Int   @default(1)
+//   storageBackup   Int   @default(512)
+//   storageCapacity Int   @default(1)
+//   storagePvcCount Int   @default(5)
+//   snapshotCount   Int   @default(5)
+// }
 
 type CommonComponents {
   addressAndGeolocation              CommonComponentsOptions?
@@ -117,7 +142,7 @@ type CommonComponents {
   publishing                         CommonComponentsOptions?
   businessIntelligence               CommonComponentsOptions?
   other                              String?
-  noServices                         Boolean?
+  noServices                         Boolean
 }
 
 enum ProjectStatus {

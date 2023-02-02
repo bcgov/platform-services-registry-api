@@ -1,8 +1,29 @@
 import {
   Cluster,
   Ministry,
-  ProjectStatus
+  ProjectStatus,
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions,
 } from "../src/__generated__/resolvers-types.js";
+
+const defaultQuota = {
+  cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+  memory: DefaultMemoryOptions.MemoryRequest_2Limit_4,
+  storage: DefaultStorageOptions.Storage_1,
+};
+
+// const defaultQuota = {
+//   cpu: DefaultCpuOptions.CPU_REQUEST_0_5_LIMIT_1_5,
+//   memory: DefaultMemoryOptions.MemoryRequest_2Limit_4,
+//   storage: DefaultStorageOptions.Storage_1,
+// };
+
+// export const defaultQuota = {
+//   cpu: DefaultCpuOptions.CPU_REQUEST_0_5_LIMIT_1_5,
+//   memory: DefaultMemoryOptions.MEMORY_REQUEST_2_LIMIT_4,
+//   storage: DefaultStorageOptions.STORAGE_1,
+// };
 
 export const mockProjectA = {
   id: "63bd0a56e7df3f190dfe89f9",
@@ -13,69 +34,25 @@ export const mockProjectA = {
   created: "2023-01-10T06:48:53.935Z",
   projectOwner: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fc"
-    }
+      id: "63bd0a56e7df3f190dfe89fc",
+    },
   },
   primaryTechnicalLead: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fb"
-    }
+      id: "63bd0a56e7df3f190dfe89fb",
+    },
   },
   secondaryTechnicalLead: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fa"
-    }
+      id: "63bd0a56e7df3f190dfe89fa",
+    },
   },
   ministry: Ministry.Agri,
   cluster: Cluster.Clab,
-  productionQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  testQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  developmentQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  toolsQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
+  productionQuota: defaultQuota,
+  testQuota: defaultQuota,
+  developmentQuota: defaultQuota,
+  toolsQuota: defaultQuota,
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -87,9 +64,9 @@ export const mockProjectA = {
     publishing: null,
     businessIntelligence: null,
     noServices: false,
-    other: "test"
+    other: "test",
   },
-  profileId: null
+  profileId: null,
 };
 
 export const mockProjectB = {
@@ -101,69 +78,25 @@ export const mockProjectB = {
   created: "2023-01-10T06:48:53.935Z",
   projectOwner: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fc"
-    }
+      id: "63bd0a56e7df3f190dfe89fc",
+    },
   },
   primaryTechnicalLead: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fb"
-    }
+      id: "63bd0a56e7df3f190dfe89fb",
+    },
   },
   secondaryTechnicalLead: {
     connect: {
-      id: "63bd0a56e7df3f190dfe89fa"
-    }
+      id: "63bd0a56e7df3f190dfe89fa",
+    },
   },
   ministry: Ministry.Agri,
   cluster: Cluster.Clab,
-  productionQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  testQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  developmentQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  toolsQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
+  productionQuota: defaultQuota,
+  testQuota: defaultQuota,
+  developmentQuota: defaultQuota,
+  toolsQuota: defaultQuota,
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -175,9 +108,9 @@ export const mockProjectB = {
     publishing: null,
     businessIntelligence: null,
     noServices: false,
-    other: "test"
+    other: "test",
   },
-  profileId: null
+  profileId: null,
 };
 
 export const mockProjectOwner = {
@@ -186,7 +119,7 @@ export const mockProjectOwner = {
   firstName: "testA",
   lastName: "testA",
   githubId: "testA",
-  ministry: Ministry.Agri
+  ministry: Ministry.Agri,
 };
 
 export const mockPrimaryTechnicalLead = {
@@ -195,7 +128,7 @@ export const mockPrimaryTechnicalLead = {
   firstName: "testB",
   lastName: "testB",
   githubId: "testB",
-  ministry: Ministry.Agri
+  ministry: Ministry.Agri,
 };
 
 export const mockSecondaryTechnicalLead = {
@@ -204,5 +137,5 @@ export const mockSecondaryTechnicalLead = {
   firstName: "testC",
   lastName: "testC",
   githubId: "testC",
-  ministry: Ministry.Agri
+  ministry: Ministry.Agri,
 };

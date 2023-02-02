@@ -11,7 +11,6 @@ import {
 } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
-import { defaultQuota } from "../../utils/defaultQuota.js";
 import inviteUsersToGithubOrgs from "../../github/index.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
@@ -63,6 +62,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       );
     }
 
+    console.log(args.testQuota)
+
     const requestedProject = {
       name: args.name,
       description: args.description,
@@ -71,10 +72,10 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       status: project.status,
       licencePlate: project.licencePlate,
       commonComponents: args.commonComponents,
-      productionQuota: { ...defaultQuota, ...args.productionQuota },
-      testQuota: { ...defaultQuota, ...args.testQuota },
-      toolsQuota: { ...defaultQuota, ...args.toolsQuota },
-      developmentQuota: { ...defaultQuota, ...args.developmentQuota },
+      productionQuota: args.productionQuota,
+      testQuota: args.testQuota,
+      toolsQuota: args.toolsQuota,
+      developmentQuota: args.developmentQuota,
       profileId: project.profileId || null,
       created: project.created,
       projectOwner: {

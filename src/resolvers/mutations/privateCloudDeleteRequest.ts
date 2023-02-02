@@ -16,7 +16,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
   let createRequest;
 
   try {
-    const project = await prisma.privateCloudProject.findUnique({
+    const {id, ...project} = await prisma.privateCloudProject.findUnique({
       where: {
         id: args.projectId
       }

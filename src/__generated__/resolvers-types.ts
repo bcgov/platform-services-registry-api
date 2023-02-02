@@ -266,22 +266,18 @@ export type PrivateCloudProject = {
   created: Scalars['DateTime'];
   description: Scalars['String'];
   developmentQuota: Quota;
-  developmentQuotaSelected?: Maybe<SelectedDefaultQuota>;
   id: Scalars['ID'];
   licencePlate: Scalars['ID'];
   ministry: Ministry;
   name: Scalars['String'];
   primaryTechnicalLead: User;
   productionQuota: Quota;
-  productionQuotaSelected?: Maybe<SelectedDefaultQuota>;
   projectOwner: User;
   requestHistory: Array<Maybe<PrivateCloudRequest>>;
   secondaryTechnicalLead?: Maybe<User>;
   status: ProjectStatus;
   testQuota: Quota;
-  testQuotaSelected?: Maybe<SelectedDefaultQuota>;
   toolsQuota: Quota;
-  toolsQuotaSelected?: Maybe<SelectedDefaultQuota>;
 };
 
 export type PrivateCloudRequest = {
@@ -410,16 +406,9 @@ export type QueryUsersByIdsArgs = {
 
 export type Quota = {
   __typename?: 'Quota';
-  cpuLimits: Scalars['Float'];
-  cpuRequests: Scalars['Float'];
-  memoryLimits: Scalars['Int'];
-  memoryRequests: Scalars['Int'];
-  snapshotCount: Scalars['Int'];
-  storageBackup: Scalars['Int'];
-  storageBlock: Scalars['Int'];
-  storageCapacity: Scalars['Int'];
-  storageFile: Scalars['Int'];
-  storagePvcCount: Scalars['Int'];
+  cpu: DefaultCpuOptions;
+  memory: DefaultMemoryOptions;
+  storage: DefaultStorageOptions;
 };
 
 export type QuotaInput = {
@@ -438,13 +427,6 @@ export enum RequestType {
   Delete = 'DELETE',
   Edit = 'EDIT'
 }
-
-export type SelectedDefaultQuota = {
-  __typename?: 'SelectedDefaultQuota';
-  cpu: Scalars['String'];
-  memory: Scalars['String'];
-  storage: Scalars['String'];
-};
 
 export type SignUpInput = {
   githubId: Scalars['String'];
@@ -588,7 +570,6 @@ export type ResolversTypes = ResolversObject<{
   QuotaInput: QuotaInput;
   RequestDecision: RequestDecision;
   RequestType: RequestType;
-  SelectedDefaultQuota: ResolverTypeWrapper<SelectedDefaultQuota>;
   SignUpInput: SignUpInput;
   SortOrder: SortOrder;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -616,7 +597,6 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Quota: Quota;
   QuotaInput: QuotaInput;
-  SelectedDefaultQuota: SelectedDefaultQuota;
   SignUpInput: SignUpInput;
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
@@ -675,22 +655,18 @@ export type PrivateCloudProjectResolvers<ContextType = ContextValue, ParentType 
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   developmentQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
-  developmentQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   licencePlate?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   primaryTechnicalLead?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   productionQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
-  productionQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   projectOwner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   requestHistory?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
   secondaryTechnicalLead?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProjectStatus'], ParentType, ContextType>;
   testQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
-  testQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   toolsQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
-  toolsQuotaSelected?: Resolver<Maybe<ResolversTypes['SelectedDefaultQuota']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -734,23 +710,9 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
 }>;
 
 export type QuotaResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Quota'] = ResolversParentTypes['Quota']> = ResolversObject<{
-  cpuLimits?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  cpuRequests?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  memoryLimits?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  memoryRequests?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  snapshotCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  storageBackup?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  storageBlock?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  storageCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  storageFile?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  storagePvcCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type SelectedDefaultQuotaResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['SelectedDefaultQuota'] = ResolversParentTypes['SelectedDefaultQuota']> = ResolversObject<{
-  cpu?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  memory?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  storage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  cpu?: Resolver<ResolversTypes['DefaultCpuOptions'], ParentType, ContextType>;
+  memory?: Resolver<ResolversTypes['DefaultMemoryOptions'], ParentType, ContextType>;
+  storage?: Resolver<ResolversTypes['DefaultStorageOptions'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -785,7 +747,6 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   PrivateCloudRequest?: PrivateCloudRequestResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
-  SelectedDefaultQuota?: SelectedDefaultQuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
 }>;

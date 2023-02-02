@@ -1,8 +1,14 @@
-import { Cluster, RequestType } from "./constants.js";
+import {
+  Cluster,
+  RequestType,
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions,
+} from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"
 function message(action, requestedProject) {
-  const {
+  let {
     id, // Use ID from actaul project, not from requested project
     licencePlate,
     name,
@@ -15,15 +21,44 @@ function message(action, requestedProject) {
     toolsQuota,
     projectOwner,
     primaryTechnicalLead,
-    secondaryTechnicalLead
+    secondaryTechnicalLead,
   } = requestedProject;
+
+  const snapshot = {
+    name: "snapshot-5",
+    snapshotCount: 5,
+  };
+
+  testQuota = {
+    cpu: DefaultCpuOptions[testQuota.cpu],
+    memory: DefaultMemoryOptions[testQuota.memory],
+    storage: DefaultStorageOptions[testQuota.storage],
+  };
+
+  productionQuota = {
+    cpu: DefaultCpuOptions[productionQuota.cpu],
+    memory: DefaultMemoryOptions[productionQuota.memory],
+    storage: DefaultStorageOptions[productionQuota.storage],
+  };
+
+  developmentQuota = {
+    cpu: DefaultCpuOptions[developmentQuota.cpu],
+    memory: DefaultMemoryOptions[developmentQuota.memory],
+    storage: DefaultStorageOptions[developmentQuota.storage],
+  };
+
+  toolsQuota = {
+    cpu: DefaultCpuOptions[toolsQuota.cpu],
+    memory: DefaultMemoryOptions[toolsQuota.memory],
+    storage: DefaultStorageOptions[toolsQuota.storage],
+  };
 
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",
     email: projectOwner.email,
     rocketchat_username: null,
-    role: "owner"
+    role: "owner",
   };
 
   const primaryTechnicalLeadContact = {
@@ -31,7 +66,7 @@ function message(action, requestedProject) {
     provider: "github",
     email: primaryTechnicalLead.email,
     rocketchat_username: null,
-    role: "lead"
+    role: "lead",
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
@@ -40,7 +75,7 @@ function message(action, requestedProject) {
         provider: "github",
         email: secondaryTechnicalLead.email,
         rocketchat_username: null,
-        role: "lead"
+        role: "lead",
       }
     : null;
 
@@ -48,31 +83,31 @@ function message(action, requestedProject) {
     { quotaName: "tools", quota: toolsQuota },
     { quotaName: "prod", quota: productionQuota },
     { quotaName: "dev", quota: developmentQuota },
-    { quotaName: "test", quota: testQuota }
+    { quotaName: "test", quota: testQuota },
   ].map(({ quotaName, quota }) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${[quotaName]}`,
     quota: {
-      cpu: `cpu-request-${quota.cpuRequests}-limit-${quota.cpuLimits}`,
-      memory: `memory-request-${quota.memoryRequests}-limit-${quota.memoryLimits}`,
-      storage: `storage-${quota.storageFile}`,
-      snapshot: `snapshot-${quota.snapshotCount}`
+      cpu: quota.cpu.name,
+      memory: quota.memory.name,
+      storage: quota.storage.name,
+      snapshot: snapshot.snapshotCount,
     },
     quotas: {
-      cpu: { requests: quota.cpuRequests, limits: quota.cpuLimits },
+      cpu: { requests: quota.cpu.cpuRequests, limits: quota.cpu.cpuLimits },
       memory: {
-        requests: `${quota.memoryRequests}Gi`,
-        limits: `${quota.memoryLimits}Gi`
+        requests: quota.memory.memoryRequests,
+        limits: quota.memory.memoryLimits,
       },
       storage: {
-        block: `${quota.storageBlock}Gi`,
-        file: `${quota.storageFile}Gi`,
-        backup: `${quota.storageBackup}Mi`,
-        capacity: `${quota.storageCapacity}Gi`,
-        pvc_count: `${quota.storagePvcCount}`
+        block: "1Gi",
+        file: quota.storage.storageFile,
+        backup: quota.storage.storageBackup,
+        capacity: "1Gi",
+        pvc_count: quota.storage.storagePvcCount,
       },
-      snapshot: { count: quota.snapshotCount }
-    }
+      snapshot: { count: snapshot.snapshotCount },
+    },
   }));
 
   const request = {
@@ -88,8 +123,8 @@ function message(action, requestedProject) {
     contacts: [
       projectOwnerContact,
       primaryTechnicalLeadContact,
-      secondaryTechnicalLeadContact
-    ].filter(Boolean)
+      secondaryTechnicalLeadContact,
+    ].filter(Boolean),
   };
 
   return request;

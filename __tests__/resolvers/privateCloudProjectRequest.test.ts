@@ -11,11 +11,6 @@ import {
   DefaultMemoryOptions,
   DefaultStorageOptions,
 } from "../../src/__generated__/resolvers-types.js";
-import {
-  DefaultCpuOptions as DefaultCpuOptionsEnum,
-  DefaultMemoryOptions as DefaultMemoryOptionsEnum,
-  DefaultStorageOptions as DefaultStorageOptionsEnum,
-} from "../../src/resolvers/enum";
 import resolvers from "../../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -34,7 +29,7 @@ import {
   mockProjectA,
   mockProjectB,
 } from "../../__mocks__/constants.js";
-import { defaultQuota } from "../../src/utils/defaultQuota";
+// import { defaultQuota } from "../../src/utils/defaultQuota";
 
 interface ContextValue {
   kauth: KeycloakContext;
@@ -650,6 +645,9 @@ describe("Request tests", () => {
       }
     );
 
+    // @ts-ignore
+    console.log(response.body.singleResult.errors)
+
     expect(response).toMatchSnapshot({
       body: {
         singleResult: {
@@ -702,10 +700,9 @@ describe("Request tests", () => {
       mockProjectB.productionQuota
     );
     expect(request?.requestedProject?.productionQuota).toEqual({
-      ...defaultQuota,
-      ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
-      ...DefaultMemoryOptionsEnum[variables.productionQuota.memory],
-      ...DefaultStorageOptionsEnum[variables.productionQuota.storage],
+      cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+      memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+      storage: DefaultStorageOptions.Storage_16,
     });
   });
 });
