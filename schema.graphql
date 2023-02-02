@@ -372,7 +372,7 @@ type Mutation {
     developmentQuota: QuotaInput!
     testQuota: QuotaInput!
     toolsQuota: QuotaInput!
-  ): PrivateCloudRequest! @auth 
+  ): PrivateCloudRequest! @auth
 
   privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest! @auth
 

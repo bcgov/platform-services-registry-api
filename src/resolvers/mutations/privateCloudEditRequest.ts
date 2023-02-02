@@ -58,7 +58,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       !authRoles.includes("admin")
     ) {
       throw new Error(
-        "You need to be a contact on this project or an administrator in order to delete it."
+        "You need to be a contact on this project or an administrator in order to edit it."
       );
     }
 
@@ -104,9 +104,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         : undefined,
     };
 
-    console.log(args.productionQuota);
-    console.log(project.productionQuota);
-
     const isQuotaChanged = !(
       JSON.stringify(args.productionQuota) ===
         JSON.stringify(project.productionQuota) &&
@@ -116,9 +113,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
     );
 
-    console.log(isQuotaChanged);
-
-    // If any of the quotas are being changed, the request needs to be approved
+    // If any of the quotas are being changed, the request needs admin approval
     if (isQuotaChanged) {
       decisionStatus = DecisionStatus.Pending;
     } else {
