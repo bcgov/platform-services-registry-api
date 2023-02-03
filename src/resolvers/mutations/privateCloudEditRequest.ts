@@ -11,7 +11,6 @@ import {
 } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
-import { defaultQuota } from "../../utils/defaultQuota.js";
 import inviteUsersToGithubOrgs from "../../github/index.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
@@ -59,7 +58,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       !authRoles.includes("admin")
     ) {
       throw new Error(
-        "You need to be a contact on this project or an administrator in order to delete it."
+        "You need to be a contact on this project or an administrator in order to edit it."
       );
     }
 
@@ -71,10 +70,10 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       status: project.status,
       licencePlate: project.licencePlate,
       commonComponents: args.commonComponents,
-      productionQuota: { ...defaultQuota, ...args.productionQuota },
-      testQuota: { ...defaultQuota, ...args.testQuota },
-      toolsQuota: { ...defaultQuota, ...args.toolsQuota },
-      developmentQuota: { ...defaultQuota, ...args.developmentQuota },
+      productionQuota: args.productionQuota,
+      testQuota: args.testQuota,
+      toolsQuota: args.toolsQuota,
+      developmentQuota: args.developmentQuota,
       profileId: project.profileId || null,
       created: project.created,
       projectOwner: {
@@ -106,13 +105,15 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     };
 
     const isQuotaChanged = !(
-      args.productionQuota === project.productionQuota &&
-      args.testQuota === project.testQuota &&
-      args.developmentQuota === project.developmentQuota &&
-      args.toolsQuota === project.toolsQuota
+      JSON.stringify(args.productionQuota) ===
+        JSON.stringify(project.productionQuota) &&
+      JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
+      JSON.stringify(args.developmentQuota) ===
+        JSON.stringify(project.developmentQuota) &&
+      JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
     );
 
-    // If any of the quotas are being changed, the request needs to be approved
+    // If any of the quotas are being changed, the request needs admin approval
     if (isQuotaChanged) {
       decisionStatus = DecisionStatus.Pending;
     } else {

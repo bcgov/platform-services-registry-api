@@ -66,7 +66,7 @@
                text-align: center;
                "
                href="https://chat.developer.gov.bc.ca/channel/devops-operations"
-               >#devops-how-to channel</a> in RocketChat.
+               >#devops&#8209;how&#8209;to</a> channel in RocketChat.
          </p>
       </td>
    </tr>
@@ -714,7 +714,7 @@
     </td>
   </tr>
 </table>
-{% if isDevelopmentQuotaChanged and toolsQuotaCPURequested%}
+{% if isToolsQuotaChanged and toolsQuotaCPURequested%}
 <div class="two-col"
   style="text-align:center;font-size:0;background-color: #ffffff;  ">
   <!--[if mso]>
@@ -765,7 +765,7 @@
   <![endif]-->
 </div>
 {% endif %}
-{% if isProductionQuotaChanged and toolsQuotaMemoryRequested%}
+{% if isToolsQuotaChanged and toolsQuotaMemoryRequested%}
 <div class="two-col"
   style="text-align:center;font-size:0;background-color: #ffffff;  ">
   <!--[if mso]>
@@ -816,7 +816,7 @@
   <![endif]-->
 </div>
 {% endif %}
-{% if isProductionQuotaChanged and toolsQuotaStorageRequested%}
+{% if isToolsQuotaChanged and toolsQuotaStorageRequested%}
 <div class="two-col"
   style="text-align:center;font-size:0;background-color: #ffffff;  ">
   <!--[if mso]>

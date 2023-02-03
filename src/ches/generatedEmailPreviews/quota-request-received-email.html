@@ -1,5 +1,101 @@
-{% extends 'header.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta name="x-apple-disable-message-reformatting">
+      <!--[if !mso]><!-->
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!--<![endif]-->
+      <title></title>
+      <!--[if mso]>
+      <style type="text/css">
+         table {border-collapse:collapse;border:0;border-spacing:0;margin:0;}
+         div, td {padding:0;}
+         div {margin:0 !important;}
+      </style>
+      <noscript>
+         <xml>
+            <o:OfficeDocumentSettings>
+               <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+         </xml>
+      </noscript>
+      <![endif]-->
+      <style type="text/css">
+         @media screen and (max-width: 350px) {
+         .column {
+         max-width: 100% !important;
+         }
+         }
+         @media screen and (min-width: 351px) and (max-width: 460px) {
+         .column {
+         max-width: 50% !important;
+         }
+         }
+         @media screen and (max-width: 460px) {
+         .two-col .column {
+         max-width: 100% !important;
+         }
+         }
+         @media screen and (min-width: 461px) {
+         .column {
+         max-width: 33.3% !important;
+         }
+         .two-col .column {
+         max-width: 50% !important;
+         }
+         }
+      </style>
+   </head>
+   <body style="margin:0;padding:0;word-spacing:normal;background-color:#f7f7f7;">
+      <div role="article" aria-roledescription="email" lang="en"
+         style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#f7f7f7;">
+         <table role="presentation" style="width:100%;border:0;border-spacing:0;">
+            <tr>
+               <td align="center">
+                  <!--[if mso]>
+                  <table role="presentation" align="center" style="width:660px;">
+                     <tr>
+                        <td style="padding:20px 0;">
+                           <![endif]-->
+                           <div class="outer" style="width:96%;max-width:660px;margin:20px auto;">
+                              <table border="0" cellpadding="0" cellspacing="0" aria-label="header image" style="
+                                 padding: 20px;
+                                 background-color: #003366;
+                                 border-bottom: 2px solid #fcba19;
+                                 width: 100%;">
+                                 <tr>
+                                    <th>
+                                    <td width="120px">
+                                       <a href="https://registry.developer.gov.bc.ca">
+                                       <img alt="logo"
+                                          src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/logo.svg" />
+                                       </a>
+                                    </td>
+                                    <td align="left">
+                                       <a href="https://registry.developer.gov.bc.ca">
+                                          <h1 style="
+                                             color: #ffffff;
+                                             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                             font-size: 24px;
+                                             font-weight: 700;
+                                             line-height: 37px;
+                                             text-align: left;
+                                             text-decoration: none;
+                                             display: block;
+                                             float: left;
+                                             ">
+                                             Platform Services Registry
+                                          </h1>
+                                       </a>
+                                    </td>
+                                    </th>
+                                 </tr>
+                              </table>
+                              <div class="spacer" style="line-height:26px;height:26px;mso-line-height-rule:exactly;">&nbsp;
+                              </div>
+                              
  <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
                                  style="border-top:1px solid #B0BFC6; border-bottom:1px solid #B0BFC6; ">
                                  <th>
@@ -78,7 +174,7 @@
                                   </td>
                                 </tr>
                               </table>
-                              {% if isProductionQuotaChanged %}
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -101,12 +197,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLProdNameSpace}}'>{{licencePlate}}-prod</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isProductionQuotaChanged and productionQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -146,7 +242,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ productionQuotaCPURequested }}
+                                            4
                                           </p>
                                         </div>
                                       </div>
@@ -156,113 +252,13 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and productionQuotaMemoryRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ productionQuotaMemoryRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and productionQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ productionQuotaStorageRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isDevelopmentQuotaChanged %}
+                              
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -285,12 +281,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLDevNameSpace}}'>{{licencePlate}}-dev</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isDevelopmentQuotaChanged and developmentQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -330,7 +326,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ developmentQuotaCPURequested }}
+                                            4
                                           </p>
                                         </div>
                                       </div>
@@ -340,113 +336,13 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and developmentQuotaMemoryRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ developmentQuotaMemoryRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and developmentQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ developmentQuotaStorageRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isTestQuotaChanged %}
+                              
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -469,12 +365,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLTestNameSpace}}'>{{licencePlate}}-test</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isDevelopmentQuotaChanged and testQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -514,7 +410,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ testQuotaCPURequested }}
+                                            4
                                           </p>
                                         </div>
                                       </div>
@@ -524,8 +420,8 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and testQuotaMemoryRequested%}
+                              
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -565,7 +461,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ testQuotaMemoryRequested }}
+                                            2GiB
                                           </p>
                                         </div>
                                       </div>
@@ -575,245 +471,12 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and testQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ testQuotaStorageRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isToolsQuotaChanged %}
-                              <table role="presentation"
-                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
-                                <tr>
-                                  <td>
-                                    <h5 style="
-                                      color: #313132;
-                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                      word-break: break-word;
-                                      font-size: 14px;
-                                      font-weight: 700;
-                                      line-height: 18px;
-                                      text-align: left;
-                                      padding-top: 10px;
-                                      padding-right: 10px;
-                                      padding-bottom: 10px;
-                                      padding-left:5%;
-                                      margin: 0;
-                                      ">
-                                      Tools Namespace (<a style="
-                                        color: #003366;                                    
-                                        font-weight: 400;
-                                        "
-                                        href='{{consoleURLToolNameSpace}}'>{{licencePlate}}-tools</a>)
-                                    </h5>
-                                  </td>
-                                </tr>
-                              </table>
-                              {% if isToolsQuotaChanged and toolsQuotaCPURequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            CPU:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaCPURequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and toolsQuotaMemoryRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaMemoryRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isToolsQuotaChanged and toolsQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaStorageRequested }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
-                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
-                              </div>                        
-                              {% endif %}
+                              
+                              
                               <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
                               </div>
                               <table role="presentation"
@@ -837,7 +500,7 @@
                                   </td>
                                 </tr>
                               </table>
-                              {% if isProductionQuotaChanged %}
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -860,12 +523,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLProdNameSpace}}'>{{licencePlate}}-prod</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isProductionQuotaChanged and productionQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -905,7 +568,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ productionQuotaCPUCurrent }}
+                                            0.5
                                           </p>
                                         </div>
                                       </div>
@@ -915,113 +578,13 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and productionQuotaMemoryRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ productionQuotaMemoryCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and productionQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ productionQuotaStorageCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isDevelopmentQuotaChanged %}
+                              
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -1044,12 +607,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLDevNameSpace}}'>{{licencePlate}}-dev</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isDevelopmentQuotaChanged and developmentQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -1089,7 +652,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ developmentQuotaCPUCurrent }}
+                                            0.5
                                           </p>
                                         </div>
                                       </div>
@@ -1099,113 +662,13 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and developmentQuotaMemoryRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ developmentQuotaMemoryCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and developmentQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ developmentQuotaStorageCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isTestQuotaChanged %}
+                              
+                              
                               <table role="presentation"
                                 style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
                                 <tr>
@@ -1228,12 +691,12 @@
                                         color: #003366;                                    
                                         font-weight: 400;
                                         "
-                                        href='{{consoleURLTestNameSpace}}'>{{licencePlate}}-test</a>)
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
                                     </h5>
                                   </td>
                                 </tr>
                               </table>
-                              {% if isDevelopmentQuotaChanged and testQuotaCPURequested%}
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -1273,7 +736,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ testQuotaCPUCurrent }}
+                                            0.5
                                           </p>
                                         </div>
                                       </div>
@@ -1283,8 +746,8 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and testQuotaMemoryRequested%}
+                              
+                              
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -1324,7 +787,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ testQuotaMemoryCurrent }}
+                                            2GiB
                                           </p>
                                         </div>
                                       </div>
@@ -1334,245 +797,12 @@
                                 </table>
                                 <![endif]-->
                               </div>
-                              {% endif %}
-                              {% if isProductionQuotaChanged and testQuotaStorageRequested%}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ testQuotaStorageCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
+                              
+                                  
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
                               </div>                        
-                              {% endif %}
-                              {% if isToolsQuotaChanged %}
-                              <table role="presentation"
-                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
-                                <tr>
-                                  <td>
-                                    <h5 style="
-                                      color: #313132;
-                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                      word-break: break-word;
-                                      font-size: 14px;
-                                      font-weight: 700;
-                                      line-height: 18px;
-                                      text-align: left;
-                                      padding-top: 10px;
-                                      padding-right: 10px;
-                                      padding-bottom: 10px;
-                                      padding-left:5%;
-                                      margin: 0;
-                                      ">
-                                      Tools Namespace (<a style="
-                                        color: #003366;                                    
-                                        font-weight: 400;
-                                        "
-                                        href='{{consoleURLToolNameSpace}}'>{{licencePlate}}-tools</a>)
-                                    </h5>
-                                  </td>
-                                </tr>
-                              </table>
-                              {% if isToolsQuotaChanged and toolsQuotaCPURequested %}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            CPU:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaCPUCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isToolsQuotaChanged and toolsQuotaMemoryRequested %}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Memory:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaMemoryCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}
-                              {% if isToolsQuotaChanged and toolsQuotaStorageRequested %}
-                              <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
-                                <!--[if mso]>
-                                <table role="presentation" width="100%">
-                                  <tr>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding-left:10%;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            font-weight: 400;
-                                            color: #313132;
-                                            max-width: 90%;
-                                            text-align:left; 
-                                            padding-left:5%;
-                                            ">
-                                            Storage:
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                    <td style="width:50%;padding:10px;" valign="middle">
-                                      <![endif]-->
-                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
-                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
-                                          <p style="margin:0;
-                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                            font-size:14px;
-                                            line-height:18px;
-                                            color: #131313;
-                                            max-width: 90%;
-                                            padding-top: 5px;
-                                            text-align:right;
-                                            padding-right:10%;
-                                            ">
-                                            {{ toolsQuotaStorageCurrent }}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <!--[if mso]>
-                                    </td>
-                                  </tr>
-                                </table>
-                                <![endif]-->
-                              </div>
-                              {% endif %}    
-                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
-                              </div>                        
-                              {% endif %}  
+                              
+                                
                               <div class="spacer" style="line-height:24px; height:15px;mso-line-height-rule:exactly;">&nbsp;
                               </div> 
                            <table role="presentation"
@@ -1634,7 +864,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ projectName }}
+                                                   new name
                                                 </p>
                                              </div>
                                           </div>
@@ -1682,7 +912,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ POName }}
+                                                   testA testA
                                                 </p>
                                                 <a style="
                                                    color: #003366;                                          
@@ -1695,7 +925,7 @@
                                                    font-size:14px;
                                                    line-height:18px;
                                                    display: block;
-                                                   " href="mailto:{{ POEmail }}">{{POEmail }}</a>
+                                                   " href="mailto:testA@test.com">testA@test.com</a>
                                              </div>
                                           </div>
                                           <!--[if mso]>
@@ -1744,7 +974,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ PriTLName}}
+                                                   testB testB
                                                 </p>
                                                 <a style="
                                                    color: #003366;                                          
@@ -1757,8 +987,7 @@
                                                    font-size:14px;
                                                    line-height:18px;
                                                    display: block;
-                                                   " href="mailto:{{ PriTLEmail }}">{{
-                                                PriTLEmail }}</a>
+                                                   " href="mailto:testB@test.com">testB@test.com</a>
                                                 <p style="margin:0;
                                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                                    font-size:14px;
@@ -1768,7 +997,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ PriTLGitHub}}
+                                                   
                                                 </p>
                                                 <p style="margin:0;
                                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -1779,7 +1008,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ PriTLIDIR}}
+                                                   
                                                 </p>
                                              </div>
                                           </div>
@@ -1789,7 +1018,7 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              {% if SecTLName %}
+                              
                               <div class="two-col"
                                  style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
                                  <!--[if mso]>
@@ -1830,7 +1059,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{SecTLName }}
+                                                   testC testC
                                                 </p>
                                                 <a style="
                                                    color: #003366;                                          
@@ -1843,8 +1072,7 @@
                                                    font-size:14px;
                                                    line-height:18px;
                                                    display: block;
-                                                   " href="mailto:{{ SecTLEmail }}">{{
-                                                SecTLEmail }}</a>
+                                                   " href="mailto:testC@test.com">testC@test.com</a>
                                                 <p style="margin:0;
                                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
                                                    font-size:14px;
@@ -1854,7 +1082,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ SecTLGitHub}}
+                                                   
                                                 </p>
                                                 <p style="margin:0;
                                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -1865,7 +1093,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ SecTLIDIR}}
+                                                   
                                                 </p>
                                              </div>
                                           </div>
@@ -1875,7 +1103,7 @@
                                  </table>
                                  <![endif]-->
                               </div>
-                              {% endif %}
+                              
                               <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;background-color: #ffffff;border-bottom:1px solid #B0BFC6;">
                               <tr>
@@ -1958,7 +1186,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ setCluster }}
+                                                   Gold Kamloops
                                                 </p>
                                              </div>
                                           </div>
@@ -2006,7 +1234,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ licencePlate }}-dev
+                                                   t9d68bd-dev
                                                 </p>
                                              </div>
                                           </div>
@@ -2053,7 +1281,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ licencePlate }}-test
+                                                   t9d68bd-test
                                                 </p>
                                              </div>
                                           </div>
@@ -2101,7 +1329,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ licencePlate }}-prod
+                                                   t9d68bd-prod
                                                 </p>
                                              </div>
                                           </div>
@@ -2149,7 +1377,7 @@
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   {{ licencePlate }}-tools
+                                                   t9d68bd-tools
                                                 </p>
                                              </div>
                                           </div>
@@ -2171,65 +1399,3 @@
       </div>
    </body>
 </html>
-{% endblock %}
-
-
-
-<!-- chesService.send({
-   bodyType: "html",
-   body: swig.renderFile(
-     "./src/ches/templates/quota-request-received-email.html",
-     {
-      consoleURLProdNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-prod`,
-      isProductionQuotaChanged: ,
-      productionQuotaCPURequested: ,
-      productionQuotaMemoryRequested: ,
-      productionQuotaStorageRequested: ,
-      isDevelopmentQuotaChanged: ,
-      consoleURLDevNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
-      developmentQuotaCPURequested: ,
-      developmentQuotaMemoryRequested: ,
-      developmentQuotaStorageRequested: ,
-      isTestQuotaChanged: ,
-      consoleURLTestNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
-      testQuotaCPURequested: ,
-      testQuotaMemoryRequested: ,
-      testQuotaStorageRequested: ,
-      isToolsQuotaChanged: ,
-      consoleURLToolNameSpace: `https://console.apps.${clusterURLName}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
-      toolsQuotaCPURequested: ,
-      toolsQuotaMemoryRequested: ,
-      toolsQuotaStorageRequested: ,
-      productionQuotaCPUCurrent: ,
-      productionQuotaMemoryCurrent: ,
-      productionQuotaStorageCurrent: ,
-      developmentQuotaCPUCurrent: ,
-      developmentQuotaMemoryCurrent: ,
-      developmentQuotaStorageCurrent: ,
-      testQuotaCPUCurrent: ,
-      testQuotaMemoryCurrent: ,
-      testQuotaStorageCurrent: ,
-      toolsQuotaCPUCurrent: ,
-      toolsQuotaMemoryCurrent: ,
-      toolsQuotaStorageCurrent: ,
-        licencePlate: ,
-       projectName: ,
-       POName: projectOwner.firstName + " " + projectOwner.lastName,
-       POEmail: projectOwner.email,
-         POGitHubOrIDIR: ,
-      PriTLName: primaryTechnicalLead.firstName + " " + primaryTechnicalLead.lastName,,
-      PriTLEmail: ,
-      PriTLGitHubOrIDIR: ,
-      SecTLName: secondaryTechnicalLead.firstName + " " + secondaryTechnicalLead.lastName,,
-      SecTLEmail: ,
-      SecTLGitHubOrIDIR: ,
-       setCluster: Object.entries(Cluster).filter(item => item[1] === metaData.cluster)[0][0],
-      }
-   ),
-   // For all project contacts. Sent when a new quota edit request is submitted successfully.
-   to: [projectOwner, primaryTechnicalLead, secondaryTechnicalLead].filter(Boolean).map(
-     ({ email }) => email
-   ),
-   from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-   subject: `${ProjectName} quota change request received`,
-   }); -->

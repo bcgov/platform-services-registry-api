@@ -120,18 +120,18 @@ enum DefaultStorageOptions {
   STORAGE_512
 }
 
-type Quota {
-  cpuRequests: Float!
-  cpuLimits: Float!
-  memoryRequests: Int!
-  memoryLimits: Int!
-  storageBlock: Int!
-  storageFile: Int!
-  storageBackup: Int!
-  storageCapacity: Int!
-  storagePvcCount: Int!
-  snapshotCount: Int!
-}
+# type Quota {
+#   cpuRequests: Float!
+#   cpuLimits: Float!
+#   memoryRequests: Int!
+#   memoryLimits: Int!
+#   storageBlock: Int!
+#   storageFile: Int!
+#   storageBackup: Int!
+#   storageCapacity: Int!
+#   storagePvcCount: Int!
+#   snapshotCount: Int!
+# }
 
 # NOTE!!: It is very possible that PublicCloudProject is too general,
 # May need to create a new project type for each platform e.g
@@ -171,10 +171,6 @@ type PrivateCloudProject {
   testQuota: Quota!
   developmentQuota: Quota!
   toolsQuota: Quota!
-  productionQuotaSelected: SelectedDefaultQuota
-  testQuotaSelected: SelectedDefaultQuota
-  developmentQuotaSelected: SelectedDefaultQuota
-  toolsQuotaSelected: SelectedDefaultQuota
   requestHistory: [PrivateCloudRequest]!
   activeEditRequest: PrivateCloudRequest
   count: Int
@@ -266,10 +262,10 @@ input QuotaInput {
   storage: DefaultStorageOptions!
 }
 
-type SelectedDefaultQuota {
-  cpu: String!
-  memory: String!
-  storage: String!
+type Quota {
+  cpu: DefaultCpuOptions!
+  memory: DefaultMemoryOptions!
+  storage: DefaultStorageOptions!
 }
 
 input CustomQuotaInput {
@@ -376,7 +372,7 @@ type Mutation {
     developmentQuota: QuotaInput!
     testQuota: QuotaInput!
     toolsQuota: QuotaInput!
-  ): PrivateCloudRequest! @auth @flattenDefaultQuotaInput
+  ): PrivateCloudRequest! @auth
 
   privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest! @auth
 

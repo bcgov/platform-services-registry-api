@@ -1,4 +1,7 @@
-FROM node:17-alpine
+FROM node:16.15.0-alpine
+
+ARG NODE_MAJOR_VERSION=16
+ARG NODE_VERSION=16.15.0
 
 RUN mkdir /var/opt/build
 WORKDIR /var/opt/build
@@ -17,4 +20,4 @@ RUN apk update && \
 
 EXPOSE 4000
 
-CMD [ "node", "dist/index.js" ]
+CMD [ "npm", "start" ]

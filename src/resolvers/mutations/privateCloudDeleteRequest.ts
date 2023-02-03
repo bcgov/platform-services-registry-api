@@ -3,7 +3,7 @@ import {
   ProjectStatus,
   RequestType,
   DecisionStatus,
-  MutationPrivateCloudProjectDeleteRequestArgs
+  MutationPrivateCloudProjectDeleteRequestArgs,
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import { sendDeleteRequestEmails } from "../../ches/emailHandlers.js";
@@ -16,10 +16,10 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
   let createRequest;
 
   try {
-    const project = await prisma.privateCloudProject.findUnique({
+    const { id, ...project } = await prisma.privateCloudProject.findUnique({
       where: {
-        id: args.projectId
-      }
+        id: args.projectId,
+      },
     });
 
     const users = await prisma.user.findMany({
@@ -28,13 +28,13 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
           in: [
             project.projectOwnerId,
             project.primaryTechnicalLeadId,
-            project.secondaryTechnicalLeadId
-          ].filter(Boolean)
-        }
+            project.secondaryTechnicalLeadId,
+          ].filter(Boolean),
+        },
       },
       select: {
-        email: true
-      }
+        email: true,
+      },
     });
 
     if (
@@ -56,23 +56,23 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
         requestedProject: {
-          create: project
+          create: project,
         },
         project: {
           connect: {
-            id: args.projectId
-          }
-        }
+            id: args.projectId,
+          },
+        },
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

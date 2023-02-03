@@ -3,38 +3,26 @@ const User = {
     prisma.user
       .findUnique({
         where: {
-          id: user.id
-        }
+          id: user.id,
+        },
       })
       .privateCloudProjectOwner(),
   privateCloudProjectPrimaryTechnicalLead: (user, _, { prisma }) =>
     prisma.user
       .findUnique({
         where: {
-          id: user.id
-        }
+          id: user.id,
+        },
       })
       .privateCloudProjectPrimaryTechnicalLead(),
   privateCloudProjectSecondaryTechnicalLead: (user, _, { prisma }) =>
     prisma.user
       .findUnique({
         where: {
-          id: user.id
-        }
+          id: user.id,
+        },
       })
-      .privateCloudProjectSecondaryTechnicalLead()
+      .privateCloudProjectSecondaryTechnicalLead(),
 };
-// privateCloudActiveRquests: (user, _, { prisma }) =>
-//   prisma.user
-//     .findUnique({
-//       where: {
-//         id: user.id
-//       }
-//     })
-//     .privateCloudRequests({
-//       where: {
-//         active: true
-//       }
-//     })
 
 export default User;

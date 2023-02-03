@@ -4,9 +4,11 @@ import {
   RequestType,
   DecisionStatus,
   MutationPrivateCloudProjectRequestArgs,
+  DefaultCpuOptions,
+  DefaultMemoryOptions,
+  DefaultStorageOptions,
 } from "../../__generated__/resolvers-types.js";
 import generateLicensePlate from "../../utils/generateLicencePlate.js";
-import { defaultQuota } from "../../utils/defaultQuota.js";
 import { Prisma } from "@prisma/client";
 import { sendCreateRequestEmails } from "../../ches/emailHandlers.js";
 
@@ -29,6 +31,12 @@ const privateCloudProjectRequest: MutationResolvers = async (
   }
 
   const licencePlate = generateLicensePlate();
+
+  const defaultQuota = {
+    cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+    memory: DefaultMemoryOptions.MemoryRequest_2Limit_4,
+    storage: DefaultStorageOptions.Storage_1,
+  };
 
   let createRequest;
 

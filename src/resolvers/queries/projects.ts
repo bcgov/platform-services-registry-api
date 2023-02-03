@@ -1,16 +1,23 @@
-export const privateCloudProjects = (_, __, { prisma }) =>
-  prisma.privateCloudProject.findMany();
+export const privateCloudProjects = (_, __, { prisma }) => {
+  return prisma.privateCloudProject.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+  });
+};
 
 export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
   prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
+      status: "ACTIVE",
     },
   });
 
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
   prisma.privateCloudProject.findMany({
     where: {
+      status: "ACTIVE",
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -27,6 +34,7 @@ export const userPrivateCloudProjectById = async (
   await prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
+      status: "ACTIVE",
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -43,6 +51,7 @@ export const userPrivateCloudProjectsByIds = async (
   await prisma.privateCloudProject.findMany({
     where: {
       id: { in: projectIds },
+      status: "ACTIVE",
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -63,6 +72,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 
   const projects = await prisma.privateCloudProject.findMany({
     where: {
+      status: "ACTIVE",
       AND: [
         {
           OR: [
@@ -119,6 +129,7 @@ export const privateCloudProjectsWithFilterSearch = async (
 
   const projects = await prisma.privateCloudProject.findMany({
     where: {
+      status: "ACTIVE",
       AND: [
         {
           OR: [

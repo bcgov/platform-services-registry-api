@@ -1,12 +1,58 @@
-// await sendEditRequestEmails(
-//   editRequest.project,
-//   editRequest.requestedProject,
-//   args
-// );
+import {
+  generateEmailTemplateData,
+  isQuotaChanged,
+  sendEditRequestEmails,
+} from "../src/ches/emailHandlers.js";
+import swig from "swig";
+import fs from "fs";
 
-import { generateEmailTemplateData } from "../src/ches/emailHandlers.js";
+const quotaA = {
+  productionQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  testQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  developmentQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  toolsQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+};
 
-const project = {
+const quotaB = {
+  productionQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  testQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  developmentQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  toolsQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+};
+
+const restProjectA = {
   id: "63bf2cca4a18633df22cc6af",
   name: "test project",
   description: "test description",
@@ -18,54 +64,6 @@ const project = {
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
   ministry: "AGRI",
   cluster: "CLAB",
-  productionQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  testQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  developmentQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  toolsQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -76,7 +74,7 @@ const project = {
     endUserNotificationAndSubscription: null,
     publishing: null,
     businessIntelligence: null,
-    other: "test"
+    other: "test",
   },
   profileId: null,
   projectOwner: {
@@ -88,7 +86,7 @@ const project = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
+    lastSeen: "2023-01-11T21:40:25.019Z",
   },
   primaryTechnicalLead: {
     id: "63bd0a56e7df3f190dfe89fb",
@@ -99,7 +97,7 @@ const project = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
+    lastSeen: "2023-01-11T21:40:25.019Z",
   },
   secondaryTechnicalLead: {
     id: "63bd0a56e7df3f190dfe89fa",
@@ -110,11 +108,11 @@ const project = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
-  }
+    lastSeen: "2023-01-11T21:40:25.019Z",
+  },
 };
 
-const requestedProject = {
+const restProjectB = {
   id: "63bf2cce4a18633df22cc6b8",
   name: "new name",
   description: "new description",
@@ -126,54 +124,6 @@ const requestedProject = {
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
   ministry: "AGRI",
   cluster: "GOLD",
-  productionQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 64,
-    memoryLimits: 128,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  testQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  developmentQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
-  toolsQuota: {
-    cpuRequests: 0.5,
-    cpuLimits: 1.5,
-    memoryRequests: 2,
-    memoryLimits: 4,
-    storageBlock: 1,
-    storageFile: 1,
-    storageBackup: 512,
-    storageCapacity: 1,
-    storagePvcCount: 60,
-    snapshotCount: 5
-  },
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -184,7 +134,7 @@ const requestedProject = {
     endUserNotificationAndSubscription: null,
     publishing: null,
     businessIntelligence: null,
-    other: "test"
+    other: "test",
   },
   profileId: null,
   projectOwner: {
@@ -196,7 +146,7 @@ const requestedProject = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
+    lastSeen: "2023-01-11T21:40:25.019Z",
   },
   primaryTechnicalLead: {
     id: "63bd0a56e7df3f190dfe89fb",
@@ -207,7 +157,7 @@ const requestedProject = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
+    lastSeen: "2023-01-11T21:40:25.019Z",
   },
   secondaryTechnicalLead: {
     id: "63bd0a56e7df3f190dfe89fa",
@@ -218,30 +168,129 @@ const requestedProject = {
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z"
-  }
+    lastSeen: "2023-01-11T21:40:25.019Z",
+  },
 };
 
-const args = {
-  projectId: "1234",
-  name: "new name",
-  description: "new description",
-  cluster: "GOLD",
-  commonComponents: {
-    identityManagement: "PLANNING_TO_USE"
-  },
-  productionQuota: {
-    cpu: { cpuRequests: 1, cpuLimits: 2 },
-    memory: { memoryRequests: 16, memoryLimits: 32 }
-  }
-};
+const projectA = { ...restProjectA, ...quotaA };
+const projectB = { ...restProjectB, ...quotaB };
+
+// const args = {
+//   projectId: "1234",
+//   name: "new name",
+//   description: "new description",
+//   cluster: "GOLD",
+//   commonComponents: {
+//     identityManagement: "PLANNING_TO_USE",
+//   },
+//   productionQuota: {
+//     cpu: { cpuRequests: 1, cpuLimits: 2 },
+//     memory: { memoryRequests: 16, memoryLimits: 32 },
+//   },
+// };
+
+const generatedEmailsPath = "./src/ches/generatedEmailPreviews";
 
 describe("generateEmailData", () => {
   it("Should create an email template data object", async () => {
     const emailData = generateEmailTemplateData(
-      project,
-      requestedProject,
-      args
+      projectA,
+      projectB
+      // args
+    );
+  });
+
+  it("Should detect if production quota has changed", async () => {
+    const quotaA = {
+      cpu: "CPU_REQUEST_4_LIMIT_8",
+      memory: "MEMORY_REQUEST_2_LIMIT_4",
+      storage: "STORAGE_1",
+    };
+
+    const quotaB = {
+      cpu: "CPU_REQUEST_4_LIMIT_8",
+      memory: "MEMORY_REQUEST_2_LIMIT_4",
+      storage: "STORAGE_1",
+    };
+
+    const quotaC = {
+      cpu: "CPU_REQUEST_4_LIMIT_8",
+      memory: "MEMORY_REQUEST_2_LIMIT_4",
+      storage: "STORAGE_2",
+    };
+
+    const noChange = isQuotaChanged(quotaA, quotaB);
+    const change = isQuotaChanged(quotaA, quotaC);
+  });
+
+  it("Quota Changed and no Contact changed", async () => {
+    const usersEmail = swig.renderFile(
+      "./src/ches/new-templates/quota-request-received-email.html",
+      generateEmailTemplateData(projectA, projectB)
+    );
+
+    const adminEmail = swig.renderFile(
+      "./src/ches/new-templates/super-admin-request-email.html",
+      generateEmailTemplateData(projectA, projectB, {
+        requestType: "Quota editing",
+        isProvisioningRequest: false,
+        isQuotaRequest: true,
+      })
+    );
+
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/quota-request-received-email.html",
+        usersEmail
+      );
+      console.log("File has been saved.");
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/super-admin-request-email.html",
+        adminEmail
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    expect(adminEmail).toMatchSnapshot();
+    expect(usersEmail).toMatchSnapshot();
+  });
+
+  it("No Quota changed and Project Contact Change", async () => {
+    const usersEmail = swig.renderFile(
+      "./src/ches/new-templates/product-contact-change-confirmation-email.html",
+      generateEmailTemplateData(projectA, projectB)
+    );
+
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/product-contact-change-confirmation-email.html",
+        usersEmail
+      );
+      console.log("File has been saved.");
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  it("Quota changed and Project Contact Change", async () => {
+    const usersEmail = swig.renderFile(
+      "./src/ches/new-templates/super-admin-request-email.html",
+      generateEmailTemplateData(projectA, projectB, {
+        requestType: "Quota editing",
+        isProvisioningRequest: false,
+        isQuotaRequest: true,
+      })
+    );
+
+    const adminEmail = swig.renderFile(
+      "./src/ches/new-templates/quota-and-tlpo-changes.html",
+      generateEmailTemplateData(projectA, projectB)
     );
   });
 });

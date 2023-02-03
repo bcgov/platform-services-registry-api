@@ -1,4 +1,4 @@
-import "../../src/env";
+import "../src/env";
 import {
   Cluster,
   Ministry,
@@ -10,21 +10,16 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-} from "../../src/__generated__/resolvers-types.js";
-import {
-  DefaultCpuOptions as DefaultCpuOptionsEnum,
-  DefaultMemoryOptions as DefaultMemoryOptionsEnum,
-  DefaultStorageOptions as DefaultStorageOptionsEnum,
-} from "../../src/resolvers/enum";
-import resolvers from "../../src/resolvers/index.js";
+} from "../src/__generated__/resolvers-types.js";
+import resolvers from "../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { readFileSync } from "fs";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "../../src/transformers/index.js";
+import applyDirectiveTransformers from "../src/transformers/index.js";
 import { PrismaClient } from "@prisma/client";
-import req from "../../src/auth/kauthContextMock.js";
+import req from "../src/auth/kauthContextMock.js";
 import assert from "assert";
 import supertest from "supertest";
 import {
@@ -33,8 +28,8 @@ import {
   mockSecondaryTechnicalLead,
   mockProjectA,
   mockProjectB,
-} from "../../__mocks__/constants.js";
-import { defaultQuota } from "../../src/utils/defaultQuota";
+} from "../__mocks__/constants.js";
+// import { defaultQuota } from "../../src/utils/defaultQuota";
 
 interface ContextValue {
   kauth: KeycloakContext;
@@ -650,6 +645,9 @@ describe("Request tests", () => {
       }
     );
 
+    // @ts-ignore
+    console.log(response.body.singleResult.errors)
+
     expect(response).toMatchSnapshot({
       body: {
         singleResult: {
@@ -702,10 +700,9 @@ describe("Request tests", () => {
       mockProjectB.productionQuota
     );
     expect(request?.requestedProject?.productionQuota).toEqual({
-      ...defaultQuota,
-      ...DefaultCpuOptionsEnum[variables.productionQuota.cpu],
-      ...DefaultMemoryOptionsEnum[variables.productionQuota.memory],
-      ...DefaultStorageOptionsEnum[variables.productionQuota.storage],
+      cpu: DefaultCpuOptions.CpuRequest_0_5Limit_1_5,
+      memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
+      storage: DefaultStorageOptions.Storage_16,
     });
   });
 });
