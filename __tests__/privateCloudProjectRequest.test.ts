@@ -1,4 +1,4 @@
-import "../../src/env";
+import "../src/env";
 import {
   Cluster,
   Ministry,
@@ -10,16 +10,16 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-} from "../../src/__generated__/resolvers-types.js";
-import resolvers from "../../src/resolvers/index.js";
+} from "../src/__generated__/resolvers-types.js";
+import resolvers from "../src/resolvers/index.js";
 import { ApolloServer } from "@apollo/server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import { readFileSync } from "fs";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "../../src/transformers/index.js";
+import applyDirectiveTransformers from "../src/transformers/index.js";
 import { PrismaClient } from "@prisma/client";
-import req from "../../src/auth/kauthContextMock.js";
+import req from "../src/auth/kauthContextMock.js";
 import assert from "assert";
 import supertest from "supertest";
 import {
@@ -28,7 +28,7 @@ import {
   mockSecondaryTechnicalLead,
   mockProjectA,
   mockProjectB,
-} from "../../__mocks__/constants.js";
+} from "../__mocks__/constants.js";
 // import { defaultQuota } from "../../src/utils/defaultQuota";
 
 interface ContextValue {

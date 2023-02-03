@@ -4,19 +4,9 @@ import {
   sendEditRequestEmails,
 } from "../src/ches/emailHandlers.js";
 import swig from "swig";
+import fs from "fs";
 
-const project = {
-  id: "63bf2cca4a18633df22cc6af",
-  name: "test project",
-  description: "test description",
-  status: "ACTIVE",
-  licencePlate: "t9d68bd",
-  created: "2023-01-10T06:48:53.935Z",
-  projectOwnerId: "63bd0a56e7df3f190dfe89fc",
-  primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
-  secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
-  ministry: "AGRI",
-  cluster: "CLAB",
+const quotaA = {
   productionQuota: {
     cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
     memory: "MEMORY_REQUEST_2_LIMIT_4",
@@ -37,6 +27,44 @@ const project = {
     memory: "MEMORY_REQUEST_2_LIMIT_4",
     storage: "STORAGE_1",
   },
+};
+
+const quotaB = {
+  productionQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  testQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  developmentQuota: {
+    cpu: "CPU_REQUEST_4_LIMIT_8",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+  toolsQuota: {
+    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
+    memory: "MEMORY_REQUEST_2_LIMIT_4",
+    storage: "STORAGE_1",
+  },
+};
+
+const restProjectA = {
+  id: "63bf2cca4a18633df22cc6af",
+  name: "test project",
+  description: "test description",
+  status: "ACTIVE",
+  licencePlate: "t9d68bd",
+  created: "2023-01-10T06:48:53.935Z",
+  projectOwnerId: "63bd0a56e7df3f190dfe89fc",
+  primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
+  secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
+  ministry: "AGRI",
+  cluster: "CLAB",
+
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -85,7 +113,7 @@ const project = {
   },
 };
 
-const requestedProject = {
+const resProjectB = {
   id: "63bf2cce4a18633df22cc6b8",
   name: "new name",
   description: "new description",
@@ -97,26 +125,6 @@ const requestedProject = {
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
   ministry: "AGRI",
   cluster: "GOLD",
-  productionQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  testQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  developmentQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  toolsQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -165,6 +173,9 @@ const requestedProject = {
   },
 };
 
+const projectA = { ...restProjectA, quotaA };
+const projectB = { ...restProjectB, quotaB };
+
 // const args = {
 //   projectId: "1234",
 //   name: "new name",
@@ -179,11 +190,13 @@ const requestedProject = {
 //   },
 // };
 
+const generatedEmailsPath = "./src/ches/generatedEmailPreviews";
+
 describe("generateEmailData", () => {
   it("Should create an email template data object", async () => {
     const emailData = generateEmailTemplateData(
-      project,
-      requestedProject
+      projectA,
+      projectB
       // args
     );
   });
@@ -212,46 +225,76 @@ describe("generateEmailData", () => {
   });
 
   it("Quota Changed and no Contact changed", async () => {
-    let usersEmail;
-    let adminEmail;
-
-    usersEmail = swig.renderFile(
+    const usersEmail = swig.renderFile(
       "./src/ches/new-templates/quota-request-received-email.html",
       generateEmailTemplateData(project, requestedProject)
     );
 
-    adminEmail = generateEmailTemplateData(project, requestedProject, {
-      requestType: "Quota editing",
-      isProvisioningRequest: false,
-      isQuotaRequest: true,
-    });
+    const adminEmail = swig.renderFile(
+      "./src/ches/new-templates/super-admin-request-email.html",
+      generateEmailTemplateData(projectA, projectB, {
+        requestType: "Quota editing",
+        isProvisioningRequest: false,
+        isQuotaRequest: true,
+      })
+    );
+
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/quota-request-received-email.html",
+        usersEmail
+      );
+      console.log("File has been saved.");
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/super-admin-request-email.html",
+        adminEmail
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    expect(adminEmail).toMatchSnapshot();
+    expect(usersEmail).toMatchSnapshot();
   });
 
-  // it("No Quota changed and Project Contact Change", async () => {
-  //   let usersEmail;
+  it("No Quota changed and Project Contact Change", async () => {
+    const usersEmail = swig.renderFile(
+      "./src/ches/new-templates/product-contact-change-confirmation-email.html",
+      generateEmailTemplateData(projectA, projectB)
+    );
 
-  //   usersEmail = swig.renderFile(
-  //     "./src/ches/new-templates/product-contact-change-confirmation-email.html",
-  //     generateEmailTemplateData(requestedProject, project)
-  //   );
-  // });
+    try {
+      fs.writeFileSync(
+        generatedEmailsPath + "/product-contact-change-confirmation-email.html",
+        usersEmail
+      );
+      console.log("File has been saved.");
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-  // it("Quota changed and Project Contact Change", async () => {
-  //   let usersEmail;
-  //   let adminEmail;
+  it("Quota changed and Project Contact Change", async () => {
+    let usersEmail;
+    let adminEmail;
 
-  //   usersEmail = swig.renderFile(
-  //     "./src/ches/new-templates/super-admin-request-email.html",
-  //     generateEmailTemplateData(project, requestedProject, {
-  //       requestType: "Quota editing",
-  //       isProvisioningRequest: false,
-  //       isQuotaRequest: true,
-  //     })
-  //   );
+    usersEmail = swig.renderFile(
+      "./src/ches/new-templates/super-admin-request-email.html",
+      generateEmailTemplateData(projectA, projectB, {
+        requestType: "Quota editing",
+        isProvisioningRequest: false,
+        isQuotaRequest: true,
+      })
+    );
 
-  //   adminEmail = swig.renderFile(
-  //     "./src/ches/new-templates/quota-and-tlpo-changes.html",
-  //     generateEmailTemplateData(project, requestedProject)
-  //   );
-  // });
+    adminEmail = swig.renderFile(
+      "./src/ches/new-templates/quota-and-tlpo-changes.html",
+      generateEmailTemplateData(projectA, projectB)
+    );
+  });
 });
