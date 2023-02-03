@@ -17,6 +17,7 @@ x-env: &defaults
   CHES_CLIENT_ID:
   CHES_CLIENT_SECRET:
   CHES_API_URL:
+  DATABASE_URL: 
 services:
   mongo:
     container_name: registry-mongo
@@ -41,8 +42,8 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 4222:4222
+      - 4000:4000
 
     environment:
       <<: *defaults
-      PORT: 4222
+      PORT: 4000
