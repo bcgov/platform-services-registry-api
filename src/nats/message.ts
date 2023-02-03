@@ -53,6 +53,9 @@ function message(action, requestedProject) {
     storage: DefaultStorageOptions[toolsQuota.storage],
   };
 
+  console.log("TOOLS QUOTA")
+  console.log(toolsQuota)
+
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",
