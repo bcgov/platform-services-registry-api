@@ -61,7 +61,7 @@ export const generateEmailTemplateData = (
   other = {}
 ) => {
   const project = { ...incomingProject };
-  const requestedProject = { ...incomingProject };
+  const requestedProject = { ...incomingRequest };
 
   const projectOwner = project.projectOwner;
   const primaryTechnicalLead = project.primaryTechnicalLead;

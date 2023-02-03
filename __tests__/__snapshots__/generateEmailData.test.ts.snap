@@ -174,7 +174,306 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
   </tr>
 </table>
 
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Production Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
 
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              4
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+    
+<div class="spacer" style="line-height:2px;height:2px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                       
+
+
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Development Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              4
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+
+
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Test Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              4
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              Memory:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              2GiB
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
 
 
 <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
@@ -201,7 +500,306 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
   </tr>
 </table>
 
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Production Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
 
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              0.5
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+
+
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Development Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              0.5
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
+
+
+<table role="presentation"
+  style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+  <tr>
+    <td>
+      <h5 style="
+        color: #313132;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        word-break: break-word;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        padding-left:5%;
+        margin: 0;
+        ">
+        Test Namespace (<a style="
+          color: #003366;                                    
+          font-weight: 400;
+          "
+          href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
+      </h5>
+    </td>
+  </tr>
+</table>
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              CPU:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              0.5
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+
+<div class="two-col"
+  style="text-align:center;font-size:0;background-color: #ffffff;  ">
+  <!--[if mso]>
+  <table role="presentation" width="100%">
+    <tr>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding-left:10%;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              font-weight: 400;
+              color: #313132;
+              max-width: 90%;
+              text-align:left; 
+              padding-left:5%;
+              ">
+              Memory:
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+      <td style="width:50%;padding:10px;" valign="middle">
+        <![endif]-->
+        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+          <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+            <p style="margin:0;
+              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+              font-size:14px;
+              line-height:18px;
+              color: #131313;
+              max-width: 90%;
+              padding-top: 5px;
+              text-align:right;
+              padding-right:10%;
+              ">
+              2GiB
+            </p>
+          </div>
+        </div>
+        <!--[if mso]>
+      </td>
+    </tr>
+  </table>
+  <![endif]-->
+</div>
+
+    
+<div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+</div>                        
 
   
 <div class="spacer" style="line-height:24px; height:15px;mso-line-height-rule:exactly;">&nbsp;
@@ -268,7 +866,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               padding-top: 5px;
               text-align:right;
               ">
-              test project
+              new name
             </p>
           </div>
         </div>
@@ -561,7 +1159,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               padding-top: 5px;
               text-align:right;
               ">
-              CLAB Calgary
+              Gold Kamloops
             </p>
           </div>
         </div>
@@ -977,7 +1575,306 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                 </tr>
                               </table>
                               
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Production Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
                               
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            4
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
+                              
+                              
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Development Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            4
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
+                              
+                              
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Test Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            4
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            Memory:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            2GiB
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
                               
                               
                               <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
@@ -1004,7 +1901,306 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                 </tr>
                               </table>
                               
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Production Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-prod'>t9d68bd-prod</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
                               
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            0.5
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
+                              
+                              
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Development Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-dev'>t9d68bd-dev</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            0.5
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
+                              
+                              
+                              <table role="presentation"
+                                style="width:100%;border:0;border-spacing:0;background-color: #ffffff;">
+                                <tr>
+                                  <td>
+                                    <h5 style="
+                                      color: #313132;
+                                      font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                      word-break: break-word;
+                                      font-size: 14px;
+                                      font-weight: 700;
+                                      line-height: 18px;
+                                      text-align: left;
+                                      padding-top: 10px;
+                                      padding-right: 10px;
+                                      padding-bottom: 10px;
+                                      padding-left:5%;
+                                      margin: 0;
+                                      ">
+                                      Test Namespace (<a style="
+                                        color: #003366;                                    
+                                        font-weight: 400;
+                                        "
+                                        href='https://console.apps.GOLD.devops.gov.bc.ca/topology/ns/t9d68bd-test'>t9d68bd-test</a>)
+                                    </h5>
+                                  </td>
+                                </tr>
+                              </table>
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            CPU:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            0.5
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                              
+                              <div class="two-col"
+                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                <!--[if mso]>
+                                <table role="presentation" width="100%">
+                                  <tr>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding-left:10%;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            font-weight: 400;
+                                            color: #313132;
+                                            max-width: 90%;
+                                            text-align:left; 
+                                            padding-left:5%;
+                                            ">
+                                            Memory:
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                    <td style="width:50%;padding:10px;" valign="middle">
+                                      <![endif]-->
+                                      <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                          <p style="margin:0;
+                                            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                            font-size:14px;
+                                            line-height:18px;
+                                            color: #131313;
+                                            max-width: 90%;
+                                            padding-top: 5px;
+                                            text-align:right;
+                                            padding-right:10%;
+                                            ">
+                                            2GiB
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <!--[if mso]>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <![endif]-->
+                              </div>
+                              
+                                  
+                              <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
+                              </div>                        
                               
                                 
                               <div class="spacer" style="line-height:24px; height:15px;mso-line-height-rule:exactly;">&nbsp;
@@ -1068,7 +2264,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   test project
+                                                   new name
                                                 </p>
                                              </div>
                                           </div>
@@ -1390,7 +2586,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                                    padding-top: 5px;
                                                    text-align:right;
                                                    ">
-                                                   CLAB Calgary
+                                                   Gold Kamloops
                                                 </p>
                                              </div>
                                           </div>

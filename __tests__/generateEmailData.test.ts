@@ -64,7 +64,6 @@ const restProjectA = {
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
   ministry: "AGRI",
   cluster: "CLAB",
-
   commonComponents: {
     addressAndGeolocation: null,
     workflowManagement: null,
@@ -113,7 +112,7 @@ const restProjectA = {
   },
 };
 
-const resProjectB = {
+const restProjectB = {
   id: "63bf2cce4a18633df22cc6b8",
   name: "new name",
   description: "new description",
@@ -173,8 +172,8 @@ const resProjectB = {
   },
 };
 
-const projectA = { ...restProjectA, quotaA };
-const projectB = { ...restProjectB, quotaB };
+const projectA = { ...restProjectA, ...quotaA };
+const projectB = { ...restProjectB, ...quotaB };
 
 // const args = {
 //   projectId: "1234",
@@ -227,7 +226,7 @@ describe("generateEmailData", () => {
   it("Quota Changed and no Contact changed", async () => {
     const usersEmail = swig.renderFile(
       "./src/ches/new-templates/quota-request-received-email.html",
-      generateEmailTemplateData(project, requestedProject)
+      generateEmailTemplateData(projectA, projectB)
     );
 
     const adminEmail = swig.renderFile(
@@ -280,10 +279,7 @@ describe("generateEmailData", () => {
   });
 
   it("Quota changed and Project Contact Change", async () => {
-    let usersEmail;
-    let adminEmail;
-
-    usersEmail = swig.renderFile(
+    const usersEmail = swig.renderFile(
       "./src/ches/new-templates/super-admin-request-email.html",
       generateEmailTemplateData(projectA, projectB, {
         requestType: "Quota editing",
@@ -292,7 +288,7 @@ describe("generateEmailData", () => {
       })
     );
 
-    adminEmail = swig.renderFile(
+    const adminEmail = swig.renderFile(
       "./src/ches/new-templates/quota-and-tlpo-changes.html",
       generateEmailTemplateData(projectA, projectB)
     );
