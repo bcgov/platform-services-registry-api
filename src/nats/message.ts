@@ -128,8 +128,7 @@ function message(action, requestedProject) {
     ].filter(Boolean),
   };
 
-  // return request;
-  return testMessage
+  return request;
 }
 
 export default message;
