@@ -53,9 +53,6 @@ function message(action, requestedProject) {
     storage: DefaultStorageOptions[toolsQuota.storage],
   };
 
-  console.log("TOOLS QUOTA")
-  console.log(toolsQuota)
-
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",
@@ -94,7 +91,7 @@ function message(action, requestedProject) {
       cpu: quota.cpu.name,
       memory: quota.memory.name,
       storage: quota.storage.name,
-      snapshot: snapshot.snapshotCount,
+      snapshot: snapshot.name,
     },
     quotas: {
       cpu: { requests: quota.cpu.cpuRequests, limits: quota.cpu.cpuLimits },
