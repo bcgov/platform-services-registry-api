@@ -4,6 +4,7 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
+  testMessage
 } from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"
@@ -127,7 +128,8 @@ function message(action, requestedProject) {
     ].filter(Boolean),
   };
 
-  return request;
+  // return request;
+  return testMessage
 }
 
 export default message;
