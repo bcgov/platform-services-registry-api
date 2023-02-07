@@ -70,19 +70,6 @@ export type CreateUserInput = {
   ministry: Ministry;
 };
 
-export type CustomQuotaInput = {
-  cpuLimits?: InputMaybe<Scalars['Float']>;
-  cpuRequests?: InputMaybe<Scalars['Float']>;
-  memoryLimits?: InputMaybe<Scalars['Int']>;
-  memoryRequests?: InputMaybe<Scalars['Int']>;
-  snapshotCount?: InputMaybe<Scalars['Int']>;
-  storageBackup?: InputMaybe<Scalars['Int']>;
-  storageBlock?: InputMaybe<Scalars['Int']>;
-  storageCapacity?: InputMaybe<Scalars['Int']>;
-  storageFile?: InputMaybe<Scalars['Int']>;
-  storagePvcCount?: InputMaybe<Scalars['Int']>;
-};
-
 export enum DecisionStatus {
   Approved = 'APPROVED',
   Pending = 'PENDING',
@@ -166,8 +153,6 @@ export enum Ministry {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
-  customPrivateCloudProjectEditRequest: PrivateCloudRequest;
-  customPrivateCloudProjectRequest: PrivateCloudRequest;
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
@@ -178,38 +163,6 @@ export type Mutation = {
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
-};
-
-
-export type MutationCustomPrivateCloudProjectEditRequestArgs = {
-  commonComponents: CommonComponentsInput;
-  description?: InputMaybe<Scalars['String']>;
-  developmentQuota?: InputMaybe<CustomQuotaInput>;
-  ministry?: InputMaybe<Ministry>;
-  name?: InputMaybe<Scalars['String']>;
-  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  productionQuota?: InputMaybe<CustomQuotaInput>;
-  projectId: Scalars['ID'];
-  projectOwner?: InputMaybe<CreateUserInput>;
-  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  testQuota?: InputMaybe<CustomQuotaInput>;
-  toolsQuota?: InputMaybe<CustomQuotaInput>;
-};
-
-
-export type MutationCustomPrivateCloudProjectRequestArgs = {
-  cluster: Cluster;
-  commonComponents: CommonComponentsInput;
-  description: Scalars['String'];
-  developmentQuota?: InputMaybe<CustomQuotaInput>;
-  ministry: Ministry;
-  name: Scalars['String'];
-  primaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  productionQuota?: InputMaybe<CustomQuotaInput>;
-  projectOwner?: InputMaybe<CreateUserInput>;
-  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
-  testQuota?: InputMaybe<CustomQuotaInput>;
-  toolsQuota?: InputMaybe<CustomQuotaInput>;
 };
 
 
@@ -546,7 +499,6 @@ export type ResolversTypes = ResolversObject<{
   CommonComponentsInput: CommonComponentsInput;
   CommonComponentsOptions: CommonComponentsOptions;
   CreateUserInput: CreateUserInput;
-  CustomQuotaInput: CustomQuotaInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   DecisionStatus: DecisionStatus;
   DefaultCpuOptions: DefaultCpuOptions;
@@ -555,7 +507,6 @@ export type ResolversTypes = ResolversObject<{
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -584,11 +535,9 @@ export type ResolversParentTypes = ResolversObject<{
   CommonComponents: CommonComponents;
   CommonComponentsInput: CommonComponentsInput;
   CreateUserInput: CreateUserInput;
-  CustomQuotaInput: CustomQuotaInput;
   DateTime: Scalars['DateTime'];
   EmailAddress: Scalars['EmailAddress'];
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
-  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -603,14 +552,6 @@ export type ResolversParentTypes = ResolversObject<{
   User: User;
   projectsPaginatedOutput: ProjectsPaginatedOutput;
 }>;
-
-export type FlattenDefaultQuotaInputDirectiveArgs = { };
-
-export type FlattenDefaultQuotaInputDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = FlattenDefaultQuotaInputDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type NonNullInputDirectiveArgs = { };
-
-export type NonNullInputDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = NonNullInputDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CommonComponentsResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['CommonComponents'] = ResolversParentTypes['CommonComponents']> = ResolversObject<{
   addressAndGeolocation?: Resolver<Maybe<ResolversTypes['CommonComponentsOptions']>, ParentType, ContextType>;
@@ -637,8 +578,6 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 
 export type MutationResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  customPrivateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'projectId'>>;
-  customPrivateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationCustomPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'description' | 'developmentQuota' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'productionQuota' | 'projectId' | 'projectOwner' | 'testQuota' | 'toolsQuota'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner'>>;
@@ -751,10 +690,6 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
 }>;
 
-export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{
-  flattenDefaultQuotaInput?: FlattenDefaultQuotaInputDirectiveResolver<any, any, ContextType>;
-  nonNullInput?: NonNullInputDirectiveResolver<any, any, ContextType>;
-}>;
 
 
 export const ClusterSchema = yup.mixed().oneOf([Cluster.Clab, Cluster.Emerald, Cluster.Gold, Cluster.Golddr, Cluster.Klab, Cluster.Klab2, Cluster.Silver]);
@@ -784,21 +719,6 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
     githubId: yup.string().defined(),
     lastName: yup.string().defined(),
     ministry: MinistrySchema.defined()
-  })
-}
-
-export function CustomQuotaInputSchema(): yup.SchemaOf<CustomQuotaInput> {
-  return yup.object({
-    cpuLimits: yup.number(),
-    cpuRequests: yup.number(),
-    memoryLimits: yup.number(),
-    memoryRequests: yup.number(),
-    snapshotCount: yup.number(),
-    storageBackup: yup.number(),
-    storageBlock: yup.number(),
-    storageCapacity: yup.number(),
-    storageFile: yup.number(),
-    storagePvcCount: yup.number()
   })
 }
 

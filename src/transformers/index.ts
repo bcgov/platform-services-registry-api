@@ -1,7 +1,7 @@
 import {
   authDirectiveTransformer,
   roleDirectiveTransformer,
-  permissionDirectiveTransformer
+  permissionDirectiveTransformer,
 } from "./auth.js";
 import { nonNullInputDirectiveTransformer } from "./noNullInput.js";
 import { flattenDefaultQuotaTransformer } from "./flattenDefaultQuota.js";

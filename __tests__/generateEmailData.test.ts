@@ -61,7 +61,6 @@ describe("generateEmailData", () => {
         generatedEmailsPath + "/quota-request-received-email.html",
         usersEmail
       );
-      console.log("File has been saved.");
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +89,6 @@ describe("generateEmailData", () => {
         generatedEmailsPath + "/product-contact-change-confirmation-email.html",
         usersEmail
       );
-      console.log("File has been saved.");
     } catch (error) {
       console.error(error);
     }

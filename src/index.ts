@@ -29,21 +29,9 @@ export interface ContextValue {
 
 export const prisma = new PrismaClient();
 
-// prisma.$use(async (params, next) => {
-//   if (params.model == "PrivateCloudProject") {
-//     if (params.action == "findUnique" && params.args.where.id === undefined) {
-//       params.action = "findFirst";
-//     }
-//   }
-
-//   return next(params);
-// });
-
-// await connectToDatabase();
-
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers
+  resolvers,
 });
 
 schema = applyDirectiveTransformers(schema);
@@ -55,7 +43,7 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true
+  introspection: true,
 });
 
 await server.start();
@@ -73,7 +61,7 @@ app.use(
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: []
+        roles: [],
       };
 
       return {
@@ -81,9 +69,9 @@ app.use(
         prisma,
         authRoles: roles,
         authEmail: email,
-        chesService
+        chesService,
       };
-    }
+    },
   })
 );
 
