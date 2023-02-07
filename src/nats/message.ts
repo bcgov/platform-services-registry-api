@@ -62,6 +62,19 @@ function message(action, requestedProject) {
     role: "owner",
   };
 
+  let allianceLabel = "";
+    switch (ministry.toLocaleLowerCase()) {
+      case "ag":
+      case "pssg":
+      case "embc":
+      case "mah":
+        allianceLabel = "JAG";
+        break;
+      default:
+        allianceLabel = "none";
+        break;
+    }
+
   const primaryTechnicalLeadContact = {
     user_id: primaryTechnicalLead.githubId,
     provider: "github",
@@ -110,7 +123,7 @@ function message(action, requestedProject) {
       snapshot: { count: snapshot.snapshotCount },
     },
   }));
-
+  
   const request = {
     action: RequestType[action],
     profile_id: id,
@@ -120,6 +133,7 @@ function message(action, requestedProject) {
     description: description,
     ministry_id: ministry,
     merge_type: "auto", // Make this a variable
+    alliance: allianceLabel, // "JAG" for Justice Attornies Group, else "none"
     namespaces,
     contacts: [
       projectOwnerContact,
