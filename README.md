@@ -81,7 +81,7 @@ bash startDockerEnvironment.sh
 ##### Setup env
 
 ```
-export DATABASE_URL=mongodb://admin:admin_pw@localhost:27017/registry?retryWrites=true&w=majority&directConnection=true
+export DATABASE_URL="mongodb://admin:admin_pw@localhost:27017/registry?retryWrites=true&w=majority&directConnection=true"
 ```
 
 ##### Export prisma schema to db:
