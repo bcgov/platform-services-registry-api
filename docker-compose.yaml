@@ -1,10 +1,10 @@
 version: "3.7"
 x-env: &defaults
   NODE_ENV: development
-  MONGODB_USERNAME:
-  MONGODB_PASSWORD:
-  MONGODB_HOST: registry-mongo
-  MONGODB_NAME:
+  MONGODB_USERNAME: admin
+  MONGODB_PASSWORD: admin_pw
+  MONGODB_NAME: registry
+  MONGO_INITDB_DATABASE:
   AUTH_RELM:
   AUTH_SERVER_URL:
   AUTH_RESOURCE:
@@ -17,23 +17,49 @@ x-env: &defaults
   CHES_CLIENT_ID:
   CHES_CLIENT_SECRET:
   CHES_API_URL:
-  DATABASE_URL: 
+  DATABASE_URL: mongodb://admin:admin_pw@mongo1:27017/registry?retryWrites=true&w=majority&directConnection=true
+  MONGODB_REPLICA_COUNT: 2
+  MONGODB_REPLICA_NAME: registry-rc
 services:
-  mongo:
-    container_name: registry-mongo
+  mongo1:
+    container_name: mongo1
     image: registry/db
     build:
-      context: db/
+      context: ./db
       dockerfile: Dockerfile
     volumes:
       - type: bind
-        source: ./mongo_data
+        source: ./mongo_data/rc1
         target: /data/db
       - type: bind
         source: ./db
         target: /opt/db
     ports:
       - 27017:27017
+    depends_on:
+      - mongo2
+    links:
+      - mongo2
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+    environment: *defaults
+  mongo2:
+    container_name: mongo2
+    image: registry/db
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./mongo_data/rc2
+        target: /data/db
+      - type: bind
+        source: ./db
+        target: /opt/db
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
     environment: *defaults
   api:
     container_name: registry-api-new
@@ -43,7 +69,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - 4000:4000
-
     environment:
       <<: *defaults
       PORT: 4000
+
+
+

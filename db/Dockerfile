@@ -1,3 +1,6 @@
-FROM mongo:3.6
+FROM mongo:4.4
 
-COPY scripts/init-mongo.sh /docker-entrypoint-initdb.d/
+COPY scripts /scripts/
+
+RUN ["chmod", "+x", "/scripts/rs-init.sh"]
+# COPY scripts/init.js /scripts/
