@@ -1,5 +1,3 @@
-directive @nonNullInput on FIELD_DEFINITION
-directive @flattenDefaultQuotaInput on FIELD_DEFINITION
 
 scalar DateTime
 scalar EmailAddress
@@ -236,7 +234,7 @@ type CommonComponents {
 input CreateUserInput {
   firstName: String!
   lastName: String!
-  email: EmailAddress!
+  email: EmailAddress! 
   ministry: Ministry!
   githubId: String!
 }
@@ -249,7 +247,7 @@ input SignUpInput {
 input UpdateUserInput {
   firstName: String
   lastName: String
-  email: EmailAddress
+  email: EmailAddress 
   archived: Boolean
   lastSeen: DateTime
   projectOwner: [ID!]
@@ -266,19 +264,6 @@ type Quota {
   cpu: DefaultCpuOptions!
   memory: DefaultMemoryOptions!
   storage: DefaultStorageOptions!
-}
-
-input CustomQuotaInput {
-  cpuRequests: Float
-  cpuLimits: Float
-  memoryRequests: Int
-  memoryLimits: Int
-  storageBlock: Int
-  storageFile: Int
-  storageBackup: Int
-  storageCapacity: Int
-  storagePvcCount: Int
-  snapshotCount: Int
 }
 
 input FilterPrivateCloudProjectsInput {
@@ -380,34 +365,4 @@ type Mutation {
     requestId: ID!
     decision: RequestDecision!
   ): PrivateCloudRequest @hasRole(role: "admin")
-
-  customPrivateCloudProjectEditRequest(
-    projectId: ID!
-    name: String
-    description: String
-    ministry: Ministry
-    projectOwner: CreateUserInput
-    primaryTechnicalLead: CreateUserInput
-    secondaryTechnicalLead: CreateUserInput
-    commonComponents: CommonComponentsInput!
-    productionQuota: CustomQuotaInput
-    developmentQuota: CustomQuotaInput
-    testQuota: CustomQuotaInput
-    toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @nonNullInput @hasRole(role: "admin")
-
-  customPrivateCloudProjectRequest(
-    name: String!
-    description: String!
-    cluster: Cluster!
-    ministry: Ministry!
-    projectOwner: CreateUserInput
-    primaryTechnicalLead: CreateUserInput
-    secondaryTechnicalLead: CreateUserInput
-    commonComponents: CommonComponentsInput!
-    productionQuota: CustomQuotaInput
-    developmentQuota: CustomQuotaInput
-    testQuota: CustomQuotaInput
-    toolsQuota: CustomQuotaInput
-  ): PrivateCloudRequest! @hasRole(role: "admin") @nonNullInput
 }

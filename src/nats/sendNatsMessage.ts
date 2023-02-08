@@ -6,8 +6,6 @@ import { testMessage, Cluster } from "./constants.js";
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 
-// const serverURL = `nats://localhost:4222`
-
 async function sendNatsMessage(action, requestedProject) {
   const natsSubject = `${process.env.NATS_SUBJECT_PREFIX}_${
     Cluster[requestedProject.cluster]
@@ -17,6 +15,7 @@ async function sendNatsMessage(action, requestedProject) {
     const messageBody = message(action, requestedProject);
     // const messageBody = testMessage;
 
+    console.log("NATS SUBJECT: ", natsSubject);
     console.log("MESSAGE BODY: ", messageBody);
 
     const nc = await connect({ servers: serverURL });
@@ -24,7 +23,7 @@ async function sendNatsMessage(action, requestedProject) {
     // const sc = StringCodec();
     const jc = JSONCodec();
 
-    // nc.publish(natsSubject, jc.encode(messageBody));
+    nc.publish(natsSubject, jc.encode(messageBody));
 
     await nc.drain();
   } catch (e) {

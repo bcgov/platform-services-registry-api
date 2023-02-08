@@ -5,189 +5,7 @@ import {
 } from "../src/ches/emailHandlers.js";
 import swig from "swig";
 import fs from "fs";
-
-const quotaA = {
-  productionQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  testQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  developmentQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  toolsQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-};
-
-const quotaB = {
-  productionQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  testQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  developmentQuota: {
-    cpu: "CPU_REQUEST_4_LIMIT_8",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-  toolsQuota: {
-    cpu: "CPU_REQUEST_0_5_LIMIT_1_5",
-    memory: "MEMORY_REQUEST_2_LIMIT_4",
-    storage: "STORAGE_1",
-  },
-};
-
-const restProjectA = {
-  id: "63bf2cca4a18633df22cc6af",
-  name: "test project",
-  description: "test description",
-  status: "ACTIVE",
-  licencePlate: "t9d68bd",
-  created: "2023-01-10T06:48:53.935Z",
-  projectOwnerId: "63bd0a56e7df3f190dfe89fc",
-  primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
-  secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
-  ministry: "AGRI",
-  cluster: "CLAB",
-  commonComponents: {
-    addressAndGeolocation: null,
-    workflowManagement: null,
-    formDesignAndSubmission: null,
-    identityManagement: null,
-    paymentServices: null,
-    documentManagement: null,
-    endUserNotificationAndSubscription: null,
-    publishing: null,
-    businessIntelligence: null,
-    other: "test",
-  },
-  profileId: null,
-  projectOwner: {
-    id: "63bd0a56e7df3f190dfe89fc",
-    firstName: "testA",
-    lastName: "testA",
-    email: "testA@test.com",
-    githubId: "testA",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-  primaryTechnicalLead: {
-    id: "63bd0a56e7df3f190dfe89fb",
-    firstName: "testB",
-    lastName: "testB",
-    email: "testB@test.com",
-    githubId: "testB",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-  secondaryTechnicalLead: {
-    id: "63bd0a56e7df3f190dfe89fa",
-    firstName: "testC",
-    lastName: "testC",
-    email: "testC@test.com",
-    githubId: "testC",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-};
-
-const restProjectB = {
-  id: "63bf2cce4a18633df22cc6b8",
-  name: "new name",
-  description: "new description",
-  status: "ACTIVE",
-  licencePlate: "t9d68bd",
-  created: "2023-01-10T06:48:53.935Z",
-  projectOwnerId: "63bd0a56e7df3f190dfe89fc",
-  primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
-  secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
-  ministry: "AGRI",
-  cluster: "GOLD",
-  commonComponents: {
-    addressAndGeolocation: null,
-    workflowManagement: null,
-    formDesignAndSubmission: null,
-    identityManagement: "PLANNING_TO_USE",
-    paymentServices: null,
-    documentManagement: null,
-    endUserNotificationAndSubscription: null,
-    publishing: null,
-    businessIntelligence: null,
-    other: "test",
-  },
-  profileId: null,
-  projectOwner: {
-    id: "63bd0a56e7df3f190dfe89fc",
-    firstName: "testA",
-    lastName: "testA",
-    email: "testA@test.com",
-    githubId: "testA",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-  primaryTechnicalLead: {
-    id: "63bd0a56e7df3f190dfe89fb",
-    firstName: "testB",
-    lastName: "testB",
-    email: "testB@test.com",
-    githubId: "testB",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-  secondaryTechnicalLead: {
-    id: "63bd0a56e7df3f190dfe89fa",
-    firstName: "testC",
-    lastName: "testC",
-    email: "testC@test.com",
-    githubId: "testC",
-    ministry: "AGRI",
-    archived: false,
-    created: "2023-01-11T21:40:25.019Z",
-    lastSeen: "2023-01-11T21:40:25.019Z",
-  },
-};
-
-const projectA = { ...restProjectA, ...quotaA };
-const projectB = { ...restProjectB, ...quotaB };
-
-// const args = {
-//   projectId: "1234",
-//   name: "new name",
-//   description: "new description",
-//   cluster: "GOLD",
-//   commonComponents: {
-//     identityManagement: "PLANNING_TO_USE",
-//   },
-//   productionQuota: {
-//     cpu: { cpuRequests: 1, cpuLimits: 2 },
-//     memory: { memoryRequests: 16, memoryLimits: 32 },
-//   },
-// };
+import { projectA, projectB } from "../__mocks__/constants.js";
 
 const generatedEmailsPath = "./src/ches/generatedEmailPreviews";
 
@@ -243,7 +61,6 @@ describe("generateEmailData", () => {
         generatedEmailsPath + "/quota-request-received-email.html",
         usersEmail
       );
-      console.log("File has been saved.");
     } catch (error) {
       console.error(error);
     }
@@ -272,7 +89,6 @@ describe("generateEmailData", () => {
         generatedEmailsPath + "/product-contact-change-confirmation-email.html",
         usersEmail
       );
-      console.log("File has been saved.");
     } catch (error) {
       console.error(error);
     }

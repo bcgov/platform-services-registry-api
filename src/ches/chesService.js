@@ -30,7 +30,7 @@ export default class ChesService {
       });
       return { data, status };
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 
@@ -56,7 +56,7 @@ export default class ChesService {
         return { data, status };
       }
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 
@@ -85,7 +85,7 @@ export default class ChesService {
         return { data, status };
       }
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log("Ches email error");
     }
   }
 
@@ -104,7 +104,7 @@ export default class ChesService {
       );
       return { data, status };
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 
@@ -123,7 +123,7 @@ export default class ChesService {
       );
       return { data, status };
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 
@@ -142,7 +142,7 @@ export default class ChesService {
       );
       return { data, status };
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 
@@ -171,7 +171,7 @@ export default class ChesService {
         return { data, status };
       }
     } catch (e) {
-      console.log(SERVICE, e);
+      console.log(SERVICE);
     }
   }
 }

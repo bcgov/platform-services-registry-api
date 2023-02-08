@@ -4,6 +4,7 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
+  testMessage
 } from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"
@@ -53,9 +54,6 @@ function message(action, requestedProject) {
     storage: DefaultStorageOptions[toolsQuota.storage],
   };
 
-  console.log("TOOLS QUOTA")
-  console.log(toolsQuota)
-
   const projectOwnerContact = {
     user_id: projectOwner.githubId,
     provider: "github",
@@ -63,6 +61,19 @@ function message(action, requestedProject) {
     rocketchat_username: null,
     role: "owner",
   };
+
+  let allianceLabel = "";
+    switch (ministry.toLocaleLowerCase()) {
+      case "ag":
+      case "pssg":
+      case "embc":
+      case "mah":
+        allianceLabel = "JAG";
+        break;
+      default:
+        allianceLabel = "none";
+        break;
+    }
 
   const primaryTechnicalLeadContact = {
     user_id: primaryTechnicalLead.githubId,
@@ -94,7 +105,7 @@ function message(action, requestedProject) {
       cpu: quota.cpu.name,
       memory: quota.memory.name,
       storage: quota.storage.name,
-      snapshot: snapshot.snapshotCount,
+      snapshot: snapshot.name,
     },
     quotas: {
       cpu: { requests: quota.cpu.cpuRequests, limits: quota.cpu.cpuLimits },
@@ -112,7 +123,7 @@ function message(action, requestedProject) {
       snapshot: { count: snapshot.snapshotCount },
     },
   }));
-
+  
   const request = {
     action: RequestType[action],
     profile_id: id,
@@ -122,6 +133,7 @@ function message(action, requestedProject) {
     description: description,
     ministry_id: ministry,
     merge_type: "auto", // Make this a variable
+    alliance: allianceLabel, // "JAG" for Justice Attornies Group, else "none"
     namespaces,
     contacts: [
       projectOwnerContact,

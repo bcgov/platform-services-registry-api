@@ -460,7 +460,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               text-align:right;
               padding-right:10%;
               ">
-              2GiB
+              2Gi
             </p>
           </div>
         </div>
@@ -786,7 +786,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               text-align:right;
               padding-right:10%;
               ">
-              2GiB
+              2Gi
             </p>
           </div>
         </div>
@@ -1861,7 +1861,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            2GiB
+                                            2Gi
                                           </p>
                                         </div>
                                       </div>
@@ -2187,7 +2187,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 2`] = `
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            2GiB
+                                            2Gi
                                           </p>
                                         </div>
                                       </div>
