@@ -13,7 +13,7 @@ import {
   DefaultStorageOptions,
 } from "../nats/constants.js";
 
-const adminEmails = [];
+const adminEmails = ['zhanna.kolesnyk@gov.bc.ca'];
 const clusterNames = [
   {
     id: 1,
@@ -60,6 +60,7 @@ export const generateEmailTemplateData = (
   incomingRequest,
   other = {}
 ) => {
+  console.log('')
   const project = { ...incomingProject };
   const requestedProject = { ...incomingRequest };
 
