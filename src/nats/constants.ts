@@ -8,7 +8,7 @@ export const Cluster = {
   EMERALD: "emerald",
 };
 
-export const adminEmails = ['zhanna.kolesnyk@gov.bc.ca'];
+export const adminEmails = [];
 
 export const clusterNames = [
   {
