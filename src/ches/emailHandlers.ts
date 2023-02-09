@@ -252,7 +252,6 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
         subject: `New Quota editing request in Registry waiting for your approval`,
       });
     }
-    // ***
     // *** No Quota changed and Project Contact Change
     if (!quotaChanged(project, requestedProject) && contactChanged(project, requestedProject)) {
       await chesService.send({
