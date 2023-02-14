@@ -2,8 +2,8 @@
 
 # brew install mongodb-atlas-cli
 
-node index.js
+# node index.js
 
-mongoimport --uri "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/registry?retryWrites=true&w=majority" --collection users --drop --jsonArray --file mongoUsers.json
-mongoimport --uri "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/registry?retryWrites=true&w=majority" --collection privateCloudProjects --drop --jsonArray --file mongoProjects.json
+mongoimport --uri "mongodb://<username>:<pw>@localhost:27018/platsrv-registry-db?retryWrites=true&w=majority&directConnection=true" --collection User --drop --jsonArray --file mongoUsers.json
+mongoimport --uri "mongodb://<username>:<pw>@localhost:27018/platsrv-registry-db?retryWrites=true&w=majority&directConnection=true" --collection PrivateCloudProject --drop --jsonArray --file mongoProjects.json
 
