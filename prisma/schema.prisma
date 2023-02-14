@@ -36,6 +36,7 @@ model PrivateCloudRequest {
   decisionMakerEmail String?
   type               RequestType
   decisionStatus     DecisionStatus
+  humanComment       humanComment
   active             Boolean                      @default(true)
   created            DateTime                     @default(now())
   decisionDate       DateTime?
