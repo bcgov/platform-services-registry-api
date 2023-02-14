@@ -1,0 +1,34 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: backup-container
+    devops.gov.bc.ca/argocd-app-shared: 87d478-tools
+  name: backup-container-mongo-44
+spec:
+  failedBuildsHistoryLimit: 2
+  nodeSelector: null
+  output:
+    pushSecret:
+      name: artifactory-rocketchat
+    to:
+      kind: DockerImage
+      name: artifacts.developer.gov.bc.ca/r6e2-rocketchat/rocketchat-backup-container-44:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: /backup-container
+    git:
+      ref: feature/backup-container-mongo44
+      uri: https://github.com/bcgov/rocketchat.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile_Mongo
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - type: ConfigChange
+status:
+  lastVersion: 1

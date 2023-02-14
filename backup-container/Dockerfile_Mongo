@@ -1,0 +1,52 @@
+# The mongodb backup container for 3.6 used a RedHat image, but they don't 
+#   maintain images for mongodb 4.x, so we make our own based on a RH UBI image.
+# Using RHEL7, because the 'go-crond' package is not compatible with RHEL8 at
+#   this time.
+FROM registry.access.redhat.com/ubi7:latest
+
+# Change timezone to PST for convenience
+ENV TZ=PST8PDT
+
+# Set the workdir to be root
+WORKDIR /
+
+# Create the yum repo file
+COPY mongodb-org-rhel7.repo /etc/yum.repos.d/mongodb-org.repo
+
+# Load the backup scripts into the container (must be executable).
+COPY backup.* webhook-template.json /
+
+# The previously-used RedHat image with Mongo 3.6 has an executable called
+# /usr/bin/run-mongod, which is used in the backup container scripts, so we
+# need to recreate that in order to maintain the same functionality.
+# Also setting env vars in deployment: CONTAINER_SCRIPTS_PATH, APP_DATA
+COPY run-mongod /usr/bin/
+COPY mongod.conf /etc/
+COPY cgroup-limits /usr/libexec/
+ADD container-scripts /usr/share/container-scripts
+RUN mkdir -p /opt/app-root/src
+RUN chmod a+w /usr/share/container-scripts/mongodb/mongod.conf.template && chmod a+w /etc/mongod.conf && touch /.dbshell && chmod a+w /.dbshell && chmod g+w /backup*
+
+# ==============================================================================
+# Install go-crond (from https://github.com/BCDevOps/go-crond)
+#  - Adds some additional logging enhancements on top of the upstream project; 
+#    https://github.com/webdevops/go-crond
+#
+# CRON Jobs in OpenShift:
+#  - https://blog.danman.eu/cron-jobs-in-openshift/
+# ------------------------------------------------------------------------------
+ARG SOURCE_REPO=BCDevOps
+ARG GOCROND_VERSION=0.6.3
+ADD https://github.com/$SOURCE_REPO/go-crond/releases/download/$GOCROND_VERSION/go-crond-64-linux /usr/bin/go-crond
+RUN chmod +x /usr/bin/go-crond /usr/bin/run-mongod
+
+RUN find /usr/share/container-scripts -name "*.sh" -exec chmod +x {} \;
+RUN echo $TZ > /etc/timezone
+RUN yum -y update
+RUN yum -y install bind-utils gettext mongodb-database-tools mongodb-org-server mongodb-org-shell mongodb-mongosh
+RUN curl "https://dl.min.io/client/mc/release/linux-amd64/mc" -o /usr/local/bin/mc && chmod +x /usr/local/bin/mc
+RUN curl "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz" -o oc.tar.gz && tar xzf oc.tar.gz && mv oc /usr/local/bin && chmod +x /usr/local/bin/oc && rm oc.tar.gz
+
+# Set the default CMD.
+CMD ["sleep", "infinity"]
+
