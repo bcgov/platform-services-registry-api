@@ -4,14 +4,9 @@ import {
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs,
 } from "../../__generated__/resolvers-types.js";
-import {
-  Prisma,
-  PrivateCloudProject,
-  PrivateCloudRequest,
-} from "@prisma/client";
+import { Prisma, PrivateCloudRequest } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
-import inviteUsersToGithubOrgs from "../../github/index.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
@@ -164,16 +159,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   if (decisionStatus === DecisionStatus.Approved) {
     await sendNatsMessage(editRequest.type, editRequest.requestedProject);
-
-    // Invite conacts to BC gov github orgs
-    const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead } =
-      editRequest.requestedProject;
-
-    inviteUsersToGithubOrgs([
-      projectOwner.githubId,
-      primaryTechnicalLead.githubId,
-      secondaryTechnicalLead?.githubId,
-    ]);
   }
 
   await sendEditRequestEmails(
