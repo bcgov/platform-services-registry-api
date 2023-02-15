@@ -4,7 +4,6 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-  testMessage,
 } from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"

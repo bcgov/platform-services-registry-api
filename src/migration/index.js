@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "okanji",
   password: "",
   port: 5432,
-  database: "new_registry"
+  database: "new_registry",
 });
 
 async function getPsqlUserData() {
@@ -92,7 +92,7 @@ function generateProjectData(projectData) {
         quota_cpu_size,
         quota_memory_size,
         quota_storage_size,
-        quota_snapshot_size
+        quota_snapshot_size,
       } = projects.find(
         (proj) => proj.namespace_name === `${licencePlate}-${namespaceName}`
       );
@@ -107,7 +107,7 @@ function generateProjectData(projectData) {
         storageBackup: 1,
         storageCapacity: 1,
         storagePvcCount: 60,
-        snapshotCount: 5
+        snapshotCount: 5,
       };
 
       namespaces[namespaceName] = {
@@ -117,7 +117,7 @@ function generateProjectData(projectData) {
         memoryRequests: parseInt(quota_memory_size.split("-")[2]),
         memoryLimits: parseInt(quota_memory_size.split("-")[4]),
         storageFile: parseInt(quota_storage_size.split("-")[1]),
-        snapshotCount: parseInt(quota_snapshot_size.split("-")[1])
+        snapshotCount: parseInt(quota_snapshot_size.split("-")[1]),
       };
     }
 
@@ -125,23 +125,20 @@ function generateProjectData(projectData) {
       _id: { $oid: ObjectId() },
       licencePlate,
       name,
-      created: created_at,
       description,
-      cluster: cluster_id,
+      status: "ACTIVE",
+      created: created_at,
+      projectOwnerId: "",
+      primaryTechnicalLeadId: "",
+      secondaryTechnicalLeadId: "",
       ministry: bus_org_id,
-      archived: false,
-      status: "active",
-      requestHistory: [],
-      projectOwner: "",
-      primaryTechnicalLead: "",
-      secondaryTechnicalLead: "",
+      cluster: cluster_id,
       productionQuota: namespaces.prod,
+      testQuota: namespaces.test,
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
-      testQuota: namespaces.test,
-      activeEditRequest: null,
       commonComponents: {},
-      profileId: id // Will keep the profile ID from the psql db for reference
+      profileId: id, // Will keep the profile ID from the psql db for reference
     };
 
     newRegistryProjects.push(newRegistryProject);
@@ -199,7 +196,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
       privateCloudPrimaryTechnicalLead: [],
       privateCloudSecondaryTechnicalLead: [],
       privateCloudActiveRequests: [],
-      lastSeen: new Date()
+      lastSeen: new Date(),
     })
   );
 
