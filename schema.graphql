@@ -1,4 +1,3 @@
-
 scalar DateTime
 scalar EmailAddress
 
@@ -118,40 +117,6 @@ enum DefaultStorageOptions {
   STORAGE_512
 }
 
-# type Quota {
-#   cpuRequests: Float!
-#   cpuLimits: Float!
-#   memoryRequests: Int!
-#   memoryLimits: Int!
-#   storageBlock: Int!
-#   storageFile: Int!
-#   storageBackup: Int!
-#   storageCapacity: Int!
-#   storagePvcCount: Int!
-#   snapshotCount: Int!
-# }
-
-# NOTE!!: It is very possible that PublicCloudProject is too general,
-# May need to create a new project type for each platform e.g
-# GoogleCloudProject, AWSProject e.t.c (implements Project)
-# type PublicCloudProject  {
-#   id: ID!
-#   name: String!
-#   archived: Boolean!
-#   created: DateTime!
-#   createdBy: User!
-#   description: String!
-#   status: ProjectStatus!
-#   projectOwner: User!
-#   primaryTechnicalLead: User!
-#   secondaryTechnicalLead: User
-#   ministry: Ministry!
-#   publicCloudPlatform: PublicCloudPlatform!
-#   requestHistory: [Request]
-#   activeEditRequest: Request
-#   count: Int
-# }
-
 type PrivateCloudProject {
   id: ID!
   name: String!
@@ -234,7 +199,7 @@ type CommonComponents {
 input CreateUserInput {
   firstName: String!
   lastName: String!
-  email: EmailAddress! 
+  email: EmailAddress!
   ministry: Ministry!
   githubId: String!
 }
@@ -247,7 +212,7 @@ input SignUpInput {
 input UpdateUserInput {
   firstName: String
   lastName: String
-  email: EmailAddress 
+  email: EmailAddress
   archived: Boolean
   lastSeen: DateTime
   projectOwner: [ID!]
@@ -282,11 +247,11 @@ type projectsPaginatedOutput {
 }
 
 type Query {
+  me: User @auth
   users: [User!]! @hasRole(role: "admin") @auth
   user(id: ID!): User @hasRole(role: "admin")
   usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
   userByEmail(email: EmailAddress!): User @auth
-  me: User @auth
 
   privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
 
@@ -306,6 +271,9 @@ type Query {
     @hasRole(role: "admin")
 
   privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
+    @auth
+    @hasRole(role: "admin")
+
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
   userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
