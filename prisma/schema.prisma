@@ -16,7 +16,6 @@ model User {
   firstName                                          String
   lastName                                           String
   email                                              String                         @unique
-  githubId                                           String
   ministry                                           Ministry
   archived                                           Boolean                        @default(false)
   created                                            DateTime                       @default(now())
