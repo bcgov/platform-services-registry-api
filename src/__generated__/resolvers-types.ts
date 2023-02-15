@@ -65,7 +65,6 @@ export enum CommonComponentsOptions {
 export type CreateUserInput = {
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
-  githubId: Scalars['String'];
   lastName: Scalars['String'];
   ministry: Ministry;
 };
@@ -383,7 +382,6 @@ export enum RequestType {
 }
 
 export type SignUpInput = {
-  githubId: Scalars['String'];
   ministry: Ministry;
 };
 
@@ -408,7 +406,6 @@ export type User = {
   created: Scalars['DateTime'];
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
-  githubId: Scalars['String'];
   id: Scalars['ID'];
   lastName: Scalars['String'];
   lastSeen?: Maybe<Scalars['DateTime']>;
@@ -662,7 +659,6 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  githubId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -718,7 +714,6 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
   return yup.object({
     email: yup.mixed().defined(),
     firstName: yup.string().defined(),
-    githubId: yup.string().defined(),
     lastName: yup.string().defined(),
     ministry: MinistrySchema.defined()
   })
@@ -763,7 +758,6 @@ export const RequestTypeSchema = yup.mixed().oneOf([RequestType.Create, RequestT
 
 export function SignUpInputSchema(): yup.SchemaOf<SignUpInput> {
   return yup.object({
-    githubId: yup.string().defined(),
     ministry: MinistrySchema.defined()
   })
 }

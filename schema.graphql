@@ -159,7 +159,6 @@ type User {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  githubId: String!
   ministry: Ministry!
   archived: Boolean!
   created: DateTime!
@@ -202,12 +201,10 @@ input CreateUserInput {
   lastName: String!
   email: EmailAddress!
   ministry: Ministry!
-  githubId: String!
 }
 
 input SignUpInput {
   ministry: Ministry!
-  githubId: String!
 }
 
 input UpdateUserInput {
