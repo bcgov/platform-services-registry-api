@@ -147,7 +147,7 @@ type PrivateCloudRequest {
   decisionMaker: User
   type: RequestType!
   decisionStatus: DecisionStatus!
-  humanComment: humanComment
+  humanComment: String!
   created: DateTime!
   decisionDate: DateTime
   project: PrivateCloudProject
