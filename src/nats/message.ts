@@ -4,7 +4,7 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-  testMessage
+  testMessage,
 } from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"
@@ -54,8 +54,11 @@ function message(action, requestedProject) {
     storage: DefaultStorageOptions[toolsQuota.storage],
   };
 
+  // user_id has been hard coded to "okanji" for now
+  // Will remomve user_id and provider when we go into prod
+
   const projectOwnerContact = {
-    user_id: projectOwner.githubId,
+    user_id: "okanji",
     provider: "github",
     email: projectOwner.email,
     rocketchat_username: null,
@@ -63,20 +66,20 @@ function message(action, requestedProject) {
   };
 
   let allianceLabel = "";
-    switch (ministry.toLocaleLowerCase()) {
-      case "ag":
-      case "pssg":
-      case "embc":
-      case "mah":
-        allianceLabel = "JAG";
-        break;
-      default:
-        allianceLabel = "none";
-        break;
-    }
+  switch (ministry.toLocaleLowerCase()) {
+    case "ag":
+    case "pssg":
+    case "embc":
+    case "mah":
+      allianceLabel = "JAG";
+      break;
+    default:
+      allianceLabel = "none";
+      break;
+  }
 
   const primaryTechnicalLeadContact = {
-    user_id: primaryTechnicalLead.githubId,
+    user_id: "okanji",
     provider: "github",
     email: primaryTechnicalLead.email,
     rocketchat_username: null,
@@ -85,7 +88,7 @@ function message(action, requestedProject) {
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
     ? {
-        user_id: secondaryTechnicalLead.githubId,
+        user_id: "okanji",
         provider: "github",
         email: secondaryTechnicalLead.email,
         rocketchat_username: null,
@@ -123,7 +126,7 @@ function message(action, requestedProject) {
       snapshot: { count: snapshot.snapshotCount },
     },
   }));
-  
+
   const request = {
     action: RequestType[action],
     profile_id: id,
