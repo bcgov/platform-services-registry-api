@@ -408,7 +408,7 @@ export type User = {
   id: Scalars['ID'];
   lastName: Scalars['String'];
   lastSeen?: Maybe<Scalars['DateTime']>;
-  ministry: Ministry;
+  ministry?: Maybe<Ministry>;
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
@@ -660,7 +660,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
+  ministry?: Resolver<Maybe<ResolversTypes['Ministry']>, ParentType, ContextType>;
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
