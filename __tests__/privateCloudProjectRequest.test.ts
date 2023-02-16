@@ -153,7 +153,6 @@ describe("Request tests", () => {
     const projectOwner: CreateUserInput = {
       email: "oamar.kanji@gov.bc.ca",
       firstName: "Oamar",
-      githubId: "okanji",
       lastName: "Kanji",
       ministry: Ministry.Agri,
     };
@@ -161,7 +160,6 @@ describe("Request tests", () => {
     const primaryTechnicalLead: CreateUserInput = {
       email: "xyz@test.com",
       firstName: "Jane",
-      githubId: "test123",
       lastName: "Smith",
       ministry: Ministry.Psa,
     };
@@ -232,7 +230,6 @@ describe("Request tests", () => {
     expect(projectOwnerUser).not.toBeNull();
     expect(projectOwnerUser?.firstName).toBe(projectOwner.firstName);
     expect(projectOwnerUser?.lastName).toBe(projectOwner.lastName);
-    expect(projectOwnerUser?.githubId).toBe(projectOwner.githubId);
     expect(projectOwnerUser?.ministry).toBe(projectOwner.ministry);
 
     const primaryTechnicalLeadUser = await prisma.user.findUnique({
@@ -247,9 +244,6 @@ describe("Request tests", () => {
     );
     expect(primaryTechnicalLeadUser?.lastName).toBe(
       primaryTechnicalLead.lastName
-    );
-    expect(primaryTechnicalLeadUser?.githubId).toBe(
-      primaryTechnicalLead.githubId
     );
     expect(primaryTechnicalLeadUser?.ministry).toBe(
       primaryTechnicalLead.ministry
@@ -307,7 +301,6 @@ describe("Request tests", () => {
     const projectOwner: CreateUserInput = {
       email: "oamar.kanji@gov.bc.ca",
       firstName: "Oamar",
-      githubId: "okanji",
       lastName: "Kanji",
       ministry: Ministry.Agri,
     };
@@ -315,7 +308,6 @@ describe("Request tests", () => {
     const primaryTechnicalLead: CreateUserInput = {
       email: "xyz@test.com",
       firstName: "Jane",
-      githubId: "test123",
       lastName: "Smith",
       ministry: Ministry.Psa,
     };
@@ -323,7 +315,6 @@ describe("Request tests", () => {
     const secondaryTechnicalLead: CreateUserInput = {
       email: "testSecondaryTechnicalLead@test.com",
       firstName: "John",
-      githubId: "test456",
       lastName: "Doe",
       ministry: Ministry.Psa,
     };
@@ -381,9 +372,6 @@ describe("Request tests", () => {
     expect(secondaryTechnicalLeadUser?.lastName).toBe(
       secondaryTechnicalLead.lastName
     );
-    expect(secondaryTechnicalLeadUser?.githubId).toBe(
-      secondaryTechnicalLead.githubId
-    );
     expect(secondaryTechnicalLeadUser?.ministry).toBe(
       secondaryTechnicalLead.ministry
     );
@@ -393,8 +381,10 @@ describe("Request tests", () => {
     const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `
     mutation PrivateCloudRequestDecision(
       $requestId: ID!,
-      $decision: RequestDecision!) {
-      privateCloudRequestDecision(requestId: $requestId, decision: $decision) {
+      $decision: RequestDecision!
+      $humanComment: String
+      ) {
+      privateCloudRequestDecision(requestId: $requestId, decision: $decision, humanComment: $humanComment ) {
         id
         decisionMaker {
           email

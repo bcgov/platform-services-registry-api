@@ -60,7 +60,6 @@ export const generateEmailTemplateData = (
   incomingRequest,
   other = {}
 ) => {
-  console.log('')
   const project = { ...incomingProject };
   const requestedProject = { ...incomingRequest };
 
