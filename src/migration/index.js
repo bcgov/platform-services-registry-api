@@ -149,7 +149,7 @@ function generateProjectData(projectData) {
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
       commonComponents: defaultCommonComponents,
-      profileId: id // Will keep the profile ID from the psql db for reference
+      profileId: id + "" // Will keep the profile ID from the psql db for reference
     };
 
     newRegistryProjects.push(newRegistryProject);
