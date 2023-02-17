@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "okanji",
   password: "",
   port: 5432,
-  database: "new_registry"
+  database: "new_registry",
 });
 
 async function getPsqlUserData() {
@@ -92,7 +92,7 @@ function generateProjectData(projectData) {
         quota_cpu_size,
         quota_memory_size,
         quota_storage_size,
-        quota_snapshot_size
+        quota_snapshot_size,
       } = projects.find(
         (proj) => proj.namespace_name === `${licencePlate}-${namespaceName}`
       );
@@ -103,7 +103,7 @@ function generateProjectData(projectData) {
       namespaces[namespaceName] = {
         cpu: createQuotaString(quota_cpu_size),
         memory: createQuotaString(quota_memory_size),
-        storage: createQuotaString(quota_storage_size)
+        storage: createQuotaString(quota_storage_size),
       };
     }
 
@@ -118,7 +118,7 @@ function generateProjectData(projectData) {
       publishing: null,
       businessIntelligence: null,
       other: null,
-      noServices: true
+      noServices: true,
     };
 
     const clusterLookup = {
@@ -129,7 +129,7 @@ function generateProjectData(projectData) {
       5: "GOLDDR",
       6: "ARO",
       7: "KLAB2",
-      8: "EMERALD"
+      8: "EMERALD",
     };
 
     const newRegistryProject = {
@@ -149,7 +149,7 @@ function generateProjectData(projectData) {
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
       commonComponents: defaultCommonComponents,
-      profileId: id + "" // Will keep the profile ID from the psql db for reference
+      profileId: id + "", // Will keep the profile ID from the psql db for reference
     };
 
     newRegistryProjects.push(newRegistryProject);
@@ -203,7 +203,7 @@ function generateUsersPerProject(userData, contatctProfileData) {
       ministry: null,
       archived: false,
       created: created_at,
-      lastSeen: new Date()
+      lastSeen: new Date(),
     })
   );
 

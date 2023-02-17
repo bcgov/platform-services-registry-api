@@ -1,54 +1,63 @@
-import * as mongoDB from "mongodb";
+require("dotenv").config();
+const { MongoClient } = require("mongodb");
 
-console.log("Connecting to database...");
-// const connectionString= `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_HOST}/${process.env.MONGODB_NAME}?retryWrites=true&w=majority`;
-const connectionString =
-  "mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/registry?retryWrites=true&w=majority";
+async function main() {
+  /**
+   * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
+   * See https://docs.mongodb.com/drivers/node/ for more details
+   */
+  const uri = process.env.MONGODB_URI;
 
-const client = new mongoDB.MongoClient(connectionString);
-await client.connect();
-const db = client.db();
+  console.log("URI: ", uri);
 
-// Aggrigat date from string to date object
+  /**
+   * The Mongo Client you will use to interact with your database
+   * See https://mongodb.github.io/node-mongodb-native/3.6/api/MongoClient.html for more details
+   * In case: '[MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated...'
+   * pass option { useUnifiedTopology: true } to the MongoClient constructor.
+   * const client =  new MongoClient(uri, {useUnifiedTopology: true})
+   */
+  const client = new MongoClient(uri);
 
-const privateCloudProject = db.collection("PrivateCloudProject");
-const user = db.collection("User");
+  try {
+    // Connect to the MongoDB cluster
+    await client.connect();
 
-console.log("Aggrigating date from string to date object...");
-try {
-  const result = privateCloudProject.aggregate([
-    {
-      $set: {
-        created: {
-          $toDate: "$created"
-        }
-      }
-    }
-  ]);
-  console.log(result);
-} catch (e) {
-  console.log(e);
+    await convertStringsToDates(client, "PrivateCloudProject", "created");
+    await convertStringsToDates(client, "User", "created");
+    await convertStringsToDates(client, "User", "lastSeen");
+
+    // Make the appropriate DB calls
+  } finally {
+    // Close the connection to the MongoDB cluster
+    await client.close();
+  }
 }
 
-// const res = await privateCloudProject.aggregate([
-//   {
-//     $addFields: {
-//       created: {
-//         $toDate: "$created"
-//       }
-//     }
-//   }
-// ]);
+main().catch(console.error);
 
-// await user.aggregate([
-//   {
-//     $addFields: {
-//       created: {
-//         $toDate: "$created"
-//       }
-//     }
-//   }
-// ]);
+async function convertStringsToDates(client, collectionName, field) {
+  const pipeline = [
+    {
+      $set: {
+        [field]: {
+          $toDate: "$" + field,
+        },
+      },
+    },
+    { $merge: { into: collectionName } },
+  ];
+
+  // See https://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html#aggregate for the aggregate() docs
+  const aggCursor = client
+    .db("registry")
+    .collection(collectionName)
+    .aggregate(pipeline);
+
+  await aggCursor.forEach((airbnbListing) => {
+    console.log(`${airbnbListing._id}: ${airbnbListing.averagePrice}`);
+  });
+}
 
 // *** Example code for adding indexes to a collection
 

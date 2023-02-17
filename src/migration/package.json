@@ -1,6 +1,5 @@
 {
   "name": "migration",
-  "type": "module",
   "version": "1.0.0",
   "description": "Migration from PSQL to MongoDb",
   "scripts": {
@@ -10,6 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
     "mongodb": "^4.7.0"
   },
   "devDependencies": {
