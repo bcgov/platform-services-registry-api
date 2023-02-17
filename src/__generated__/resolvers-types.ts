@@ -102,7 +102,7 @@ export enum DefaultStorageOptions {
   Storage_16 = 'STORAGE_16',
   Storage_32 = 'STORAGE_32',
   Storage_64 = 'STORAGE_64',
-  Storage_124 = 'STORAGE_124',
+  Storage_128 = 'STORAGE_128',
   Storage_256 = 'STORAGE_256',
   Storage_512 = 'STORAGE_512'
 }
