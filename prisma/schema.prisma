@@ -16,7 +16,7 @@ model User {
   firstName                                          String
   lastName                                           String
   email                                              String                         @unique
-  ministry                                           Ministry
+  ministry                                           Ministry?
   archived                                           Boolean                        @default(false)
   created                                            DateTime                       @default(now())
   lastSeen                                           DateTime                       @updatedAt
@@ -46,10 +46,10 @@ model PrivateCloudRequest {
 
 model PrivateCloudProject {
   id                       String                @id @default(auto()) @map("_id") @db.ObjectId
+  licencePlate             String                @unique
   name                     String
   description              String
   status                   ProjectStatus
-  licencePlate             String                @unique
   created                  DateTime              @default(now())
   projectOwnerId           String                @db.ObjectId
   projectOwner             User                  @relation("projectOwner", fields: [projectOwnerId], references: [id])
@@ -97,38 +97,6 @@ type Quota {
   memory  DefaultMemoryOptions
   storage DefaultStorageOptions
 }
-
-// type Cpu {
-//   name        String
-//   cpuRequests String
-//   cpuLimits   String
-// }
-
-// type Memory {
-//   name           String
-//   memoryRequests String
-//   memoryLimits   String
-// }
-
-// type Storage {
-//   name            String
-//   storagePvcCount String
-//   storageFile     String
-//   storageBackup   String
-// }
-
-// type Quota {
-//   cpuRequests     Float @default(0.5)
-//   cpuLimits       Float @default(1.5)
-//   memoryRequests  Int   @default(2)
-//   memoryLimits    Int   @default(4)
-//   storageBlock    Int   @default(1)
-//   storageFile     Int   @default(1)
-//   storageBackup   Int   @default(512)
-//   storageCapacity Int   @default(1)
-//   storagePvcCount Int   @default(5)
-//   snapshotCount   Int   @default(5)
-// }
 
 type CommonComponents {
   addressAndGeolocation              CommonComponentsOptions?
@@ -255,7 +223,7 @@ enum DefaultStorageOptions {
   STORAGE_16
   STORAGE_32
   STORAGE_64
-  STORAGE_124
+  STORAGE_128
   STORAGE_256
   STORAGE_512
 }

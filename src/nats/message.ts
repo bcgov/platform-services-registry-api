@@ -3,8 +3,7 @@ import {
   RequestType,
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions,
-  testMessage,
+  DefaultStorageOptions
 } from "./constants.js";
 
 // Create a test env variable that prefix the namespace name with "t"
@@ -22,47 +21,47 @@ function message(action, requestedProject) {
     toolsQuota,
     projectOwner,
     primaryTechnicalLead,
-    secondaryTechnicalLead,
+    secondaryTechnicalLead
   } = requestedProject;
 
   const snapshot = {
     name: "snapshot-5",
-    snapshotCount: 5,
+    snapshotCount: 5
   };
 
   testQuota = {
     cpu: DefaultCpuOptions[testQuota.cpu],
     memory: DefaultMemoryOptions[testQuota.memory],
-    storage: DefaultStorageOptions[testQuota.storage],
+    storage: DefaultStorageOptions[testQuota.storage]
   };
 
   productionQuota = {
     cpu: DefaultCpuOptions[productionQuota.cpu],
     memory: DefaultMemoryOptions[productionQuota.memory],
-    storage: DefaultStorageOptions[productionQuota.storage],
+    storage: DefaultStorageOptions[productionQuota.storage]
   };
 
   developmentQuota = {
     cpu: DefaultCpuOptions[developmentQuota.cpu],
     memory: DefaultMemoryOptions[developmentQuota.memory],
-    storage: DefaultStorageOptions[developmentQuota.storage],
+    storage: DefaultStorageOptions[developmentQuota.storage]
   };
 
   toolsQuota = {
     cpu: DefaultCpuOptions[toolsQuota.cpu],
     memory: DefaultMemoryOptions[toolsQuota.memory],
-    storage: DefaultStorageOptions[toolsQuota.storage],
+    storage: DefaultStorageOptions[toolsQuota.storage]
   };
 
   // user_id has been hard coded to "okanji" for now
   // Will remomve user_id and provider when we go into prod
 
   const projectOwnerContact = {
-    user_id: "okanji",
+    user_id: "PlatformServicesTest",
     provider: "github",
     email: projectOwner.email,
     rocketchat_username: null,
-    role: "owner",
+    role: "owner"
   };
 
   let allianceLabel = "";
@@ -79,20 +78,20 @@ function message(action, requestedProject) {
   }
 
   const primaryTechnicalLeadContact = {
-    user_id: "okanji",
+    user_id: "PlatformServicesTest",
     provider: "github",
     email: primaryTechnicalLead.email,
     rocketchat_username: null,
-    role: "lead",
+    role: "lead"
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
     ? {
-        user_id: "okanji",
+        user_id: "PlatformServicesTest",
         provider: "github",
         email: secondaryTechnicalLead.email,
         rocketchat_username: null,
-        role: "lead",
+        role: "lead"
       }
     : null;
 
@@ -100,7 +99,7 @@ function message(action, requestedProject) {
     { quotaName: "tools", quota: toolsQuota },
     { quotaName: "prod", quota: productionQuota },
     { quotaName: "dev", quota: developmentQuota },
-    { quotaName: "test", quota: testQuota },
+    { quotaName: "test", quota: testQuota }
   ].map(({ quotaName, quota }) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${[quotaName]}`,
@@ -108,23 +107,23 @@ function message(action, requestedProject) {
       cpu: quota.cpu.name,
       memory: quota.memory.name,
       storage: quota.storage.name,
-      snapshot: snapshot.name,
+      snapshot: snapshot.name
     },
     quotas: {
       cpu: { requests: quota.cpu.cpuRequests, limits: quota.cpu.cpuLimits },
       memory: {
         requests: quota.memory.memoryRequests,
-        limits: quota.memory.memoryLimits,
+        limits: quota.memory.memoryLimits
       },
       storage: {
         block: "1Gi",
         file: quota.storage.storageFile,
         backup: quota.storage.storageBackup,
         capacity: "1Gi",
-        pvc_count: quota.storage.storagePvcCount,
+        pvc_count: quota.storage.storagePvcCount
       },
-      snapshot: { count: snapshot.snapshotCount },
-    },
+      snapshot: { count: snapshot.snapshotCount }
+    }
   }));
 
   const request = {
@@ -141,8 +140,8 @@ function message(action, requestedProject) {
     contacts: [
       projectOwnerContact,
       primaryTechnicalLeadContact,
-      secondaryTechnicalLeadContact,
-    ].filter(Boolean),
+      secondaryTechnicalLeadContact
+    ].filter(Boolean)
   };
 
   return request;

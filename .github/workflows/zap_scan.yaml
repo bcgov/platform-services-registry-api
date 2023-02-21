@@ -15,13 +15,13 @@ jobs:
         with:
           ref: main
       - name: ZAP Scan
-        uses: zaproxy/action-api-scan@v0.1.0
+        uses: zaproxy/action-api-scan@v0.2.0
         with:
           # Target URL
-          target: "https://platsrv-registry-api-101ed4-prod.apps.silver.devops.gov.bc.ca/graphql"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target:  '${{ secrets.TEST_ROUTE }}'
           # The Docker file to be executed (optional)
           format: graphql
-          # docker_name: "owasp/zap2docker-stable"
           # Relative path of the ZAP configuration file (optional)
           # rules_file_name: '.zap/rules.tsv'
           # Additional command line options (optional)
