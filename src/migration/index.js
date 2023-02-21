@@ -7,7 +7,7 @@ const pool = new Pool({
   user: "okanji",
   password: "",
   port: 5432,
-  database: "new_registry"
+  database: "new_registry",
 });
 
 async function getPsqlUserData() {
@@ -92,56 +92,64 @@ function generateProjectData(projectData) {
         quota_cpu_size,
         quota_memory_size,
         quota_storage_size,
-        quota_snapshot_size
+        quota_snapshot_size,
       } = projects.find(
         (proj) => proj.namespace_name === `${licencePlate}-${namespaceName}`
       );
 
-      const defaultQuota = {
-        cpuRequests: 0.5,
-        cpuLimits: 1.5,
-        memoryRequests: 2,
-        memoryLimits: 4,
-        storageBlock: 1,
-        storageFile: 512,
-        storageBackup: 1,
-        storageCapacity: 1,
-        storagePvcCount: 60,
-        snapshotCount: 5
-      };
+      const createQuotaString = (quota) =>
+        quota.replace(/\./g, "_").replace(/\-/g, "_").toUpperCase();
 
       namespaces[namespaceName] = {
-        ...defaultQuota,
-        cpuRequests: parseFloat(quota_cpu_size.split("-")[2]),
-        cpuLimits: parseFloat(quota_cpu_size.split("-")[4]),
-        memoryRequests: parseInt(quota_memory_size.split("-")[2]),
-        memoryLimits: parseInt(quota_memory_size.split("-")[4]),
-        storageFile: parseInt(quota_storage_size.split("-")[1]),
-        snapshotCount: parseInt(quota_snapshot_size.split("-")[1])
+        cpu: createQuotaString(quota_cpu_size),
+        memory: createQuotaString(quota_memory_size),
+        storage: createQuotaString(quota_storage_size),
       };
     }
+
+    const defaultCommonComponents = {
+      addressAndGeolocation: null,
+      workflowManagement: null,
+      formDesignAndSubmission: null,
+      identityManagement: null,
+      paymentServices: null,
+      documentManagement: null,
+      endUserNotificationAndSubscription: null,
+      publishing: null,
+      businessIntelligence: null,
+      other: null,
+      noServices: true,
+    };
+
+    const clusterLookup = {
+      1: "CLAB",
+      2: "KLAB",
+      3: "SILVER",
+      4: "GOLD",
+      5: "GOLDDR",
+      6: "ARO",
+      7: "KLAB2",
+      8: "EMERALD",
+    };
 
     const newRegistryProject = {
       _id: { $oid: ObjectId() },
       licencePlate,
       name,
-      created: created_at,
       description,
-      cluster: cluster_id,
+      status: "ACTIVE",
+      created: created_at,
+      projectOwnerId: "",
+      primaryTechnicalLeadId: "",
+      secondaryTechnicalLeadId: "",
       ministry: bus_org_id,
-      archived: false,
-      status: "active",
-      requestHistory: [],
-      projectOwner: "",
-      primaryTechnicalLead: "",
-      secondaryTechnicalLead: "",
+      cluster: clusterLookup[cluster_id],
       productionQuota: namespaces.prod,
+      testQuota: namespaces.test,
       developmentQuota: namespaces.dev,
       toolsQuota: namespaces.tools,
-      testQuota: namespaces.test,
-      activeEditRequest: null,
-      commonComponents: {},
-      profileId: id // Will keep the profile ID from the psql db for reference
+      commonComponents: defaultCommonComponents,
+      profileId: id + "", // Will keep the profile ID from the psql db for reference
     };
 
     newRegistryProjects.push(newRegistryProject);
@@ -187,19 +195,15 @@ function generateUsersPerProject(userData, contatctProfileData) {
 
   const uniqueUsers = getUniqueListBy(userData, "email");
   const mongoUsers = uniqueUsers.map(
-    ({ first_name, last_name, email, github_id, created_at }) => ({
+    ({ first_name, last_name, email, created_at }) => ({
       _id: { $oid: ObjectId() },
-      githubId: github_id,
       firstName: first_name,
       lastName: last_name,
       email,
+      ministry: null,
       archived: false,
       created: created_at,
-      privateCloudProjectOwner: [],
-      privateCloudPrimaryTechnicalLead: [],
-      privateCloudSecondaryTechnicalLead: [],
-      privateCloudActiveRequests: [],
-      lastSeen: new Date()
+      lastSeen: new Date(),
     })
   );
 
@@ -224,45 +228,11 @@ function generateUsersPerProject(userData, contatctProfileData) {
       .map(({ _id }) => _id);
 
     // project.technicalLeads = technicalLeadsMongoIds;
-    project.primaryTechnicalLead = technicalLeadsMongoIds[0];
-    project.secondaryTechnicalLead = technicalLeadsMongoIds[1];
-    project.projectOwner = projectOwnerMongoId;
-    project.createdBy = projectOwnerMongoId;
+    project.primaryTechnicalLeadId = technicalLeadsMongoIds[0];
+    project.secondaryTechnicalLeadId = technicalLeadsMongoIds[1] || null;
+    project.projectOwnerId = projectOwnerMongoId;
 
     return project;
-  });
-
-  mongoProjects.forEach((project, i) => {
-    const { projectOwner, primaryTechnicalLead, secondaryTechnicalLead, _id } =
-      project;
-
-    const projectOwnerUserIndex = mongoUsers.findIndex(
-      ({ _id }) => _id === projectOwner
-    );
-
-    if (projectOwnerUserIndex !== -1) {
-      mongoUsers[projectOwnerUserIndex]["privateCloudProjectOwner"].push(_id);
-    }
-
-    const primaryTechnicalLeadUserIndex = mongoUsers.findIndex(
-      ({ _id }) => _id === primaryTechnicalLead
-    );
-
-    if (primaryTechnicalLeadUserIndex !== -1) {
-      mongoUsers[primaryTechnicalLeadUserIndex][
-        "privateCloudPrimaryTechnicalLead"
-      ].push(_id);
-    }
-
-    const secondaryTechnicalLeadUserIndex = mongoUsers.findIndex(
-      ({ _id }) => _id === secondaryTechnicalLead
-    );
-
-    if (secondaryTechnicalLeadUserIndex !== -1) {
-      mongoUsers[secondaryTechnicalLeadUserIndex][
-        "privateCloudSecondaryTechnicalLead"
-      ].push(_id);
-    }
   });
 
   try {

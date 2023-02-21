@@ -106,9 +106,44 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     take: pageSize,
   });
 
+  const total = await prisma.privateCloudProject.count({
+    where: {
+      status: "ACTIVE",
+      AND: [
+        {
+          OR: [
+            { projectOwner: { email: { contains: search } } },
+            { projectOwner: { firstName: { contains: search } } },
+            { projectOwner: { lastName: { contains: search } } },
+            { primaryTechnicalLead: { email: { contains: search } } },
+            { primaryTechnicalLead: { firstName: { contains: search } } },
+            { primaryTechnicalLead: { lastName: { contains: search } } },
+            { secondaryTechnicalLead: { email: { contains: search } } },
+            { secondaryTechnicalLead: { firstName: { contains: search } } },
+            { secondaryTechnicalLead: { lastName: { contains: search } } },
+            { name: { contains: search } },
+            { description: { contains: search } },
+            { licencePlate: { contains: search } },
+          ],
+        },
+        {
+          ministry: {
+            in: ministry,
+          },
+        },
+        {
+          cluster: {
+            in: cluster,
+          },
+        },
+      ],
+    },
+  });
+
+
   return {
     projects,
-    total: projects.length,
+    total,
   };
 };
 
