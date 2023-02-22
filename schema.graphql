@@ -147,6 +147,7 @@ type PrivateCloudRequest {
   decisionMaker: User
   type: RequestType!
   decisionStatus: DecisionStatus!
+  humanComment: String
   created: DateTime!
   decisionDate: DateTime
   project: PrivateCloudProject
@@ -329,5 +330,6 @@ type Mutation {
   privateCloudRequestDecision(
     requestId: ID!
     decision: RequestDecision!
+    humanComment: String
   ): PrivateCloudRequest @hasRole(role: "admin")
 }

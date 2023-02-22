@@ -8,6 +8,7 @@ exports[`Request tests Approve a private cloud project request 1`] = `
       "data": {
         "privateCloudRequestDecision": {
           "active": true,
+          "humanComment": "some comments",
           "createdBy": {
             "email": "oamar.kanji@gov.bc.ca",
           },
@@ -123,7 +124,8 @@ exports[`Request tests Reject a private cloud project request 1`] = `
     "singleResult": {
       "data": {
         "privateCloudRequestDecision": {
-          "active": false,
+          "active": false,          
+          "humanComment": "some comments",
           "createdBy": {
             "email": "oamar.kanji@gov.bc.ca",
           },
