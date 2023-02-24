@@ -237,7 +237,7 @@ export type PrivateCloudRequest = {
   __typename?: 'PrivateCloudRequest';
   active: Scalars['Boolean'];
   created: Scalars['DateTime'];
-  createdBy: User;
+  createdBy?: Maybe<User>;
   decisionDate?: Maybe<Scalars['DateTime']>;
   decisionMaker?: Maybe<User>;
   decisionStatus: DecisionStatus;
@@ -611,7 +611,7 @@ export type PrivateCloudProjectResolvers<ContextType = ContextValue, ParentType 
 export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PrivateCloudRequest'] = ResolversParentTypes['PrivateCloudRequest']> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   decisionDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   decisionMaker?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   decisionStatus?: Resolver<ResolversTypes['DecisionStatus'], ParentType, ContextType>;
