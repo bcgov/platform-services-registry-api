@@ -200,6 +200,7 @@ export type MutationPrivateCloudProjectRequestArgs = {
 
 export type MutationPrivateCloudRequestDecisionArgs = {
   decision: RequestDecision;
+  humanComment?: InputMaybe<Scalars['String']>;
   requestId: Scalars['ID'];
 };
 
@@ -240,6 +241,7 @@ export type PrivateCloudRequest = {
   decisionDate?: Maybe<Scalars['DateTime']>;
   decisionMaker?: Maybe<User>;
   decisionStatus: DecisionStatus;
+  humanComment?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   project?: Maybe<PrivateCloudProject>;
   requestedProject?: Maybe<PrivateCloudProject>;
@@ -613,6 +615,7 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
   decisionDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   decisionMaker?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   decisionStatus?: Resolver<ResolversTypes['DecisionStatus'], ParentType, ContextType>;
+  humanComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   project?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   requestedProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;

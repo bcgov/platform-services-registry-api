@@ -383,8 +383,10 @@ describe("Request tests", () => {
     const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `
     mutation PrivateCloudRequestDecision(
       $requestId: ID!,
-      $decision: RequestDecision!) {
-      privateCloudRequestDecision(requestId: $requestId, decision: $decision) {
+      $decision: RequestDecision!
+      $humanComment: String
+      ) {
+      privateCloudRequestDecision(requestId: $requestId, decision: $decision, humanComment: $humanComment ) {
         id
         decisionMaker {
           email

@@ -178,7 +178,7 @@ export const DefaultStorageOptions = {
     name: "storage-512",
     storagePvcCount: 60,
     storageFile: "512Gi",
-    storageBackup: "256iB",
+    storageBackup: "256Gi",
   },
 };
 
