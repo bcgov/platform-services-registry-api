@@ -102,7 +102,7 @@ export enum DefaultStorageOptions {
   Storage_16 = 'STORAGE_16',
   Storage_32 = 'STORAGE_32',
   Storage_64 = 'STORAGE_64',
-  Storage_124 = 'STORAGE_124',
+  Storage_128 = 'STORAGE_128',
   Storage_256 = 'STORAGE_256',
   Storage_512 = 'STORAGE_512'
 }
@@ -726,7 +726,7 @@ export const DefaultCpuOptionsSchema = yup.mixed().oneOf([DefaultCpuOptions.CpuR
 
 export const DefaultMemoryOptionsSchema = yup.mixed().oneOf([DefaultMemoryOptions.MemoryRequest_2Limit_4, DefaultMemoryOptions.MemoryRequest_4Limit_8, DefaultMemoryOptions.MemoryRequest_8Limit_16, DefaultMemoryOptions.MemoryRequest_16Limit_32, DefaultMemoryOptions.MemoryRequest_32Limit_64, DefaultMemoryOptions.MemoryRequest_64Limit_128]);
 
-export const DefaultStorageOptionsSchema = yup.mixed().oneOf([DefaultStorageOptions.Storage_1, DefaultStorageOptions.Storage_2, DefaultStorageOptions.Storage_4, DefaultStorageOptions.Storage_16, DefaultStorageOptions.Storage_32, DefaultStorageOptions.Storage_64, DefaultStorageOptions.Storage_124, DefaultStorageOptions.Storage_256, DefaultStorageOptions.Storage_512]);
+export const DefaultStorageOptionsSchema = yup.mixed().oneOf([DefaultStorageOptions.Storage_1, DefaultStorageOptions.Storage_2, DefaultStorageOptions.Storage_4, DefaultStorageOptions.Storage_16, DefaultStorageOptions.Storage_32, DefaultStorageOptions.Storage_64, DefaultStorageOptions.Storage_128, DefaultStorageOptions.Storage_256, DefaultStorageOptions.Storage_512]);
 
 export const EnvironmentSchema = yup.mixed().oneOf([Environment.Development, Environment.Production, Environment.Test, Environment.Tools]);
 
