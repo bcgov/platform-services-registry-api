@@ -635,9 +635,6 @@ describe("Request tests", () => {
       }
     );
 
-    // @ts-ignore
-    console.log(response.body.singleResult.errors);
-
     expect(response).toMatchSnapshot({
       body: {
         singleResult: {
