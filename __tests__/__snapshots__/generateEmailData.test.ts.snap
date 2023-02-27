@@ -939,7 +939,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               padding-top: 5px;
               text-align:right;
               ">
-              testA
+              
             </p>
           </div>
         </div>
@@ -1011,7 +1011,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               padding-top: 5px;
               text-align:right;
               ">
-              testB
+              
             </p>
           </div>
         </div>
@@ -1085,7 +1085,7 @@ exports[`generateEmailData Quota Changed and no Contact changed 1`] = `
               padding-top: 5px;
               text-align:right;
               ">
-              testC
+              
             </p>
           </div>
         </div>
