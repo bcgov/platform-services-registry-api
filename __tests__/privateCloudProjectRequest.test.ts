@@ -142,7 +142,7 @@ describe("Request tests", () => {
 
     const name: string = "Test Project";
     const description: string = "Test Description";
-    const ministry: Ministry = Ministry.Agri;
+    const ministry: Ministry = Ministry.Ag;
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
@@ -154,14 +154,14 @@ describe("Request tests", () => {
       email: "oamar.kanji@gov.bc.ca",
       firstName: "Oamar",
       lastName: "Kanji",
-      ministry: Ministry.Agri,
+      ministry: Ministry.Ag,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
       email: "xyz@test.com",
       firstName: "Jane",
       lastName: "Smith",
-      ministry: Ministry.Psa,
+      ministry: Ministry.Hlth,
     };
 
     const response = await server.executeOperation(
@@ -291,7 +291,7 @@ describe("Request tests", () => {
 
     const name: string = "Test Project";
     const description: string = "Test Description";
-    const ministry: Ministry = Ministry.Agri;
+    const ministry: Ministry = Ministry.Ag;
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
@@ -303,21 +303,21 @@ describe("Request tests", () => {
       email: "oamar.kanji@gov.bc.ca",
       firstName: "Oamar",
       lastName: "Kanji",
-      ministry: Ministry.Agri,
+      ministry: Ministry.Ag,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
       email: "xyz@test.com",
       firstName: "Jane",
       lastName: "Smith",
-      ministry: Ministry.Psa,
+      ministry: Ministry.Hlth,
     };
 
     const secondaryTechnicalLead: CreateUserInput = {
       email: "testSecondaryTechnicalLead@test.com",
       firstName: "John",
       lastName: "Doe",
-      ministry: Ministry.Psa,
+      ministry: Ministry.Citz,
     };
 
     const response = await server.executeOperation(
@@ -590,13 +590,13 @@ describe("Request tests", () => {
         email: "oamarkanji@gmail.com",
         firstName: "testA",
         lastName: "testA",
-        ministry: Ministry.Agri,
+        ministry: Ministry.Ag,
       },
       primaryTechnicalLead: {
         email: "new@test.com",
         firstName: "testA",
         lastName: "testA",
-        ministry: Ministry.Agri,
+        ministry: Ministry.Ag,
       },
       commonComponents: {
         identityManagement: CommonComponentsOptions.PlanningToUse,
@@ -622,7 +622,7 @@ describe("Request tests", () => {
         memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
         storage: DefaultStorageOptions.Storage_16,
       },
-      ministry: Ministry.Agri,
+      ministry: Ministry.Ag,
     };
 
     const response = await server.executeOperation(

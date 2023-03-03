@@ -47,7 +47,7 @@ export const mockProjectA = {
       id: "63bd0a56e7df3f190dfe89fa",
     },
   },
-  ministry: Ministry.Agri,
+  ministry: Ministry.Ag,
   cluster: Cluster.Clab,
   productionQuota: defaultQuota,
   testQuota: defaultQuota,
@@ -91,7 +91,7 @@ export const mockProjectB = {
       id: "63bd0a56e7df3f190dfe89fa",
     },
   },
-  ministry: Ministry.Agri,
+  ministry: Ministry.Ag,
   cluster: Cluster.Clab,
   productionQuota: defaultQuota,
   testQuota: defaultQuota,
@@ -118,7 +118,7 @@ export const mockProjectOwner = {
   email: "oamarkanji@gmail.com",
   firstName: "testA",
   lastName: "testA",
-  ministry: Ministry.Agri,
+  ministry: Ministry.Ag,
 };
 
 export const mockPrimaryTechnicalLead = {
@@ -126,7 +126,7 @@ export const mockPrimaryTechnicalLead = {
   email: "testB@test.com",
   firstName: "testB",
   lastName: "testB",
-  ministry: Ministry.Agri,
+  ministry: Ministry.Ag,
 };
 
 export const mockSecondaryTechnicalLead = {
@@ -134,7 +134,7 @@ export const mockSecondaryTechnicalLead = {
   email: "testC@test.com",
   firstName: "testC",
   lastName: "testC",
-  ministry: Ministry.Agri,
+  ministry: Ministry.Ag,
 };
 
 export const quotaA = {
@@ -193,7 +193,7 @@ export const restProjectA = {
   projectOwnerId: "63bd0a56e7df3f190dfe89fc",
   primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
-  ministry: "AGRI",
+  ministry: "AG",
   cluster: "CLAB",
   commonComponents: {
     addressAndGeolocation: null,
@@ -213,7 +213,7 @@ export const restProjectA = {
     firstName: "testA",
     lastName: "testA",
     email: "testA@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
@@ -223,7 +223,7 @@ export const restProjectA = {
     firstName: "testB",
     lastName: "testB",
     email: "testB@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
@@ -233,7 +233,7 @@ export const restProjectA = {
     firstName: "testC",
     lastName: "testC",
     email: "testC@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
@@ -250,7 +250,7 @@ export const restProjectB = {
   projectOwnerId: "63bd0a56e7df3f190dfe89fc",
   primaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fb",
   secondaryTechnicalLeadId: "63bd0a56e7df3f190dfe89fa",
-  ministry: "AGRI",
+  ministry: "AG",
   cluster: "GOLD",
   commonComponents: {
     addressAndGeolocation: null,
@@ -270,7 +270,7 @@ export const restProjectB = {
     firstName: "testA",
     lastName: "testA",
     email: "testA@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
@@ -280,7 +280,7 @@ export const restProjectB = {
     firstName: "testB",
     lastName: "testB",
     email: "testB@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
@@ -290,7 +290,7 @@ export const restProjectB = {
     firstName: "testC",
     lastName: "testC",
     email: "testC@test.com",
-    ministry: "AGRI",
+    ministry: "AG",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
     lastSeen: "2023-01-11T21:40:25.019Z",
