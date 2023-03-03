@@ -22,7 +22,7 @@ export default class ClientConnection {
         grant_type: 'client_credentials',
         client_id: clientId,
         client_secret: clientSecret,
-        scope: ''
+        // scope: ''
       }))
     );
   }

@@ -118,7 +118,6 @@ export const mockProjectOwner = {
   email: "oamarkanji@gmail.com",
   firstName: "testA",
   lastName: "testA",
-  githubId: "testA",
   ministry: Ministry.Agri,
 };
 
@@ -127,7 +126,6 @@ export const mockPrimaryTechnicalLead = {
   email: "testB@test.com",
   firstName: "testB",
   lastName: "testB",
-  githubId: "testB",
   ministry: Ministry.Agri,
 };
 
@@ -136,7 +134,6 @@ export const mockSecondaryTechnicalLead = {
   email: "testC@test.com",
   firstName: "testC",
   lastName: "testC",
-  githubId: "testC",
   ministry: Ministry.Agri,
 };
 
@@ -216,7 +213,6 @@ export const restProjectA = {
     firstName: "testA",
     lastName: "testA",
     email: "testA@test.com",
-    githubId: "testA",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
@@ -227,7 +223,6 @@ export const restProjectA = {
     firstName: "testB",
     lastName: "testB",
     email: "testB@test.com",
-    githubId: "testB",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
@@ -238,7 +233,6 @@ export const restProjectA = {
     firstName: "testC",
     lastName: "testC",
     email: "testC@test.com",
-    githubId: "testC",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
@@ -276,7 +270,6 @@ export const restProjectB = {
     firstName: "testA",
     lastName: "testA",
     email: "testA@test.com",
-    githubId: "testA",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
@@ -287,7 +280,6 @@ export const restProjectB = {
     firstName: "testB",
     lastName: "testB",
     email: "testB@test.com",
-    githubId: "testB",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",
@@ -298,7 +290,6 @@ export const restProjectB = {
     firstName: "testC",
     lastName: "testC",
     email: "testC@test.com",
-    githubId: "testC",
     ministry: "AGRI",
     archived: false,
     created: "2023-01-11T21:40:25.019Z",

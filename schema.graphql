@@ -112,7 +112,7 @@ enum DefaultStorageOptions {
   STORAGE_16
   STORAGE_32
   STORAGE_64
-  STORAGE_124
+  STORAGE_128
   STORAGE_256
   STORAGE_512
 }
@@ -143,7 +143,7 @@ type PrivateCloudProject {
 type PrivateCloudRequest {
   id: ID!
   active: Boolean!
-  createdBy: User!
+  createdBy: User
   decisionMaker: User
   type: RequestType!
   decisionStatus: DecisionStatus!

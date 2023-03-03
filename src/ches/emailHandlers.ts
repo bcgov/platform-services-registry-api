@@ -393,7 +393,13 @@ export const sendDeleteRequestEmails = async (project) => {
   }
 };
 export const sendMakeDecisionEmails = async (request) => {
-  const { type, decisionStatus, humanComment, requestedProject, project } = request;
+
+  let { type, decisionStatus, requestedProject, humanComment, project } = request;
+
+  if(!project) {
+    project = requestedProject;
+  }
+
   try {
     if (decisionStatus === RequestDecision.Approved) {
       if (type === RequestType.Create) {

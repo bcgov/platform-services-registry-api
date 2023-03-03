@@ -245,6 +245,7 @@ describe("Request tests", () => {
     expect(primaryTechnicalLeadUser?.lastName).toBe(
       primaryTechnicalLead.lastName
     );
+
     expect(primaryTechnicalLeadUser?.ministry).toBe(
       primaryTechnicalLead.ministry
     );
@@ -372,6 +373,7 @@ describe("Request tests", () => {
     expect(secondaryTechnicalLeadUser?.lastName).toBe(
       secondaryTechnicalLead.lastName
     );
+
     expect(secondaryTechnicalLeadUser?.ministry).toBe(
       secondaryTechnicalLead.ministry
     );
@@ -588,14 +590,12 @@ describe("Request tests", () => {
         email: "oamarkanji@gmail.com",
         firstName: "testA",
         lastName: "testA",
-        githubId: "testA",
         ministry: Ministry.Agri,
       },
       primaryTechnicalLead: {
         email: "new@test.com",
         firstName: "testA",
         lastName: "testA",
-        githubId: "testA",
         ministry: Ministry.Agri,
       },
       commonComponents: {
@@ -634,9 +634,6 @@ describe("Request tests", () => {
         contextValue,
       }
     );
-
-    // @ts-ignore
-    console.log(response.body.singleResult.errors)
 
     expect(response).toMatchSnapshot({
       body: {
