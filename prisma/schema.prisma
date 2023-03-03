@@ -137,29 +137,33 @@ enum RequestType {
 }
 
 enum Ministry {
-  AF
+  AEST
   AG
-  MSFD
+  AGRI
+  ALC
+  BCPC
   CITZ
-  ECC
-  EMCR
-  EMLI
+  DBC
+  EAO
+  EDUC
+  EMBC
+  EMPR
   ENV
   FIN
-  For
+  FLNR
   HLTH
-  HOUS
   IRR
-  JEDI
+  JEDC
   LBR
+  LDB
+  MAH
+  MCF
   MMHA
-  MUNI
-  PSFS
+  PSA
   PSSG
   SDPR
-  TACS
-  MOTI
-  WLRS
+  TCA
+  TRAN
 }
 
 enum Cluster {
