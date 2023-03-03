@@ -14,7 +14,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
   { authRoles, authEmail, prisma }
 ) => {
   const { requestId, decision, humanComment } = args;
-
+  
   if (!authRoles.includes("admin")) {
     throw new Error("You must be an admin to make a request decision.");
   }
