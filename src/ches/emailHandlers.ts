@@ -11,46 +11,8 @@ import {
   DefaultMemoryOptions,
   DefaultStorageOptions,
   adminEmails,
+  clusterNames
 } from "../nats/constants.js";
-
-const adminEmails = ['zhanna.kolesnyk@gov.bc.ca'];
-const clusterNames = [
-  {
-    id: 1,
-    name: "clab",
-    humanFriendlyName: "CLAB Calgary",
-  },
-  {
-    id: 2,
-    name: "klab",
-    humanFriendlyName: "KLAB Kamloops",
-  },
-  {
-    id: 3,
-    name: "silver",
-    humanFriendlyName: "Silver Kamloops",
-  },
-  {
-    id: 4,
-    name: "gold",
-    humanFriendlyName: "Gold Kamloops",
-  },
-  {
-    id: 5,
-    name: "golddr",
-    humanFriendlyName: "Gold (DR) Calgary",
-  },
-  {
-    id: 6,
-    name: "klab2",
-    humanFriendlyName: "KLAB2 Kamloops",
-  },
-  {
-    id: 7,
-    name: "emerald",
-    humanFriendlyName: "Emerald Hosting Tier",
-  },
-];
 
 export const isQuotaChanged = (projectQuota, requestedQuota) =>
   JSON.stringify(projectQuota) !== JSON.stringify(requestedQuota);
@@ -230,20 +192,17 @@ export const generateEmailTemplateData = (
     productMinistry: requestedProject.ministry,
     POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
     POEmail: projectOwner.email,
-    POGitHubOrIDIR: projectOwner?.POIDIR || projectOwner?.githubId,
+    POGitHubOrIDIR: projectOwner?.POIDIR,
     PriTLName: `${primaryTechnicalLead?.firstName} ${primaryTechnicalLead?.lastName}`,
     PriTLEmail: primaryTechnicalLead?.email,
     PriTLGitHubOrIDIR:
-      primaryTechnicalLead?.POIDIR || primaryTechnicalLead?.githubId,
+      primaryTechnicalLead?.POIDIR,
     SecTLName: secondaryTechnicalLead
       ? `${secondaryTechnicalLead?.firstName} ${secondaryTechnicalLead.lastName}`
       : null,
     SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead?.email : null,
     SecTLGitHubOrIDIR: secondaryTechnicalLead
-      ? secondaryTechnicalLead?.POIDIR
-        ? secondaryTechnicalLead?.POIDIR
-        : secondaryTechnicalLead?.githubId
-      : null,
+      ? secondaryTechnicalLead?.POIDIR : null,
     setCluster: clusterNames.filter(
       (item) =>
         item.name.toLowerCase() === requestedProject?.cluster.toLowerCase()
@@ -434,7 +393,8 @@ export const sendDeleteRequestEmails = async (project) => {
   }
 };
 export const sendMakeDecisionEmails = async (request) => {
-  let { type, decisionStatus, requestedProject, project } = request;
+
+  let { type, decisionStatus, requestedProject, humanComment, project } = request;
 
   if(!project) {
     project = requestedProject;
@@ -449,6 +409,7 @@ export const sendMakeDecisionEmails = async (request) => {
             "./src/ches/new-templates/provisioning-request-completion-email.html",
             generateEmailTemplateData(undefined, requestedProject, {
               consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
+              humanActionComment: humanComment || null,
             })
           ),
           //For all project contacts. Sent when the provisioner application has finished provisioning the new namespaces for a product.
@@ -472,6 +433,7 @@ export const sendMakeDecisionEmails = async (request) => {
             "./src/ches/new-templates/quota-request-completion-email.html",
             generateEmailTemplateData(requestedProject, project, {
               consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
+              humanActionComment: humanComment || null,
             })
           ),
           // For all project contacts.
@@ -524,7 +486,7 @@ export const sendMakeDecisionEmails = async (request) => {
                 : type === RequestType.Edit
                   ? "Edit"
                   : "Deletion",
-            humanActionComment: requestedProject.humanActionComment || null,
+            humanActionComment: humanComment || null,
             isProvisioningRequest: type === RequestType.Create,
             isQuotaRequest: type === RequestType.Edit,
             productDescription: requestedProject.description,
