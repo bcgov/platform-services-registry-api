@@ -3,6 +3,7 @@ import {
   MutationResolvers,
   DecisionStatus,
   RequestDecision,
+  Cluster,
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
@@ -14,7 +15,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
   { authRoles, authEmail, prisma }
 ) => {
   const { requestId, decision, humanComment } = args;
-  
+
   if (!authRoles.includes("admin")) {
     throw new Error("You must be an admin to make a request decision.");
   }
@@ -62,6 +63,12 @@ const privateCloudRequestDecision: MutationResolvers = async (
 
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject);
+
+    if (request.requestedProject.cluster === Cluster.Gold) {
+      const goldDrRequest = { ...request };
+      goldDrRequest.requestedProject.cluster = Cluster.Golddr;
+      await sendNatsMessage(request.type, request.requestedProject);
+    }
   }
 
   sendMakeDecisionEmails(request);
