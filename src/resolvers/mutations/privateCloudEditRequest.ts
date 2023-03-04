@@ -3,6 +3,7 @@ import {
   RequestType,
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs,
+  Cluster,
 } from "../../__generated__/resolvers-types.js";
 import { Prisma, PrivateCloudRequest } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
@@ -159,6 +160,12 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
   if (decisionStatus === DecisionStatus.Approved) {
     await sendNatsMessage(editRequest.type, editRequest.requestedProject);
+
+    if (editRequest.requestedProject.cluster === Cluster.Gold) {
+      const goldDrRequest = { ...editRequest };
+      goldDrRequest.requestedProject.cluster = Cluster.Golddr;
+      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
+    }
   }
 
   await sendEditRequestEmails(
