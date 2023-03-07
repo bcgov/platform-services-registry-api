@@ -246,31 +246,34 @@ type projectsPaginatedOutput {
 
 type Query {
   me: User @auth
-  users: [User!]! @hasRole(role: "admin") @auth
-  user(id: ID!): User @hasRole(role: "admin")
-  usersByIds(ids: [ID!]!): [User!]! @hasRole(role: "admin")
+  users: [User!]! @auth @hasRole(role: ["admin", "read-only-admin"])
+  user(id: ID!): User @auth @hasRole(role: ["admin", "read-only-admin"])
+  usersByIds(ids: [ID!]!): [User!]! @hasRole(role: ["admin", "read-only-admin"])
   userByEmail(email: EmailAddress!): User @auth
 
-  privateCloudProjects: [PrivateCloudProject!]! @hasRole(role: "admin")
+  privateCloudProjects: [PrivateCloudProject!]!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectsPaginated(
     page: Int!
     pageSize: Int!
     filter: FilterPrivateCloudProjectsInput
     search: String
-  ): projectsPaginatedOutput! @hasRole(role: "admin")
+  ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectsWithFilterSearch(
     filter: FilterPrivateCloudProjectsInput
     search: String
-  ): [PrivateCloudProject!]! @hasRole(role: "admin")
+  ): [PrivateCloudProject!]! @auth @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectById(projectId: ID!): PrivateCloudProject!
-    @hasRole(role: "admin")
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     @auth
-    @hasRole(role: "admin")
+    @hasRole(role: ["admin", "read-only-admin"])
 
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
   userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
@@ -279,12 +282,19 @@ type Query {
   userPrivateCloudRequests: [PrivateCloudRequest!]! @auth
   userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest! @auth
 
-  privateCloudRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
+  privateCloudRequests: [PrivateCloudRequest!]!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
-    @hasRole(role: "admin")
-  privateCloudActiveRequests: [PrivateCloudRequest!]! @hasRole(role: "admin")
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+  privateCloudActiveRequests: [PrivateCloudRequest!]!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
   privateCloudActiveRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
-    @hasRole(role: "admin")
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+
   userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
   userPrivateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest! @auth
   userPrivateCloudActiveRequestsByIds(requestIds: [ID!]): PrivateCloudRequest!
