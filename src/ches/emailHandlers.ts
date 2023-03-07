@@ -9,10 +9,13 @@ import {
   RequestType,
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions,
-  adminEmails,
-  clusterNames
+  DefaultStorageOptions
 } from "../nats/constants.js";
+import {
+  adminEmails,
+  clusterNames,
+  ministriesNames,
+} from "./emailConstants.js";
 
 export const isQuotaChanged = (projectQuota, requestedQuota) =>
   JSON.stringify(projectQuota) !== JSON.stringify(requestedQuota);
@@ -189,7 +192,10 @@ export const generateEmailTemplateData = (
     licencePlate: requestedProject.licencePlate,
     projectName: requestedProject.name,
     productDescription: requestedProject.description,
-    productMinistry: requestedProject.ministry,
+    productMinistry: ministriesNames.filter(
+      (item) =>
+        item.name.toLowerCase() === requestedProject?.ministry.toLowerCase()
+    )[0]?.humanFriendlyName,
     POName: `${projectOwner.firstName} ${projectOwner.lastName}`,
     POEmail: projectOwner.email,
     POGitHubOrIDIR: projectOwner?.POIDIR,
