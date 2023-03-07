@@ -1,44 +1,52 @@
 import { prisma } from "../index.js";
 
-import { DecisionStatus } from "../__generated__/resolvers-types.js";
+import { DecisionStatus, Cluster } from "../__generated__/resolvers-types.js";
 
 const provisionerCallbackHandler = async (req, res) => {
   try {
-    const { prefix: licencePlate } = req.body;
+    const { prefix: licencePlate, cluster } = req.body;
+
+    if (cluster === Cluster.Golddr) {
+      res.status(200).end();
+      console.log("Golddr cluster, skipping. Licence plate: " + licencePlate);
+      return;
+    }
 
     const request = await prisma.privateCloudRequest.findFirst({
       where: {
         licencePlate: licencePlate,
-        active: true,
-      },
+        active: true
+      }
     });
 
     const { id, ...requestedProject } =
       await prisma.privateCloudRequestedProject.findFirst({
         where: {
-          id: request.requestedProjectId,
-        },
+          id: request.requestedProjectId
+        }
       });
 
     const updateRequest = prisma.privateCloudRequest.update({
       where: {
-        requestedProjectId: id,
+        requestedProjectId: id
       },
       data: {
         decisionStatus: DecisionStatus.Provisioned,
-        active: false,
-      },
+        active: false
+      }
     });
 
     const upsertProject = prisma.privateCloudProject.upsert({
       where: {
-        licencePlate: licencePlate,
+        licencePlate: licencePlate
       },
       update: requestedProject,
-      create: requestedProject,
+      create: requestedProject
     });
 
     await prisma.$transaction([updateRequest, upsertProject]);
+
+    console.log("Provisioned project: " + licencePlate);
   } catch (error) {
     console.log(error);
     res.status(400).end();
