@@ -1,8 +1,8 @@
 export const privateCloudProjects = (_, __, { prisma }) => {
   return prisma.privateCloudProject.findMany({
     where: {
-      status: "ACTIVE",
-    },
+      status: "ACTIVE"
+    }
   });
 };
 
@@ -10,20 +10,23 @@ export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
   prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
-      status: "ACTIVE",
-    },
+      status: "ACTIVE"
+    }
   });
 
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
   prisma.privateCloudProject.findMany({
+    orderBy: {
+      name: "asc"
+    },
     where: {
       status: "ACTIVE",
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } },
-      ],
-    },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
   });
 
 export const userPrivateCloudProjectById = async (
@@ -38,9 +41,9 @@ export const userPrivateCloudProjectById = async (
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } },
-      ],
-    },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
   });
 
 export const userPrivateCloudProjectsByIds = async (
@@ -55,9 +58,9 @@ export const userPrivateCloudProjectsByIds = async (
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } },
-      ],
-    },
+        { secondaryTechnicalLead: { email: authEmail } }
+      ]
+    }
   });
 
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
@@ -71,6 +74,9 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   const offset = (page - 1) * pageSize;
 
   const projects = await prisma.privateCloudProject.findMany({
+    orderBy: {
+      name: "asc"
+    },
     where: {
       status: "ACTIVE",
       AND: [
@@ -87,23 +93,23 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
             { secondaryTechnicalLead: { lastName: { contains: search } } },
             { name: { contains: search } },
             { description: { contains: search } },
-            { licencePlate: { contains: search } },
-          ],
+            { licencePlate: { contains: search } }
+          ]
         },
         {
           ministry: {
-            in: ministry,
-          },
+            in: ministry
+          }
         },
         {
           cluster: {
-            in: cluster,
-          },
-        },
-      ],
+            in: cluster
+          }
+        }
+      ]
     },
     skip: offset,
-    take: pageSize,
+    take: pageSize
   });
 
   const total = await prisma.privateCloudProject.count({
@@ -123,27 +129,26 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
             { secondaryTechnicalLead: { lastName: { contains: search } } },
             { name: { contains: search } },
             { description: { contains: search } },
-            { licencePlate: { contains: search } },
-          ],
+            { licencePlate: { contains: search } }
+          ]
         },
         {
           ministry: {
-            in: ministry,
-          },
+            in: ministry
+          }
         },
         {
           cluster: {
-            in: cluster,
-          },
-        },
-      ],
-    },
+            in: cluster
+          }
+        }
+      ]
+    }
   });
-
 
   return {
     projects,
-    total,
+    total
   };
 };
 
@@ -160,6 +165,9 @@ export const privateCloudProjectsWithFilterSearch = async (
   cluster = cluster === null ? undefined : cluster;
 
   const projects = await prisma.privateCloudProject.findMany({
+    orderBy: {
+      name: "asc"
+    },
     where: {
       status: "ACTIVE",
       AND: [
@@ -176,21 +184,21 @@ export const privateCloudProjectsWithFilterSearch = async (
             { secondaryTechnicalLead: { lastName: { contains: search } } },
             { name: { contains: search } },
             { description: { contains: search } },
-            { licencePlate: { contains: search } },
-          ],
+            { licencePlate: { contains: search } }
+          ]
         },
         {
           ministry: {
-            in: ministry,
-          },
+            in: ministry
+          }
         },
         {
           cluster: {
-            in: cluster,
-          },
-        },
-      ],
-    },
+            in: cluster
+          }
+        }
+      ]
+    }
   });
 
   return projects;

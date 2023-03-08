@@ -8,7 +8,7 @@ import privateCloudProjectRequest from "./mutations/privateCloudCreateRequest.js
 import privateCloudRequestDecision from "./mutations/privateCloudRequestDecision.js";
 import privateCloudProjectEditRequest from "./mutations/privateCloudEditRequest.js";
 import privateCloudProjectDeleteRequest from "./mutations/privateCloudDeleteRequest.js";
-import privateCloudProjectReProvisionRequest from "./mutations/privateCloudReProvisionRequest.js";
+import privateCloudReProvisionRequest from "./mutations/privateCloudReProvisionRequest.js";
 import * as userQueries from "./queries/users.js";
 import * as requestQueries from "./queries/requests.js";
 import * as projectQueries from "./queries/projects.js";
@@ -24,7 +24,7 @@ const mutations: MutationResolvers = {
     privateCloudRequestDecision,
     privateCloudProjectEditRequest,
     privateCloudProjectDeleteRequest,
-    privateCloudProjectReProvisionRequest
+    privateCloudReProvisionRequest
   }
 };
 
