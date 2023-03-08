@@ -155,6 +155,7 @@ export type Mutation = {
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
+  privateCloudReProvisionRequest?: Maybe<PrivateCloudRequest>;
   privateCloudRequestDecision?: Maybe<PrivateCloudRequest>;
   signUp: User;
 };
@@ -195,6 +196,11 @@ export type MutationPrivateCloudProjectRequestArgs = {
   primaryTechnicalLead: CreateUserInput;
   projectOwner: CreateUserInput;
   secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
+};
+
+
+export type MutationPrivateCloudReProvisionRequestArgs = {
+  requestId: Scalars['ID'];
 };
 
 
@@ -580,6 +586,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'description' | 'developmentQuota' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'productionQuota' | 'projectId' | 'projectOwner' | 'testQuota' | 'toolsQuota'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner'>>;
+  privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;

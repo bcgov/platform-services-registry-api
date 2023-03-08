@@ -6,6 +6,7 @@ enum ProjectStatus {
   INACTIVE
 }
 
+# Change this to Status
 enum DecisionStatus {
   PENDING
   APPROVED
@@ -342,4 +343,7 @@ type Mutation {
     decision: RequestDecision!
     humanComment: String
   ): PrivateCloudRequest @hasRole(role: "admin")
+
+  privateCloudReProvisionRequest(requestId: ID!): PrivateCloudRequest
+    @hasRole(role: "admin")
 }
