@@ -15,6 +15,7 @@ import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import applyDirectiveTransformers from "./transformers/index.js";
 import { PrismaClient } from "@prisma/client";
 import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
+import invokeNats from "./controllers/invokeNats.js";
 import chesService from "./ches/index.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
@@ -80,6 +81,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/namespace", provisionerCallbackHandler);
+app.post("/invokeNats", invokeNats);
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
