@@ -67,16 +67,19 @@ function message(action, requestedProject) {
   }
 
   const projectOwnerContact = {
-    email: projectOwner.email
+    email: projectOwner.email,
+    role: "owner"
   };
 
   const primaryTechnicalLeadContact = {
-    email: primaryTechnicalLead.email
+    email: primaryTechnicalLead.email,
+    role: "lead"
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
     ? {
-        email: secondaryTechnicalLead.email
+        email: secondaryTechnicalLead.email,
+        role: "lead"
       }
     : null;
 
