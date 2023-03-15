@@ -53,17 +53,6 @@ function message(action, requestedProject) {
     storage: DefaultStorageOptions[toolsQuota.storage]
   };
 
-  // user_id has been hard coded to "okanji" for now
-  // Will remomve user_id and provider when we go into prod
-
-  const projectOwnerContact = {
-    user_id: "PlatformServicesTest",
-    provider: "github",
-    email: projectOwner.email,
-    rocketchat_username: null,
-    role: "owner"
-  };
-
   let allianceLabel = "";
   switch (ministry.toLocaleLowerCase()) {
     case "ag":
@@ -77,21 +66,17 @@ function message(action, requestedProject) {
       break;
   }
 
+  const projectOwnerContact = {
+    email: projectOwner.email
+  };
+
   const primaryTechnicalLeadContact = {
-    user_id: "PlatformServicesTest",
-    provider: "github",
-    email: primaryTechnicalLead.email,
-    rocketchat_username: null,
-    role: "lead"
+    email: primaryTechnicalLead.email
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
     ? {
-        user_id: "PlatformServicesTest",
-        provider: "github",
-        email: secondaryTechnicalLead.email,
-        rocketchat_username: null,
-        role: "lead"
+        email: secondaryTechnicalLead.email
       }
     : null;
 
