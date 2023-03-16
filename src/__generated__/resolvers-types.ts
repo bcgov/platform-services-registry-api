@@ -66,7 +66,7 @@ export type CreateUserInput = {
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
-  ministry: Ministry;
+  ministry?: InputMaybe<Ministry>;
 };
 
 export enum DecisionStatus {
@@ -83,7 +83,8 @@ export enum DefaultCpuOptions {
   CpuRequest_4Limit_8 = 'CPU_REQUEST_4_LIMIT_8',
   CpuRequest_8Limit_16 = 'CPU_REQUEST_8_LIMIT_16',
   CpuRequest_16Limit_32 = 'CPU_REQUEST_16_LIMIT_32',
-  CpuRequest_32Limit_64 = 'CPU_REQUEST_32_LIMIT_64'
+  CpuRequest_32Limit_64 = 'CPU_REQUEST_32_LIMIT_64',
+  CpuRequest_64Limit_128 = 'CPU_REQUEST_64_LIMIT_128'
 }
 
 export enum DefaultMemoryOptions {
@@ -388,10 +389,6 @@ export enum RequestType {
   Edit = 'EDIT'
 }
 
-export type SignUpInput = {
-  ministry: Ministry;
-};
-
 export enum SortOrder {
   Ascending = 'ASCENDING',
   Descending = 'DESCENDING'
@@ -526,7 +523,6 @@ export type ResolversTypes = ResolversObject<{
   QuotaInput: QuotaInput;
   RequestDecision: RequestDecision;
   RequestType: RequestType;
-  SignUpInput: SignUpInput;
   SortOrder: SortOrder;
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserInput: UpdateUserInput;
@@ -551,7 +547,6 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Quota: Quota;
   QuotaInput: QuotaInput;
-  SignUpInput: SignUpInput;
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
   User: User;
@@ -723,13 +718,13 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
     email: yup.mixed().defined(),
     firstName: yup.string().defined(),
     lastName: yup.string().defined(),
-    ministry: MinistrySchema.defined()
+    ministry: MinistrySchema
   })
 }
 
 export const DecisionStatusSchema = yup.mixed().oneOf([DecisionStatus.Approved, DecisionStatus.Pending, DecisionStatus.Provisioned, DecisionStatus.Rejected]);
 
-export const DefaultCpuOptionsSchema = yup.mixed().oneOf([DefaultCpuOptions.CpuRequest_0_5Limit_1_5, DefaultCpuOptions.CpuRequest_1Limit_2, DefaultCpuOptions.CpuRequest_2Limit_4, DefaultCpuOptions.CpuRequest_4Limit_8, DefaultCpuOptions.CpuRequest_8Limit_16, DefaultCpuOptions.CpuRequest_16Limit_32, DefaultCpuOptions.CpuRequest_32Limit_64]);
+export const DefaultCpuOptionsSchema = yup.mixed().oneOf([DefaultCpuOptions.CpuRequest_0_5Limit_1_5, DefaultCpuOptions.CpuRequest_1Limit_2, DefaultCpuOptions.CpuRequest_2Limit_4, DefaultCpuOptions.CpuRequest_4Limit_8, DefaultCpuOptions.CpuRequest_8Limit_16, DefaultCpuOptions.CpuRequest_16Limit_32, DefaultCpuOptions.CpuRequest_32Limit_64, DefaultCpuOptions.CpuRequest_64Limit_128]);
 
 export const DefaultMemoryOptionsSchema = yup.mixed().oneOf([DefaultMemoryOptions.MemoryRequest_2Limit_4, DefaultMemoryOptions.MemoryRequest_4Limit_8, DefaultMemoryOptions.MemoryRequest_8Limit_16, DefaultMemoryOptions.MemoryRequest_16Limit_32, DefaultMemoryOptions.MemoryRequest_32Limit_64, DefaultMemoryOptions.MemoryRequest_64Limit_128]);
 
@@ -763,12 +758,6 @@ export function QuotaInputSchema(): yup.SchemaOf<QuotaInput> {
 export const RequestDecisionSchema = yup.mixed().oneOf([RequestDecision.Approved, RequestDecision.Rejected]);
 
 export const RequestTypeSchema = yup.mixed().oneOf([RequestType.Create, RequestType.Delete, RequestType.Edit]);
-
-export function SignUpInputSchema(): yup.SchemaOf<SignUpInput> {
-  return yup.object({
-    ministry: MinistrySchema.defined()
-  })
-}
 
 export const SortOrderSchema = yup.mixed().oneOf([SortOrder.Ascending, SortOrder.Descending]);
 

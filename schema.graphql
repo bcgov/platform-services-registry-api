@@ -202,11 +202,7 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  ministry: Ministry!
-}
-
-input SignUpInput {
-  ministry: Ministry!
+  ministry: Ministry
 }
 
 input UpdateUserInput {
