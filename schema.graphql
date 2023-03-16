@@ -161,7 +161,7 @@ type User {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  ministry: Ministry
+  ministry: String 
   archived: Boolean!
   created: DateTime!
   lastSeen: DateTime
