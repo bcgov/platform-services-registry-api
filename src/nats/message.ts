@@ -104,10 +104,10 @@ function message(action, requestedProject) {
         limits: quota.memory.memoryLimits
       },
       storage: {
-        block: "1Gi",
+        block: quota.storage.storageBlock,
         file: quota.storage.storageFile,
         backup: quota.storage.storageBackup,
-        capacity: "1Gi",
+        capacity: quota.storage.storageCapacity,
         pvc_count: quota.storage.storagePvcCount
       },
       snapshot: { count: snapshot.snapshotCount }
