@@ -138,7 +138,7 @@ export const DefaultStorageOptions = {
     name: "storage-128",
     storagePvcCount: 60,
     storageFile: "128Gi",
-    storageBackup: "64GB",
+    storageBackup: "64Gi",
     storageCapacity: "128Gi",
     storageBlock: "128Gi",
   },
