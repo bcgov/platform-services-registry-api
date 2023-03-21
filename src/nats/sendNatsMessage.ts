@@ -16,7 +16,7 @@ async function sendNatsMessage(action, requestedProject) {
     // const messageBody = testMessage;
 
     console.log("NATS SUBJECT: ", natsSubject);
-    console.log("MESSAGE BODY: ", messageBody);
+    console.log("MESSAGE BODY: ", JSON.stringify(messageBody));
 
     const nc = await connect({ servers: serverURL });
 
