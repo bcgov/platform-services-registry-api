@@ -437,7 +437,7 @@ export const sendMakeDecisionEmails = async (request) => {
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/quota-request-completion-email.html",
-            generateEmailTemplateData(requestedProject, project, {
+            generateEmailTemplateData(project, requestedProject, {
               consoleURL: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/`,
               humanActionComment: humanComment || null,
             })

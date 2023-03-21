@@ -40,6 +40,12 @@ const privateCloudReProvisionRequest: MutationResolvers = async (
     }
   });
 
+  const { decisionStatus, active } = request;
+
+  if (decisionStatus !== RequestDecision.Approved || !active) {
+    throw new Error("Request must be active and approved.");
+  }
+
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject);
 
