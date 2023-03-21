@@ -71,7 +71,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
     }
   }
 
-  sendMakeDecisionEmails(request);
+  // sendMakeDecisionEmails(request);
 
   return request;
 };

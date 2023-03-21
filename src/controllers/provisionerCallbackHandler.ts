@@ -1,6 +1,7 @@
 import { prisma } from "../index.js";
 
 import { DecisionStatus, Cluster } from "../__generated__/resolvers-types.js";
+import { sendMakeDecisionEmails } from "../ches/emailHandlers.js";
 
 const provisionerCallbackHandler = async (req, res) => {
   try {
@@ -18,7 +19,7 @@ const provisionerCallbackHandler = async (req, res) => {
         active: true
       }
     });
-
+    
     const { id, ...requestedProject } =
       await prisma.privateCloudRequestedProject.findFirst({
         where: {
@@ -44,8 +45,33 @@ const provisionerCallbackHandler = async (req, res) => {
       create: requestedProject
     });
 
-    await prisma.$transaction([updateRequest, upsertProject]);
+    prisma.privateCloudRequest.findUnique({
+      where: {
+        id: request.id,
+        decisionStatus: DecisionStatus.Approved,
+      },
+      include: {
+        project: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
+          },
+        },
+        requestedProject: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
+    }).then((res) => {
+      sendMakeDecisionEmails(res)
+    }).catch(error => console.log(error))
 
+    await prisma.$transaction([updateRequest, upsertProject]);
+    
     console.log("Provisioned project: " + licencePlate);
   } catch (error) {
     console.log(error);
