@@ -10,11 +10,18 @@ const provisionerCallbackHandler = async (req, res) => {
       where: {
         licencePlate: licencePlate,
         active: true,
+        decisionStatus: DecisionStatus.Approved,
         requestedProject: {
           cluster: cluster
         }
       }
     });
+
+    if (!request) {
+      console.log("No provision request found for project: " + licencePlate);
+      res.status(400).end();
+      return;
+    }
 
     const { id, ...requestedProject } =
       await prisma.privateCloudRequestedProject.findFirst({
