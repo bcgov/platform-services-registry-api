@@ -18,7 +18,7 @@ const reprovisionAllProjects = async (req, res) => {
 
     // Loop through projects and reprovision them
     for (const project of projects) {
-      await sendNatsMessage(RequestType.Edit, project);
+      // await sendNatsMessage(RequestType.Edit, project);
     }
   } catch (error) {
     console.log(error);
