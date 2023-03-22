@@ -6,16 +6,13 @@ const provisionerCallbackHandler = async (req, res) => {
   try {
     const { prefix: licencePlate, cluster } = req.body;
 
-    if (cluster === Cluster.Golddr) {
-      res.status(200).end();
-      console.log("Golddr cluster, skipping. Licence plate: " + licencePlate);
-      return;
-    }
-
     const request = await prisma.privateCloudRequest.findFirst({
       where: {
         licencePlate: licencePlate,
-        active: true
+        active: true,
+        requestedProject: {
+          cluster: cluster
+        }
       }
     });
 
