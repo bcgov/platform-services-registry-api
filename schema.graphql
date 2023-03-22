@@ -161,7 +161,7 @@ type User {
   firstName: String!
   lastName: String!
   email: EmailAddress!
-  ministry: String 
+  ministry: String
   archived: Boolean!
   created: DateTime!
   lastSeen: DateTime
@@ -342,5 +342,8 @@ type Mutation {
   ): PrivateCloudRequest @hasRole(role: "admin")
 
   privateCloudReProvisionRequest(requestId: ID!): PrivateCloudRequest
+    @hasRole(role: "admin")
+
+  privateCloudReProvisionProject(projectId: ID!): PrivateCloudProject
     @hasRole(role: "admin")
 }
