@@ -16,7 +16,6 @@ import applyDirectiveTransformers from "./transformers/index.js";
 import { PrismaClient } from "@prisma/client";
 import {
   provisionerCallbackHandler,
-  reprovisionAllProjects,
   getReProvisionNatsMessage,
   getIdsForCluster
 } from "./controllers/index.js";
@@ -85,7 +84,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/namespace", provisionerCallbackHandler);
-app.post("/reprovision", reprovisionAllProjects);
 app.get(
   "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
   getReProvisionNatsMessage
