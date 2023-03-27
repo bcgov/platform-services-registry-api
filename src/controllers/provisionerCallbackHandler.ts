@@ -1,25 +1,30 @@
 import { prisma } from "../index.js";
 
-import { DecisionStatus, Cluster } from "../__generated__/resolvers-types.js";
+import { DecisionStatus } from "../__generated__/resolvers-types.js";
 import { sendMakeDecisionEmails } from "../ches/emailHandlers.js";
 
 const provisionerCallbackHandler = async (req, res) => {
   try {
     const { prefix: licencePlate, cluster } = req.body;
 
-    if (cluster === Cluster.Golddr) {
-      res.status(200).end();
-      console.log("Golddr cluster, skipping. Licence plate: " + licencePlate);
-      return;
-    }
-
     const request = await prisma.privateCloudRequest.findFirst({
       where: {
         licencePlate: licencePlate,
-        active: true
+        active: true,
+        decisionStatus: DecisionStatus.Approved,
+        requestedProject: {
+          cluster: cluster
+        }
       }
     });
     
+
+    if (!request) {
+      console.log("No provision request found for project: " + licencePlate);
+      res.status(400).end();
+      return;
+    }
+
     const { id, ...requestedProject } =
       await prisma.privateCloudRequestedProject.findFirst({
         where: {

@@ -14,7 +14,11 @@ import configureKeycloak from "./auth/config.js";
 import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
 import applyDirectiveTransformers from "./transformers/index.js";
 import { PrismaClient } from "@prisma/client";
-import provisionerCallbackHandler from "./controllers/provisionerCallbackHandler.js";
+import {
+  provisionerCallbackHandler,
+  getReProvisionNatsMessage,
+  getIdsForCluster
+} from "./controllers/index.js";
 import chesService from "./ches/index.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
@@ -31,7 +35,7 @@ export const prisma = new PrismaClient();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers,
+  resolvers
 });
 
 schema = applyDirectiveTransformers(schema);
@@ -43,7 +47,7 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true,
+  introspection: true
 });
 
 await server.start();
@@ -61,7 +65,7 @@ app.use(
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: [],
+        roles: []
       };
 
       return {
@@ -69,9 +73,9 @@ app.use(
         prisma,
         authRoles: roles,
         authEmail: email,
-        chesService,
+        chesService
       };
-    },
+    }
   })
 );
 
@@ -80,6 +84,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/namespace", provisionerCallbackHandler);
+app.get(
+  "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
+  getReProvisionNatsMessage
+);
+app.post("/api/v1/provision/sync/provisioned-profile-ids", getIdsForCluster);
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
