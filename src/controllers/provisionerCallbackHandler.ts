@@ -17,7 +17,7 @@ const provisionerCallbackHandler = async (req, res) => {
         }
       }
     });
-    
+
 
     if (!request) {
       console.log("No provision request found for project: " + licencePlate);
@@ -50,7 +50,7 @@ const provisionerCallbackHandler = async (req, res) => {
       create: requestedProject
     });
 
-    prisma.privateCloudRequest.findUnique({
+    const emailRequest = await prisma.privateCloudRequest.findUnique({
       where: {
         id: request.id,
         decisionStatus: DecisionStatus.Approved,
@@ -71,12 +71,12 @@ const provisionerCallbackHandler = async (req, res) => {
           },
         },
       },
-    }).then((res) => {
-      sendMakeDecisionEmails(res)
-    }).catch(error => console.log(error))
+    })
+
+    sendMakeDecisionEmails(emailRequest)
 
     await prisma.$transaction([updateRequest, upsertProject]);
-    
+
     console.log("Provisioned project: " + licencePlate);
   } catch (error) {
     console.log(error);
