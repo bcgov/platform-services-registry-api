@@ -1,8 +1,7 @@
 import session from "express-session";
 import Keycloak from "keycloak-connect";
 
-function configureKeycloak(app, graphqlPath) {
-
+function configureKeycloak(app, path) {
   const keycloakConfig = {
     realm: process.env.AUTH_RELM,
     "auth-server-url": process.env.AUTH_SERVER_URL,
@@ -39,13 +38,14 @@ function configureKeycloak(app, graphqlPath) {
   // Install general keycloak middleware
   app.use(
     keycloak.middleware({
-      admin: graphqlPath,
+      // admin: path,
     })
   );
 
   // Protect the main route for all graphql services
   // Disable unauthenticated access
-  app.use(graphqlPath, keycloak.middleware());
+  // app.use(path, keycloak.middleware());
+  app.use(keycloak.middleware());
 
   return { keycloak };
 }
