@@ -75,7 +75,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 
   const projects = await prisma.privateCloudProject.findMany({
     orderBy: {
-      name: "asc"
+      name: "desc"
     },
     where: {
       status: "ACTIVE",
