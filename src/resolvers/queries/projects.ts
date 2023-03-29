@@ -73,6 +73,31 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 
   const offset = (page - 1) * pageSize;
 
+  // const rawMngo = await prisma.privateCloudProject.findRaw({
+  //   filter: { name: {$regex: 'OpenShift 201 Test Project 1' } },
+  // })
+
+  // console.log(rawMngo)
+
+  const rawMongoAgg = await prisma.privateCloudProject.aggregateRaw({
+    pipeline: [
+      {
+        $project: {
+          "name": 1,
+          "lowerName": {
+            "$toLower": "$name"
+          }
+        }
+      }
+      ,
+      {
+      //   $match:{
+      //   status:{$regex:"ACTIVE"}
+      // },
+         $sort: { lowerName: 1 } }
+    ],
+  })
+  console.log(rawMongoAgg.slice(0, 7))
   const projects = await prisma.privateCloudProject.findMany({
     orderBy: {
       name: "desc"
