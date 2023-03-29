@@ -398,7 +398,7 @@ export const sendDeleteRequestEmails = async (project) => {
     console.error(error);
   }
 };
-export const sendMakeDecisionEmails = async (request) => {
+export const sendProvisionedEmails = async (request) => {
 
   let { type, decisionStatus, requestedProject, humanComment, project } = request;
 
