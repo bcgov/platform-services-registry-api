@@ -65,6 +65,7 @@ const provisionerCallbackHandler = async (req, res) => {
     });
 
     await prisma.$transaction([updateRequest, upsertProject]);
+    
     sendProvisionedEmails(request)
     console.log("Provisioned project: " + licencePlate);
   } catch (error) {
