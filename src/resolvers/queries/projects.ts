@@ -67,7 +67,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let { search, filter = {}, page, pageSize } = args;
   let { ministry, cluster } = filter;
 
-  search = search === null ? undefined : search;
+  search = search === null ? "Zhanna" : search;
   ministry = ministry === null ? undefined : ministry;
   cluster = cluster === null ? undefined : cluster;
 
@@ -84,20 +84,37 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       {
         $project: {
           "name": 1,
+          "status": 1,
+          "projectOwner": {
+            "email" : 1
+          },
           "lowerName": {
             "$toLower": "$name"
           }
         }
-      }
-      ,
+      },
       {
-      //   $match:{
-      //   status:{$regex:"ACTIVE"}
-      // },
-         $sort: { lowerName: 1 } }
+        $match: {
+          status: { $regex: "ACTIVE" },
+          // AND: [
+          //   {
+          //     // OR: [
+          //     //   {
+          //     //     $match: {
+          //     //       projectOwner: { $regex: search },
+          //     //     }
+          //     //   }
+          //     // ]
+          //   }
+          // ]
+        }
+      },
+      {
+        $sort: { lowerName: 1 }
+      }
     ],
   })
-  console.log(rawMongoAgg.slice(0, 7))
+  // console.log(rawMongoAgg.slice(0, 7))
   const projects = await prisma.privateCloudProject.findMany({
     orderBy: {
       name: "desc"
