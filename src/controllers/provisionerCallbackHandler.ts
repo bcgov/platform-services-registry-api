@@ -1,7 +1,7 @@
 import { prisma } from "../index.js";
 
 import { DecisionStatus } from "../__generated__/resolvers-types.js";
-import { sendMakeDecisionEmails } from "../ches/emailHandlers.js";
+import { sendProvisionedEmails } from "../ches/emailHandlers.js";
 
 const provisionerCallbackHandler = async (req, res) => {
   try {
@@ -14,8 +14,24 @@ const provisionerCallbackHandler = async (req, res) => {
         decisionStatus: DecisionStatus.Approved,
         requestedProject: {
           cluster: cluster
-        }
-      }
+        },        
+      }, 
+      include: {
+        project: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
+          },
+        },
+        requestedProject: {
+          include: {
+            projectOwner: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
 
 
@@ -50,33 +66,33 @@ const provisionerCallbackHandler = async (req, res) => {
       create: requestedProject
     });
 
-    const emailRequest = await prisma.privateCloudRequest.findUnique({
-      where: {
-        id: request.id,
-        decisionStatus: DecisionStatus.Approved,
-      },
-      include: {
-        project: {
-          include: {
-            projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
-        },
-        requestedProject: {
-          include: {
-            projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
-        },
-      },
-    })
+    // const emailRequest = await prisma.privateCloudRequest.findUnique({
+    //   where: {
+    //     id: request.id,
+    //     decisionStatus: DecisionStatus.Approved,
+    //   },
+    //   include: {
+    //     project: {
+    //       include: {
+    //         projectOwner: true,
+    //         primaryTechnicalLead: true,
+    //         secondaryTechnicalLead: true,
+    //       },
+    //     },
+    //     requestedProject: {
+    //       include: {
+    //         projectOwner: true,
+    //         primaryTechnicalLead: true,
+    //         secondaryTechnicalLead: true,
+    //       },
+    //     },
+    //   },
+    // })
 
-    sendMakeDecisionEmails(emailRequest)
+    
 
     await prisma.$transaction([updateRequest, upsertProject]);
-
+    sendProvisionedEmails(request)
     console.log("Provisioned project: " + licencePlate);
   } catch (error) {
     console.log(error);
