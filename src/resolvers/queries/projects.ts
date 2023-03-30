@@ -85,13 +85,41 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         $project: {
           "name": 1,
           "status": 1,
-          "projectOwner": {
-            "email" : 1
-          },
+          "projectOwnerId": 1,
+          "secondaryTechnicalLeadId": 1,
           "lowerName": {
             "$toLower": "$name"
           }
         }
+      },
+      {
+        '$lookup':
+        {
+          from: "User",
+          localField: "projectOwnerId",
+          foreignField: "_id",
+          as: "projectOwner"
+        }
+      },
+      {
+        $unwind: {
+          path: '$projectOwner',
+        },
+      },
+      {
+        '$lookup':
+        {
+          from: "User",
+          localField: "secondaryTechnicalLeadId",
+          foreignField: "_id",
+          as: "secondaryTechnicalLead"
+        }
+      },
+      {
+        $unwind: {
+          path: '$secondaryTechnicalLead',
+          preserveNullAndEmptyArrays: true ,
+        },
       },
       {
         $match: {
