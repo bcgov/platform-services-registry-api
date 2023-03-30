@@ -85,15 +85,20 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         $project: {
           "name": 1,
           "status": 1,
+          "description":1,
+          "cluster":1,
+          "ministry":1,
+          "licencePlate":1,
           "projectOwnerId": 1,
           "secondaryTechnicalLeadId": 1,
+          "primaryTechnicalLeadId":1,
           "lowerName": {
             "$toLower": "$name"
           }
         }
       },
       {
-        '$lookup':
+        $lookup:
         {
           from: "User",
           localField: "projectOwnerId",
@@ -107,7 +112,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         },
       },
       {
-        '$lookup':
+        $lookup:
         {
           from: "User",
           localField: "secondaryTechnicalLeadId",
@@ -118,6 +123,21 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       {
         $unwind: {
           path: '$secondaryTechnicalLead',
+          preserveNullAndEmptyArrays: true ,
+        },
+      },
+      {
+        $lookup:
+        {
+          from: "User",
+          localField: "primaryTechnicalLeadId",
+          foreignField: "_id",
+          as: "primaryTechnicalLead"
+        }
+      },
+      {
+        $unwind: {
+          path: '$primaryTechnicalLead',
           preserveNullAndEmptyArrays: true ,
         },
       },
@@ -137,12 +157,16 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           // ]
         }
       },
+      // {
+      //   $sort: { lowerName: 1 }
+      // },
       {
-        $sort: { lowerName: 1 }
+        $skip: offset
       }
     ],
   })
-  // console.log(rawMongoAgg.slice(0, 7))
+  console.log(rawMongoAgg.slice(0, 7))
+  
   const projects = await prisma.privateCloudProject.findMany({
     orderBy: {
       name: "asc"
@@ -181,7 +205,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     skip: offset,
     take: pageSize
   });
-
+  // console.log(projects.slice(0, 7))
   const total = await prisma.privateCloudProject.count({
     where: {
       status: "ACTIVE",
