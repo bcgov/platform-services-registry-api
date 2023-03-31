@@ -83,7 +83,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
+// app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
+app.post("/namespace", provisionerCallbackHandler);
 app.get(
   "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
   keycloak.protect(),
