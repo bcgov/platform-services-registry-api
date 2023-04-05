@@ -427,7 +427,7 @@ export type User = {
 
 export type ProjectsPaginatedOutput = {
   __typename?: 'projectsPaginatedOutput';
-  projects: Array<PrivateCloudProject>;
+  projects?: Maybe<Array<PrivateCloudProject>>;
   total: Scalars['Int'];
 };
 
@@ -680,7 +680,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
 }>;
 
 export type ProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['projectsPaginatedOutput'] = ResolversParentTypes['projectsPaginatedOutput']> = ResolversObject<{
-  projects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  projects?: Resolver<Maybe<Array<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
