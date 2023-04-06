@@ -556,8 +556,7 @@ export const sendRejectEmail = async (request) => {
   if (!project) {
     project = requestedProject;
   }
-console.log('project', project)
-console.log('requestedProject', requestedProject)
+  
   try {
       chesService.send({
         bodyType: "html",
