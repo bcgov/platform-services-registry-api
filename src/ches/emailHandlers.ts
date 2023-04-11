@@ -9,7 +9,7 @@ import {
   RequestType,
   DefaultCpuOptions,
   DefaultMemoryOptions,
-  DefaultStorageOptions
+  DefaultStorageOptions,
 } from "../nats/constants.js";
 import {
   adminEmails,
@@ -21,24 +21,25 @@ export const isQuotaChanged = (projectQuota, requestedQuota) =>
   JSON.stringify(projectQuota) !== JSON.stringify(requestedQuota);
 
 const quotaChanged = (project, requestedProject) => {
-  return !(JSON.stringify(project.productionQuota) ===
-    JSON.stringify(requestedProject.productionQuota) &&
+  return !(
+    JSON.stringify(project.productionQuota) ===
+      JSON.stringify(requestedProject.productionQuota) &&
     JSON.stringify(project.developmentQuota) ===
-    JSON.stringify(requestedProject.developmentQuota) &&
+      JSON.stringify(requestedProject.developmentQuota) &&
     JSON.stringify(project.testQuota) ===
-    JSON.stringify(requestedProject.testQuota) &&
+      JSON.stringify(requestedProject.testQuota) &&
     JSON.stringify(project.toolsQuota) ===
-    JSON.stringify(requestedProject.toolsQuota)
+      JSON.stringify(requestedProject.toolsQuota)
   );
-}
+};
 const contactChanged = (project, requestedProject) => {
   return !(
     requestedProject.projectOwner.email === project.projectOwner.email &&
     requestedProject.primaryTechnicalLead.email ===
-    project.primaryTechnicalLead.email &&
+      project.primaryTechnicalLead.email &&
     requestedProject.secondaryTechnicalLead?.email ===
-    project.secondaryTechnicalLead?.email
-  )
+      project.secondaryTechnicalLead?.email
+  );
 };
 
 export const generateEmailTemplateData = (
@@ -46,13 +47,17 @@ export const generateEmailTemplateData = (
   incomingRequest,
   other = {}
 ) => {
-
-  const project = incomingProject ? { ...incomingProject } : { ...incomingRequest };
-  const requestedProject = incomingRequest ? { ...incomingRequest } : { ...incomingProject };
-
-  const projectOwner = project.projectOwner;
-  const primaryTechnicalLead = project.primaryTechnicalLead;
-  const secondaryTechnicalLead = project.secondaryTechnicalLead;
+  const project = incomingProject
+    ? { ...incomingProject }
+    : { ...incomingRequest };
+  const requestedProject = incomingRequest
+    ? { ...incomingRequest }
+    : { ...incomingProject };
+    
+  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ? 
+  requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead:null;
+  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
+  const projectOwner = requestedProject.projectOwner;
 
   project.testQuota = {
     cpu: DefaultCpuOptions[project.testQuota.cpu],
@@ -111,66 +116,78 @@ export const generateEmailTemplateData = (
       project.productionQuota,
       requestedProject.productionQuota
     ),
-    productionQuotaCPURequested: requestedProject.productionQuota.cpu.cpuRequests !==
+    productionQuotaCPURequested:
+      requestedProject.productionQuota.cpu.cpuRequests !==
       project.productionQuota.cpu.cpuRequests
-      ? requestedProject.productionQuota.cpu.cpuRequests
-      : null,
-    productionQuotaMemoryRequested: requestedProject.productionQuota.memory.memoryRequests !==
+        ? requestedProject.productionQuota.cpu.cpuRequests
+        : null,
+    productionQuotaMemoryRequested:
+      requestedProject.productionQuota.memory.memoryRequests !==
       project.productionQuota.memory.memoryRequests
-      ? requestedProject.productionQuota.memory.memoryRequests
-      : null,
-    productionQuotaStorageRequested: requestedProject.productionQuota.storage.storageFile !==
+        ? requestedProject.productionQuota.memory.memoryRequests
+        : null,
+    productionQuotaStorageRequested:
+      requestedProject.productionQuota.storage.storageFile !==
       project.productionQuota.storage.storageFile
-      ? requestedProject.productionQuota.storage.storageFile
-      : null,
+        ? requestedProject.productionQuota.storage.storageFile
+        : null,
     isDevelopmentQuotaChanged: isQuotaChanged(
       project.developmentQuota,
       requestedProject.developmentQuota
     ),
-    developmentQuotaCPURequested: requestedProject.developmentQuota.cpu.cpuRequests !==
+    developmentQuotaCPURequested:
+      requestedProject.developmentQuota.cpu.cpuRequests !==
       project.developmentQuota.cpu.cpuRequests
-      ? requestedProject.developmentQuota.cpu.cpuRequests
-      : null,
-    developmentQuotaMemoryRequested: requestedProject.developmentQuota.memory.memoryRequests !==
+        ? requestedProject.developmentQuota.cpu.cpuRequests
+        : null,
+    developmentQuotaMemoryRequested:
+      requestedProject.developmentQuota.memory.memoryRequests !==
       project.developmentQuota.memory.memoryRequests
-      ? requestedProject.developmentQuota.memory.memoryRequests
-      : null,
-    developmentQuotaStorageRequested: requestedProject.developmentQuota.storage.storageFile !==
+        ? requestedProject.developmentQuota.memory.memoryRequests
+        : null,
+    developmentQuotaStorageRequested:
+      requestedProject.developmentQuota.storage.storageFile !==
       project.developmentQuota.storage.storageFile
-      ? requestedProject.developmentQuota.storage.storageFile
-      : null,
+        ? requestedProject.developmentQuota.storage.storageFile
+        : null,
     isTestQuotaChanged: isQuotaChanged(
       project.testQuota,
       requestedProject.testQuota
     ),
-    testQuotaCPURequested: requestedProject.testQuota.cpu.cpuRequests !==
+    testQuotaCPURequested:
+      requestedProject.testQuota.cpu.cpuRequests !==
       project.testQuota.cpu.cpuRequests
-      ? requestedProject.testQuota.cpu.cpuRequests
-      : null,
-    testQuotaMemoryRequested: requestedProject.testQuota.memoryRequests !==
+        ? requestedProject.testQuota.cpu.cpuRequests
+        : null,
+    testQuotaMemoryRequested:
+      requestedProject.testQuota.memoryRequests !==
       project.testQuota.memory.memoryRequests
-      ? requestedProject.testQuota.memory.memoryRequests
-      : null,
-    testQuotaStorageRequested: requestedProject.testQuota.storage.storageFile !==
+        ? requestedProject.testQuota.memory.memoryRequests
+        : null,
+    testQuotaStorageRequested:
+      requestedProject.testQuota.storage.storageFile !==
       project.testQuota.storage.storageFile
-      ? requestedProject.testQuota.storage.storageFile
-      : null,
+        ? requestedProject.testQuota.storage.storageFile
+        : null,
     isToolsQuotaChanged: isQuotaChanged(
       project.toolsQuota,
       requestedProject.toolsQuota
     ),
-    toolsQuotaCPURequested: requestedProject.toolsQuota.cpu.cpuRequests !==
+    toolsQuotaCPURequested:
+      requestedProject.toolsQuota.cpu.cpuRequests !==
       project.toolsQuota.cpu.cpuRequests
-      ? requestedProject.toolsQuota.cpu.cpuRequests
-      : null,
-    toolsQuotaMemoryRequested: requestedProject.toolsQuota.memory.memoryRequests !==
+        ? requestedProject.toolsQuota.cpu.cpuRequests
+        : null,
+    toolsQuotaMemoryRequested:
+      requestedProject.toolsQuota.memory.memoryRequests !==
       project.toolsQuota.memory.memoryRequests
-      ? requestedProject.toolsQuota.memory.memoryRequests
-      : null,
-    toolsQuotaStorageRequested: requestedProject.toolsQuota.storage.storageFile !==
+        ? requestedProject.toolsQuota.memory.memoryRequests
+        : null,
+    toolsQuotaStorageRequested:
+      requestedProject.toolsQuota.storage.storageFile !==
       project.toolsQuota.storage.storageFile
-      ? requestedProject.toolsQuota.storage.storageFile
-      : null,
+        ? requestedProject.toolsQuota.storage.storageFile
+        : null,
     productionQuotaCPUCurrent:
       project?.productionQuota?.cpu.cpuRequests || null,
     productionQuotaMemoryCurrent:
@@ -201,14 +218,14 @@ export const generateEmailTemplateData = (
     POGitHubOrIDIR: projectOwner?.POIDIR,
     PriTLName: `${primaryTechnicalLead?.firstName} ${primaryTechnicalLead?.lastName}`,
     PriTLEmail: primaryTechnicalLead?.email,
-    PriTLGitHubOrIDIR:
-      primaryTechnicalLead?.POIDIR,
+    PriTLGitHubOrIDIR: primaryTechnicalLead?.POIDIR,
     SecTLName: secondaryTechnicalLead
       ? `${secondaryTechnicalLead?.firstName} ${secondaryTechnicalLead.lastName}`
       : null,
     SecTLEmail: secondaryTechnicalLead ? secondaryTechnicalLead?.email : null,
     SecTLGitHubOrIDIR: secondaryTechnicalLead
-      ? secondaryTechnicalLead?.POIDIR : null,
+      ? secondaryTechnicalLead?.POIDIR
+      : null,
     setCluster: clusterNames.filter(
       (item) =>
         item.name.toLowerCase() === requestedProject?.cluster.toLowerCase()
@@ -220,7 +237,10 @@ export const generateEmailTemplateData = (
 export const sendEditRequestEmails = async (project, requestedProject) => {
   try {
     // *** Quota Changed and no Contact changed
-    if (quotaChanged(project, requestedProject) && !contactChanged(project, requestedProject)) {
+    if (
+      quotaChanged(project, requestedProject) &&
+      !contactChanged(project, requestedProject)
+    ) {
       await chesService.send({
         bodyType: "html",
         body: swig.renderFile(
@@ -255,7 +275,10 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       });
     }
     // *** No Quota changed and Project Contact Change
-    if (!quotaChanged(project, requestedProject) && contactChanged(project, requestedProject)) {
+    if (
+      !quotaChanged(project, requestedProject) &&
+      contactChanged(project, requestedProject)
+    ) {
       await chesService.send({
         bodyType: "html",
         body: swig.renderFile(
@@ -279,7 +302,10 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       });
     }
     // *** Quota changed and Project Contact Change
-    if (quotaChanged(project, requestedProject) && contactChanged(project, requestedProject)) {
+    if (
+      quotaChanged(project, requestedProject) &&
+      contactChanged(project, requestedProject)
+    ) {
       await chesService.send({
         bodyType: "html",
         body: swig.renderFile(
@@ -398,11 +424,11 @@ export const sendDeleteRequestEmails = async (project) => {
     console.error(error);
   }
 };
-export const sendMakeDecisionEmails = async (request) => {
+export const sendProvisionedEmails = async (request) => {
+  let { type, decisionStatus, requestedProject, humanComment, project } =
+    request;
 
-  let { type, decisionStatus, requestedProject, humanComment, project } = request;
-
-  if(!project) {
+  if (!project) {
     project = requestedProject;
   }
 
@@ -490,8 +516,8 @@ export const sendMakeDecisionEmails = async (request) => {
               type === RequestType.Create
                 ? "Provisioning"
                 : type === RequestType.Edit
-                  ? "Edit"
-                  : "Deletion",
+                ? "Edit"
+                : "Deletion",
             humanActionComment: humanComment || null,
             isProvisioningRequest: type === RequestType.Create,
             isQuotaRequest: type === RequestType.Edit,
@@ -508,14 +534,65 @@ export const sendMakeDecisionEmails = async (request) => {
           .filter(Boolean)
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${type === RequestType.Create
+        subject: ` ${
+          type === RequestType.Create
             ? "Provisioning"
             : type === RequestType.Edit
-              ? "Edit"
-              : "Deletion"
-          } request has been rejected`,
+            ? "Edit"
+            : "Deletion"
+        } request has been rejected`,
       });
     }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export const sendRejectEmail = async (request) => {
+  let { type, requestedProject, humanComment, project } =
+    request;
+
+  if (!project) {
+    project = requestedProject;
+  }
+  
+  try {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/request-denial-email.html",
+          generateEmailTemplateData(project, requestedProject, {
+            requestType:
+              type === RequestType.Create
+                ? "Provisioning"
+                : type === RequestType.Edit
+                ? "Edit"
+                : "Deletion",
+            humanActionComment: humanComment || null,
+            isProvisioningRequest: type === RequestType.Create,
+            isQuotaRequest: type === RequestType.Edit,
+            productDescription: requestedProject.description,
+            productMinistry: requestedProject.ministry,
+          })
+        ),
+        // to all project contacts when any request (quota, provisioning, or deletion) is denied.
+        to: [
+          project.projectOwner,
+          project.primaryTechnicalLead,
+          project.secondaryTechnicalLead,
+        ]
+          .filter(Boolean)
+          .map(({ email }) => email),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: ` ${
+          type === RequestType.Create
+            ? "Provisioning"
+            : type === RequestType.Edit
+            ? "Edit"
+            : "Deletion"
+        } request has been rejected`,
+      });
   } catch (error) {
     console.error(error);
   }

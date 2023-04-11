@@ -18,6 +18,7 @@ import {
   provisionerCallbackHandler,
   getReProvisionNatsMessage,
   getIdsForCluster,
+  getDatabaseHealthCheck,
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
 
@@ -83,12 +84,17 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.get(
   "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
   keycloak.protect(),
   getReProvisionNatsMessage
 );
+
+app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
+
+// app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
+app.post("/namespace", provisionerCallbackHandler);
+
 app.post(
   "/api/v1/provision/sync/provisioned-profile-ids",
   keycloak.protect(),
