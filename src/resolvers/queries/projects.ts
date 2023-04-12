@@ -64,7 +64,7 @@ export const userPrivateCloudProjectsByIds = async (
   });
 
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
-  let { search, filter = {}, page, pageSize } = args;
+  let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
   let { ministry, cluster } = filter;
 
   search = search === null ? undefined : search;
@@ -213,7 +213,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         }
       },
       {
-        $sort: { lowerName: 1 }
+        $sort: { lowerName: sortOrder }
       },
       {
         $skip: offset,
@@ -223,47 +223,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       }
     ],
   })
-
-
-  // const projectsDD = await prisma.privateCloudProject.findMany({
-  //   orderBy: {
-  //     name: "asc"
-  //   },
-  //   where: {
-  //     status: "ACTIVE",
-  //     AND: [
-  //       {
-  //         OR: [
-  //           { projectOwner: { email: { contains: search } } },
-  //           { projectOwner: { firstName: { contains: search } } },
-  //           { projectOwner: { lastName: { contains: search } } },
-  //           { primaryTechnicalLead: { email: { contains: search } } },
-  //           { primaryTechnicalLead: { firstName: { contains: search } } },
-  //           { primaryTechnicalLead: { lastName: { contains: search } } },
-  //           { secondaryTechnicalLead: { email: { contains: search } } },
-  //           { secondaryTechnicalLead: { firstName: { contains: search } } },
-  //           { secondaryTechnicalLead: { lastName: { contains: search } } },
-  //           { name: { contains: search } },
-  //           { description: { contains: search } },
-  //           { licencePlate: { contains: search } }
-  //         ]
-  //       },
-  //       {
-  //         ministry: {
-  //           in: ministry
-  //         }
-  //       },
-  //       {
-  //         cluster: {
-  //           in: cluster
-  //         }
-  //       }
-  //     ]
-  //   },
-  //   skip: offset,
-  //   take: pageSize
-  // });
-  // console.log('project', projects)
+  
   const total = await prisma.privateCloudProject.count({
     where: {
       status: "ACTIVE",

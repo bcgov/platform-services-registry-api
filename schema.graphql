@@ -258,6 +258,7 @@ type Query {
     pageSize: Int!
     filter: FilterPrivateCloudProjectsInput
     search: String
+    sortOrder: Int
   ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectsWithFilterSearch(
