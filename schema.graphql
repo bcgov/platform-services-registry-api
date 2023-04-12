@@ -238,7 +238,7 @@ enum SortOrder {
 }
 
 type projectsPaginatedOutput {
-  projects: [PrivateCloudProject!]
+  projects: [PrivateCloudProject!]!
   total: Int!
 }
 
