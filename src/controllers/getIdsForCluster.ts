@@ -12,7 +12,7 @@ const getIdsForCluster = async (req, res) => {
     const projects = await prisma.privateCloudProject.findMany({
       where: {
         status: "ACTIVE",
-        cluster: cluster,
+        cluster: cluster.toUpperCase(),
       },
       select: {
         id: true,
@@ -25,9 +25,9 @@ const getIdsForCluster = async (req, res) => {
     res.status(200).json(projectIds);
   } catch (error) {
     console.log(error);
-    res
-      .status(400)
-      .json({ error: "An error occurred while processing the request: " + error });
+    res.status(400).json({
+      error: "An error occurred while processing the request: " + error,
+    });
   }
 };
 
