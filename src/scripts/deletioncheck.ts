@@ -1,4 +1,3 @@
-import { prisma } from "../index.js";
 import axios from "axios";
 
 export interface DeletableField {
@@ -38,53 +37,10 @@ export enum ProjectSetNamespace {
   Tools = "tools",
 }
 
-async function preDeletionCheck(req, res) {
-  try {
-    const { licencePlate } = req.body;
-
-    if (!licencePlate) {
-      res.status(400).json({ error: "licencePlate is missing or undefined." });
-      return;
-    }
-
-    const project = await prisma.privateCloudProject.findUnique({
-      where: {
-        licencePlate,
-      },
-      select: {
-        cluster: true,
-        licencePlate: true,
-      },
-    });
-
-    const deletability = await openshiftDeletionCheck(
-      project.licencePlate,
-      project.cluster
-    );
-
-    // Check if all fileds are true in deletability
-    const projectIsDeletable = Object.values(deletability).every(
-      (value) => value
-    );
-
-    if (!projectIsDeletable) {
-      res.status(400).json({ error: "Project is not deletable." });
-      return;
-    }
-
-    res.status(200).json({ projectIsDeletable });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      error: "An error occurred while processing the request: " + error,
-    });
-  }
-}
-
-export const openshiftDeletionCheck = async (
+export default async function openshiftDeletionCheck(
   namespacePrefix: string,
   clusterName: string
-): Promise<DeletableField> => {
+): Promise<DeletableField> {
   const CLUSTER_SERVICE_ACCOUNT_TOKEN = {
     clab: process.env.CLAB_SERVICE_ACCOUNT_TOKEN || "",
     klab: process.env.KLAB_SERVICE_ACCOUNT_TOKEN || "",
@@ -210,4 +166,4 @@ export const openshiftDeletionCheck = async (
     }
   }
   return checkResult;
-};
+}

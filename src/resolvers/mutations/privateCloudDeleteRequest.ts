@@ -7,6 +7,9 @@ import {
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import { sendDeleteRequestEmails } from "../../ches/emailHandlers.js";
+import openshiftDeletionCheck, {
+  DeletableField,
+} from "../../scripts/deletioncheck.js";
 
 const privateCloudProjectDeleteRequest: MutationResolvers = async (
   _,
@@ -43,6 +46,17 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
     ) {
       throw new Error(
         "You need to be a contact on this project in order to delete it."
+      );
+    }
+
+    const deleteCheckList: DeletableField = await openshiftDeletionCheck(
+      project.licencePlate,
+      project.clusterName
+    );
+
+    if (!Object.values(deleteCheckList).every((field) => field)) {
+      throw new Error(
+        "This project is not deletable as it is not empty. Please delete all resources before deleting the project."
       );
     }
 
