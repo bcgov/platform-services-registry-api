@@ -53,10 +53,11 @@ export const generateEmailTemplateData = (
   const requestedProject = incomingRequest
     ? { ...incomingRequest }
     : { ...incomingProject };
-
-  const projectOwner = project.projectOwner;
-  const primaryTechnicalLead = project.primaryTechnicalLead;
-  const secondaryTechnicalLead = project.secondaryTechnicalLead;
+    
+  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ? 
+  requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead:null;
+  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
+  const projectOwner = requestedProject.projectOwner;
 
   project.testQuota = {
     cpu: DefaultCpuOptions[project.testQuota.cpu],
@@ -542,6 +543,56 @@ export const sendProvisionedEmails = async (request) => {
         } request has been rejected`,
       });
     }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+export const sendRejectEmail = async (request) => {
+  let { type, requestedProject, humanComment, project } =
+    request;
+
+  if (!project) {
+    project = requestedProject;
+  }
+  
+  try {
+      chesService.send({
+        bodyType: "html",
+        body: swig.renderFile(
+          "./src/ches/new-templates/request-denial-email.html",
+          generateEmailTemplateData(project, requestedProject, {
+            requestType:
+              type === RequestType.Create
+                ? "Provisioning"
+                : type === RequestType.Edit
+                ? "Edit"
+                : "Deletion",
+            humanActionComment: humanComment || null,
+            isProvisioningRequest: type === RequestType.Create,
+            isQuotaRequest: type === RequestType.Edit,
+            productDescription: requestedProject.description,
+            productMinistry: requestedProject.ministry,
+          })
+        ),
+        // to all project contacts when any request (quota, provisioning, or deletion) is denied.
+        to: [
+          project.projectOwner,
+          project.primaryTechnicalLead,
+          project.secondaryTechnicalLead,
+        ]
+          .filter(Boolean)
+          .map(({ email }) => email),
+        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+        subject: ` ${
+          type === RequestType.Create
+            ? "Provisioning"
+            : type === RequestType.Edit
+            ? "Edit"
+            : "Deletion"
+        } request has been rejected`,
+      });
   } catch (error) {
     console.error(error);
   }

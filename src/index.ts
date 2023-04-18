@@ -90,16 +90,18 @@ app.get(
   getReProvisionNatsMessage
 );
 
+app.get(
+  "/api/v1/provision/sync/provisioned-profile-ids",
+  keycloak.protect(),
+  getIdsForCluster
+);
+
 app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
 
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
 
-app.post(
-  "/api/v1/provision/sync/provisioned-profile-ids",
-  keycloak.protect(),
-  getIdsForCluster
-);
+
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
