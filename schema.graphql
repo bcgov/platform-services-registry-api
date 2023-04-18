@@ -283,9 +283,15 @@ type Query {
   privateCloudRequests: [PrivateCloudRequest!]!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
+
+  privateCloudRequestById(requestId: ID!): PrivateCloudRequest!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
+    
   privateCloudActiveRequests: [PrivateCloudRequest!]!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])

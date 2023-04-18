@@ -101,6 +101,8 @@ app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
 
+// app.post("/predeletion-check")
+
 
 
 await new Promise<void>((resolve) =>
