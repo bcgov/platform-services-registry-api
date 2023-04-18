@@ -4,24 +4,33 @@ import { RequestType } from "../__generated__/resolvers-types.js";
 
 const getReProvisionNatsMessage = async (req, res) => {
   try {
-    const { profileId: id } = req.params;
-    const project = await prisma.privateCloudProject.findFirst({
+    const { profile_id: profileId } = req.params;
+
+    if (!profileId) {
+      res.status(400).json({ error: "Profile ID is missing or undefined." });
+      return;
+    }
+
+    const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: id
+        id: profileId,
       },
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLead: true
-      }
+        secondaryTechnicalLead: true,
+      },
     });
 
     // For example:
     const result = await message(RequestType.Edit, project);
-    console.log(result);
-    res.json(result);
+
+    res.status(200).json(result);
   } catch (error) {
-    res.status(400).end(); // Pass the error to the error handling middleware
+    console.log(error);
+    res.status(400).json({
+      error: "An error occurred while processing the request: " + error,
+    });
   }
 };
 
