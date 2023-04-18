@@ -95,14 +95,9 @@ app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
 
-// app.post(
-//   "/api/v1/provision/sync/provisioned-profile-ids",
-//   keycloak.protect(),
-//   getIdsForCluster
-// );
-
-app.get(
+app.post(
   "/api/v1/provision/sync/provisioned-profile-ids",
+  keycloak.protect(),
   getIdsForCluster
 );
 
