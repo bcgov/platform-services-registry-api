@@ -101,7 +101,7 @@ app.post("/namespace", provisionerCallbackHandler);
 //   getIdsForCluster
 // );
 
-app.post(
+app.get(
   "/api/v1/provision/sync/provisioned-profile-ids",
   getIdsForCluster
 );
