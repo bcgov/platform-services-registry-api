@@ -17,6 +17,13 @@ export const privateCloudActiveRequestById = async (
     },
   });
 
+export const privateCloudRequestById = async (_, { requestId }, { prisma }) =>
+  await prisma.privateCloudRequest.findUnique({
+    where: {
+      id: requestId,
+    },
+  });
+
 export const userPrivateCloudRequestById = async (
   _,
   { requestId },
