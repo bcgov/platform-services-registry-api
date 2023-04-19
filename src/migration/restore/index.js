@@ -85,12 +85,14 @@ async function backedUpUsers() {
 
         // console.log("User created:", user);
       } else {
-        console.log("User already exists:", existingUser);
+        // console.log("User already exists:", existingUser);
       }
     } catch (error) {
       console.error("Error creating user:", error);
     }
   }
+
+  console.log("Restored backed up users")
 }
 
 async function restoreUsers() {
@@ -111,15 +113,19 @@ async function restoreUsers() {
               ministry: null
             }
           });
-          console.log("User created:", user);
+          // console.log("User created:", user);
         } else {
           // console.log("User already exists:", existingUser);
         }
       } catch (error) {
         console.error("Error creating user:", error);
       }
+
     }
   }
+
+  console.log("Restored users")
+
 }
 
 async function restoreProjects() {
@@ -191,6 +197,7 @@ async function restoreProjects() {
       console.error("Error creating PrivateCloudProject:", error);
     }
   }
+  console.log("Restored Projects")
 }
 
 async function main() {
