@@ -13,8 +13,8 @@ datasource db {
 
 model User {
   id                                                 String                         @id @default(auto()) @map("_id") @db.ObjectId
-  firstName                                          String
-  lastName                                           String
+  firstName                                          String?
+  lastName                                           String?
   email                                              String                         @unique
   ministry                                           String?
   archived                                           Boolean                        @default(false)

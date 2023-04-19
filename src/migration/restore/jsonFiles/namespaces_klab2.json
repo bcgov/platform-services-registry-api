@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "contacts": "[{\"email\": \"ian.1.watts@gov.bc.ca\", \"role\": \"owner\"}, {\"email\": \"billy.li@gov.bc.ca\", \"role\": \"lead\"}]",
+    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Namespace\",\"metadata\":{\"annotations\":{\"contacts\":\"[{\\\"email\\\": \\\"ian.1.watts@gov.bc.ca\\\", \\\"role\\\": \\\"owner\\\"}, {\\\"email\\\": \\\"billy.li@gov.bc.ca\\\", \\\"role\\\": \\\"lead\\\"}]\",\"openshift.io/description\":\"This is a test\",\"openshift.io/display-name\":\"Ian KLAB2 Test (dev)\",\"openshift.io/requester\":\"application-registry\"},\"labels\":{\"cpu_quota\":\"cpu-request-0.5-limit-1.5\",\"devops.gov.bc.ca/gitops-app\":\"ad5014\",\"environment\":\"dev\",\"memory_quota\":\"memory-request-2-limit-4\",\"ministry_id\":\"CITZ\",\"name\":\"ad5014\",\"profile_id\":\"643ddd6903c86fa32af60c18\",\"project_type\":\"user\",\"provisioned-by\":\"argocd\",\"snapshot_quota\":\"snapshot-5\",\"storage_quota\":\"storage-1\"},\"name\":\"ad5014-dev\"}}\n",
+    "ls_id-0": "27827911-21ee-4502-9622-843108d53c84",
+    "ncp/subnet-0": "10.90.122.0/24",
+    "openshift.io/description": "This is a test",
+    "openshift.io/display-name": "Ian KLAB2 Test (dev)",
+    "openshift.io/requester": "application-registry",
+    "openshift.io/sa.scc.mcs": "s0:c35,c20",
+    "openshift.io/sa.scc.supplemental-groups": "1001230000/10000",
+    "openshift.io/sa.scc.uid-range": "1001230000/10000",
+    "operator.tekton.dev/prune.hash": "5f41c069903cdde686ef463b8955323e7462414d1aebc4418198c4fda910fc2c"
+  },
+  "creationTimestamp": "2022-09-19T18:23:42Z",
+  "labels": {
+    "argocd.argoproj.io/managed-by": "openshift-bcgov-gitops-shared",
+    "cpu_quota": "cpu-request-0.5-limit-1.5",
+    "devops.gov.bc.ca/gitops-app": "ad5014",
+    "environment": "dev",
+    "kubernetes.io/metadata.name": "ad5014-dev",
+    "memory_quota": "memory-request-2-limit-4",
+    "ministry_id": "CITZ",
+    "name": "ad5014",
+    "openshift-pipelines.tekton.dev/namespace-reconcile-version": "1.8.2",
+    "profile_id": "643ddd6903c86fa32af60c18",
+    "project_type": "user",
+    "provisioned-by": "argocd",
+    "snapshot_quota": "snapshot-5",
+    "storage_quota": "storage-1"
+  },
+  "name": "ad5014-dev",
+  "resourceVersion": "438284623",
+  "uid": "379339fe-4573-4c57-a320-09f82f188c34"
+}
