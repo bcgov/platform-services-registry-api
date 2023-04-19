@@ -116,9 +116,12 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           "activeEditRequest": 1,
           "count": 1,
           "commonComponents": 1,
+          "lowerDescription": {
+            "$toLower": "$description"
+          },
           "lowerName": {
             "$toLower": "$name"
-          }
+          },
         }
       },
       {
@@ -134,7 +137,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         $unwind: {
           path: '$projectOwner',
         },
-      }, 
+      },
       {
         $lookup:
         {
@@ -215,7 +218,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
                   lowerName: { $regex: search ? search : '' },
                 },
                 {
-                  description: { $regex: search ? search : '' },
+                  lowerDescription: { $regex: search ? search : '' },
                 },
                 {
                   licencePlate: { $regex: search ? search : '' },
