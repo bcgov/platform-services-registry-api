@@ -5,10 +5,12 @@ const {
   storageOptionsLookup
 } = require("./constants.js");
 const { PrismaClient } = require("@prisma/client");
-const { data } = require("./klab2.js");
+const { data } = require("./data.js");
 const prisma = new PrismaClient();
 
 const CLUSTER = "SILVER"; // Replace with the cluster you want to set for all projects
+
+console.log(CLUSTER);
 
 async function groupByLicensePlate() {
   const grouped = {};
@@ -45,18 +47,18 @@ async function groupByLicensePlate() {
   );
 }
 
-async function checkForDuplicates() {
-  const fileContents = await fs.readFile(CLUSTER + "transformed.json", "utf-8");
-  const jsonObjects = JSON.parse(fileContents);
+// async function checkForDuplicates() {
+//   const fileContents = await fs.readFile(CLUSTER + "transformed.json", "utf-8");
+//   const jsonObjects = JSON.parse(fileContents);
 
-  const licensePlates = jsonObjects.map((item) => item.prod.name);
+//   const licensePlates = jsonObjects.map((item) => item.prod.name);
 
-  const duplicates = licensePlates.filter(
-    (item, index) => licensePlates.indexOf(item) !== index
-  );
+//   const duplicates = licensePlates.filter(
+//     (item, index) => licensePlates.indexOf(item) !== index
+//   );
 
-  console.log(duplicates)
-}
+//   console.log(duplicates);
+// }
 
 async function backedUpUsers() {
   const mongoUsersFileContents = await fs.readFile(
@@ -92,7 +94,7 @@ async function backedUpUsers() {
     }
   }
 
-  console.log("Restored backed up users")
+  console.log("Restored backed up users");
 }
 
 async function restoreUsers() {
@@ -120,12 +122,10 @@ async function restoreUsers() {
       } catch (error) {
         console.error("Error creating user:", error);
       }
-
     }
   }
 
-  console.log("Restored users")
-
+  console.log("Restored users");
 }
 
 async function restoreProjects() {
@@ -134,6 +134,42 @@ async function restoreProjects() {
 
   for (const jsonObject of jsonObjects) {
     const contacts = JSON.parse(jsonObject.annotations.contacts);
+
+    if (
+      !jsonObject?.prod?.name ||
+      !jsonObject?.test?.name ||
+      !jsonObject?.dev?.name ||
+      !jsonObject?.tools?.name
+    ) {
+      console.log("Missing licensePlate for project: ");
+
+      if (jsonObject?.prod?.name) {
+        console.log(jsonObject?.prod?.name);
+      }
+
+      if (jsonObject?.test?.name) {
+        console.log(jsonObject?.test?.name);
+      }
+
+      if (jsonObject?.dev?.name) {
+        console.log(jsonObject?.dev?.name);
+      }
+
+      if (jsonObject?.tools?.name) {
+        console.log(jsonObject?.tools?.name);
+      }
+
+      continue;
+    }
+
+    const exsitingProject = await prisma.privateCloudProject.findUnique({
+      where: { licencePlate: jsonObject.prod.name }
+    });
+
+    if (exsitingProject) {
+      console.log("Project already exists:", jsonObject.prod?.name);
+      continue;
+    }
 
     // const owner = await prisma.user.findUnique({
     //   where: { email: contacts[0].email }
@@ -145,8 +181,12 @@ async function restoreProjects() {
     //   ? await prisma.user.findUnique({ where: { email: contacts[2].email } })
     //   : null;
 
+    const customCpu = "CPU_REQUEST_32_LIMIT_64";
+    const customMemory = "MEMORY_REQUEST_64_LIMIT_128";
+    const customStorage = "STORAGE_512";
+
     const newProject = {
-      licencePlate: jsonObject.prod.name, // Updated to map to labels.name
+      licencePlate: jsonObject.prod?.name, // Updated to map to labels.name
       name: jsonObject["annotations"]["openshift.io/display-name"],
       description: jsonObject["annotations"]["openshift.io/description"],
       status: "ACTIVE", // Set the project status
@@ -163,25 +203,62 @@ async function restoreProjects() {
       ministry: jsonObject.prod.ministry_id,
       cluster: CLUSTER, // Set the cluster for this project
       productionQuota: {
-        cpu: cpuOptionsLookup[jsonObject.prod.cpu_quota], // Set the productionQuota cpu
-        memory: memoryOptionsLookup[jsonObject.prod.memory_quota], // Set the productionQuota memory
-        storage: storageOptionsLookup[jsonObject.prod.storage_quota] // Set the productionQuota storage
+        cpu:
+          jsonObject.prod.cpu_quota === "custom"
+            ? customCpu
+            : cpuOptionsLookup[jsonObject.prod.cpu_quota], // Set the productionQuota cpu
+        memory:
+          jsonObject.prod.memory_quota === "custom"
+            ? customMemory
+            : memoryOptionsLookup[jsonObject.prod.memory_quota], // Set the productionQuota memory
+        storage:
+          jsonObject.prod.storage_quota === "custom"
+            ? customStorage
+            : storageOptionsLookup[jsonObject.prod.storage_quota] // Set the productionQuota storage
       },
       testQuota: {
-        cpu: cpuOptionsLookup[jsonObject.test.cpu_quota], // Set the productionQuota cpu
-        memory: memoryOptionsLookup[jsonObject.test.memory_quota], // Set the productionQuota memory
-        storage: storageOptionsLookup[jsonObject.test.storage_quota] // Set the productionQuota storage
+        cpu:
+          jsonObject.test.cpu_quota === "custom"
+            ? customCpu
+            : cpuOptionsLookup[jsonObject.test.cpu_quota], // Set the productionQuota cpu
+        memory:
+          jsonObject.test.memory_quota === "custom"
+            ? customMemory
+            : memoryOptionsLookup[jsonObject.test.memory_quota], // Set the productionQuota memory
+        storage:
+          jsonObject.test.storage_quota === "custom"
+            ? customStorage
+            : storageOptionsLookup[jsonObject.test.storage_quota] // Set the productionQuota storage
       },
       developmentQuota: {
-        cpu: cpuOptionsLookup[jsonObject.dev.cpu_quota], // Set the productionQuota cpu
-        memory: memoryOptionsLookup[jsonObject.dev.memory_quota], // Set the productionQuota memory
-        storage: storageOptionsLookup[jsonObject.dev.storage_quota] // Set the productionQuota storage
+        cpu:
+          jsonObject.dev.cpu_quota === "custom"
+            ? customCpu
+            : cpuOptionsLookup[jsonObject.dev.cpu_quota], // Set the productionQuota cpu
+        memory:
+          jsonObject.dev.memory_quota === "custom"
+            ? customMemory
+            : memoryOptionsLookup[jsonObject.dev.memory_quota], // Set the productionQuota memory
+        storage:
+          jsonObject.dev.storage_quota === "custom"
+            ? customStorage
+            : storageOptionsLookup[jsonObject.dev.storage_quota] // Set the productionQuota storage
       },
       toolsQuota: {
-        cpu: cpuOptionsLookup[jsonObject.tools.cpu_quota], // Set the productionQuota cpu
-        memory: memoryOptionsLookup[jsonObject.tools.memory_quota], // Set the productionQuota memory
-        storage: storageOptionsLookup[jsonObject.tools.storage_quota] // Set the productionQuota storage
+        cpu:
+          jsonObject.tools.cpu_quota === "custom"
+            ? customCpu
+            : cpuOptionsLookup[jsonObject.tools.cpu_quota], // Set the productionQuota cpu
+        memory:
+          jsonObject.tools.memory_quota === "custom"
+            ? customMemory
+            : memoryOptionsLookup[jsonObject.tools.memory_quota], // Set the productionQuota memory
+        storage:
+          jsonObject.tools.storage_quota === "custom"
+            ? customStorage
+            : storageOptionsLookup[jsonObject.tools.storage_quota] // Set the productionQuota storage
       },
+
       commonComponents: {
         noServices: true // Update commonComponents fields as needed
       }
@@ -194,10 +271,13 @@ async function restoreProjects() {
 
       // console.log("PrivateCloudProject created:", createdProject);
     } catch (error) {
-      console.error("Error creating PrivateCloudProject:", error);
+      
+      console.error("Error creating PrivateCloudProject:");
+      console.log(newProject);
+      console.log("=====================================")
     }
   }
-  console.log("Restored Projects")
+  console.log("Restored Projects");
 }
 
 async function main() {
@@ -206,7 +286,7 @@ async function main() {
   await restoreUsers();
   await restoreProjects();
 
-  await checkForDuplicates();
+  // await checkForDuplicates();
 }
 
 main()
