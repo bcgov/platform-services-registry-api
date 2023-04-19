@@ -23,22 +23,22 @@ export const isQuotaChanged = (projectQuota, requestedQuota) =>
 const quotaChanged = (project, requestedProject) => {
   return !(
     JSON.stringify(project.productionQuota) ===
-      JSON.stringify(requestedProject.productionQuota) &&
+    JSON.stringify(requestedProject.productionQuota) &&
     JSON.stringify(project.developmentQuota) ===
-      JSON.stringify(requestedProject.developmentQuota) &&
+    JSON.stringify(requestedProject.developmentQuota) &&
     JSON.stringify(project.testQuota) ===
-      JSON.stringify(requestedProject.testQuota) &&
+    JSON.stringify(requestedProject.testQuota) &&
     JSON.stringify(project.toolsQuota) ===
-      JSON.stringify(requestedProject.toolsQuota)
+    JSON.stringify(requestedProject.toolsQuota)
   );
 };
 const contactChanged = (project, requestedProject) => {
   return !(
     requestedProject.projectOwner.email === project.projectOwner.email &&
     requestedProject.primaryTechnicalLead.email ===
-      project.primaryTechnicalLead.email &&
+    project.primaryTechnicalLead.email &&
     requestedProject.secondaryTechnicalLead?.email ===
-      project.secondaryTechnicalLead?.email
+    project.secondaryTechnicalLead?.email
   );
 };
 
@@ -53,9 +53,9 @@ export const generateEmailTemplateData = (
   const requestedProject = incomingRequest
     ? { ...incomingRequest }
     : { ...incomingProject };
-    
-  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ? 
-  requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead:null;
+
+  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ?
+    !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead : project.secondaryTechnicalLead || null;
   const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
   const projectOwner = requestedProject.projectOwner;
 
@@ -118,17 +118,17 @@ export const generateEmailTemplateData = (
     ),
     productionQuotaCPURequested:
       requestedProject.productionQuota.cpu.cpuRequests !==
-      project.productionQuota.cpu.cpuRequests
+        project.productionQuota.cpu.cpuRequests
         ? requestedProject.productionQuota.cpu.cpuRequests
         : null,
     productionQuotaMemoryRequested:
       requestedProject.productionQuota.memory.memoryRequests !==
-      project.productionQuota.memory.memoryRequests
+        project.productionQuota.memory.memoryRequests
         ? requestedProject.productionQuota.memory.memoryRequests
         : null,
     productionQuotaStorageRequested:
       requestedProject.productionQuota.storage.storageFile !==
-      project.productionQuota.storage.storageFile
+        project.productionQuota.storage.storageFile
         ? requestedProject.productionQuota.storage.storageFile
         : null,
     isDevelopmentQuotaChanged: isQuotaChanged(
@@ -137,17 +137,17 @@ export const generateEmailTemplateData = (
     ),
     developmentQuotaCPURequested:
       requestedProject.developmentQuota.cpu.cpuRequests !==
-      project.developmentQuota.cpu.cpuRequests
+        project.developmentQuota.cpu.cpuRequests
         ? requestedProject.developmentQuota.cpu.cpuRequests
         : null,
     developmentQuotaMemoryRequested:
       requestedProject.developmentQuota.memory.memoryRequests !==
-      project.developmentQuota.memory.memoryRequests
+        project.developmentQuota.memory.memoryRequests
         ? requestedProject.developmentQuota.memory.memoryRequests
         : null,
     developmentQuotaStorageRequested:
       requestedProject.developmentQuota.storage.storageFile !==
-      project.developmentQuota.storage.storageFile
+        project.developmentQuota.storage.storageFile
         ? requestedProject.developmentQuota.storage.storageFile
         : null,
     isTestQuotaChanged: isQuotaChanged(
@@ -156,17 +156,17 @@ export const generateEmailTemplateData = (
     ),
     testQuotaCPURequested:
       requestedProject.testQuota.cpu.cpuRequests !==
-      project.testQuota.cpu.cpuRequests
+        project.testQuota.cpu.cpuRequests
         ? requestedProject.testQuota.cpu.cpuRequests
         : null,
     testQuotaMemoryRequested:
       requestedProject.testQuota.memoryRequests !==
-      project.testQuota.memory.memoryRequests
+        project.testQuota.memory.memoryRequests
         ? requestedProject.testQuota.memory.memoryRequests
         : null,
     testQuotaStorageRequested:
       requestedProject.testQuota.storage.storageFile !==
-      project.testQuota.storage.storageFile
+        project.testQuota.storage.storageFile
         ? requestedProject.testQuota.storage.storageFile
         : null,
     isToolsQuotaChanged: isQuotaChanged(
@@ -175,17 +175,17 @@ export const generateEmailTemplateData = (
     ),
     toolsQuotaCPURequested:
       requestedProject.toolsQuota.cpu.cpuRequests !==
-      project.toolsQuota.cpu.cpuRequests
+        project.toolsQuota.cpu.cpuRequests
         ? requestedProject.toolsQuota.cpu.cpuRequests
         : null,
     toolsQuotaMemoryRequested:
       requestedProject.toolsQuota.memory.memoryRequests !==
-      project.toolsQuota.memory.memoryRequests
+        project.toolsQuota.memory.memoryRequests
         ? requestedProject.toolsQuota.memory.memoryRequests
         : null,
     toolsQuotaStorageRequested:
       requestedProject.toolsQuota.storage.storageFile !==
-      project.toolsQuota.storage.storageFile
+        project.toolsQuota.storage.storageFile
         ? requestedProject.toolsQuota.storage.storageFile
         : null,
     productionQuotaCPUCurrent:
@@ -516,8 +516,8 @@ export const sendProvisionedEmails = async (request) => {
               type === RequestType.Create
                 ? "Provisioning"
                 : type === RequestType.Edit
-                ? "Edit"
-                : "Deletion",
+                  ? "Edit"
+                  : "Deletion",
             humanActionComment: humanComment || null,
             isProvisioningRequest: type === RequestType.Create,
             isQuotaRequest: type === RequestType.Edit,
@@ -534,13 +534,12 @@ export const sendProvisionedEmails = async (request) => {
           .filter(Boolean)
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${
-          type === RequestType.Create
+        subject: ` ${type === RequestType.Create
             ? "Provisioning"
             : type === RequestType.Edit
-            ? "Edit"
-            : "Deletion"
-        } request has been rejected`,
+              ? "Edit"
+              : "Deletion"
+          } request has been rejected`,
       });
     }
   } catch (error) {
@@ -556,43 +555,42 @@ export const sendRejectEmail = async (request) => {
   if (!project) {
     project = requestedProject;
   }
-  
+
   try {
-      chesService.send({
-        bodyType: "html",
-        body: swig.renderFile(
-          "./src/ches/new-templates/request-denial-email.html",
-          generateEmailTemplateData(project, requestedProject, {
-            requestType:
-              type === RequestType.Create
-                ? "Provisioning"
-                : type === RequestType.Edit
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/new-templates/request-denial-email.html",
+        generateEmailTemplateData(project, requestedProject, {
+          requestType:
+            type === RequestType.Create
+              ? "Provisioning"
+              : type === RequestType.Edit
                 ? "Edit"
                 : "Deletion",
-            humanActionComment: humanComment || null,
-            isProvisioningRequest: type === RequestType.Create,
-            isQuotaRequest: type === RequestType.Edit,
-            productDescription: requestedProject.description,
-            productMinistry: requestedProject.ministry,
-          })
-        ),
-        // to all project contacts when any request (quota, provisioning, or deletion) is denied.
-        to: [
-          project.projectOwner,
-          project.primaryTechnicalLead,
-          project.secondaryTechnicalLead,
-        ]
-          .filter(Boolean)
-          .map(({ email }) => email),
-        from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-        subject: ` ${
-          type === RequestType.Create
-            ? "Provisioning"
-            : type === RequestType.Edit
+          humanActionComment: humanComment || null,
+          isProvisioningRequest: type === RequestType.Create,
+          isQuotaRequest: type === RequestType.Edit,
+          productDescription: requestedProject.description,
+          productMinistry: requestedProject.ministry,
+        })
+      ),
+      // to all project contacts when any request (quota, provisioning, or deletion) is denied.
+      to: [
+        project.projectOwner,
+        project.primaryTechnicalLead,
+        project.secondaryTechnicalLead,
+      ]
+        .filter(Boolean)
+        .map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: ` ${type === RequestType.Create
+          ? "Provisioning"
+          : type === RequestType.Edit
             ? "Edit"
             : "Deletion"
         } request has been rejected`,
-      });
+    });
   } catch (error) {
     console.error(error);
   }
