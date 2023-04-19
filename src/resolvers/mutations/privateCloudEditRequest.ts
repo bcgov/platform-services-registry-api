@@ -151,7 +151,6 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     });
 
     if (isQuotaChanged) {
-      console.log(isQuotaChanged)
       await sendEditRequestEmails(
       editRequest.project,
       editRequest.requestedProject
