@@ -86,6 +86,22 @@ function transformDocument(doc) {
   return transformedDoc;
 }
 
+function sortObjectsByName(objects, sortOrder) {
+  objects.sort(function (a, b) {
+    var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1 * sortOrder;
+    }
+    if (nameA > nameB) {
+      return 1 * sortOrder;
+    }
+    // names must be equal
+    return 0;
+  });
+  return objects;
+}
+
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
   let { ministry, cluster } = filter;
@@ -143,7 +159,6 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           $search: `"${search}"`
         }
       })
-      .sort({ name: sortOrder })
       .toArray();
 
     const userIds = rawUsers.map((user) => user._id);
@@ -178,7 +193,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     const paginated = projects.slice(offset, offset + pageSize);
 
     return {
-      projects: paginated,
+      projects: sortObjectsByName(paginated, sortOrder),
       total: projects.length
     };
   }
