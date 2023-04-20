@@ -143,6 +143,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           $search: `"${search}"`
         }
       })
+      .sort({ name: sortOrder })
       .toArray();
 
     const userIds = rawUsers.map((user) => user._id);
