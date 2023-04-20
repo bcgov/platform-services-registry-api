@@ -158,16 +158,6 @@ async function restoreProjects() {
       continue;
     }
 
-    // const owner = await prisma.user.findUnique({
-    //   where: { email: contacts[0].email }
-    // });
-    // const primaryTechnicalLead = await prisma.user.findUnique({
-    //   where: { email: contacts[1].email }
-    // });
-    // const secondaryTechnicalLead = contacts[2]
-    //   ? await prisma.user.findUnique({ where: { email: contacts[2].email } })
-    //   : null;
-
     const customCpu = "CPU_REQUEST_32_LIMIT_64";
     const customMemory = "MEMORY_REQUEST_64_LIMIT_128";
     const customStorage = "STORAGE_512";

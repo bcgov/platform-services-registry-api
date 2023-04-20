@@ -18,9 +18,10 @@ import {
   provisionerCallbackHandler,
   getReProvisionNatsMessage,
   getIdsForCluster,
-  getDatabaseHealthCheck,
+  getDatabaseHealthCheck
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
+import { connectToDatabase } from "./db.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
@@ -36,7 +37,7 @@ export const prisma = new PrismaClient();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers,
+  resolvers
 });
 
 schema = applyDirectiveTransformers(schema);
@@ -48,10 +49,12 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true,
+  introspection: true
 });
 
 await server.start();
+
+await connectToDatabase();
 
 app.use(
   "/graphql",
@@ -66,7 +69,7 @@ app.use(
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: [],
+        roles: []
       };
 
       return {
@@ -74,9 +77,9 @@ app.use(
         prisma,
         authRoles: roles,
         authEmail: email,
-        chesService,
+        chesService
       };
-    },
+    }
   })
 );
 
@@ -102,8 +105,6 @@ app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
 app.post("/namespace", provisionerCallbackHandler);
 
 // app.post("/predeletion-check")
-
-
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)

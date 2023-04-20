@@ -10,7 +10,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
-    "mongodb": "^4.7.0"
+    "mongodb": "^4.16.0"
   },
   "devDependencies": {
     "pg": "^8.9.0"

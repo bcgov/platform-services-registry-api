@@ -64,6 +64,26 @@ npm run prisma-migrate-prod
 
 In this app root directory.
 
+Next, create the full text search indexes on the database. You can do this in the mongod comand line:
+
+```
+db.PrivateCloudProject.createIndex({
+  name: "text",
+  description: "text",
+  licencePlate: "text",
+  ministry: "text",
+  cluster: "text"
+});
+```
+
+```
+db.User.createIndex({
+  firstName: "text",
+  lastName: "text",
+  email: "text",
+});
+```
+
 ### For local devlopment
 
 ##### create db folder
