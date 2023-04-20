@@ -8,7 +8,7 @@ const { PrismaClient } = require("@prisma/client");
 const { data } = require("./data.js");
 const prisma = new PrismaClient();
 
-const CLUSTER = "SILVER"; // Replace with the cluster you want to set for all projects
+const CLUSTER = "GOLD"; // Replace with the cluster you want to set for all projects
 
 console.log(CLUSTER);
 
@@ -46,19 +46,6 @@ async function groupByLicensePlate() {
     }
   );
 }
-
-// async function checkForDuplicates() {
-//   const fileContents = await fs.readFile(CLUSTER + "transformed.json", "utf-8");
-//   const jsonObjects = JSON.parse(fileContents);
-
-//   const licensePlates = jsonObjects.map((item) => item.prod.name);
-
-//   const duplicates = licensePlates.filter(
-//     (item, index) => licensePlates.indexOf(item) !== index
-//   );
-
-//   console.log(duplicates);
-// }
 
 async function backedUpUsers() {
   const mongoUsersFileContents = await fs.readFile(
@@ -271,10 +258,9 @@ async function restoreProjects() {
 
       // console.log("PrivateCloudProject created:", createdProject);
     } catch (error) {
-      
       console.error("Error creating PrivateCloudProject:");
       console.log(newProject);
-      console.log("=====================================")
+      console.log("=====================================");
     }
   }
   console.log("Restored Projects");
