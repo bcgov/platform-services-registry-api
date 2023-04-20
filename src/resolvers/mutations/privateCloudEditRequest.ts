@@ -90,22 +90,22 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       },
       secondaryTechnicalLead: args.secondaryTechnicalLead
         ? {
-            connectOrCreate: {
-              where: {
-                email: args.secondaryTechnicalLead.email,
-              },
-              create: args.secondaryTechnicalLead,
+          connectOrCreate: {
+            where: {
+              email: args.secondaryTechnicalLead.email,
             },
-          }
+            create: args.secondaryTechnicalLead,
+          },
+        }
         : undefined,
     };
 
     const isQuotaChanged = !(
       JSON.stringify(args.productionQuota) ===
-        JSON.stringify(project.productionQuota) &&
+      JSON.stringify(project.productionQuota) &&
       JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
       JSON.stringify(args.developmentQuota) ===
-        JSON.stringify(project.developmentQuota) &&
+      JSON.stringify(project.developmentQuota) &&
       JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
     );
 
@@ -149,6 +149,14 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         },
       },
     });
+
+    if (isQuotaChanged) {
+      await sendEditRequestEmails(
+      editRequest.project,
+      editRequest.requestedProject
+    );
+  }
+
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -166,12 +174,9 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
       await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
     }
-  }
 
-  await sendEditRequestEmails(
-    editRequest.project,
-    editRequest.requestedProject
-  );
+
+  }
 
   return editRequest;
 };

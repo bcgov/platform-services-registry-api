@@ -90,7 +90,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
   let { ministry, cluster } = filter;
 
-  search = search === null ? undefined : search;
+  search = search === null ? undefined : search.toLowerCase();
   ministry = ministry === null ? undefined : ministry;
   cluster = cluster === null ? undefined : cluster;
 
