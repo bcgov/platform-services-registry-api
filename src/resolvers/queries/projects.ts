@@ -1,6 +1,6 @@
 import { collections } from "../../db.js";
 
-// // Testing out full text search, does not work yet. To discuss with Zahhan
+// // Testing out full text search, does not work yet. To discuss with Zhanna
 // export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 //   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
 //   let { ministry, cluster } = filter;
