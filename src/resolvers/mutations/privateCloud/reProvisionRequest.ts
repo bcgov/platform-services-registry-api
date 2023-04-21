@@ -2,9 +2,9 @@ import {
   MutationPrivateCloudReProvisionRequestArgs,
   MutationResolvers,
   RequestDecision,
-  Cluster
-} from "../../__generated__/resolvers-types.js";
-import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
+  Cluster,
+} from '../../../__generated__/resolvers-types.js';
+import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 
 const privateCloudReProvisionRequest: MutationResolvers = async (
   _,
@@ -13,37 +13,37 @@ const privateCloudReProvisionRequest: MutationResolvers = async (
 ) => {
   const { requestId } = args;
 
-  if (!authRoles.includes("admin")) {
-    throw new Error("You must be an admin to re provision a request.");
+  if (!authRoles.includes('admin')) {
+    throw new Error('You must be an admin to re provision a request.');
   }
 
   const request = await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
-      active: true
+      active: true,
     },
     include: {
       project: {
         include: {
           projectOwner: true,
           primaryTechnicalLead: true,
-          secondaryTechnicalLead: true
-        }
+          secondaryTechnicalLead: true,
+        },
       },
       requestedProject: {
         include: {
           projectOwner: true,
           primaryTechnicalLead: true,
-          secondaryTechnicalLead: true
-        }
-      }
-    }
+          secondaryTechnicalLead: true,
+        },
+      },
+    },
   });
 
   const { decisionStatus, active } = request;
 
   if (decisionStatus !== RequestDecision.Approved || !active) {
-    throw new Error("Request must be active and approved.");
+    throw new Error('Request must be active and approved.');
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {

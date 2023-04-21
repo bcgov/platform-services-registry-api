@@ -119,6 +119,11 @@ enum DefaultStorageOptions {
   STORAGE_512
 }
 
+enum Provider {
+  GOOGLE
+  AWS
+}
+
 type PrivateCloudProject {
   id: ID!
   name: String!
@@ -156,6 +161,42 @@ type PrivateCloudRequest {
   requestedProject: PrivateCloudProject
 }
 
+type PublicCloudProject {
+  id: ID!
+  name: String!
+  licencePlate: ID!
+  archived: Boolean!
+  created: DateTime!
+  description: String!
+  status: ProjectStatus!
+  projectOwner: User!
+  primaryTechnicalLead: User!
+  secondaryTechnicalLead: User
+  ministry: Ministry!
+  provider: Provider!
+  productionQuota: Quota!
+  testQuota: Quota!
+  developmentQuota: Quota!
+  toolsQuota: Quota!
+  requestHistory: [PublicCloudRequest]!
+  activeEditRequest: PublicCloudRequest
+  count: Int
+  commonComponents: CommonComponents!
+}
+
+type PublicCloudRequest {
+  id: ID!
+  active: Boolean!
+  createdBy: User
+  decisionMaker: User
+  type: RequestType!
+  decisionStatus: DecisionStatus!
+  humanComment: String
+  decisionDate: DateTime
+  project: PublicCloudProject
+  requestedProject: PublicCloudProject
+}
+
 type User {
   id: ID!
   firstName: String
@@ -168,6 +209,9 @@ type User {
   privateCloudProjectOwner: [PrivateCloudProject]!
   privateCloudProjectPrimaryTechnicalLead: [PrivateCloudProject]!
   privateCloudProjectSecondaryTechnicalLead: [PrivateCloudProject]!
+  publicCloudProjectOwner: [PublicCloudProject]!
+  publicCloudProjectPrimaryTechnicalLead: [PublicCloudProject]!
+  publicCloudProjectSecondaryTechnicalLead: [PublicCloudProject]!
 }
 
 input CommonComponentsInput {
@@ -227,7 +271,7 @@ type Quota {
   storage: DefaultStorageOptions!
 }
 
-input FilterPrivateCloudProjectsInput {
+input FilterProjectsInput {
   ministry: Ministry
   cluster: Cluster
 }
@@ -249,27 +293,18 @@ type Query {
   usersByIds(ids: [ID!]!): [User!]! @hasRole(role: ["admin", "read-only-admin"])
   userByEmail(email: EmailAddress!): User @auth
 
-  privateCloudProjects: [PrivateCloudProject!]!
-    @auth
-    @hasRole(role: ["admin", "read-only-admin"])
-
+  # Private Cloud
+  privateCloudProjects: [PrivateCloudProject!]! @auth @hasRole(role: ["admin", "read-only-admin"])
   privateCloudProjectsPaginated(
     page: Int!
     pageSize: Int!
-    filter: FilterPrivateCloudProjectsInput
+    filter: FilterProjectsInput
     search: String
     sortOrder: Int
   ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
-
-  privateCloudProjectsWithFilterSearch(
-    filter: FilterPrivateCloudProjectsInput
-    search: String
-  ): [PrivateCloudProject!]! @auth @hasRole(role: ["admin", "read-only-admin"])
-
   privateCloudProjectById(projectId: ID!): PrivateCloudProject!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
-
   privateCloudProjectsById(projectIds: [ID!]): [PrivateCloudProject!]!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
@@ -280,32 +315,59 @@ type Query {
 
   userPrivateCloudRequests: [PrivateCloudRequest!]! @auth
   userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest! @auth
+  userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
+  userPrivateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest! @auth
+  userPrivateCloudActiveRequestsByIds(requestIds: [ID!]): PrivateCloudRequest! @auth
 
-  privateCloudRequests: [PrivateCloudRequest!]!
-    @auth
-    @hasRole(role: ["admin", "read-only-admin"])
-
+  privateCloudRequests: [PrivateCloudRequest!]! @auth @hasRole(role: ["admin", "read-only-admin"])
   privateCloudRequestById(requestId: ID!): PrivateCloudRequest!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
-
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
-
-  privateCloudActiveRequests: [PrivateCloudRequest!]!
-    @auth
-    @hasRole(role: ["admin", "read-only-admin"])
+  privateCloudActiveRequests: [PrivateCloudRequest!]! @auth @hasRole(role: ["admin", "read-only-admin"])
   privateCloudActiveRequestsById(requestIds: ID!): [PrivateCloudRequest!]!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
 
-  userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
-  userPrivateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest! @auth
-  userPrivateCloudActiveRequestsByIds(requestIds: [ID!]): PrivateCloudRequest!
+  # Public Cloud
+  publicCloudProjects: [publicCloudProject!]! @auth @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudProjectsPaginated(
+    page: Int!
+    pageSize: Int!
+    filter: FilterProjectsInput
+    search: String
+    sortOrder: Int
+  ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudProjectById(projectId: ID!): publicCloudProject!
     @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudProjectsById(projectIds: [ID!]): [publicCloudProject!]!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
 
-  # Can also implement the above for a particular field, like ministry.. Could have a ministry admin role
+  userpublicCloudProjects: [publicCloudProject!]! @auth
+  userpublicCloudProjectById(projectId: ID!): publicCloudProject! @auth
+  userpublicCloudProjectsByIds(projectIds: [ID!]): publicCloudProject! @auth
+
+  userpublicCloudRequests: [publicCloudRequest!]! @auth
+  userpublicCloudRequestById(requestId: ID!): publicCloudRequest! @auth
+  userpublicCloudActiveRequests: [publicCloudRequest!]! @auth
+  userpublicCloudActiveRequestById(requestId: ID!): publicCloudRequest! @auth
+  userpublicCloudActiveRequestsByIds(requestIds: [ID!]): publicCloudRequest! @auth
+
+  publicCloudRequests: [publicCloudRequest!]! @auth @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudRequestById(requestId: ID!): publicCloudRequest!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudActiveRequestById(requestId: ID!): publicCloudRequest!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudActiveRequests: [publicCloudRequest!]! @auth @hasRole(role: ["admin", "read-only-admin"])
+  publicCloudActiveRequestsById(requestIds: ID!): [publicCloudRequest!]!
+    @auth
+    @hasRole(role: ["admin", "read-only-admin"])
 }
 
 type Mutation {
@@ -314,6 +376,7 @@ type Mutation {
   createUser(input: CreateUserInput!): User! @auth
   # updateUser(input: UpdateUserInput!): User!
 
+  # Private Cloud
   privateCloudProjectRequest(
     name: String!
     description: String!
@@ -348,9 +411,46 @@ type Mutation {
     humanComment: String
   ): PrivateCloudRequest @hasRole(role: "admin")
 
-  privateCloudReProvisionRequest(requestId: ID!): PrivateCloudRequest
-    @hasRole(role: "admin")
+  privateCloudReProvisionRequest(requestId: ID!): PrivateCloudRequest @hasRole(role: "admin")
 
-  privateCloudReProvisionProject(projectId: ID!): PrivateCloudProject
-    @hasRole(role: "admin")
+  privateCloudReProvisionProject(projectId: ID!): PrivateCloudProject @hasRole(role: "admin")
+
+  # Public Cloud
+  publicCloudProjectRequest(
+    name: String!
+    description: String!
+    cluster: Cluster!
+    ministry: Ministry!
+    commonComponents: CommonComponentsInput!
+    projectOwner: CreateUserInput!
+    primaryTechnicalLead: CreateUserInput!
+    secondaryTechnicalLead: CreateUserInput
+  ): publicCloudRequest! @auth
+
+  publicCloudProjectEditRequest(
+    projectId: ID!
+    name: String!
+    description: String!
+    ministry: Ministry!
+    commonComponents: CommonComponentsInput!
+    projectOwner: CreateUserInput!
+    primaryTechnicalLead: CreateUserInput!
+    secondaryTechnicalLead: CreateUserInput
+    productionQuota: QuotaInput!
+    developmentQuota: QuotaInput!
+    testQuota: QuotaInput!
+    toolsQuota: QuotaInput!
+  ): publicCloudRequest! @auth
+
+  publicCloudProjectDeleteRequest(projectId: ID!): publicCloudRequest! @auth
+
+  publicCloudRequestDecision(
+    requestId: ID!
+    decision: RequestDecision!
+    humanComment: String
+  ): publicCloudRequest @hasRole(role: "admin")
+
+  # Public Cloud might not need this
+  # publicCloudReProvisionRequest(requestId: ID!): publicCloudRequest @hasRole(role: "admin")
+  # publicCloudReProvisionProject(projectId: ID!): publicCloudProject @hasRole(role: "admin")
 }

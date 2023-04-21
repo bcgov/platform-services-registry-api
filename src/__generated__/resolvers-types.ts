@@ -266,10 +266,53 @@ export enum ProjectStatus {
   Inactive = 'INACTIVE'
 }
 
+export enum Provider {
+  Aws = 'AWS',
+  Google = 'GOOGLE'
+}
+
 export enum PublicCloudPlatform {
   Aws = 'AWS',
   Google = 'GOOGLE'
 }
+
+export type PublicCloudProject = {
+  __typename?: 'PublicCloudProject';
+  activeEditRequest?: Maybe<PrivateCloudRequest>;
+  archived: Scalars['Boolean'];
+  commonComponents: CommonComponents;
+  count?: Maybe<Scalars['Int']>;
+  created: Scalars['DateTime'];
+  description: Scalars['String'];
+  developmentQuota: Quota;
+  id: Scalars['ID'];
+  licencePlate: Scalars['ID'];
+  ministry: Ministry;
+  name: Scalars['String'];
+  primaryTechnicalLead: User;
+  productionQuota: Quota;
+  projectOwner: User;
+  provider: Provider;
+  requestHistory: Array<Maybe<PrivateCloudRequest>>;
+  secondaryTechnicalLead?: Maybe<User>;
+  status: ProjectStatus;
+  testQuota: Quota;
+  toolsQuota: Quota;
+};
+
+export type PublicCloudRequest = {
+  __typename?: 'PublicCloudRequest';
+  active: Scalars['Boolean'];
+  createdBy?: Maybe<User>;
+  decisionDate?: Maybe<Scalars['DateTime']>;
+  decisionMaker?: Maybe<User>;
+  decisionStatus: DecisionStatus;
+  humanComment?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  project?: Maybe<PrivateCloudProject>;
+  requestedProject?: Maybe<PrivateCloudProject>;
+  type: RequestType;
+};
 
 export type Query = {
   __typename?: 'Query';
@@ -430,6 +473,9 @@ export type User = {
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
+  publicCloudProjectOwner: Array<Maybe<PublicCloudProject>>;
+  publicCloudProjectPrimaryTechnicalLead: Array<Maybe<PublicCloudProject>>;
+  publicCloudProjectSecondaryTechnicalLead: Array<Maybe<PublicCloudProject>>;
 };
 
 export type ProjectsPaginatedOutput = {
@@ -530,7 +576,10 @@ export type ResolversTypes = ResolversObject<{
   PrivateCloudProject: ResolverTypeWrapper<PrivateCloudProject>;
   PrivateCloudRequest: ResolverTypeWrapper<PrivateCloudRequest>;
   ProjectStatus: ProjectStatus;
+  Provider: Provider;
   PublicCloudPlatform: PublicCloudPlatform;
+  PublicCloudProject: ResolverTypeWrapper<PublicCloudProject>;
+  PublicCloudRequest: ResolverTypeWrapper<PublicCloudRequest>;
   Query: ResolverTypeWrapper<{}>;
   Quota: ResolverTypeWrapper<Quota>;
   QuotaInput: QuotaInput;
@@ -557,6 +606,8 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   PrivateCloudProject: PrivateCloudProject;
   PrivateCloudRequest: PrivateCloudRequest;
+  PublicCloudProject: PublicCloudProject;
+  PublicCloudRequest: PublicCloudRequest;
   Query: {};
   Quota: Quota;
   QuotaInput: QuotaInput;
@@ -639,6 +690,44 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PublicCloudProject'] = ResolversParentTypes['PublicCloudProject']> = ResolversObject<{
+  activeEditRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
+  archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
+  count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  developmentQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  licencePlate?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  primaryTechnicalLead?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  productionQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  projectOwner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  provider?: Resolver<ResolversTypes['Provider'], ParentType, ContextType>;
+  requestHistory?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudRequest']>>, ParentType, ContextType>;
+  secondaryTechnicalLead?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['ProjectStatus'], ParentType, ContextType>;
+  testQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  toolsQuota?: Resolver<ResolversTypes['Quota'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PublicCloudRequestResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PublicCloudRequest'] = ResolversParentTypes['PublicCloudRequest']> = ResolversObject<{
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  decisionDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  decisionMaker?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  decisionStatus?: Resolver<ResolversTypes['DecisionStatus'], ParentType, ContextType>;
+  humanComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  project?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  requestedProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['RequestType'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type QueryResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   me?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   privateCloudActiveRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudActiveRequestByIdArgs, 'requestId'>>;
@@ -684,6 +773,9 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
+  publicCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
+  publicCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
+  publicCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -700,6 +792,8 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   PrivateCloudProject?: PrivateCloudProjectResolvers<ContextType>;
   PrivateCloudRequest?: PrivateCloudRequestResolvers<ContextType>;
+  PublicCloudProject?: PublicCloudProjectResolvers<ContextType>;
+  PublicCloudRequest?: PublicCloudRequestResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
@@ -759,6 +853,8 @@ export const MinistrySchema = yup.mixed().oneOf([Ministry.Aest, Ministry.Ag, Min
 export const PlatformSchema = yup.mixed().oneOf([Platform.PrivateCloud, Platform.PublicCloud]);
 
 export const ProjectStatusSchema = yup.mixed().oneOf([ProjectStatus.Active, ProjectStatus.Inactive]);
+
+export const ProviderSchema = yup.mixed().oneOf([Provider.Aws, Provider.Google]);
 
 export const PublicCloudPlatformSchema = yup.mixed().oneOf([PublicCloudPlatform.Aws, PublicCloudPlatform.Google]);
 

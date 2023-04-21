@@ -3,11 +3,11 @@ import {
   RequestType,
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs,
-  Cluster
-} from "../../__generated__/resolvers-types.js";
-import { Prisma, PrivateCloudRequest } from "@prisma/client";
-import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
-import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
+  Cluster,
+} from '../../../__generated__/resolvers-types.js';
+import { Prisma, PrivateCloudRequest } from '@prisma/client';
+import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
+import { sendEditRequestEmails } from '../../../ches/emailHandlers.js';
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
   _,
@@ -24,37 +24,37 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     const existingRequest: PrivateCloudRequest =
       await prisma.privateCloudRequest.findFirst({
         where: {
-          AND: [{ projectId: args.projectId }, { active: true }]
-        }
+          AND: [{ projectId: args.projectId }, { active: true }],
+        },
       });
 
     if (existingRequest !== null) {
       throw new Error(
-        "This project already has an active request or it does not exist."
+        'This project already has an active request or it does not exist.'
       );
     }
 
     const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: args.projectId
+        id: args.projectId,
       },
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLead: true
-      }
+        secondaryTechnicalLead: true,
+      },
     });
 
     if (
       ![
         project.projectOwner.email,
         project.primaryTechnicalLead.email,
-        project?.secondaryTechnicalLead?.email
+        project?.secondaryTechnicalLead?.email,
       ].includes(authEmail) &&
-      !authRoles.includes("admin")
+      !authRoles.includes('admin')
     ) {
       throw new Error(
-        "You need to be a contact on this project or an administrator in order to edit it."
+        'You need to be a contact on this project or an administrator in order to edit it.'
       );
     }
 
@@ -75,29 +75,29 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: args.projectOwner.email
+            email: args.projectOwner.email,
           },
-          create: args.projectOwner
-        }
+          create: args.projectOwner,
+        },
       },
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: args.primaryTechnicalLead.email
+            email: args.primaryTechnicalLead.email,
           },
-          create: args.primaryTechnicalLead
-        }
+          create: args.primaryTechnicalLead,
+        },
       },
       secondaryTechnicalLead: args.secondaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: args.secondaryTechnicalLead.email
+                email: args.secondaryTechnicalLead.email,
               },
-              create: args.secondaryTechnicalLead
-            }
+              create: args.secondaryTechnicalLead,
+            },
           }
-        : undefined
+        : undefined,
     };
 
     const isQuotaChanged = !(
@@ -124,30 +124,30 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
         requestedProject: {
-          create: requestedProject
+          create: requestedProject,
         },
         project: {
           connect: {
-            id: args.projectId
-          }
-        }
+            id: args.projectId,
+          },
+        },
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
 
     if (isQuotaChanged) {
@@ -158,8 +158,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        throw new Error("There is already an active request for this project.");
+      if (e.code === 'P2002') {
+        throw new Error('There is already an active request for this project.');
       }
     }
     throw e;

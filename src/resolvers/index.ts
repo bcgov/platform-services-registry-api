@@ -1,22 +1,22 @@
 import {
   QueryResolvers,
   MutationResolvers,
-  Resolvers
-} from "../__generated__/resolvers-types.js";
-import * as userMutations from "./mutations/users.js";
-import privateCloudProjectRequest from "./mutations/privateCloudCreateRequest.js";
-import privateCloudRequestDecision from "./mutations/privateCloudRequestDecision.js";
-import privateCloudProjectEditRequest from "./mutations/privateCloudEditRequest.js";
-import privateCloudProjectDeleteRequest from "./mutations/privateCloudDeleteRequest.js";
-import privateCloudReProvisionRequest from "./mutations/privateCloudReProvisionRequest.js";
-import privateCloudReProvisionProject from "./mutations/privateCloudReProvisionProject.js";
-import * as userQueries from "./queries/users.js";
-import * as requestQueries from "./queries/requests.js";
-import * as projectQueries from "./queries/projects.js";
-import User from "./user.js";
-import PrivateCloudRequest from "./request.js";
-import PrivateCloudProject from "./project.js";
-import * as enums from "./enum.js";
+  Resolvers,
+} from '../__generated__/resolvers-types.js';
+import * as userMutations from './mutations/users.js';
+import privateCloudProjectRequest from './mutations/privateCloud/createRequest.js';
+import privateCloudRequestDecision from './mutations/privateCloud/requestDecision.js';
+import privateCloudProjectEditRequest from './mutations/privateCloud/editRequest.js';
+import privateCloudProjectDeleteRequest from './mutations/privateCloud/deleteRequest.js';
+import privateCloudReProvisionRequest from './mutations/privateCloud/reProvisionRequest.js';
+import privateCloudReProvisionProject from './mutations/privateCloud/reProvisionProject.js';
+import * as userQueries from './queries/users.js';
+import * as requestQueries from './queries/requests.js';
+import * as projectQueries from './queries/privateCloud/projects.js';
+import User from './user.js';
+import Request from './request.js';
+import Project from './project.js';
+import * as enums from './enum.js';
 
 const mutations: MutationResolvers = {
   Mutation: {
@@ -26,12 +26,12 @@ const mutations: MutationResolvers = {
     privateCloudProjectEditRequest,
     privateCloudProjectDeleteRequest,
     privateCloudReProvisionRequest,
-    privateCloudReProvisionProject
-  }
+    privateCloudReProvisionProject,
+  },
 };
 
 const queries: QueryResolvers = {
-  Query: { ...userQueries, ...requestQueries, ...projectQueries }
+  Query: { ...userQueries, ...requestQueries, ...projectQueries },
 };
 
 const resolvers: Resolvers = {
@@ -39,8 +39,10 @@ const resolvers: Resolvers = {
   ...queries,
   ...enums,
   User,
-  PrivateCloudRequest,
-  PrivateCloudProject
+  PrivateCloudRequest: Request,
+  PrivateCloudProject: Project,
+  PublicCloudProject: Project,
+  PublicCloudRequest: Request,
 };
 
 export default resolvers;

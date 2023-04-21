@@ -3,11 +3,11 @@ import {
   MutationResolvers,
   DecisionStatus,
   RequestDecision,
-  Cluster
-} from "../../__generated__/resolvers-types.js";
-import { Prisma } from "@prisma/client";
-import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
-import { sendRejectEmail } from "../../ches/emailHandlers.js";
+  Cluster,
+} from '../../../__generated__/resolvers-types.js';
+import { Prisma } from '@prisma/client';
+import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
+import { sendRejectEmail } from '../../../ches/emailHandlers.js';
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -16,8 +16,8 @@ const privateCloudRequestDecision: MutationResolvers = async (
 ) => {
   const { requestId, decision, humanComment } = args;
 
-  if (!authRoles.includes("admin")) {
-    throw new Error("You must be an admin to make a request decision.");
+  if (!authRoles.includes('admin')) {
+    throw new Error('You must be an admin to make a request decision.');
   }
 
   let request;
@@ -26,43 +26,43 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        decisionStatus: DecisionStatus.Pending
+        decisionStatus: DecisionStatus.Pending,
       },
       data: {
         decisionStatus: decision,
         humanComment: humanComment,
         active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
-        decisionMakerEmail: authEmail
+        decisionMakerEmail: authEmail,
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2025") {
-        throw new Error("Request not found or already has a decision.");
+      if (e.code === 'P2025') {
+        throw new Error('Request not found or already has a decision.');
       }
     }
     throw e;
   }
 
-  if (request.type === "DELETE") {
-    throw Error("Delete is dissabled");
+  if (request.type === 'DELETE') {
+    throw Error('Delete is dissabled');
     return;
   }
 

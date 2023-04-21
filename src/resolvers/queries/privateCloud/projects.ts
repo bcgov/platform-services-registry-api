@@ -1,4 +1,4 @@
-import { collections } from "../../db.js";
+// import { collections } from "../../../db.js";
 
 // // Testing out full text search, does not work yet. To discuss with Zhanna
 // export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
@@ -40,7 +40,7 @@ import { collections } from "../../db.js";
 export const privateCloudProjects = (_, __, { prisma }) => {
   return prisma.privateCloudProject.findMany({
     where: {
-      status: "ACTIVE",
+      status: 'ACTIVE',
     },
   });
 };
@@ -49,17 +49,17 @@ export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
   prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
-      status: "ACTIVE",
+      status: 'ACTIVE',
     },
   });
 
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
   prisma.privateCloudProject.findMany({
     orderBy: {
-      name: "asc",
+      name: 'asc',
     },
     where: {
-      status: "ACTIVE",
+      status: 'ACTIVE',
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -76,7 +76,7 @@ export const userPrivateCloudProjectById = async (
   await prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
-      status: "ACTIVE",
+      status: 'ACTIVE',
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -93,7 +93,7 @@ export const userPrivateCloudProjectsByIds = async (
   await prisma.privateCloudProject.findMany({
     where: {
       id: { in: projectIds },
-      status: "ACTIVE",
+      status: 'ACTIVE',
       OR: [
         { projectOwner: { email: authEmail } },
         { primaryTechnicalLead: { email: authEmail } },
@@ -154,33 +154,33 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       {
         $project: {
           id: {
-            $toString: "$_id",
+            $toString: '$_id',
           },
           name: 1,
           licencePlate: 1,
           archived: 1,
           created: {
-            $toString: "$created",
+            $toString: '$created',
           },
           description: 1,
           status: 1,
           projectOwnerId: {
-            $toString: "$projectOwnerId",
+            $toString: '$projectOwnerId',
           },
           secondaryTechnicalLeadId: {
-            $toString: "$secondaryTechnicalLeadId",
+            $toString: '$secondaryTechnicalLeadId',
           },
           primaryTechnicalLeadId: {
-            $toString: "$primaryTechnicalLeadId",
+            $toString: '$primaryTechnicalLeadId',
           },
           projectOwnerIdSearch: {
-            $toObjectId: "$projectOwnerId",
+            $toObjectId: '$projectOwnerId',
           },
           primaryTechnicalLeadIdSearch: {
-            $toObjectId: "$primaryTechnicalLeadId",
+            $toObjectId: '$primaryTechnicalLeadId',
           },
           secondaryTechnicalLeadIdSearch: {
-            $toObjectId: "$secondaryTechnicalLeadId",
+            $toObjectId: '$secondaryTechnicalLeadId',
           },
           ministry: 1,
           cluster: 1,
@@ -193,104 +193,104 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           count: 1,
           commonComponents: 1,
           lowerName: {
-            $toLower: "$name",
+            $toLower: '$name',
           },
         },
       },
       {
         $lookup: {
-          from: "User",
-          localField: "projectOwnerIdSearch",
-          foreignField: "_id",
-          as: "projectOwner",
+          from: 'User',
+          localField: 'projectOwnerIdSearch',
+          foreignField: '_id',
+          as: 'projectOwner',
         },
       },
       {
         $unwind: {
-          path: "$projectOwner",
+          path: '$projectOwner',
         },
       },
       {
         $lookup: {
-          from: "User",
-          localField: "secondaryTechnicalLeadIdSearch",
-          foreignField: "_id",
-          as: "secondaryTechnicalLead",
+          from: 'User',
+          localField: 'secondaryTechnicalLeadIdSearch',
+          foreignField: '_id',
+          as: 'secondaryTechnicalLead',
         },
       },
       {
         $unwind: {
-          path: "$secondaryTechnicalLead",
+          path: '$secondaryTechnicalLead',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $lookup: {
-          from: "User",
-          localField: "primaryTechnicalLeadIdSearch",
-          foreignField: "_id",
-          as: "primaryTechnicalLead",
+          from: 'User',
+          localField: 'primaryTechnicalLeadIdSearch',
+          foreignField: '_id',
+          as: 'primaryTechnicalLead',
         },
       },
       {
         $unwind: {
-          path: "$primaryTechnicalLead",
+          path: '$primaryTechnicalLead',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $match: {
-          status: { $regex: "ACTIVE" },
+          status: { $regex: 'ACTIVE' },
           $and: [
             {
               $or: [
                 {
-                  "projectOwner.email": { $regex: search ? search : "" },
+                  'projectOwner.email': { $regex: search ? search : '' },
                 },
                 {
-                  "projectOwner.firstName": { $regex: search ? search : "" },
+                  'projectOwner.firstName': { $regex: search ? search : '' },
                 },
                 {
-                  "projectOwner.lastName": { $regex: search ? search : "" },
+                  'projectOwner.lastName': { $regex: search ? search : '' },
                 },
                 {
-                  "primaryTechnicalLead.email": {
-                    $regex: search ? search : "",
+                  'primaryTechnicalLead.email': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  "primaryTechnicalLead.firstName": {
-                    $regex: search ? search : "",
+                  'primaryTechnicalLead.firstName': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  "primaryTechnicalLead.lastName": {
-                    $regex: search ? search : "",
+                  'primaryTechnicalLead.lastName': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  "secondaryTechnicalLead.email": {
-                    $regex: search ? search : "",
+                  'secondaryTechnicalLead.email': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  "secondaryTechnicalLead.firstName": {
-                    $regex: search ? search : "",
+                  'secondaryTechnicalLead.firstName': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  "secondaryTechnicalLead.lastName": {
-                    $regex: search ? search : "",
+                  'secondaryTechnicalLead.lastName': {
+                    $regex: search ? search : '',
                   },
                 },
                 {
-                  name: { $regex: search ? search : "" },
+                  name: { $regex: search ? search : '' },
                 },
                 {
-                  description: { $regex: search ? search : "" },
+                  description: { $regex: search ? search : '' },
                 },
                 {
-                  licencePlate: { $regex: search ? search : "" },
+                  licencePlate: { $regex: search ? search : '' },
                 },
               ],
             },
@@ -311,7 +311,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 
   const total = await prisma.privateCloudProject.count({
     where: {
-      status: "ACTIVE",
+      status: 'ACTIVE',
       AND: [
         {
           OR: [
@@ -363,10 +363,10 @@ export const privateCloudProjectsWithFilterSearch = async (
 
   const projects = await prisma.privateCloudProject.findMany({
     orderBy: {
-      name: "asc",
+      name: 'asc',
     },
     where: {
-      status: "ACTIVE",
+      status: 'ACTIVE',
       AND: [
         {
           OR: [

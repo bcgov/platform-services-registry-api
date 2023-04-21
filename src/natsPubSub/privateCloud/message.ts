@@ -10,7 +10,7 @@ import {
 } from "./constants.js";
 import { Prisma, RequestType as Action } from "@prisma/client";
 
-type PrivateCloudRequestedProject =
+export type PrivateCloudRequestedProject =
   Prisma.PrivateCloudRequestedProjectGetPayload<{
     select: {
       productionQuota: true;

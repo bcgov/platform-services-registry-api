@@ -1,17 +1,18 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import { connect, StringCodec, JSONCodec } from "nats";
-import createPrivateCloudMessage from "./privateCloud/message.js";
-import { testMessage, Cluster } from "./privateCloud/constants.js";
-import createPublicCloudMessage from "./publicCloud/message.js";
-import { RequestType } from "@prisma/client";
+import { connect, StringCodec, JSONCodec } from 'nats';
+import createPrivateCloudMessage from './privateCloud/message.js';
+import { Cluster } from './privateCloud/constants.js';
+import createPublicCloudMessage from './publicCloud/message.js';
+import { RequestType } from '@prisma/client';
+import { PrivateCloudRequestedProject } from './privateCloud/message.js';
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 
 async function sendNatsMessage(natsSubject, messageBody) {
   try {
-    console.log("NATS SUBJECT: ", natsSubject);
-    console.log("MESSAGE BODY: ", JSON.stringify(messageBody));
+    console.log('NATS SUBJECT: ', natsSubject);
+    console.log('MESSAGE BODY: ', JSON.stringify(messageBody));
 
     const nc = await connect({ servers: serverURL });
 
@@ -26,22 +27,26 @@ async function sendNatsMessage(natsSubject, messageBody) {
   }
 }
 
-function sendPrivateCloudNatsMessage(action, requestedProject) {
+export function sendPrivateCloudNatsMessage(
+  requestType: RequestType,
+  requestedProject: PrivateCloudRequestedProject
+) {
   const natsSubject = `registry_project_provisioning_${
     Cluster[requestedProject.cluster]
   }`;
 
-  const messageBody = createPrivateCloudMessage(action, requestedProject);
+  const messageBody = createPrivateCloudMessage(requestType, requestedProject);
 
   return sendNatsMessage(natsSubject, messageBody);
 }
 
-function sendPublicCloudNatsMessage(action, requestedProject) {
+export function sendPublicCloudNatsMessage(
+  requestType: RequestType,
+  requestedProject
+) {
   const natsSubject = `public_cloud`;
 
-  const messageBody = createPublicCloudMessage(action, requestedProject);
+  const messageBody = createPublicCloudMessage(requestType, requestedProject);
 
   return sendNatsMessage(natsSubject, messageBody);
 }
-
-export { sendPrivateCloudNatsMessage, sendPublicCloudNatsMessage };

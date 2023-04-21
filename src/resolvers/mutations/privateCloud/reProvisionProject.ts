@@ -3,10 +3,10 @@ import {
   RequestType,
   DecisionStatus,
   MutationPrivateCloudReProvisionProjectArgs,
-  Cluster
-} from "../../__generated__/resolvers-types.js";
-import { Prisma, PrivateCloudRequest } from "@prisma/client";
-import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
+  Cluster,
+} from '../../../__generated__/resolvers-types.js';
+import { Prisma, PrivateCloudRequest } from '@prisma/client';
+import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 
 const privateCloudReProvisionProject: MutationResolvers = async (
   _,
@@ -23,25 +23,25 @@ const privateCloudReProvisionProject: MutationResolvers = async (
     const existingRequest: PrivateCloudRequest =
       await prisma.privateCloudRequest.findFirst({
         where: {
-          AND: [{ projectId: args.projectId }, { active: true }]
-        }
+          AND: [{ projectId: args.projectId }, { active: true }],
+        },
       });
 
     if (existingRequest !== null) {
       throw new Error(
-        "This project already has an active request or it does not exist."
+        'This project already has an active request or it does not exist.'
       );
     }
 
     const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: args.projectId
+        id: args.projectId,
       },
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLead: true
-      }
+        secondaryTechnicalLead: true,
+      },
     });
 
     const requestedProject = {
@@ -61,29 +61,29 @@ const privateCloudReProvisionProject: MutationResolvers = async (
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: project.projectOwner.email
+            email: project.projectOwner.email,
           },
-          create: project.projectOwner
-        }
+          create: project.projectOwner,
+        },
       },
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: project.primaryTechnicalLead.email
+            email: project.primaryTechnicalLead.email,
           },
-          create: project.primaryTechnicalLead
-        }
+          create: project.primaryTechnicalLead,
+        },
       },
       secondaryTechnicalLead: project.secondaryTechnicalLead
         ? {
             connectOrCreate: {
               where: {
-                email: project.secondaryTechnicalLead.email
+                email: project.secondaryTechnicalLead.email,
               },
-              create: project.secondaryTechnicalLead
-            }
+              create: project.secondaryTechnicalLead,
+            },
           }
-        : undefined
+        : undefined,
     };
 
     reProvisionRequest = await prisma.privateCloudRequest.create({
@@ -94,35 +94,35 @@ const privateCloudReProvisionProject: MutationResolvers = async (
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
         requestedProject: {
-          create: requestedProject
+          create: requestedProject,
         },
         project: {
           connect: {
-            id: args.projectId
-          }
-        }
+            id: args.projectId,
+          },
+        },
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === "P2002") {
-        throw new Error("There is already an active request for this project.");
+      if (e.code === 'P2002') {
+        throw new Error('There is already an active request for this project.');
       }
     }
     throw e;

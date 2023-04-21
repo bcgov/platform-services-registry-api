@@ -7,10 +7,10 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-} from "../../__generated__/resolvers-types.js";
-import generateLicensePlate from "../../utils/generateLicencePlate.js";
-import { Prisma } from "@prisma/client";
-import { sendCreateRequestEmails } from "../../ches/emailHandlers.js";
+} from '../../../__generated__/resolvers-types.js';
+import generateLicensePlate from '../../../utils/generateLicencePlate.js';
+import { Prisma } from '@prisma/client';
+import { sendCreateRequestEmails } from '../../../ches/emailHandlers.js';
 
 const privateCloudProjectRequest: MutationResolvers = async (
   _,
@@ -23,10 +23,10 @@ const privateCloudProjectRequest: MutationResolvers = async (
       args.primaryTechnicalLead.email,
       args.secondaryTechnicalLead?.email,
     ].includes(authEmail) &&
-    !authRoles.includes("admin")
+    !authRoles.includes('admin')
   ) {
     throw new Error(
-      "You need to assign yourself to this project in order to create it."
+      'You need to assign yourself to this project in order to create it.'
     );
   }
 
