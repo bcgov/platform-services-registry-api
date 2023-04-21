@@ -18,7 +18,7 @@ import {
   provisionerCallbackHandler,
   getReProvisionNatsMessage,
   getIdsForCluster,
-  getDatabaseHealthCheck
+  getDatabaseHealthCheck,
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
 import { connectToDatabase } from "./db.js";
@@ -37,7 +37,7 @@ export const prisma = new PrismaClient();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers
+  resolvers,
 });
 
 schema = applyDirectiveTransformers(schema);
@@ -49,7 +49,7 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true
+  introspection: true,
 });
 
 await server.start();
@@ -66,20 +66,21 @@ app.use(
       const kauth = new KeycloakContext({ req }, keycloak);
       // @ts-ignore
       const email = kauth?.accessToken?.content?.email;
+      const lowerCaseEmail = email?.toLowerCase();
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: []
+        roles: [],
       };
 
       return {
         kauth: kauth,
         prisma,
         authRoles: roles,
-        authEmail: email,
-        chesService
+        authEmail: lowerCaseEmail,
+        chesService,
       };
-    }
+    },
   })
 );
 
