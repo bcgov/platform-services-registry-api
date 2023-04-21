@@ -10,7 +10,7 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-} from "../nats/constants.js";
+} from "../natsPubSub/privateCloud/constants.js";
 import {
   adminEmails,
   clusterNames,

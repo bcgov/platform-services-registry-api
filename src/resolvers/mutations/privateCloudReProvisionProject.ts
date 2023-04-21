@@ -6,7 +6,7 @@ import {
   Cluster
 } from "../../__generated__/resolvers-types.js";
 import { Prisma, PrivateCloudRequest } from "@prisma/client";
-import sendNatsMessage from "../../nats/sendNatsMessage.js";
+import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
 
 const privateCloudReProvisionProject: MutationResolvers = async (
   _,
@@ -128,7 +128,7 @@ const privateCloudReProvisionProject: MutationResolvers = async (
     throw e;
   }
 
-  await sendNatsMessage(
+  await sendPrivateCloudNatsMessage(
     reProvisionRequest.type,
     reProvisionRequest.requestedProject
   );
@@ -136,7 +136,10 @@ const privateCloudReProvisionProject: MutationResolvers = async (
   if (reProvisionRequest.requestedProject.cluster === Cluster.Gold) {
     const goldDrRequest = { ...reProvisionRequest };
     goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-    await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
+    await sendPrivateCloudNatsMessage(
+      goldDrRequest.type,
+      goldDrRequest.requestedProject
+    );
   }
 
   return reProvisionRequest;

@@ -4,7 +4,7 @@ import {
   RequestDecision,
   Cluster
 } from "../../__generated__/resolvers-types.js";
-import sendNatsMessage from "../../nats/sendNatsMessage.js";
+import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
 
 const privateCloudReProvisionRequest: MutationResolvers = async (
   _,
@@ -47,12 +47,12 @@ const privateCloudReProvisionRequest: MutationResolvers = async (
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendNatsMessage(request.type, request.requestedProject);
+    await sendPrivateCloudNatsMessage(request.type, request.requestedProject);
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(request.type, request.requestedProject);
+      await sendPrivateCloudNatsMessage(request.type, request.requestedProject);
     }
   }
 

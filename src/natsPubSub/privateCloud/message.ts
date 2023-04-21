@@ -2,12 +2,56 @@ import {
   Cluster,
   RequestType,
   DefaultCpuOptions,
+  CpuOption,
+  MemoryOption,
+  StorageOption,
   DefaultMemoryOptions,
   DefaultStorageOptions
 } from "./constants.js";
+import { Prisma, RequestType as Action } from "@prisma/client";
+
+type PrivateCloudRequestedProject =
+  Prisma.PrivateCloudRequestedProjectGetPayload<{
+    select: {
+      productionQuota: true;
+      developmentQuota: true;
+      testQuota: true;
+      toolsQuota: true;
+      id: true;
+      licencePlate: true;
+      name: true;
+      description: true;
+      ministry: true;
+      cluster: true;
+      projectOwner: {
+        select: {
+          email: true;
+        };
+      };
+      primaryTechnicalLead: {
+        select: {
+          email: true;
+        };
+      };
+      secondaryTechnicalLead: {
+        select: {
+          email: true;
+        };
+      };
+    };
+  }>;
+
+type QuotaOption = {
+  cpu: CpuOption;
+  memory: MemoryOption;
+  storage: StorageOption;
+};
 
 // Create a test env variable that prefix the namespace name with "t"
-function message(action, requestedProject) {
+function message(
+  action: Action,
+  requestedProject: PrivateCloudRequestedProject
+) {
   let {
     id, // Use ID from actaul project, not from requested project
     licencePlate,
@@ -29,25 +73,25 @@ function message(action, requestedProject) {
     snapshotCount: 5
   };
 
-  testQuota = {
+  const provisionerTestQuota: QuotaOption = {
     cpu: DefaultCpuOptions[testQuota.cpu],
     memory: DefaultMemoryOptions[testQuota.memory],
     storage: DefaultStorageOptions[testQuota.storage]
   };
 
-  productionQuota = {
+  const provisionerProductionQuota: QuotaOption = {
     cpu: DefaultCpuOptions[productionQuota.cpu],
     memory: DefaultMemoryOptions[productionQuota.memory],
     storage: DefaultStorageOptions[productionQuota.storage]
   };
 
-  developmentQuota = {
+  const provisionerDevelopmentQuota: QuotaOption = {
     cpu: DefaultCpuOptions[developmentQuota.cpu],
     memory: DefaultMemoryOptions[developmentQuota.memory],
     storage: DefaultStorageOptions[developmentQuota.storage]
   };
 
-  toolsQuota = {
+  const provisionerToolsQuota: QuotaOption = {
     cpu: DefaultCpuOptions[toolsQuota.cpu],
     memory: DefaultMemoryOptions[toolsQuota.memory],
     storage: DefaultStorageOptions[toolsQuota.storage]
@@ -84,10 +128,10 @@ function message(action, requestedProject) {
     : null;
 
   const namespaces = [
-    { quotaName: "tools", quota: toolsQuota },
-    { quotaName: "prod", quota: productionQuota },
-    { quotaName: "dev", quota: developmentQuota },
-    { quotaName: "test", quota: testQuota }
+    { quotaName: "tools", quota: provisionerToolsQuota },
+    { quotaName: "prod", quota: provisionerProductionQuota },
+    { quotaName: "dev", quota: provisionerDevelopmentQuota },
+    { quotaName: "test", quota: provisionerTestQuota }
   ].map(({ quotaName, quota }) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${[quotaName]}`,
@@ -114,7 +158,7 @@ function message(action, requestedProject) {
     }
   }));
 
-  const request = {
+  const messageBody = {
     action: RequestType[action],
     profile_id: id,
     // cluster_id: cluster,
@@ -132,7 +176,7 @@ function message(action, requestedProject) {
     ].filter(Boolean)
   };
 
-  return request;
+  return messageBody;
 }
 
 export default message;

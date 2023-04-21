@@ -6,7 +6,7 @@ import {
   Cluster
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
-import sendNatsMessage from "../../nats/sendNatsMessage.js";
+import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
 import { sendRejectEmail } from "../../ches/emailHandlers.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
@@ -67,13 +67,13 @@ const privateCloudRequestDecision: MutationResolvers = async (
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendNatsMessage(request.type, request.requestedProject);
+    await sendPrivateCloudNatsMessage(request.type, request.requestedProject);
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
 
-      await sendNatsMessage(request.type, request.requestedProject);
+      await sendPrivateCloudNatsMessage(request.type, request.requestedProject);
     }
   }
   if (request.decisionStatus === RequestDecision.Rejected)

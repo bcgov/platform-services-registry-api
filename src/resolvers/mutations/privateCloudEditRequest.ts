@@ -3,10 +3,10 @@ import {
   RequestType,
   DecisionStatus,
   MutationPrivateCloudProjectEditRequestArgs,
-  Cluster,
+  Cluster
 } from "../../__generated__/resolvers-types.js";
 import { Prisma, PrivateCloudRequest } from "@prisma/client";
-import sendNatsMessage from "../../nats/sendNatsMessage.js";
+import { sendPrivateCloudNatsMessage } from "../../natsPubSub/index.js";
 import { sendEditRequestEmails } from "../../ches/emailHandlers.js";
 
 const privateCloudProjectEditRequest: MutationResolvers = async (
@@ -24,8 +24,8 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
     const existingRequest: PrivateCloudRequest =
       await prisma.privateCloudRequest.findFirst({
         where: {
-          AND: [{ projectId: args.projectId }, { active: true }],
-        },
+          AND: [{ projectId: args.projectId }, { active: true }]
+        }
       });
 
     if (existingRequest !== null) {
@@ -36,20 +36,20 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
 
     const project = await prisma.privateCloudProject.findUnique({
       where: {
-        id: args.projectId,
+        id: args.projectId
       },
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLead: true,
-      },
+        secondaryTechnicalLead: true
+      }
     });
 
     if (
       ![
         project.projectOwner.email,
         project.primaryTechnicalLead.email,
-        project?.secondaryTechnicalLead?.email,
+        project?.secondaryTechnicalLead?.email
       ].includes(authEmail) &&
       !authRoles.includes("admin")
     ) {
@@ -75,37 +75,37 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       projectOwner: {
         connectOrCreate: {
           where: {
-            email: args.projectOwner.email,
+            email: args.projectOwner.email
           },
-          create: args.projectOwner,
-        },
+          create: args.projectOwner
+        }
       },
       primaryTechnicalLead: {
         connectOrCreate: {
           where: {
-            email: args.primaryTechnicalLead.email,
+            email: args.primaryTechnicalLead.email
           },
-          create: args.primaryTechnicalLead,
-        },
+          create: args.primaryTechnicalLead
+        }
       },
       secondaryTechnicalLead: args.secondaryTechnicalLead
         ? {
-          connectOrCreate: {
-            where: {
-              email: args.secondaryTechnicalLead.email,
-            },
-            create: args.secondaryTechnicalLead,
-          },
-        }
-        : undefined,
+            connectOrCreate: {
+              where: {
+                email: args.secondaryTechnicalLead.email
+              },
+              create: args.secondaryTechnicalLead
+            }
+          }
+        : undefined
     };
 
     const isQuotaChanged = !(
       JSON.stringify(args.productionQuota) ===
-      JSON.stringify(project.productionQuota) &&
+        JSON.stringify(project.productionQuota) &&
       JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
       JSON.stringify(args.developmentQuota) ===
-      JSON.stringify(project.developmentQuota) &&
+        JSON.stringify(project.developmentQuota) &&
       JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
     );
 
@@ -124,39 +124,38 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
         requestedProject: {
-          create: requestedProject,
+          create: requestedProject
         },
         project: {
           connect: {
-            id: args.projectId,
-          },
-        },
+            id: args.projectId
+          }
+        }
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
+            secondaryTechnicalLead: true
+          }
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
-        },
-      },
+            secondaryTechnicalLead: true
+          }
+        }
+      }
     });
 
     if (isQuotaChanged) {
       await sendEditRequestEmails(
-      editRequest.project,
-      editRequest.requestedProject
-    );
-  }
-
+        editRequest.project,
+        editRequest.requestedProject
+      );
+    }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -167,15 +166,19 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   }
 
   if (decisionStatus === DecisionStatus.Approved) {
-    await sendNatsMessage(editRequest.type, editRequest.requestedProject);
+    await sendPrivateCloudNatsMessage(
+      editRequest.type,
+      editRequest.requestedProject
+    );
 
     if (editRequest.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...editRequest };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
+      await sendPrivateCloudNatsMessage(
+        goldDrRequest.type,
+        goldDrRequest.requestedProject
+      );
     }
-
-
   }
 
   return editRequest;
