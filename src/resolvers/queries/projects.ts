@@ -182,6 +182,9 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         }
       },
       {
+        $match: { $and:[{cluster: cluster}, {ministry:ministry}]  }
+      },
+      {
         $match: {
           status: { $regex: "ACTIVE" },
           $and: [
