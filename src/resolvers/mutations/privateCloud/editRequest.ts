@@ -18,7 +18,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   // See this for prisma types with relations:
   // https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety/operating-against-partial-structures-of-model-types
   let editRequest;
-  let decisionStatus;
+  let decisionStatus: DecisionStatus;
 
   try {
     const existingRequest: PrivateCloudRequest =
@@ -58,7 +58,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       );
     }
 
-    const requestedProject = {
+    const requestedProject: Prisma.PrivateCloudRequestedProjectCreateInput = {
       name: args.name,
       description: args.description,
       cluster: project.cluster,
