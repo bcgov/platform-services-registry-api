@@ -29,6 +29,7 @@ export async function connectToDatabase() {
     db.collection('PublicCloudProject');
   collections.users = users;
   collections.privateCloudProjects = privateCloudProjects;
+  collections.publicCloudProjects = publicCloudProjects;
 
   console.log(
     `Successfully connected to database: ${db.databaseName} and collections:

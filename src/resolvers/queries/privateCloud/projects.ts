@@ -1,4 +1,4 @@
-// import { collections } from "../../../db.js";
+import { collections } from '../../../db.js';
 
 // // Testing out full text search, does not work yet. To discuss with Zhanna
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
