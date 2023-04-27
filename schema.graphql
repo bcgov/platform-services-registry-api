@@ -1,6 +1,8 @@
 scalar DateTime
 scalar EmailAddress
 
+directive @lowerCase on INPUT_FIELD_DEFINITION
+
 enum ProjectStatus {
   ACTIVE
   INACTIVE
@@ -171,7 +173,7 @@ type PublicCloudProject {
   status: ProjectStatus!
   projectOwner: User!
   technicalLeads: [User]!
-  budged: Budget!
+  budget: Budget!
   billingGroup: String!
   ministry: Ministry!
   provider: Provider!
@@ -242,8 +244,8 @@ type CommonComponents {
 input CreateUserInput {
   firstName: String!
   lastName: String!
-  email: EmailAddress!
-  ministry: String
+  email: EmailAddress! @lowerCase
+  ministry: Ministry
 }
 
 input UpdateUserInput {

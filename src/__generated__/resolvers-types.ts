@@ -81,7 +81,7 @@ export type CreateUserInput = {
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
   lastName: Scalars['String'];
-  ministry?: InputMaybe<Scalars['String']>;
+  ministry?: InputMaybe<Ministry>;
 };
 
 export enum DecisionStatus {
@@ -338,7 +338,7 @@ export type PublicCloudProject = {
   activeEditRequest?: Maybe<PublicCloudRequest>;
   archived: Scalars['Boolean'];
   billingGroup: Scalars['String'];
-  budged: Budget;
+  budget: Budget;
   commonComponents: CommonComponents;
   count?: Maybe<Scalars['Int']>;
   created: Scalars['DateTime'];
@@ -746,6 +746,10 @@ export type ResolversParentTypes = ResolversObject<{
   projectsPaginatedOutput: ProjectsPaginatedOutput;
 }>;
 
+export type LowerCaseDirectiveArgs = { };
+
+export type LowerCaseDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = LowerCaseDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type BudgetResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Budget'] = ResolversParentTypes['Budget']> = ResolversObject<{
   dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -834,7 +838,7 @@ export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType e
   activeEditRequest?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
   archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   billingGroup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  budged?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
+  budget?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
   count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -954,6 +958,9 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
 }>;
 
+export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{
+  lowerCase?: LowerCaseDirectiveResolver<any, any, ContextType>;
+}>;
 
 
 export function BudgetInputSchema(): yup.SchemaOf<BudgetInput> {
@@ -990,7 +997,7 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
     email: yup.mixed().defined(),
     firstName: yup.string().defined(),
     lastName: yup.string().defined(),
-    ministry: yup.string()
+    ministry: MinistrySchema
   })
 }
 
