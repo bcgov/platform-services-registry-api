@@ -12,7 +12,7 @@ import {
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlers.js';
 
-const publicCloudProjectEditRequest: MutationResolvers = async (
+const publicCloudProjectEditRequest = async (
   _,
   args: MutationPublicCloudProjectEditRequestArgs,
   { authEmail, prisma, authRoles }

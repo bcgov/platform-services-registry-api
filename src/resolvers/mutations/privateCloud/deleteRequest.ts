@@ -8,87 +8,90 @@ import {
 import { Prisma } from '@prisma/client';
 import { sendDeleteRequestEmails } from '../../../ches/emailHandlers.js';
 
-const privateCloudProjectDeleteRequest: MutationResolvers = async (
-  _,
-  args: MutationPrivateCloudProjectDeleteRequestArgs,
-  { authRoles, authEmail, prisma }
-) => {
-  throw Error('Delete request has been disabled.');
-  return;
+const privateCloudProjectDeleteRequest: MutationResolvers['privateCloudProjectDeleteRequest'] =
+  async (
+    _,
+    args: MutationPrivateCloudProjectDeleteRequestArgs,
+    { authRoles, authEmail, prisma }
+  ) => {
+    throw Error('Delete request has been disabled.');
+    return;
 
-  let createRequest;
+    let createRequest;
 
-  try {
-    const { id, ...project } = await prisma.privateCloudProject.findUnique({
-      where: {
-        id: args.projectId,
-      },
-    });
-
-    const users = await prisma.user.findMany({
-      where: {
-        id: {
-          in: [
-            project.projectOwnerId,
-            project.primaryTechnicalLeadId,
-            project.secondaryTechnicalLeadId,
-          ].filter(Boolean),
+    try {
+      const { id, ...project } = await prisma.privateCloudProject.findUnique({
+        where: {
+          id: args.projectId,
         },
-      },
-      select: {
-        email: true,
-      },
-    });
+      });
 
-    if (
-      !users.map((user) => user.email).includes(authEmail) &&
-      !authRoles.includes('admin')
-    ) {
-      throw new Error(
-        'You need to be a contact on this project in order to delete it.'
-      );
-    }
-
-    project.status = ProjectStatus.Inactive;
-
-    createRequest = await prisma.privateCloudRequest.create({
-      data: {
-        type: RequestType.Delete,
-        decisionStatus: DecisionStatus.Pending,
-        active: true,
-        createdByEmail: authEmail,
-        licencePlate: project.licencePlate,
-        requestedProject: {
-          create: project,
-        },
-        project: {
-          connect: {
-            id: args.projectId,
+      const users = await prisma.user.findMany({
+        where: {
+          id: {
+            in: [
+              project.projectOwnerId,
+              project.primaryTechnicalLeadId,
+              project.secondaryTechnicalLeadId,
+            ].filter(Boolean),
           },
         },
-      },
-      include: {
-        project: {
-          include: {
-            projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
+        select: {
+          email: true,
         },
-      },
-    });
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      if (e.code === 'P2002') {
-        throw new Error('There is already an active request for this project.');
+      });
+
+      if (
+        !users.map((user) => user.email).includes(authEmail) &&
+        !authRoles.includes('admin')
+      ) {
+        throw new Error(
+          'You need to be a contact on this project in order to delete it.'
+        );
       }
+
+      project.status = ProjectStatus.Inactive;
+
+      createRequest = await prisma.privateCloudRequest.create({
+        data: {
+          type: RequestType.Delete,
+          decisionStatus: DecisionStatus.Pending,
+          active: true,
+          createdByEmail: authEmail,
+          licencePlate: project.licencePlate,
+          requestedProject: {
+            create: project,
+          },
+          project: {
+            connect: {
+              id: args.projectId,
+            },
+          },
+        },
+        include: {
+          project: {
+            include: {
+              projectOwner: true,
+              primaryTechnicalLead: true,
+              secondaryTechnicalLead: true,
+            },
+          },
+        },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new Error(
+            'There is already an active request for this project.'
+          );
+        }
+      }
+      throw e;
     }
-    throw e;
-  }
 
-  sendDeleteRequestEmails(createRequest.project);
+    sendDeleteRequestEmails(createRequest.project);
 
-  return createRequest;
-};
+    return createRequest;
+  };
 
 export default privateCloudProjectDeleteRequest;

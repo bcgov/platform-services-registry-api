@@ -9,7 +9,7 @@ import { Prisma } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendRejectEmail } from '../../../ches/emailHandlers.js';
 
-const publicCloudRequestDecision: MutationResolvers = async (
+const publicCloudRequestDecision = async (
   _,
   args: MutationPublicCloudRequestDecisionArgs,
   { authRoles, authEmail, prisma }
@@ -20,7 +20,20 @@ const publicCloudRequestDecision: MutationResolvers = async (
     throw new Error('You must be an admin to make a request decision.');
   }
 
-  let request: Prisma.PublicCloudRequestUpdateInput;
+  type PublicCloudRequest = Prisma.PublicCloudRequestGetPayload<{
+    include: {
+      requestedProject: {
+        include: {
+          projectOwner: true;
+          primaryTechnicalLead: true;
+          secondaryTechnicalLead: true;
+          cluster: true;
+        };
+      };
+    };
+  }>;
+
+  let request: PublicCloudRequest;
 
   try {
     request = await prisma.publicCloudRequest.update({
@@ -61,20 +74,8 @@ const publicCloudRequestDecision: MutationResolvers = async (
     throw e;
   }
 
-  if (request.type === 'DELETE') {
-    throw Error('Delete is dissabled');
-    return;
-  }
-
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendPublicCloudNatsMessage(request.type, request.requestedProject);
-
-    if (request.requestedProject.cluster === Cluster.Gold) {
-      const goldDrRequest = { ...request };
-      goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-
-      await sendPublicCloudNatsMessage(request.type, request.requestedProject);
-    }
   }
   if (request.decisionStatus === RequestDecision.Rejected)
     sendRejectEmail(request);

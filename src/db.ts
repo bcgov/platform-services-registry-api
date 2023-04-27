@@ -1,18 +1,18 @@
-import "./env.js";
+import './env.js';
 
-import * as mongoDB from "mongodb";
+import * as mongoDB from 'mongodb';
 
 export const collections: {
   users?: mongoDB.Collection;
   privateCloudProjects?: mongoDB.Collection;
+  publicCloudProjects?: mongoDB.Collection;
 } = {};
 
 export async function connectToDatabase() {
-  console.log("Connecting to database...");
-  const connectionString: string = process.env.DATABASE_URL || "";
+  console.log('Connecting to database...');
+  const connectionString: string = process.env.DATABASE_URL || '';
 
-  console.log("Connection string: ");
-
+  console.log('Connection string: ');
   console.log(connectionString);
 
   const client: mongoDB.MongoClient = new mongoDB.MongoClient(connectionString);
@@ -21,11 +21,12 @@ export async function connectToDatabase() {
 
   // Schema validation goes here
 
-  const users = db.collection("User");
+  const users = db.collection('User');
   const privateCloudProjects: mongoDB.Collection = db.collection(
-    "PrivateCloudProject"
+    'PrivateCloudProject'
   );
-
+  const publicCloudProjects: mongoDB.Collection =
+    db.collection('PublicCloudProject');
   collections.users = users;
   collections.privateCloudProjects = privateCloudProjects;
 

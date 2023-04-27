@@ -27,7 +27,6 @@ export type Budget = {
 };
 
 export type BudgetInput = {
-  __typename?: 'BudgetInput';
   dev: Scalars['Int'];
   prod: Scalars['Int'];
   test: Scalars['Int'];
@@ -131,9 +130,14 @@ export enum Environment {
   Tools = 'TOOLS'
 }
 
-export type FilterProjectsInput = {
+export type FilterPrivateCloudProjectsInput = {
   cluster?: InputMaybe<Cluster>;
   ministry?: InputMaybe<Ministry>;
+};
+
+export type FilterPublicCloudProjectsInput = {
+  ministry?: InputMaybe<Ministry>;
+  priovider?: InputMaybe<Provider>;
 };
 
 export enum Ministry {
@@ -172,8 +176,8 @@ export type Mutation = {
   privateCloudProjectDeleteRequest: PrivateCloudRequest;
   privateCloudProjectEditRequest: PrivateCloudRequest;
   privateCloudProjectRequest: PrivateCloudRequest;
-  privateCloudReProvisionProject?: Maybe<PrivateCloudProject>;
-  privateCloudReProvisionRequest?: Maybe<PrivateCloudRequest>;
+  privateCloudReProvisionProject?: Maybe<Scalars['ID']>;
+  privateCloudReProvisionRequest?: Maybe<Scalars['ID']>;
   privateCloudRequestDecision?: Maybe<PrivateCloudRequest>;
   publicCloudProjectEditRequest: PublicCloudRequest;
   publicCloudProjectRequest: PublicCloudRequest;
@@ -395,14 +399,14 @@ export type Query = {
   userPrivateCloudProjectsByIds: PrivateCloudProject;
   userPrivateCloudRequestById: PrivateCloudRequest;
   userPrivateCloudRequests: Array<PrivateCloudRequest>;
-  userpublicCloudActiveRequestById: PublicCloudRequest;
-  userpublicCloudActiveRequests: Array<PublicCloudRequest>;
-  userpublicCloudActiveRequestsByIds: PublicCloudRequest;
-  userpublicCloudProjectById: PublicCloudProject;
-  userpublicCloudProjects: Array<PublicCloudProject>;
-  userpublicCloudProjectsByIds: PublicCloudProject;
-  userpublicCloudRequestById: PublicCloudRequest;
-  userpublicCloudRequests: Array<PublicCloudRequest>;
+  userPublicCloudActiveRequestById: PublicCloudRequest;
+  userPublicCloudActiveRequests: Array<PublicCloudRequest>;
+  userPublicCloudActiveRequestsByIds: PublicCloudRequest;
+  userPublicCloudProjectById: PublicCloudProject;
+  userPublicCloudProjects: Array<PublicCloudProject>;
+  userPublicCloudProjectsByIds: PublicCloudProject;
+  userPublicCloudRequestById: PublicCloudRequest;
+  userPublicCloudRequests: Array<PublicCloudRequest>;
   users: Array<User>;
   usersByIds: Array<User>;
 };
@@ -429,7 +433,7 @@ export type QueryPrivateCloudProjectsByIdArgs = {
 
 
 export type QueryPrivateCloudProjectsPaginatedArgs = {
-  filter?: InputMaybe<FilterProjectsInput>;
+  filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
   page: Scalars['Int'];
   pageSize: Scalars['Int'];
   search?: InputMaybe<Scalars['String']>;
@@ -463,7 +467,7 @@ export type QueryPublicCloudProjectsByIdArgs = {
 
 
 export type QueryPublicCloudProjectsPaginatedArgs = {
-  filter?: InputMaybe<FilterProjectsInput>;
+  filter?: InputMaybe<FilterPublicCloudProjectsInput>;
   page: Scalars['Int'];
   pageSize: Scalars['Int'];
   search?: InputMaybe<Scalars['String']>;
@@ -511,27 +515,27 @@ export type QueryUserPrivateCloudRequestByIdArgs = {
 };
 
 
-export type QueryUserpublicCloudActiveRequestByIdArgs = {
+export type QueryUserPublicCloudActiveRequestByIdArgs = {
   requestId: Scalars['ID'];
 };
 
 
-export type QueryUserpublicCloudActiveRequestsByIdsArgs = {
+export type QueryUserPublicCloudActiveRequestsByIdsArgs = {
   requestIds?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 
-export type QueryUserpublicCloudProjectByIdArgs = {
+export type QueryUserPublicCloudProjectByIdArgs = {
   projectId: Scalars['ID'];
 };
 
 
-export type QueryUserpublicCloudProjectsByIdsArgs = {
+export type QueryUserPublicCloudProjectsByIdsArgs = {
   projectIds?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 
-export type QueryUserpublicCloudRequestByIdArgs = {
+export type QueryUserPublicCloudRequestByIdArgs = {
   requestId: Scalars['ID'];
 };
 
@@ -675,7 +679,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Budget: ResolverTypeWrapper<Budget>;
-  BudgetInput: ResolverTypeWrapper<BudgetInput>;
+  BudgetInput: BudgetInput;
   Cluster: Cluster;
   CommonComponents: ResolverTypeWrapper<CommonComponents>;
   CommonComponentsInput: CommonComponentsInput;
@@ -688,7 +692,8 @@ export type ResolversTypes = ResolversObject<{
   DefaultStorageOptions: DefaultStorageOptions;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
   Environment: Environment;
-  FilterProjectsInput: FilterProjectsInput;
+  FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
+  FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -723,7 +728,8 @@ export type ResolversParentTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   DateTime: Scalars['DateTime'];
   EmailAddress: Scalars['EmailAddress'];
-  FilterProjectsInput: FilterProjectsInput;
+  FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
+  FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -741,14 +747,6 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type BudgetResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Budget'] = ResolversParentTypes['Budget']> = ResolversObject<{
-  dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  tools?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type BudgetInputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['BudgetInput'] = ResolversParentTypes['BudgetInput']> = ResolversObject<{
   dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   test?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -784,8 +782,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'description' | 'developmentQuota' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'productionQuota' | 'projectId' | 'projectOwner' | 'testQuota' | 'toolsQuota'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner'>>;
-  privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
-  privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
+  privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
+  privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
   publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
@@ -897,14 +895,14 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   userPrivateCloudProjectsByIds?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, Partial<QueryUserPrivateCloudProjectsByIdsArgs>>;
   userPrivateCloudRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudRequestByIdArgs, 'requestId'>>;
   userPrivateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
-  userpublicCloudActiveRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryUserpublicCloudActiveRequestByIdArgs, 'requestId'>>;
-  userpublicCloudActiveRequests?: Resolver<Array<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
-  userpublicCloudActiveRequestsByIds?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, Partial<QueryUserpublicCloudActiveRequestsByIdsArgs>>;
-  userpublicCloudProjectById?: Resolver<ResolversTypes['PublicCloudProject'], ParentType, ContextType, RequireFields<QueryUserpublicCloudProjectByIdArgs, 'projectId'>>;
-  userpublicCloudProjects?: Resolver<Array<ResolversTypes['PublicCloudProject']>, ParentType, ContextType>;
-  userpublicCloudProjectsByIds?: Resolver<ResolversTypes['PublicCloudProject'], ParentType, ContextType, Partial<QueryUserpublicCloudProjectsByIdsArgs>>;
-  userpublicCloudRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryUserpublicCloudRequestByIdArgs, 'requestId'>>;
-  userpublicCloudRequests?: Resolver<Array<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
+  userPublicCloudActiveRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPublicCloudActiveRequestByIdArgs, 'requestId'>>;
+  userPublicCloudActiveRequests?: Resolver<Array<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
+  userPublicCloudActiveRequestsByIds?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, Partial<QueryUserPublicCloudActiveRequestsByIdsArgs>>;
+  userPublicCloudProjectById?: Resolver<ResolversTypes['PublicCloudProject'], ParentType, ContextType, RequireFields<QueryUserPublicCloudProjectByIdArgs, 'projectId'>>;
+  userPublicCloudProjects?: Resolver<Array<ResolversTypes['PublicCloudProject']>, ParentType, ContextType>;
+  userPublicCloudProjectsByIds?: Resolver<ResolversTypes['PublicCloudProject'], ParentType, ContextType, Partial<QueryUserPublicCloudProjectsByIdsArgs>>;
+  userPublicCloudRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPublicCloudRequestByIdArgs, 'requestId'>>;
+  userPublicCloudRequests?: Resolver<Array<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   usersByIds?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUsersByIdsArgs, 'ids'>>;
 }>;
@@ -942,7 +940,6 @@ export type ProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentT
 
 export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   Budget?: BudgetResolvers<ContextType>;
-  BudgetInput?: BudgetInputResolvers<ContextType>;
   CommonComponents?: CommonComponentsResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
@@ -958,6 +955,15 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
 }>;
 
 
+
+export function BudgetInputSchema(): yup.SchemaOf<BudgetInput> {
+  return yup.object({
+    dev: yup.number().defined(),
+    prod: yup.number().defined(),
+    test: yup.number().defined(),
+    tools: yup.number().defined()
+  })
+}
 
 export const ClusterSchema = yup.mixed().oneOf([Cluster.Clab, Cluster.Emerald, Cluster.Gold, Cluster.Golddr, Cluster.Klab, Cluster.Klab2, Cluster.Silver]);
 
@@ -998,10 +1004,17 @@ export const DefaultStorageOptionsSchema = yup.mixed().oneOf([DefaultStorageOpti
 
 export const EnvironmentSchema = yup.mixed().oneOf([Environment.Development, Environment.Production, Environment.Test, Environment.Tools]);
 
-export function FilterProjectsInputSchema(): yup.SchemaOf<FilterProjectsInput> {
+export function FilterPrivateCloudProjectsInputSchema(): yup.SchemaOf<FilterPrivateCloudProjectsInput> {
   return yup.object({
     cluster: ClusterSchema,
     ministry: MinistrySchema
+  })
+}
+
+export function FilterPublicCloudProjectsInputSchema(): yup.SchemaOf<FilterPublicCloudProjectsInput> {
+  return yup.object({
+    ministry: MinistrySchema,
+    priovider: ProviderSchema
   })
 }
 

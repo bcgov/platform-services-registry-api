@@ -275,16 +275,21 @@ type Budget {
   tools: Int!
 }
 
-type BudgetInput {
+input BudgetInput {
   prod: Int!
   test: Int!
   dev: Int!
   tools: Int!
 }
 
-input FilterProjectsInput {
+input FilterPrivateCloudProjectsInput {
   ministry: Ministry
   cluster: Cluster
+}
+
+input FilterPublicCloudProjectsInput {
+  ministry: Ministry
+  priovider: Provider
 }
 
 enum SortOrder {
@@ -309,7 +314,7 @@ type Query {
   privateCloudProjectsPaginated(
     page: Int!
     pageSize: Int!
-    filter: FilterProjectsInput
+    filter: FilterPrivateCloudProjectsInput
     search: String
     sortOrder: Int
   ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
@@ -347,7 +352,7 @@ type Query {
   publicCloudProjectsPaginated(
     page: Int!
     pageSize: Int!
-    filter: FilterProjectsInput
+    filter: FilterPublicCloudProjectsInput
     search: String
     sortOrder: Int
   ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
@@ -358,15 +363,15 @@ type Query {
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
 
-  userpublicCloudProjects: [PublicCloudProject!]! @auth
-  userpublicCloudProjectById(projectId: ID!): PublicCloudProject! @auth
-  userpublicCloudProjectsByIds(projectIds: [ID!]): PublicCloudProject! @auth
+  userPublicCloudProjects: [PublicCloudProject!]! @auth
+  userPublicCloudProjectById(projectId: ID!): PublicCloudProject! @auth
+  userPublicCloudProjectsByIds(projectIds: [ID!]): PublicCloudProject! @auth
 
-  userpublicCloudRequests: [PublicCloudRequest!]! @auth
-  userpublicCloudRequestById(requestId: ID!): PublicCloudRequest! @auth
-  userpublicCloudActiveRequests: [PublicCloudRequest!]! @auth
-  userpublicCloudActiveRequestById(requestId: ID!): PublicCloudRequest! @auth
-  userpublicCloudActiveRequestsByIds(requestIds: [ID!]): PublicCloudRequest! @auth
+  userPublicCloudRequests: [PublicCloudRequest!]! @auth
+  userPublicCloudRequestById(requestId: ID!): PublicCloudRequest! @auth
+  userPublicCloudActiveRequests: [PublicCloudRequest!]! @auth
+  userPublicCloudActiveRequestById(requestId: ID!): PublicCloudRequest! @auth
+  userPublicCloudActiveRequestsByIds(requestIds: [ID!]): PublicCloudRequest! @auth
 
   publicCloudRequests: [PublicCloudRequest!]! @auth @hasRole(role: ["admin", "read-only-admin"])
   publicCloudRequestById(requestId: ID!): PublicCloudRequest!
@@ -422,9 +427,9 @@ type Mutation {
     humanComment: String
   ): PrivateCloudRequest @hasRole(role: "admin")
 
-  privateCloudReProvisionRequest(requestId: ID!): PrivateCloudRequest @hasRole(role: "admin")
+  privateCloudReProvisionRequest(requestId: ID!): ID @hasRole(role: "admin")
 
-  privateCloudReProvisionProject(projectId: ID!): PrivateCloudProject @hasRole(role: "admin")
+  privateCloudReProvisionProject(projectId: ID!): ID @hasRole(role: "admin")
 
   # Public Cloud
   publicCloudProjectRequest(

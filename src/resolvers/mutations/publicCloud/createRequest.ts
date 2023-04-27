@@ -9,7 +9,7 @@ import generateLicensePlate from '../../../utils/generateLicencePlate.js';
 import { Prisma } from '@prisma/client';
 import { sendCreateRequestEmails } from '../../../ches/emailHandlers.js';
 
-const publicCloudProjectRequest: MutationResolvers = async (
+const publicCloudProjectRequest = async (
   _,
   args: MutationPublicCloudProjectRequestArgs,
   { authRoles, authEmail, prisma }
@@ -100,7 +100,7 @@ const publicCloudProjectRequest: MutationResolvers = async (
 
   // sendCreateRequestEmails(createRequest.requestedProject);
 
-  return createRequest;
+  return createRequest as PublicCloudCreateRequest;
 };
 
 export default publicCloudProjectRequest;
