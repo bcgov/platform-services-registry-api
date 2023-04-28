@@ -71,7 +71,7 @@ const publicCloudRequestDecision = async (
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendPublicCloudNatsMessage(request.type, request.requestedProject);
+    await sendPublicCloudNatsMessage(request.requestedProject);
   }
 
   if (request.decisionStatus === RequestDecision.Rejected) {

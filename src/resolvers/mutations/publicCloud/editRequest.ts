@@ -151,10 +151,7 @@ const publicCloudProjectEditRequest = async (
     throw e;
   }
 
-  await sendPublicCloudNatsMessage(
-    editRequest.type,
-    editRequest.requestedProject
-  );
+  await sendPublicCloudNatsMessage(editRequest.requestedProject);
 
   return editRequest;
 };

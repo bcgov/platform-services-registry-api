@@ -40,13 +40,10 @@ export function sendPrivateCloudNatsMessage(
   return sendNatsMessage(natsSubject, messageBody);
 }
 
-export function sendPublicCloudNatsMessage(
-  requestType: RequestType,
-  requestedProject
-) {
-  const natsSubject = `public_cloud`;
+export function sendPublicCloudNatsMessage(requestedProject) {
+  const natsSubject = 'registry_project_provisioning_aws';
 
-  const messageBody = createPublicCloudMessage(requestType, requestedProject);
+  const messageBody = createPublicCloudMessage(requestedProject);
 
   return sendNatsMessage(natsSubject, messageBody);
 }
