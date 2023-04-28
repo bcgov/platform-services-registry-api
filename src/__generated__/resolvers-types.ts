@@ -597,8 +597,7 @@ export type User = {
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   publicCloudProjectOwner: Array<Maybe<PublicCloudProject>>;
-  publicCloudProjectPrimaryTechnicalLead: Array<Maybe<PublicCloudProject>>;
-  publicCloudProjectSecondaryTechnicalLead: Array<Maybe<PublicCloudProject>>;
+  publicCloudProjectTechnicalLead: Array<Maybe<PublicCloudProject>>;
 };
 
 export type ProjectsPaginatedOutput = {
@@ -931,8 +930,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   publicCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
-  publicCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
-  publicCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
+  publicCloudProjectTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

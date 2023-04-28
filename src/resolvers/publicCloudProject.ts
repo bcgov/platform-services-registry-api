@@ -14,14 +14,14 @@ const Project = {
       },
     }),
   activeEditRequest: async (project, _, { prisma }) =>
-    prisma.privateCloudRequest.findFirst({
+    prisma.publicCloudRequest.findFirst({
       where: {
         projectId: project.id,
         active: true,
       },
     }),
   requestHistory: async (project, _, { prisma }) =>
-    prisma.privateCloudRequest.findUnique({
+    prisma.publicCloudRequest.findMany({
       where: {
         projectId: project.id,
       },

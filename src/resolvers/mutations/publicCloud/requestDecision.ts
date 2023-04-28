@@ -25,9 +25,7 @@ const publicCloudRequestDecision = async (
       requestedProject: {
         include: {
           projectOwner: true;
-          primaryTechnicalLead: true;
-          secondaryTechnicalLead: true;
-          cluster: true;
+          technicalLeads: true;
         };
       };
     };
@@ -52,15 +50,13 @@ const publicCloudRequestDecision = async (
         project: {
           include: {
             projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
+            technicalLeads: true,
           },
         },
         requestedProject: {
           include: {
             projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
+            technicalLeads: true,
           },
         },
       },

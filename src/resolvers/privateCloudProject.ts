@@ -27,7 +27,7 @@ const Project = {
       },
     }),
   requestHistory: async (project, _, { prisma }) =>
-    prisma.privateCloudRequest.findUnique({
+    prisma.privateCloudRequest.findMany({
       where: {
         projectId: project.id,
       },
