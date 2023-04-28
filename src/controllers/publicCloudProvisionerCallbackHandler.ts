@@ -5,8 +5,6 @@ import { sendProvisionedEmails } from '../ches/emailHandlers.js';
 const provisionerCallbackHandler = async (req, res) => {
   const { licencePlate, provider } = req.body;
 
-  console.log(licencePlate, provider);
-
   if (!licencePlate || !provider) {
     return res.status(400).json({
       error: true,
@@ -56,26 +54,28 @@ const provisionerCallbackHandler = async (req, res) => {
         },
       });
 
-    const updateRequest = prisma.publicCloudRequest.update({
-      where: {
-        requestedProjectId: id,
-      },
-      data: {
-        decisionStatus: DecisionStatus.Provisioned,
-        active: false,
-      },
+    await prisma.$transaction(async (prisma) => {
+      const upsertProject = await prisma.publicCloudProject.upsert({
+        where: {
+          licencePlate: licencePlate,
+        },
+        update: requestedProject,
+        create: requestedProject,
+      });
+
+      const updateRequest = await prisma.publicCloudRequest.update({
+        where: {
+          requestedProjectId: id,
+        },
+        data: {
+          decisionStatus: DecisionStatus.Provisioned,
+          active: false,
+          projectId: upsertProject.id, /// Set the ID incase it is a create request
+        },
+      });
+
+      return updateRequest;
     });
-
-    const upsertProject = prisma.publicCloudProject.upsert({
-      where: {
-        licencePlate: licencePlate,
-      },
-      update: requestedProject,
-      create: requestedProject,
-    });
-
-    await prisma.$transaction([updateRequest, upsertProject]);
-
     // sendProvisionedEmails(request);
     console.log(`Provisioned project: ${licencePlate}`);
     res.status(200).end();

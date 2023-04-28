@@ -1,6 +1,7 @@
 import { collections } from '../../../db.js';
 
-// // Testing out full text search, does not work yet. To discuss with Zhanna
+// Testing out full text search, does not work yet. To discuss with Zhanna
+// This is a temporary soultion from the internet. It does not work for searching users by email or name
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
   let { ministry, cluster } = filter;
@@ -139,6 +140,7 @@ function sortObjectsByName(objects, sortOrder) {
   return objects;
 }
 
+// See temporary solution above. We will use this solution when full text search is working
 // export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
 //   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
 //   let { ministry, cluster } = filter;

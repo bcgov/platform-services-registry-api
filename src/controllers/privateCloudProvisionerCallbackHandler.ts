@@ -3,9 +3,15 @@ import { DecisionStatus } from '../__generated__/resolvers-types.js';
 import { sendProvisionedEmails } from '../ches/emailHandlers.js';
 
 const provisionerCallbackHandler = async (req, res) => {
-  try {
-    const { prefix: licencePlate, cluster } = req.body;
+  const { prefix: licencePlate, cluster } = req.body;
 
+  if (!licencePlate || !cluster) {
+    return res.status(400).json({
+      error: true,
+      message: 'licencePlate and cluster are required',
+    });
+  }
+  try {
     const request = await prisma.privateCloudRequest.findFirst({
       where: {
         licencePlate: licencePlate,
@@ -62,7 +68,7 @@ const provisionerCallbackHandler = async (req, res) => {
         data: {
           decisionStatus: DecisionStatus.Provisioned,
           active: false,
-          projectId: upsertProject.id, // If create request, set the projectId of the newly created project
+          projectId: upsertProject.id, // Set the ID incase it is a create request
         },
       });
 
@@ -70,13 +76,15 @@ const provisionerCallbackHandler = async (req, res) => {
     });
 
     sendProvisionedEmails(request);
-    console.log('Provisioned project: ' + licencePlate);
+    console.log(`Provisioned project: ${licencePlate}`);
+    res.status(200).end();
   } catch (error) {
     console.log(error);
-    res.status(400).end();
+    res.status(500).json({
+      error: true,
+      message: 'An error occurred while processing the request',
+    });
   }
-
-  res.status(200).end();
 };
 
 export default provisionerCallbackHandler;
