@@ -67,6 +67,7 @@ app.use(
       const kauth = new KeycloakContext({ req }, keycloak);
       // @ts-ignore
       const email = kauth?.accessToken?.content?.email;
+      const lowerCaseEmail = email?.toLowerCase();
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
