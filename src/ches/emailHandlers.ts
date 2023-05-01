@@ -386,6 +386,8 @@ export const sendCreateRequestEmails = async (requestedProject) => {
     console.error(error);
   }
 };
+
+
 export const sendDeleteRequestEmails = async (project) => {
   try {
     chesService.send({
@@ -424,6 +426,27 @@ export const sendDeleteRequestEmails = async (project) => {
     console.error(error);
   }
 };
+
+const sendTipsForTeachLeadsEmail = async (teachLeads) => {
+ 
+
+  try {
+    chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/new-templates/product-quota-change-techleads-email.html"),
+      to: teachLeads
+        .filter(Boolean)
+        .map(({ email }) => email),
+      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      subject: "Tips for teachnical leads",
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
 export const sendProvisionedEmails = async (request) => {
   let { type, decisionStatus, requestedProject, humanComment, project } =
     request;
@@ -483,6 +506,12 @@ export const sendProvisionedEmails = async (request) => {
           subject:
             "Resource quota for your product in Private Cloud Openshift Platform has changed",
         });
+
+        sendTipsForTeachLeadsEmail([
+          requestedProject.primaryTechnicalLead,
+          requestedProject.secondaryTechnicalLead,
+          project.primaryTechnicalLead,
+          project.secondaryTechnicalLead,])
       }
 
       if (type === RequestType.Delete) {

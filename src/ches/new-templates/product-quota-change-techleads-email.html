@@ -1,0 +1,319 @@
+{% extends 'header.html' %}
+{% block content %}
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+    style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+    <th>
+        <tr>
+            <td valign="top" align="center">
+                <h2 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+                    Hi,
+                </h2>
+            </td>
+        </tr>
+    </th>
+    <tr>
+        <td valign="top" align="center">
+            <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            max-width: 90%;
+            ">
+                We've reviewed, evaluated, and approved your quota change request. Our goal is to assist platform teams
+                in becoming more responsible stewards of shared platform resources. By using resources efficiently, we
+                can support more projects on the platform without needing additional hardware and licenses. Plus,
+                improved hardware utilization helps reduce our cluster's carbon footprint, aligning with our climate
+                action objectives.
+            </p>
+        </td>
+    </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+    style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+    <th>
+        <tr>
+            <td valign="middle" align="center">
+                <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+                    Pro-tip &#129299;
+                </h3>
+            </td>
+        </tr>
+    </th>
+    <tr>
+        <td valign="top" align="center">
+            <p style="
+            
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        margin:  0 0 20px 0;
+        text-align:left;
+        ">
+                To maximize your project's cluster resource usage, we've compiled some best practices to follow. If
+                you'd like a one-on-one meeting with a platform resource specialist, please use this
+                <a style="
+        color: #003366;          
+        margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        " href="https://calendly.com/jason-leach/30min">calendar link</a>
+                to book a session.
+            </p>
+        </td>
+    </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+    style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+    <th>
+        <tr>
+            <td valign="middle" align="center">
+                <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+                    CPU Utilization
+                </h3>
+            </td>
+        </tr>
+    </th>
+    <tr>
+        <td valign="top" align="center">
+            <p style="margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        text-align:left;
+        ">
+                Paying attention to CPU resource allocation on the cluster is crucial. When adjusting your application's
+                CPU resources, consider the following strategies for effective management:
+            </p>
+            <ul>
+                <li style="margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        text-align:left;
+        ">
+                    Aim to set the requested cpu (request.cpu) at around 80% of what your application uses, plus an
+                    additional 20%. For instance, if your application uses 50m from Monday to Friday, 9-5, set the
+                    "request.cpu" value to 60m.
+                </li>
+                <li style="margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        text-align:left;
+        ">
+                    Avoid setting the requested cpu below 10m or 20m, as there is limited value in going too low, and it
+                    may have some drawbacks.
+                </li>
+                <li style="margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        text-align:left;
+        ">
+                    Be mindful of multithreaded applications or multi-process containers, as threads and processes can
+                    consume quota more quickly, resulting in application throttling.
+                </li>
+                <li style="margin:0;
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        text-align:left;
+        ">
+                    Keep in mind that the requested cpu (request.cpu) does not impact your application's performance;
+                    only the CPU limit (limit.cpu) can do this.
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+    style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+    <th>
+        <tr>
+            <td valign="middle" align="center">
+                <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+                    Disk Storage
+                </h3>
+            </td>
+        </tr>
+    </th>
+    <tr>
+        <td valign="top" align="center">
+            <p style="
+            
+        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+        font-size:14px;
+        line-height:18px;
+        color: #131313;
+        max-width: 90%;
+        padding-top: 5px;
+        margin:  0 0 20px 0;
+        text-align:left;
+        ">
+                With Openshift 4.x, you can now dynamically expand Persistent Volume Claims (PVC), allowing you to start
+                with limited disk storage and increase it as needed. To monitor PVCs effectively, use SysDig to keep
+                track of capacity and alert your team when it reaches around 80%. Then, you can adjust the size to
+                accommodate future demands. If you need help setting up SysDig alerts for your PVCs, please reach out to
+                Billy Li at CITZ:EX for assistance.
+            </p>
+        </td>
+    </tr>
+</table>
+<div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+    style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+    <th>
+        <tr>
+            <td valign="middle" align="center">
+                <h3 style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 37px;
+            text-align: left;
+            max-width: 90%;
+            margin: 20px 0 0 0;
+            ">
+                    Memory
+                </h3>
+            </td>
+        </tr>
+    </th>
+    <tr>
+        <td valign="top" align="center">
+            <p style="margin:0;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            text-align:left;
+            ">
+                Applications usually require a specific amount of memory, and it's often challenging to reduce this
+                requirement. However, there are essential strategies to manage memory resources effectively:
+            </p>
+            <ul>
+                <li style="margin:0;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            text-align:left;
+            ">
+                    Once your application has been running for a while and you understand its memory usage pattern,
+                    adjust the "request.memory" value to be approximately 20% more than what your application needs.
+                </li>
+                <li style="margin:0;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            text-align:left;
+            ">
+                    Use the "limit.memory" setting as a tool for detecting memory leaks.
+                </li>
+                <li style="margin:0;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            text-align:left;
+            ">
+                    Avoid running your application consistently above the "request.memory" value, as it could lead to
+                    the application being moved between nodes when they adjust their workloads.
+                </li>
+
+            </ul>
+        </td>
+    </tr>
+</table>
+<div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly;">&nbsp;
+</div>
+</div>
+<!--[if mso]>
+</td>
+</tr>
+</table>
+<![endif]-->
+</td>
+</tr>
+</table>
+</div>
+</body>
+
+</html>
+{% endblock %}
