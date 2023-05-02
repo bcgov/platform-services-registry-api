@@ -21,7 +21,7 @@ You need to grab some information from secret(platsrv-registry-mongo-creds) of t
 export MONGODB_USER=<username you found in that secret>
 export MONGODB_PASSWORD=<password you found in that secret>
 ```
-
+``
 then we can export the DATABASE_URL to our local_env:
 
 ```
@@ -281,4 +281,68 @@ fetch('your-graphql-endpoint', {
   .then(console.log);
 
 ```
+
+## Querying Public Cloud Projects
+
+To query all public cloud projects, use the `publicCloudProjects` query. 
+Here's an example using JavaScript with `fetch`:
+
+```javascript
+const query = `
+  query PublicCloudProjects {
+  publicCloudProjects {
+    id
+    licencePlate
+    ministry
+    name
+    projectOwner {
+      firstName
+      lastName
+      email
+    }
+    provider
+    status
+    technicalLeads {
+      firstName
+      id
+      lastName
+      email
+    }
+    created
+    description
+    budget {
+      tools
+      test
+      prod
+      dev
+    }
+    billingGroup
+    activeEditRequest {
+      id
+      active
+      type
+    }
+  }
+}
+`;
+
+const variables = {
+  filter: {
+    ministry: "AEST",
+    provider: "AWS",
+    status: "APPROVED",
+  },
+};
+
+fetch('your-graphql-endpoint', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer your-access-token',
+  },
+  body: JSON.stringify({ query, variables }),
+})
+  .then(res => res.json())
+  .then(console.log);
+
 
