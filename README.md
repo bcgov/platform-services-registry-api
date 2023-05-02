@@ -115,12 +115,13 @@ And your local API is ready!
 
 # GraphQL API Documentation
 
-This documentation covers the publicCloud related GraphQL API endpoints for an application that provisions server namespaces on public cloud platforms like AWS. The flow of the app is as follows:
+This documentation covers the **Public Cloud** related GraphQL API endpoints for an application that provisions server namespaces on public cloud platforms like **AWS**. The flow of the app is as follows:
 
-1. A user makes a create request with a project owner and multiple technical leads. If these users do not exist, they will be created.
-2. The request is reviewed by an admin and will be approved or rejected.
-3. If approved, it is sent to the provisioner microservice that creates the namespace in AWS and grants the specified users access.
-4. Once the project is provisioned, the user can make edit requests to change project properties, such as project owner, technical leads, and other fields. This step does not require admin approval.
+1. A user makes a **create request** with a project owner and multiple technical leads. If these users do not exist, they will be created.
+2. The request is reviewed by an admin and will be **approved** or **rejected** in the form of a **request decision**.
+3. If **approved**, it is sent to the provisioner microservice that creates the namespace in **AWS** and grants the specified users access.
+4. The provisioner will create the namespace in AWS and make a request to the **provisioner callback handler** that will let the API know that the provisioning of the project is complete.
+5. Once the project is provisioned, the user can make edit requests to change project properties through an **edit request**. Fields that can be edited iclude project owner, technical leads, and other fields. This step does not require admin approval.
 
 The GrpahQl API endpoints can be split up into **Queries** and **Mutations**. **Queries** only fetch data while **Mutations** write data and fetch the result. This documentation will cover the following **Queries** and **Mutations**:
 
