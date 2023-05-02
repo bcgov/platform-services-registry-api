@@ -124,15 +124,13 @@ const publicCloudProjectEditRequest = async (
         project: {
           include: {
             projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
+            technicalLeads: true,
           },
         },
         requestedProject: {
           include: {
             projectOwner: true,
-            primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
+            technicalLeads: true,
           },
         },
       },
