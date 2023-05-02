@@ -114,112 +114,171 @@ And your local API is ready!
 
 ## API Documentation
 
-Documentation for GraphQL API Endpoints (Public Cloud)
+# GraphQL API Documentation
 
-This documentation covers the GraphQL API endpoints related to the PublicCloud entity. The app provisions server namespaces on public cloud platforms like AWS. The following sections will describe the steps to make requests for creating, editing, and managing Public Cloud projects using the GraphQL API.
+This documentation covers the publicCloud related GraphQL API endpoints for an application that provisions server namespaces on public cloud platforms like AWS. The flow of the app is as follows:
 
-### Create a Public Cloud Project
+1. A user makes a create request with a project owner and multiple technical leads. If these users do not exist, they will be created.
+2. The request is reviewed by an admin and will be approved or rejected.
+3. If approved, it is sent to the provisioner microservice that creates the namespace in AWS and grants the specified users access.
+4. Once the project is provisioned, the user can make edit requests to change project properties, such as project owner, technical leads, and other fields. This step does not require admin approval.
 
-To create a new Public Cloud project, use the publicCloudProjectRequest mutation. This mutation accepts the following input parameters:
+The following examples use JavaScript with `fetch`. In the examples, the variables for the query/mutation are stored in their own constant.
 
-**name**: The project name.
-**description**: The project description.
-**ministry**: The Ministry associated with the project.
-**provider**: The public cloud provider for the project (e.g., GOOGLE, AWS).
-**budget**: The project's budget for different environments.
-**billingGroup**: The billing group for the project.
-**commonComponents**: The common components of the project.
-**projectOwner**: The project owner's information.
-**technicalLeads**: An array of technical leads for the project.
+## Public Cloud Project Request
 
-Example:
+To create a public cloud project request, use the `publicCloudProjectRequest` mutation. This mutation accepts the following arguments:
 
-```
+- `name`: The name of the project.
+- `description`: A brief description of the project.
+- `ministry`: The ministry associated with the project.
+- `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
+- `budget`: The budget for the project.
+- `billingGroup`: The billing group for the project.
+- `commonComponents`: Common components to be used in the project.
+- `projectOwner`: Information about the project owner.
+- `technicalLeads`: Information about the technical leads.
+
+Here's an example using JavaScript with `fetch`:
+
+```javascript
 const query = `
-  mutation CreatePublicCloudProject($input: PublicCloudProjectRequestInput!) {
+  mutation PublicCloudProjectRequest($input: PublicCloudProjectRequestInput!) {
     publicCloudProjectRequest(input: $input) {
       id
-      active
-      decisionStatus
+      name
+      description
+      provider
     }
   }
 `;
 
 const variables = {
   input: {
-    name: "New Public Cloud Project",
-    description: "This is a new public cloud project.",
-    ministry: "EDUC",
+    name: "Example Project",
+    description: "A brief description of the project.",
+    ministry: "AEST",
     provider: "AWS",
     budget: {
       prod: 1000,
       test: 500,
       dev: 500,
-      tools: 200
+      tools: 100,
     },
-    billingGroup: "BillingGroup1",
+    billingGroup: "example-billing-group",
     commonComponents: {
       addressAndGeolocation: "IMPLEMENTED",
+      workflowManagement: "PLANNING_TO_USE",
       noServices: false,
-      other: "Additional services"
+      other: "Additional services",
     },
     projectOwner: {
       firstName: "John",
       lastName: "Doe",
       email: "john.doe@example.com",
-      ministry: "EDUC"
+      ministry: "AEST",
     },
     technicalLeads: [
       {
         firstName: "Jane",
-        lastName: "Smith",
-        email: "jane.smith@example.com",
-        ministry: "EDUC"
-      }
-    ]
-  }
+        lastName: "Doe",
+        email: "jane.doe@example.com",
+        ministry: "AEST",
+      },
+    ],
+  },
 };
 
-fetch("https://your-api-endpoint/graphql", {
-  method: "POST",
+fetch('your-graphql-endpoint', {
+  method: 'POST',
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer your-access-token"
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer your-access-token',
   },
-  body: JSON.stringify({ query, variables })
+  body: JSON.stringify({ query, variables }),
 })
-  .then((res) => res.json())
-  .then((res) => console.log(res.data));
+  .then(res => res.json())
+  .then(console.log);
 ```
 
-Edit a Public Cloud Project
+## Public Cloud Project Edit Request
 
-To edit an existing Public Cloud project, use the publicCloudProjectEditRequest mutation. This mutation accepts the following input parameters:
+To edit a public cloud project, use the `publicCloudProjectEditRequest` mutation. This mutation accepts the same arguments as the publicCloudProjectRequest mutation but also requires the projectId argument. Note that all arguments need to be provided, regardless of weather that property is to be cahnged or not. For example, if you want to keep the description the same, simply provide the same description as the current project. Note that the provider cannont be changed and this endpoint will throw an error if changed. 
 
-projectId: The ID of the project you want to edit.
-name: The new project name.
-description: The new project description.
-ministry: The new Ministry associated with the project.
-provider: The new public cloud provider for the project (e.g., GOOGLE, AWS).
-budget: The new project's budget for different environments.
-billingGroup: The new billing group for the project.
-commonComponents: The new common components of the project.
-projectOwner: The new project owner's information.
-technicalLeads: An array of new technical leads for the project.
-Example:
+This mutation accepts the following arguments:
 
-```
+- `projectId`: The project ID to edit 
+- `name`: The name of the project.
+- `description`: A brief description of the project.
+- `ministry`: The ministry associated with the project.
+- `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
+- `budget`: The budget for the project.
+- `billingGroup`: The billing group for the project.
+- `commonComponents`: Common components to be used in the project.
+- `projectOwner`: Information about the project owner.
+- `technicalLeads`: Information about the technical leads.
+
+Here's an example using JavaScript with `fetch`:
+
+```javascript
 const query = `
-  mutation EditPublicCloudProject($input: PublicCloudProjectEditRequestInput!) {
+  mutation PublicCloudProjectEditRequest($input: PublicCloudProjectEditRequestInput!) {
     publicCloudProjectEditRequest(input: $input) {
       id
-      active
-      decisionStatus
+      name
+      description
+      provider
     }
-  }
+    }
 `;
 
 const variables = {
   input: {
-    projectId: "your-project-id",
-    name: "
+    projectId: 'your-project-id',
+    name: 'Updated Example Project',
+    description: 'An updated description of the project.',
+    ministry: 'AEST',
+    provider: 'AWS',
+    budget: {
+      prod: 1200,
+      test: 600,
+      dev: 600,
+      tools: 200,
+    },
+    billingGroup: 'updated-billing-group',
+    commonComponents: {
+      addressAndGeolocation: 'IMPLEMENTED',
+      workflowManagement: 'PLANNING_TO_USE',
+      noServices: false,
+      other: 'Additional services',
+    },
+    projectOwner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      ministry: 'AEST',
+    },
+    technicalLeads: [
+      {
+        firstName: 'Jane',
+        lastName: 'Doe',
+        email: 'jane.doe@example.com',
+        ministry: 'AEST',
+      },
+    ],
+  },
+};
+
+fetch('your-graphql-endpoint', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer your-access-token',
+  },
+  body: JSON.stringify({ query, variables }),
+})
+  .then((res) => res.json())
+  .then(console.log);
+
+```
+
