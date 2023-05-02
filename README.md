@@ -148,7 +148,7 @@ The above **Queries** requre the `admin` role and will fetch data for all users 
 
 ### Graphql endpoint
 
-The graphql endpoint, on which to make these request will be <your-api-url>/graphql, for example `http://localhost:4000/graphql`
+The graphql endpoint, on which to make these request will be `<your-api-url>/graphql`, for example `http://localhost:4000/graphql`
 
 # Mutations
 
@@ -454,7 +454,7 @@ fetch('your-graphql-endpoint', {
 
 ## Querying all Public Cloud Active Requests
 
-Querying active public cloud requests. To get active public cloud requests, use the privateCloudActiveRequests query.
+Querying active public cloud requests. To get active public cloud requests, use the `publicCloudActiveRequests` query.
 
 Here's an example using JavaScript with fetch:
 
