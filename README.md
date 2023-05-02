@@ -128,16 +128,15 @@ The GrpahQl API endpoints can be split up into **Queries** and **Mutations**. **
 
 ### Mutations
 
-`publicCloudProjectRequest`
-`publicCloudProjectEditRequest`
-`publicCloudRequestDecision` (ADMIN only)
+- `publicCloudProjectRequest`
+- `publicCloudProjectEditRequest`
+- `publicCloudRequestDecision` (ADMIN only)
 
 ### Queries (ADMIN)
 
-`publicCloudProjects`
-`publicCloudProjectById`
-`publicCloudActiveRequests`
-`
+- `publicCloudProjects`
+- `publicCloudProjectById`
+- `publicCloudActiveRequests`
 
 The above **Queries** requre the `admin` role and will fetch data for all users in the registry. Each one of these **Query** has a counterpart for a user that is restricted to only fetching data belonging to the user. Below is the list of the **user** versions of the **Queries**, note that the the input variables are the same. You do not need to pass in an idtentifier for the user as it is already known by the API from the authorization token. The examples below will be for the admin **Queries**, but you can simply replace their names if you want to use the user counterpart.
 
