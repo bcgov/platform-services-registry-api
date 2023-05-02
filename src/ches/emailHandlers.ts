@@ -457,8 +457,7 @@ export const sendProvisionedEmails = async (request) => {
             "Your provisioning request for Private Cloud OpenShift Platform has been completed",
         });
       }
-      //
-      console.log(quotaChanged(project, requestedProject))
+
       if (type === RequestType.Edit && quotaChanged(project, requestedProject)) {
         chesService.send({
           bodyType: "html",
