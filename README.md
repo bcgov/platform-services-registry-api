@@ -142,16 +142,15 @@ The above **Queries** requre the `admin` role and will fetch data for all users 
 
 ### Queries (USER)
 
-`userPublicCloudProjects`
-`userPublicCloudProjectById`
-`userPublicCloudActiveRequests`
-`
+- `userPublicCloudProjects`
+- `userPublicCloudProjectById`
+- `userPublicCloudActiveRequests`
 
 # Mutations
 
 ## Public Cloud Project Request
 
-To create a public cloud project request, use the `publicCloudProjectRequest` mutation. This mutation accepts the following arguments:
+To create a public cloud project request, use the `publicCloudProjectRequest` mutation. This mutation accepts the following required arguments:
 
 - `name`: The name of the project.
 - `description`: A brief description of the project.
@@ -164,6 +163,8 @@ To create a public cloud project request, use the `publicCloudProjectRequest` mu
 - `technicalLeads`: Information about the technical leads.
 
 Here's an example using JavaScript with `fetch`:
+
+Note that the `query` part of the request represents the data that will be returned if the mutation is successful. The `variables` part of the request are the input varialbes that will be written to the database if successful.
 
 ```javascript
 const query = `
@@ -227,7 +228,9 @@ fetch('your-graphql-endpoint', {
 
 ## Public Cloud Project Edit Request
 
-To edit a public cloud project, use the `publicCloudProjectEditRequest` mutation. This mutation accepts the same arguments as the publicCloudProjectRequest mutation but also requires the projectId argument. Note that all arguments need to be provided, regardless of weather that property is to be cahnged or not. For example, if you want to keep the description the same, simply provide the same description as the current project. Note that the provider cannont be changed and this endpoint will throw an error if changed.
+To edit a public cloud project, use the `publicCloudProjectEditRequest` mutation. This mutation accepts the same arguments as the `publicCloudProjectRequest` mutation except that there is no option to change the `provider` and it also requires the `projectId` argument.
+
+Note that all arguments need to be provided, regardless of whether that property is to be cahnged or not. For example, if you want to keep the description the same, simply provide the same description as the current project.
 
 This mutation accepts the following arguments:
 

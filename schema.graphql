@@ -448,7 +448,6 @@ type Mutation {
     name: String!
     description: String!
     ministry: Ministry!
-    provider: Provider!
     budget: BudgetInput!
     billingGroup: String!
     commonComponents: CommonComponentsInput!

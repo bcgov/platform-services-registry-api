@@ -73,7 +73,7 @@ const publicCloudProjectEditRequest = async (
   const requestedProject: Prisma.PublicCloudRequestedProjectCreateInput = {
     name: args.name,
     description: args.description,
-    provider: args.provider,
+    provider: project.provider,
     budget: args.budget,
     ministry: args.ministry,
     status: project.status,
