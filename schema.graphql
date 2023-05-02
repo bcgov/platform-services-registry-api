@@ -130,7 +130,6 @@ type PrivateCloudProject {
   id: ID!
   name: String!
   licencePlate: ID!
-  archived: Boolean!
   created: DateTime!
   description: String!
   status: ProjectStatus!
@@ -167,7 +166,6 @@ type PublicCloudProject {
   id: ID!
   name: String!
   licencePlate: ID!
-  archived: Boolean!
   created: DateTime!
   description: String!
   status: ProjectStatus!
