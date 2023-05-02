@@ -54,10 +54,11 @@ export const generateEmailTemplateData = (
     ? { ...incomingRequest }
     : { ...incomingProject };
 
-  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ?
-    !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead : project.secondaryTechnicalLead || null;
-  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
-  const projectOwner = requestedProject.projectOwner;
+  const secondaryTechnicalLead = 
+  requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id && !!project.secondaryTechnicalLead 
+  ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
+  const primaryTechnicalLead = project.primaryTechnicalLead;
+  const projectOwner = project.projectOwner;
 
   project.testQuota = {
     cpu: DefaultCpuOptions[project.testQuota.cpu],
@@ -275,6 +276,7 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       });
     }
     // *** No Quota changed and Project Contact Change
+
     if (
       !quotaChanged(project, requestedProject) &&
       contactChanged(project, requestedProject)
@@ -424,6 +426,7 @@ export const sendDeleteRequestEmails = async (project) => {
     console.error(error);
   }
 };
+
 export const sendProvisionedEmails = async (request) => {
   let { type, decisionStatus, requestedProject, humanComment, project } =
     request;
