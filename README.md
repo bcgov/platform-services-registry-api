@@ -314,7 +314,7 @@ fetch('your-graphql-endpoint', {
 
 ## Public Cloud Request Decision
 
-An admin will be required to make a decision about a create request in order for it to be provisioned. If the admin approved the request, it will get provisioned. To make a request decision for a public cloud project, use the `publicCloudRequestDecision` mutation.
+An admin will be required to make a decision about a create request in order for it to be provisioned. If the admin approved the request, it will get provisioned. To make a request decision for a public cloud project, use the `publicCloudRequestDecision` mutation. Note that in order to make a decision on a request, it must have the `status` of `PENDING`
 
 This mutation accepts the following arguments:
 

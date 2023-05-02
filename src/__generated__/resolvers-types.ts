@@ -250,7 +250,6 @@ export type MutationPublicCloudProjectEditRequestArgs = {
   name: Scalars['String'];
   projectId: Scalars['ID'];
   projectOwner: CreateUserInput;
-  provider: Provider;
   technicalLeads: Array<CreateUserInput>;
 };
 
@@ -282,7 +281,6 @@ export enum Platform {
 export type PrivateCloudProject = {
   __typename?: 'PrivateCloudProject';
   activeEditRequest?: Maybe<PrivateCloudRequest>;
-  archived: Scalars['Boolean'];
   cluster: Cluster;
   commonComponents: CommonComponents;
   count?: Maybe<Scalars['Int']>;
@@ -336,7 +334,6 @@ export enum PublicCloudPlatform {
 export type PublicCloudProject = {
   __typename?: 'PublicCloudProject';
   activeEditRequest?: Maybe<PublicCloudRequest>;
-  archived: Scalars['Boolean'];
   billingGroup: Scalars['String'];
   budget: Budget;
   commonComponents: CommonComponents;
@@ -788,7 +785,7 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'technicalLeads'>>;
   publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
@@ -796,7 +793,6 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
 
 export type PrivateCloudProjectResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PrivateCloudProject'] = ResolversParentTypes['PrivateCloudProject']> = ResolversObject<{
   activeEditRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
-  archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   cluster?: Resolver<ResolversTypes['Cluster'], ParentType, ContextType>;
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
   count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -835,7 +831,6 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
 
 export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PublicCloudProject'] = ResolversParentTypes['PublicCloudProject']> = ResolversObject<{
   activeEditRequest?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
-  archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   billingGroup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   budget?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
