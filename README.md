@@ -113,8 +113,6 @@ npm run prisma-migrate-prod
 
 And your local API is ready!
 
-## API Documentation
-
 # GraphQL API Documentation
 
 This documentation covers the publicCloud related GraphQL API endpoints for an application that provisions server namespaces on public cloud platforms like AWS. The flow of the app is as follows:
