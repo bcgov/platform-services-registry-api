@@ -457,8 +457,9 @@ export const sendProvisionedEmails = async (request) => {
             "Your provisioning request for Private Cloud OpenShift Platform has been completed",
         });
       }
-
-      if (type === RequestType.Edit) {
+      //
+      console.log(quotaChanged(project, requestedProject))
+      if (type === RequestType.Edit && quotaChanged(project, requestedProject)) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
@@ -535,10 +536,10 @@ export const sendProvisionedEmails = async (request) => {
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: ` ${type === RequestType.Create
-            ? "Provisioning"
-            : type === RequestType.Edit
-              ? "Edit"
-              : "Deletion"
+          ? "Provisioning"
+          : type === RequestType.Edit
+            ? "Edit"
+            : "Deletion"
           } request has been rejected`,
       });
     }
@@ -585,10 +586,10 @@ export const sendRejectEmail = async (request) => {
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: ` ${type === RequestType.Create
-          ? "Provisioning"
-          : type === RequestType.Edit
-            ? "Edit"
-            : "Deletion"
+        ? "Provisioning"
+        : type === RequestType.Edit
+          ? "Edit"
+          : "Deletion"
         } request has been rejected`,
     });
   } catch (error) {
