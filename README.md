@@ -111,3 +111,115 @@ npm run prisma-migrate-prod
 ```
 
 And your local API is ready!
+
+## API Documentation
+
+Documentation for GraphQL API Endpoints (Public Cloud)
+
+This documentation covers the GraphQL API endpoints related to the PublicCloud entity. The app provisions server namespaces on public cloud platforms like AWS. The following sections will describe the steps to make requests for creating, editing, and managing Public Cloud projects using the GraphQL API.
+
+### Create a Public Cloud Project
+
+To create a new Public Cloud project, use the publicCloudProjectRequest mutation. This mutation accepts the following input parameters:
+
+**name**: The project name.
+**description**: The project description.
+**ministry**: The Ministry associated with the project.
+**provider**: The public cloud provider for the project (e.g., GOOGLE, AWS).
+**budget**: The project's budget for different environments.
+**billingGroup**: The billing group for the project.
+**commonComponents**: The common components of the project.
+**projectOwner**: The project owner's information.
+**technicalLeads**: An array of technical leads for the project.
+
+Example:
+
+```
+const query = `
+  mutation CreatePublicCloudProject($input: PublicCloudProjectRequestInput!) {
+    publicCloudProjectRequest(input: $input) {
+      id
+      active
+      decisionStatus
+    }
+  }
+`;
+
+const variables = {
+  input: {
+    name: "New Public Cloud Project",
+    description: "This is a new public cloud project.",
+    ministry: "EDUC",
+    provider: "AWS",
+    budget: {
+      prod: 1000,
+      test: 500,
+      dev: 500,
+      tools: 200
+    },
+    billingGroup: "BillingGroup1",
+    commonComponents: {
+      addressAndGeolocation: "IMPLEMENTED",
+      noServices: false,
+      other: "Additional services"
+    },
+    projectOwner: {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      ministry: "EDUC"
+    },
+    technicalLeads: [
+      {
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+        ministry: "EDUC"
+      }
+    ]
+  }
+};
+
+fetch("https://your-api-endpoint/graphql", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer your-access-token"
+  },
+  body: JSON.stringify({ query, variables })
+})
+  .then((res) => res.json())
+  .then((res) => console.log(res.data));
+```
+
+Edit a Public Cloud Project
+
+To edit an existing Public Cloud project, use the publicCloudProjectEditRequest mutation. This mutation accepts the following input parameters:
+
+projectId: The ID of the project you want to edit.
+name: The new project name.
+description: The new project description.
+ministry: The new Ministry associated with the project.
+provider: The new public cloud provider for the project (e.g., GOOGLE, AWS).
+budget: The new project's budget for different environments.
+billingGroup: The new billing group for the project.
+commonComponents: The new common components of the project.
+projectOwner: The new project owner's information.
+technicalLeads: An array of new technical leads for the project.
+Example:
+
+```
+const query = `
+  mutation EditPublicCloudProject($input: PublicCloudProjectEditRequestInput!) {
+    publicCloudProjectEditRequest(input: $input) {
+      id
+      active
+      decisionStatus
+    }
+  }
+`;
+
+const variables = {
+  input: {
+    projectId: "your-project-id",
+    name: "
