@@ -146,6 +146,10 @@ The above **Queries** requre the `admin` role and will fetch data for all users 
 - `userPublicCloudProjectById`
 - `userPublicCloudActiveRequests`
 
+### Graphql endpoint
+
+The graphql endpoint, on which to make these request will be <your-api-url>/graphql, for example `http://localhost:4000/graphql`
+
 # Mutations
 
 ## Public Cloud Project Request
@@ -456,29 +460,37 @@ Here's an example using JavaScript with fetch:
 
 ```javascript
 const query = `
-  query UserPublicCloudActiveRequests($userId: ID!) {
-    userPublicCloudActiveRequests(userId: $userId) {
+query PublicCloudActiveRequests {
+  publicCloudActiveRequests {
+    active
+    createdBy {
+      email
+      firstName
       id
-      status
-      reason
-      requestedBy {
-        id
-        name
-      }
-      requestedAt
-      decidedBy {
-        id
-        name
-      }
-      decidedAt
-      humanComment
+      lastName
     }
+    decisionDate
+    decisionMaker {
+      email
+      firstName
+      id
+      lastName
+    }
+    decisionStatus
+    humanComment
+    id
+    project {
+      id
+      name
+    }
+    requestedProject {
+      id
+      name
+    }
+    type
   }
+}
 `;
-
-const variables = {
-  userId: 'your-user-id',
-};
 
 fetch('your-graphql-endpoint', {
   method: 'POST',
@@ -486,7 +498,7 @@ fetch('your-graphql-endpoint', {
     'Content-Type': 'application/json',
     Authorization: 'Bearer your-access-token',
   },
-  body: JSON.stringify({ query, variables }),
+  body: JSON.stringify({ query }),
 })
   .then((res) => res.json())
   .then(console.log);
