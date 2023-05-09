@@ -24,6 +24,8 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.0.0",
+    "@azure/msal-node": "^1.17.2",
+    "@microsoft/microsoft-graph-client": "^3.0.5",
     "@octokit/auth": "^3.0.3",
     "@octokit/core": "^4.2.0",
     "@prisma/client": "^4.8.1",
