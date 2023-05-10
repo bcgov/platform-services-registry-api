@@ -42,9 +42,9 @@ jobs:
           cd apiTest
           pwd
           echo "------"
-          echo  newman run testHappyPath.postman_collection.json --env-var \"auth-url=${{ env.URL }}\"
+          echo  newman run testHappyPath.postman_collection.json --env-var \"auth-url=https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token \"
           echo "------"
-          newman run testHappyPath.postman_collection.json --env-var \"auth-url=${{ secrets.AUTH_URL }}\" --env-var \"api-url={{secrets.API_URL}}\" --env-var \"auth_email={{secrets.AUTH_EMAIL}}\" --env-var \"auth_pwd={{secrets.AUTH_PWD}}\"
+          newman run testHappyPath.postman_collection.json --env-var \"auth-url=https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token\" --env-var \"api-url={{secrets.API_URL}}\" --env-var \"auth_email={{secrets.AUTH_EMAIL}}\" --env-var \"auth_pwd={{secrets.AUTH_PWD}}\"
 
          
          
