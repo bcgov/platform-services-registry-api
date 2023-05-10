@@ -112,6 +112,9 @@ npm run prisma-migrate-prod
 
 And your local API is ready!
 
+## Create Request Flow
+![Create Request](https://github.com/bcgov/platform-services-registry-api/assets/30703259/cbd609ee-c818-4052-b7f2-f31df45555f5)
+
 ## General Architecture
 <img width="1719" alt="image" src="https://user-images.githubusercontent.com/30703259/235977287-0fe6612b-542f-4ffe-bd2b-ccaf54949289.png">
 
