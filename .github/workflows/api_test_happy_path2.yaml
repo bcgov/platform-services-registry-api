@@ -24,6 +24,7 @@ jobs:
         uses: matt-ball/newman-action@master
         with:
           collection: ./apiTest/testHappyPath.postman_collection.json
+          environment: TestEnv.postman_environment.json
           envVar: '[{"api-url": "https://platsrv-registry-api-101ed4-dev.apps.silver.devops.gov.bc.ca", "auth_email": "oamar.kanji@gov.bc.ca","auth_pwd": "Northvan!2023"}]'
 
    #   - name: Zip Results folder
