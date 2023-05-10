@@ -1,22 +1,20 @@
-name: apiTestHappyPath
+name: api_Test_Happy_Path
 
 on:
   workflow_dispatch:
 
-env:
-        TEST_NAME: getLZSnapshot
-        AWS_CLI_VERSION: '2'
+#env:
+#        TEST_NAME:'test api happy path'
 
 
-permissions:
+#permissions:
   #id-token: write # This is required for requesting the JWT
   #contents: read  # This is required for actions/checkout        
 
 jobs:
-  happyPathTest:
+  happy_path_test:
     name: Runs the Happy Path suite of tests
     runs-on: ubuntu-latest
-
 
     steps:
       - name: checkout the repo
