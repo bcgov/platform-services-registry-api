@@ -3,8 +3,8 @@ name: api_Test_Happy_Path
 on:
   workflow_dispatch:
 
-#env:
-#        TEST_NAME:'test api happy path'
+env:
+        URL:'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
 
 
 #permissions:
@@ -42,7 +42,7 @@ jobs:
           cd apiTest
           pwd
           echo "------"
-          echo  newman run testHappyPath.postman_collection.json --env-var \"auth-url=${{ vars.URL }}\"
+          echo  newman run testHappyPath.postman_collection.json --env-var \"auth-url=${{ env.URL }}\"
           echo "------"
           newman run testHappyPath.postman_collection.json --env-var \"auth-url=${{ secrets.AUTH_URL }}\" --env-var \"api-url={{secrets.API_URL}}\" --env-var \"auth_email={{secrets.AUTH_EMAIL}}\" --env-var \"auth_pwd={{secrets.AUTH_PWD}}\"
 
