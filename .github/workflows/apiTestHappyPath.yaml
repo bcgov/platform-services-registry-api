@@ -1,0 +1,66 @@
+name: apiTestHappyPath
+
+on:
+  workflow_dispatch:
+
+env:
+        TEST_NAME: getLZSnapshot
+        AWS_CLI_VERSION: '2'
+
+
+permissions:
+  #id-token: write # This is required for requesting the JWT
+  #contents: read  # This is required for actions/checkout        
+
+jobs:
+  happyPathTest:
+    name: Runs the Happy Path suite of tests
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: checkout the repo
+        uses: actions/checkout@v3
+
+      - name: install latest nodejs  
+        uses: actions/setup-node@v3
+        with:
+          check-latest: true
+
+      - name: Display the node version    
+        run: node --version      
+      
+      - name: Install newman    
+        run: npm install -g newman
+      
+      - name: Display newman version
+        run: newman --version
+          
+      - name: Run the test
+        continue-on-error: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        run: |
+          cd apiTest
+          pwd
+          ls -la
+          echo "------"
+          newman run testHappyPath.postman_collection.json --env-var ${{ secrets.AUTH_URL }} --env-var {{secrets.API_URL}} --env-var {{secrets.AUTH_EMAIL}} --env-var {{secrets.AUTH_PWD}}
+\
+         
+         
+
+
+
+   #   - name: Zip Results folder
+   #     run: |
+   #         cd proofOfConcept
+   #         zip -r snapshotResults.zip ./results
+   #         ls -la
+            
+   #   - name: Upload Zipped results folder to artifacts
+   #     uses: actions/upload-artifact@v3
+   #     with:
+   #       name: snapshotResults
+   #       path: ./proofOfConcept/snapshotResults.zip
+    

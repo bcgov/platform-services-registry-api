@@ -1,0 +1,1715 @@
+{
+	"info": {
+		"_postman_id": "35c82144-8d19-4a6e-9c68-385f55607e0d",
+		"name": "testUnhappyPath",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27212126",
+		"_collection_link": "https://red-sunset-10273.postman.co/workspace/Platform-Registry-API~62f923ad-ee68-460c-9473-00784d35754e/collection/27212126-35c82144-8d19-4a6e-9c68-385f55607e0d?action=share&creator=27212126&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Create Project Request - No Authen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create project returns a valid response (200 code) even when authentication fails \", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"        let jsonData = pm.response.json().errors[0];",
+							"        let errMessage=jsonData.message",
+							"        let errResponse=jsonData.extensions.code",
+							"        tests[\"Verify a project can not be created when token is invalid 1\"] = errMessage == \"User not Authenticated\"",
+							"        tests[\"Verify a project can not be created when token is invalid 2\"] = errResponse == \"INTERNAL_SERVER_ERROR\"",
+							"",
+							"    }",
+							")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"!@#$%^&*()_+=-|}{\\][:';?></.,\");",
+							"",
+							"//Reset token, just in case it was set",
+							"pm.environment.set(\"auth_token\", \"This is not a valid token\");",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-azure - bad username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"auth-azure API returns a 400 code when using a bad username\", function () {",
+							"            pm.response.to.have.status(401);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"        let jsonData = pm.response.json()",
+							"        tests[\"Verify the error message includes Invalid user credentials\"] = jsonData.error_description === \"Invalid user credentials\"",
+							"    }",
+							")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "registry-web",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "QwKOUTJlVTTYRgP0UO6seo5PYJ6gpVIL",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "oamar@gov.bc.ca",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Northvan!2023",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"loginproxy",
+						"gov",
+						"bc",
+						"ca"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"platform-services",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-azure - bad password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"auth-azure API returns a 400 code when using a bad password\", function () {",
+							"            pm.response.to.have.status(401);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"        let jsonData = pm.response.json()",
+							"        tests[\"Verify the error message includes Invalid user credentials\"] = jsonData.error_description === \"Invalid user credentials\"",
+							"    }",
+							")",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "registry-web",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "QwKOUTJlVTTYRgP0UO6seo5PYJ6gpVIL",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "oamar.kanji@gov.bc.ca",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Northvan!2024",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"loginproxy",
+						"gov",
+						"bc",
+						"ca"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"platform-services",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth-azure - Get credentials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//We need to set the cre4entials, otherwise the following test would fail due lack of authorization instead of the problems under test",
+							"",
+							"let jsonData = pm.response.json();",
+							"",
+							"const token = jsonData.access_token;",
+							"pm.environment.set(\"auth_token\", token);",
+							"",
+							"const testTimeStamp = String(Math.floor(Date.now() / 1000))",
+							"pm.environment.set(\"testTimeStamp\", testTimeStamp);",
+							"",
+							"pm.test(\"auth-azure API returns valid credentials\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the token contains more than 300 characters\"] = token.length>300",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "registry-web",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "QwKOUTJlVTTYRgP0UO6seo5PYJ6gpVIL",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "oamar.kanji@gov.bc.ca",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Northvan!2023",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token",
+					"protocol": "https",
+					"host": [
+						"dev",
+						"loginproxy",
+						"gov",
+						"bc",
+						"ca"
+					],
+					"path": [
+						"auth",
+						"realms",
+						"platform-services",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project- No project name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when the name of the project is blank\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string when using a blank name for the project\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"\"",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid provider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code  when using an invalid provider\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT'  string when using and invalid provider code\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let provider=\"Fake\"",
+							"pm.environment.set(\"provider\",provider)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"{{provider}}\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid ministry",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when using an invalid Ministry\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when using and invalid Ministry code\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let ministry=\"Fake\"",
+							"pm.environment.set(\"ministry\", ministry)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"{{ministry}}\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid ministry PO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code whne using an invalid ministry for the project owner\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when using an invalid ministry for the project owner\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let ministry=\"Fake\"",
+							"pm.environment.set(\"ministry\", ministry)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"{{ministry}}\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid email PO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when using an invalid email for the project owner\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string when using a bad formed email for the PO\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let email=\"Fake\"",
+							"pm.environment.set(\"email\", email)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": {{email}},\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"CITZ\",\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid ministry tech lead",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when using an invalid ministry for the technical lead\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when using an invalid ministry for the technical leadr\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let ministry=\"Fake\"",
+							"pm.environment.set(\"ministry\", ministry)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"{{ministry}}\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project-Invalid email tech lead",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when using an invalid email for the tech lead\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string when using a bad formed email for the tech lead\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"",
+							"let email=\"Fake\"",
+							"pm.environment.set(\"email\", email)",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": {{email}},\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"CITZ\",\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request budget - nonumber 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when the budget parameters  contain characters other than integers\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let budget = \"!@#$%^&*()_+\"",
+							"pm.environment.set(\"budget\",budget)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": {{budget}},\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request budget - nonumber 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when the budget parameters is a string\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let budget = \"abcde\"",
+							"pm.environment.set(\"budget\",budget)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": {{budget}},\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request budget - no 00000",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 400 code when the budget parameters is 00000\", function () {",
+							"            pm.response.to.have.status(400);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a HTML message\", function() {",
+							"    let textData = pm.response.text()",
+							"    let matches = textData.match(\"Bad Request\");",
+							"    tests[\"Verify the Create Project API return message includes a 'Bad Request' string when input is 00000\"] = matches.length>0",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let budget = \"0000000\"",
+							"pm.environment.set(\"budget\",budget)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": {{budget}},\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request budget - no over 32b signed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when budget is larger than a 32bits integer\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when  budget is larger than a 32bits integer\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let budget = \"2147483648\"",
+							"pm.environment.set(\"budget\",budget)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": {{budget}},\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request budget - negative number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when budget is a negative number\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when budget is a negative number\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let budget = \"-10000\"",
+							"pm.environment.set(\"budget\",budget)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": {{budget}},\n        \"test\": {{budget}},\n        \"prod\": {{budget}},\n        \"tools\": {{budget}}\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request- no billling group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when there is no billing group\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when there is no billing group\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let billingGroup = \"\"",
+							"pm.environment.set(\"billingGroup\",billingGroup)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"{{billingGroup}}\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request invalid businessIntelligence",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when businessIntelligence code is null\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when businessIntelligence code is null\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							"let businessIntelligence = \"\"",
+							"pm.environment.set(\"businessIntelligence\",businessIntelligence)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"Test biling group\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"{{businessIntelligence}}\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Active Requests Total number",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Env var Create Project Request ID\" + pm.environment.get(\"requestID\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Get All Active Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"",
+							"",
+							"//let's find a random request that is has not been yet approved",
+							"let jsonData = pm.response.json().data.publicCloudActiveRequests.filter(({ decisionStatus }) => decisionStatus != 'APPROVED');",
+							"",
+							"let currentNumberRequests = jsonData.length",
+							"",
+							"let randomRequest = Math.floor(Math.random() * currentNumberRequests);",
+							"",
+							"pm.environment.set(\"requestID\",jsonData[randomRequest].id)",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query PublicCloudActiveRequests {\n  publicCloudActiveRequests {\n    id\n    type\n    decisionStatus\n    requestedProject {\n      id\n      licencePlate\n      name\n      provider\n    }\n    active\n    createdBy {\n      email\n      firstName\n      id\n      lastName\n    }\n    decisionDate\n    decisionMaker {\n      email\n      firstName\n      id\n      lastName\n    }\n    humanComment\n    project {\n      id\n      name\n    }\n    \n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision Empty decision status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let comment=\"This is a human comment for request >>>\" + pm.environment.get(\"requestID\") + \"<<< with project name >>>\"+ pm.environment.get(\"name\")+ \"<<<\"",
+							"pm.environment.set(\"comment\", comment);",
+							"",
+							"",
+							"",
+							"let descisionStatus=\"\"",
+							"pm.environment.set(\"descisionStatus\", descisionStatus);",
+							"",
+							"console.log(comment)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Make decisio request API return message includes a 'BAD_USER_INPUT' string when decision is null\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"{{descisionStatus}}\",\n  \"humanComment\": \"{{comment}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision Invalid decision status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let comment=\"This is a human comment for request >>>\" + pm.environment.get(\"requestID\") + \"<<< with project name >>>\"+ pm.environment.get(\"name\")+ \"<<<\"",
+							"pm.environment.set(\"comment\", comment);",
+							"",
+							"",
+							"",
+							"let descisionStatus=\"Invalid\"",
+							"pm.environment.set(\"descisionStatus\", descisionStatus);",
+							"",
+							"console.log(comment)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Make decision request API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Make decision request API return message includes a 'BAD_USER_INPUT' string when decision is invalid\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"{{descisionStatus}}\",\n  \"humanComment\": \"{{comment}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision Empty Comment",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//let comment=\"This is a human comment for request >>>\" + pm.environment.get(\"requestID\") + \"<<< with project name >>>\"+ pm.environment.get(\"name\")+ \"<<<\"",
+							"",
+							"let comment = \"\"",
+							"pm.environment.set(\"comment\", comment);",
+							"console.log(comment)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Make decision request API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Make decision request API return message includes a 'BAD_USER_INPUT' string when decision is null\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
+							"    }",
+							")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"{{comment}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision again",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//thix test makes a decision in a project that has already been approved",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify the API returns a 200 code when businessIntelligence code is null\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Make Decision request API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json().errors[0]",
+							"",
+							"    tests[\"Verify the Make Decision request API return message includes a 'BAD_USER_INPUT' string when using an already approved project\"] = jsonData.message ===  \"Request not found or already has a decision.\"",
+							"    }",
+							")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"THIS IS A COMMENT\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
