@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-        URL:'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
+        URL: 'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
 
 
 #permissions:
