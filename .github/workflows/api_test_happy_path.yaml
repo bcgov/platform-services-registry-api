@@ -46,7 +46,7 @@ jobs:
           ls -la
           echo "------"
           newman run testHappyPath.postman_collection.json --env-var ${{ secrets.AUTH_URL }} --env-var {{secrets.API_URL}} --env-var {{secrets.AUTH_EMAIL}} --env-var {{secrets.AUTH_PWD}}
-\
+
          
          
 
