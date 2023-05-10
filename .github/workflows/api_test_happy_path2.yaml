@@ -24,7 +24,7 @@ jobs:
         uses: matt-ball/newman-action@master
         with:
           collection: ./apiTest/testHappyPath.postman_collection.json
-          envVar: '[{ "auth-url": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token","api-url": "https://platsrv-registry-api-101ed4-dev.apps.silver.devops.gov.bc.ca", "auth_email": "oamar.kanji@gov.bc.ca","auth_pwd": "Northvan!2023"}]'
+          envVar: '[{"api-url": "https://platsrv-registry-api-101ed4-dev.apps.silver.devops.gov.bc.ca", "auth_email": "oamar.kanji@gov.bc.ca","auth_pwd": "Northvan!2023"}]'
 
    #   - name: Zip Results folder
    #     run: |
