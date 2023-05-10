@@ -81,22 +81,9 @@
 					]
 				},
 				"url": {
-					"raw": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token",
-					"protocol": "https",
+					"raw": "{{auth-url}}",
 					"host": [
-						"dev",
-						"loginproxy",
-						"gov",
-						"bc",
-						"ca"
-					],
-					"path": [
-						"auth",
-						"realms",
-						"platform-services",
-						"protocol",
-						"openid-connect",
-						"token"
+						"{{auth-url}}"
 					]
 				}
 			},
