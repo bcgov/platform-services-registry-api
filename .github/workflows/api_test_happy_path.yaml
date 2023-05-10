@@ -41,18 +41,12 @@ jobs:
         run: |
           cd apiTest
           pwd
-          newman run testHappyPath.postman_collection.json --environment TestEnv.postman_environment.json
+          newman run testHappyPath.postman_collection.json --environment TestEnv.postman_environment.json > results.txt
          
-         
-   #   - name: Zip Results folder
-   #     run: |
-   #         cd proofOfConcept
-   #         zip -r snapshotResults.zip ./results
-   #         ls -la
-            
-   #   - name: Upload Zipped results folder to artifacts
-   #     uses: actions/upload-artifact@v3
-   #     with:
-   #       name: snapshotResults
-   #       path: ./proofOfConcept/snapshotResults.zip
+       
+      - name: Upload results  to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: results.txt
+          path: ./apiTest/results.txt
     
