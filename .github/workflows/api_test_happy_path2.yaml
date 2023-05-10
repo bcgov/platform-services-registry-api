@@ -1,0 +1,40 @@
+name: api_Test_Happy_Path2
+
+on:
+  workflow_dispatch:
+
+env:
+        URL: 'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
+
+
+#permissions:
+  #id-token: write # This is required for requesting the JWT
+  #contents: read  # This is required for actions/checkout        
+
+jobs:
+  happy_path_test:
+    name: Runs the Happy Path suite of tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout the repo
+        uses: actions/checkout@v3
+
+      - name: calling newman VM
+        uses: matt-ball/newman-action@master
+          with:
+            collection: ./apiTest/testHappyPath.postman_collection.json
+            envVar: '[{ "auth-url": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token","api-url": "https://platsrv-registry-api-101ed4-dev.apps.silver.devops.gov.bc.ca", "auth_email": "oamar.kanji@gov.bc.ca","auth_pwd": "Northvan!2023\"}]'
+
+   #   - name: Zip Results folder
+   #     run: |
+   #         cd proofOfConcept
+   #         zip -r snapshotResults.zip ./results
+   #         ls -la
+            
+   #   - name: Upload Zipped results folder to artifacts
+   #     uses: actions/upload-artifact@v3
+   #     with:
+   #       name: snapshotResults
+   #       path: ./proofOfConcept/snapshotResults.zip
+    
