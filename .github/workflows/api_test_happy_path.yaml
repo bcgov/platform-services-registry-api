@@ -41,7 +41,7 @@ jobs:
         run: |
           cd apiTest
           pwd
-          newman run testHappyPath.postman_collection.json --environment ./apiTest/TestEnv.postman_environment.json
+          newman run testHappyPath.postman_collection.json --environment TestEnv.postman_environment.json
          
          
    #   - name: Zip Results folder
