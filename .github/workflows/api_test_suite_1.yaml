@@ -43,8 +43,6 @@ jobs:
           name: resultHappyApiTest.txt
           path: ./apiTest/resultHappyApiTest.txt
 
-
- jobs:
   unhappy_path_test:
     name: Runs the Unhappy Path suite of tests
     runs-on: ubuntu-latest
