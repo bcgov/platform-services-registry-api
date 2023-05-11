@@ -1,5 +1,5 @@
-name: api_Test_Happy_Path3
-
+name: api_Test_Happy_Path3 #If there is a failed test in the test suite, the
+                           #workflow will fail
 on:
   workflow_dispatch:
     
@@ -48,9 +48,7 @@ jobs:
         run: |
           cd apiTest
           pwd
-          cat resultApiTest.txt
-          declare myString=`cat resultApiTest.txt | grep total`                        
-          echo ${#myString} 
+          declare myString=`cat resultApiTest.txt | grep failure`
           if [[ ${#myString}  -gt 0 ]]
           then
           exit 1

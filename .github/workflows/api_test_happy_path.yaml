@@ -1,4 +1,6 @@
-name: api_Test_Happy_Path
+name: api_Test_Happy_Path #The test suite reports failures, but the test suite 
+                          #itself succeed. You need to read the produced report to
+                          # check if verify if the individual tests have succeeded or failed
 
 on:
   workflow_dispatch:
