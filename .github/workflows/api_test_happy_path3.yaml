@@ -47,9 +47,9 @@ jobs:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         run: |
           cd apiTest
-          myString=`cat resultApiTest.txt | grep failure`
-          len=`expr "$myString"`                                  
-          if [[ $len -gt 0 ]]
+          myString=`cat resultApiTest.txt | grep failure`                        
+          echo ${#myString} 
+          if [[ ${#myString}  -gt 0 ]]
           then
           exit 1
           fi   
