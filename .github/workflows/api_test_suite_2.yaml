@@ -1,5 +1,6 @@
-name: api_Test_Happy_Path2 #it requires an env variables file, that would expose the variables values.
-                           # I have saved this workflow simply to show another way to run a postman collection in GHA
+name: api_Test_Suite_2 #it requires an env variables file, that would expose the variables values.
+                           #I have saved this workflow simply to show another way to run a postman collection in GHA
+                           #Do not save login/pwd in the environmental variables file! 
 on:
   workflow_dispatch:
 
