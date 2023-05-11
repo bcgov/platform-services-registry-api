@@ -1599,9 +1599,9 @@
 							"        });",
 							"",
 							"pm.test(\"Verify the Make Decision request API returns a JSON message\", function() {",
-							"    let jsonData = pm.response.json().errors[0]",
+							"    let jsonData = pm.response.json()",
 							"",
-							"    tests[\"Verify the Make Decision request API return message includes a 'BAD_USER_INPUT' string when using an already approved project\"] = jsonData.message ===  \"Request not found or already has a decision.\"",
+							"    tests[\"Verify the Make Decision request API return message includes a 'BAD_USER_INPUT' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
 							"    }",
 							")",
 							""
