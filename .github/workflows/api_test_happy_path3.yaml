@@ -49,8 +49,8 @@ jobs:
           cd apiTest
           pwd
           cat resultApiTest.txt
-#          myString=`cat resultApiTest.txt | grep failure`                        
-#          echo ${#myString} 
+          myString=`cat resultApiTest.txt | grep failure`                        
+          echo ${#myString} 
 #          if [[ ${#myString}  -gt 0 ]]
 #          then
 #          exit 1
