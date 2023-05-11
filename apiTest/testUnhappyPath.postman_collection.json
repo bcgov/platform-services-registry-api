@@ -1162,7 +1162,7 @@
 							"        });",
 							"",
 							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
-							"    let jsonData = pm.response.json().errors[0]",
+							"    let jsonData = pm.response.json()",
 							"",
 							"    tests[\"Verify the Create Project API return message includes a 'BAD_USER_INPUT' string when budget is a negative number\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
 							"    }",
@@ -1563,75 +1563,6 @@
 					"graphql": {
 						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
 						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"{{descisionStatus}}\",\n  \"humanComment\": \"{{comment}}\"\n}"
-					}
-				},
-				"url": {
-					"raw": "{{api-url}}/graphql",
-					"host": [
-						"{{api-url}}"
-					],
-					"path": [
-						"graphql"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Make Request Decision Empty Comment",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"//let comment=\"This is a human comment for request >>>\" + pm.environment.get(\"requestID\") + \"<<< with project name >>>\"+ pm.environment.get(\"name\")+ \"<<<\"",
-							"",
-							"let comment = \"\"",
-							"pm.environment.set(\"comment\", comment);",
-							"console.log(comment)"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
-							"            pm.response.to.have.status(200);",
-							"        });",
-							"",
-							"pm.test(\"Verify the Make decision request API returns a JSON message\", function() {",
-							"    let jsonData = pm.response.json().errors[0]",
-							"",
-							"    tests[\"Verify the Make decision request API return message includes a 'BAD_USER_INPUT' string when decision is null\"] = jsonData.extensions.code ===  \"BAD_USER_INPUT\"",
-							"    }",
-							")",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{auth_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "graphql",
-					"graphql": {
-						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
-						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"{{comment}}\"\n}"
 					}
 				},
 				"url": {
