@@ -1,5 +1,5 @@
-name: api_Test_Happy_Path3 #If there is a failed test in the test suite, the
-                           #workflow will fail
+name: api_Test_suite_3 # If there is a failed test in the test suite,
+                       # the whole workflow will fail
 on:
   workflow_dispatch:
     
@@ -33,15 +33,13 @@ jobs:
         run: |
           cd apiTest
           pwd
-          newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}} > resultApiTest.txt
-#          myString=`cat resultApiTest.txt | grep failure`                   
-#          echo ${#myString}
+          newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}} > resultHappyApiTest.txt
 
       - name: Upload results  to artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: resultApiTest.txt
-          path: ./apiTest/resultApiTest.txt
+          name: resultHappyApiTest.txt
+          path: ./apiTest/resultHappyApiTest.txt
   
       - name: Fail test if results include Failure
         continue-on-error: false
@@ -53,3 +51,53 @@ jobs:
           then
           exit 1
           fi   
+
+
+
+  happy_path_test:
+    name: Runs the Unhappy Path suite of tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout the repo
+        uses: actions/checkout@v3
+
+      - name: install latest nodejs  
+        uses: actions/setup-node@v3
+        with:
+          check-latest: true
+
+      - name: Display the node version    
+        run: node --version      
+      
+      - name: Install newman    
+        run: npm install -g newman
+      
+      - name: Display newman version
+        run: newman --version
+          
+      - name: Run the test
+        continue-on-error: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        run: |
+          cd apiTest
+          pwd
+          newman run testUnhappyPath.postman_collection.json --env-var api-url=${{secrets.API_URL}} > resultUnhappyApiTest.txt
+
+      - name: Upload results  to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: resultUnhappyApiTest.txt
+          path: ./apiTest/resultUnhappyApiTest.txt
+  
+      - name: Fail test if results include Failure
+        continue-on-error: false
+        run: |
+          cd apiTest
+          pwd
+          declare myString=`cat resultApiTest.txt | grep failure`
+          if [[ ${#myString}  -gt 0 ]]
+          then
+          exit 1
+          fi             
