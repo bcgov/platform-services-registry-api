@@ -1,4 +1,4 @@
-name: api_Test_Happy_Path
+name: api_Test_Happy_Path3
 
 on:
   workflow_dispatch:
@@ -49,12 +49,7 @@ jobs:
           cd apiTest
           myString=`cat resultApiTest.txt | grep failure`
           len=`expr "$myString"`                                  
-
           if [[ $len -gt 0 ]]
           then
           exit 1
-          fi
-
-
-
-        echo ${#myString}    
+          fi   
