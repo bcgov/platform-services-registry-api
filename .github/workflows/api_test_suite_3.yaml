@@ -46,7 +46,7 @@ jobs:
         run: |
           cd apiTest
           pwd
-          declare myString=`cat resultApiTest.txt | grep failure`
+          declare myString=`cat resultHappyApiTest.txt | grep failure`
           if [[ ${#myString}  -gt 0 ]]
           then
           exit 1
@@ -94,7 +94,7 @@ jobs:
         run: |
           cd apiTest
           pwd
-          declare myString=`cat resultApiTest.txt | grep failure`
+          declare myString=`cat resultUnhappyApiTest.txt | grep failure`
           if [[ ${#myString}  -gt 0 ]]
           then
           exit 1
