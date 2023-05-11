@@ -1,16 +1,8 @@
-name: api_Test_Happy_Path3
+name: api_Test_Happy_Path
 
 on:
   workflow_dispatch:
-
-env:
-        URL: 'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
-
-
-#permissions:
-  #id-token: write # This is required for requesting the JWT
-  #contents: read  # This is required for actions/checkout        
-
+    
 jobs:
   happy_path_test:
     name: Runs the Happy Path suite of tests
@@ -43,10 +35,9 @@ jobs:
           pwd
           newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}}
          
-       
-#      - name: Upload results  to artifacts
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: results.txt
-#          path: ./apiTest/results.txt
+      - name: Upload results  to artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: results.txt
+          path: ./apiTest/results.txt
     

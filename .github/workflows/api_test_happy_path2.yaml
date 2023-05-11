@@ -1,15 +1,7 @@
-name: api_Test_Happy_Path2
-
+name: api_Test_Happy_Path2 #it requires an env variables file, that would expose the variables values.
+                           # I have saved this workflow simply to show another way to run a postman collection in GHA
 on:
   workflow_dispatch:
-
-env:
-        URL: 'https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token'
-
-
-#permissions:
-  #id-token: write # This is required for requesting the JWT
-  #contents: read  # This is required for actions/checkout        
 
 jobs:
   happy_path_test:
@@ -25,17 +17,5 @@ jobs:
         with:
           collection: ./apiTest/testHappyPath.postman_collection.json
           environment: ./apiTest/TestEnv.postman_environment.json
-          #envVar: '[{"auth-url": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token","api-url": "https://platsrv-registry-api-101ed4-dev.apps.silver.devops.gov.bc.ca", "auth_email": "oamar.kanji@gov.bc.ca","auth_pwd": "Northvan!2023"}]'
-          reporters: '["json"]'
-   #   - name: Zip Results folder
-   #     run: |
-   #         cd proofOfConcept
-   #         zip -r snapshotResults.zip ./results
-   #         ls -la
-            
-   #   - name: Upload Zipped results folder to artifacts
-   #     uses: actions/upload-artifact@v3
-   #     with:
-   #       name: snapshotResults
-   #       path: ./proofOfConcept/snapshotResults.zip
-    
+          reporters: '["cli"]'
+  
