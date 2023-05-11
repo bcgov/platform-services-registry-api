@@ -72,7 +72,7 @@ jobs:
         run: |
           cd apiTest
           pwd
-          newman run testUnHappyPath.postman_collection.json --env-var api-url=${{secrets.API_URL}} > resultUnhappyApiTest.txt
+          newman run testUnhappyPath.postman_collection.json --env-var api-url=${{secrets.API_URL}} > resultUnhappyApiTest.txt
                
       - name: Upload results  to artifacts
         uses: actions/upload-artifact@v3
