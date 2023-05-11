@@ -140,7 +140,7 @@ export const userPrivateCloudProjectsByIds = async (
   });
 
 export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
-  let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
+  let { search, filter = {}, page, pageSize, sortOrder = -1, userId = '' } = args;
   let { ministry, cluster } = filter;
 
   search = search === null ? undefined : search;
@@ -239,12 +239,18 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         }
       },
       {
-        $match: { $and:[{cluster: cluster}, {ministry:ministry}]  }
-      },
-      {
         $match: {
           status: { $regex: "ACTIVE" },
           $and: [
+            {
+              $or: [
+                { "projectOwnerId": { $regex: userId } },
+                { "primaryTechnicalLeadId": { $regex: userId } },
+                { "secondaryTechnicalLeadId": { $regex: userId } }
+              ]
+            },
+            { cluster: cluster },
+            { ministry: ministry },
             {
               $or: [
                 {
@@ -312,10 +318,20 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     ]
   });
 
+  console.log(projects.slice(0,1))
   const total = await prisma.privateCloudProject.count({
     where: {
       status: "ACTIVE",
       AND: [
+        {
+    OR: [
+      [
+        { projectOwner: { id: { contains: userId } } },
+        // { primaryTechnicalLeadId: { _id: { contains: userId } } },
+        // { secondaryTechnicalLeadId: { _id: { contains: userId } } },
+      ]
+    ]
+  },
         {
           OR: [
             { projectOwner: { email: { contains: search } } },
