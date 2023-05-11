@@ -33,11 +33,11 @@ jobs:
         run: |
           cd apiTest
           pwd
-          newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}}
+          newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}} > resultApiTest.txt
          
       - name: Upload results  to artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: results.txt
-          path: ./apiTest/results.txt
+          name: resultApiTest.txt
+          path: ./apiTest/resultApiTest.txt
     
