@@ -51,7 +51,7 @@ jobs:
           cat resultApiTest.txt
           declare myString=`cat resultApiTest.txt | grep failure`                        
           echo ${#myString} 
-#          if [[ ${#myString}  -gt 0 ]]
-#          then
-#          exit 1
-#          fi   
+          if [[ ${#myString}  -gt 0 ]]
+          then
+          exit 1
+          fi   
