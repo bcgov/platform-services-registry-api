@@ -34,19 +34,20 @@ jobs:
           cd apiTest
           pwd
           newman run testHappyPath.postman_collection.json --env-var auth-url=${{ secrets.AUTH_URL }} --env-var api-url=${{secrets.API_URL}} --env-var auth_email=${{secrets.AUTH_EMAIL}} --env-var auth_pwd=${{secrets.AUTH_PWD}} > resultApiTest.txt
-         
+          myString=`cat resultApiTest.txt | grep failure`                        
+          echo ${#myString}
+
       - name: Upload results  to artifacts
         uses: actions/upload-artifact@v3
         with:
           name: resultApiTest.txt
           path: ./apiTest/resultApiTest.txt
-
+  
       - name: Fail test if results include Failure
-        continue-on-error: true
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+        continue-on-error: false
         run: |
           cd apiTest
+          pwd
           myString=`cat resultApiTest.txt | grep failure`                        
           echo ${#myString} 
           if [[ ${#myString}  -gt 0 ]]
