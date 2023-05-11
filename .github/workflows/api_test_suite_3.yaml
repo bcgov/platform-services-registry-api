@@ -52,9 +52,7 @@ jobs:
           exit 1
           fi   
 
-
-
-  happy_path_test:
+  unhappy_path_test:
     name: Runs the Unhappy Path suite of tests
     runs-on: ubuntu-latest
 
