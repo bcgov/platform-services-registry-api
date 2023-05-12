@@ -4,7 +4,7 @@
 		"name": "testUnhappyPath",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27212126",
-		"_collection_link": "https://red-sunset-10273.postman.co/workspace/Platform-Registry-API~62f923ad-ee68-460c-9473-00784d35754e/collection/27212126-35c82144-8d19-4a6e-9c68-385f55607e0d?action=share&creator=27212126&source=collection_link"
+		"_collection_link": "https://red-sunset-10273.postman.co/workspace/62f923ad-ee68-460c-9473-00784d35754e/collection/27212126-35c82144-8d19-4a6e-9c68-385f55607e0d?action=share&creator=27212126&source=collection_link"
 	},
 	"item": [
 		{
@@ -357,6 +357,77 @@
 						"protocol",
 						"openid-connect",
 						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "provision public cloud Test - inexistent license plate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Provision publicCloud  returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"licencePlate\", \"1a2b3c4e\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "abcd",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "licencePlate",
+							"value": "{{licencePlate}}",
+							"type": "text"
+						},
+						{
+							"key": "provider",
+							"value": "AWS",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api-url}}/public-cloud",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"public-cloud"
 					]
 				}
 			},
@@ -1382,16 +1453,24 @@
 							"            pm.response.to.have.status(200);",
 							"        });",
 							"",
-							"",
-							"",
-							"//let's find a random request that is has not been yet approved",
 							"let jsonData = pm.response.json().data.publicCloudActiveRequests.filter(({ decisionStatus }) => decisionStatus != 'APPROVED');",
 							"",
-							"let currentNumberRequests = jsonData.length",
 							"",
-							"let randomRequest = Math.floor(Math.random() * currentNumberRequests);",
+							"function test(jsonData) {",
+							"    //let's find a random request that is has not been yet approved",
 							"",
-							"pm.environment.set(\"requestID\",jsonData[randomRequest].id)",
+							"        let currentNumberRequests = jsonData.length",
+							"",
+							"        let randomRequest = Math.floor(Math.random() * currentNumberRequests);",
+							"",
+							"        pm.environment.set(\"requestID\",jsonData[randomRequest].id)",
+							"        console.log(currentNumberRequests)",
+							"}",
+							"",
+							"setTimeout(test(jsonData) , 3000);",
+							"",
+							"",
+							"",
 							"",
 							"",
 							""
@@ -1578,14 +1657,14 @@
 			"response": []
 		},
 		{
-			"name": "Make Request Decision again",
+			"name": "Make Request Decision - ill formed request ID",
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
 						"exec": [
 							"//thix test makes a decision in a project that has already been approved",
-							""
+							"pm.environment.set(\"requestID\", \"inexistent\");"
 						],
 						"type": "text/javascript"
 					}
@@ -1594,16 +1673,29 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Verify the API returns a 200 code when businessIntelligence code is null\", function () {",
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
 							"            pm.response.to.have.status(200);",
-							"        });",
-							"",
-							"pm.test(\"Verify the Make Decision request API returns a JSON message\", function() {",
+							"        });          ",
+							"    ",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
 							"    let jsonData = pm.response.json()",
 							"",
-							"    tests[\"Verify the Make Decision request API return message includes a 'BAD_USER_INPUT' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
+							"    tests[\"Verify the Make Decision request API return message includes a 'Request not found or already has a decision.' string when using an already approved project\"] = jsonData.errors[0].extensions.code ===  \"INTERNAL_SERVER_ERROR\"",
 							"    }",
 							")",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"//    tests[\"Verify the Make Decision request API return message includes a 'Request not found or already has a decision' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
+							"",
+							"",
+							"",
 							""
 						],
 						"type": "text/javascript"
@@ -1641,6 +1733,172 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Make Request Decision - inexistent reques ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//thix test makes a decision in a project that has already been approved",
+							"pm.environment.set(\"requestID\", \"1111a11aaa111aa111aa11aa\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });          ",
+							"    ",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json()",
+							"",
+							"    tests[\"Verify the Make Decision request API return message includes a 'Request not found or already has a decision.' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
+							"    }",
+							")",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"//    tests[\"Verify the Make Decision request API return message includes a 'Request not found or already has a decision' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"THIS IS A COMMENT\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision with no credentials",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//Reset token, just in case it was set",
+							"pm.environment.set(\"auth_token\", \"This is not a valid token\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verify Make decision Request API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"",
+							"",
+							"            ",
+							"    ",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json()",
+							"",
+							"    tests[\"Verify the Make Decision request API return message includes a 'User not Authenticated' string when using an already approved project\"] = jsonData.errors[0].message ===  \"User not Authenticated\"",
+							"    }",
+							")",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"//    tests[\"Verify the Make Decision request API return message includes a 'Request not found or already has a decision' string when using an already approved project\"] = jsonData.errors[0].message ===  \"Request not found or already has a decision.\"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"THIS IS A COMMENT\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "Request not found or already has a decision.",
+			"value": ""
 		}
 	]
 }
