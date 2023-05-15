@@ -330,33 +330,20 @@
 						},
 						{
 							"key": "username",
-							"value": "oamar.kanji@gov.bc.ca",
+							"value": "{{auth_email}}",
 							"type": "text"
 						},
 						{
 							"key": "password",
-							"value": "Northvan!2023",
+							"value": "{{auth_pwd}}",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "https://dev.loginproxy.gov.bc.ca/auth/realms/platform-services/protocol/openid-connect/token",
-					"protocol": "https",
+					"raw": "{{auth-url}}",
 					"host": [
-						"dev",
-						"loginproxy",
-						"gov",
-						"bc",
-						"ca"
-					],
-					"path": [
-						"auth",
-						"realms",
-						"platform-services",
-						"protocol",
-						"openid-connect",
-						"token"
+						"{{auth-url}}"
 					]
 				}
 			},
@@ -370,8 +357,16 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Provision publicCloud  returns a 200 code\", function () {",
-							"            pm.response.to.have.status(200);",
-							"        });"
+							"            pm.response.to.have.status(404);",
+							"        });",
+							"",
+							"pm.test(\"Verify the Create Project API returns a JSON message\", function() {",
+							"    let jsonData = pm.response.json()",
+							"",
+							"    tests[\"Verify the provision public cloud API return message includes the 'No provision request found for the provided licencePlate and provider' when using an inexistent license plate\"] = jsonData.message ===  \"No provision request found for the provided licencePlate and provider\"",
+							"    }",
+							")",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1595,11 +1590,9 @@
 							"pm.environment.set(\"comment\", comment);",
 							"",
 							"",
-							"",
 							"let descisionStatus=\"Invalid\"",
 							"pm.environment.set(\"descisionStatus\", descisionStatus);",
-							"",
-							"console.log(comment)"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -1663,7 +1656,12 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							"//thix test makes a decision in a project that has already been approved",
+							"let comment=\"Valid comment\"",
+							"pm.environment.set(\"comment\", comment);",
+							"",
+							"let descisionStatus=\"APPROVED\"",
+							"pm.environment.set(\"descisionStatus\", descisionStatus);",
+							"",
 							"pm.environment.set(\"requestID\", \"inexistent\");"
 						],
 						"type": "text/javascript"
