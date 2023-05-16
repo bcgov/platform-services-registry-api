@@ -177,7 +177,6 @@ type PublicCloudProject {
   provider: Provider!
   requestHistory: [PublicCloudRequest]!
   activeEditRequest: PublicCloudRequest
-  count: Int
   commonComponents: CommonComponents!
 }
 
@@ -296,8 +295,13 @@ enum SortOrder {
   DESCENDING
 }
 
-type projectsPaginatedOutput {
+type privateCloudProjectsPaginatedOutput {
   projects: [PrivateCloudProject!]!
+  total: Int!
+}
+
+type publicCloudProjectsPaginatedOutput {
+  projects: [PublicCloudProject!]!
   total: Int!
 }
 
@@ -316,7 +320,7 @@ type Query {
     filter: FilterPrivateCloudProjectsInput
     search: String
     sortOrder: Int
-  ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
+  ): privateCloudProjectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
   privateCloudProjectById(projectId: ID!): PrivateCloudProject!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
@@ -354,7 +358,7 @@ type Query {
     filter: FilterPublicCloudProjectsInput
     search: String
     sortOrder: Int
-  ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
+  ): publicCloudProjectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
   publicCloudProjectById(projectId: ID!): PublicCloudProject!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
@@ -437,7 +441,7 @@ type Mutation {
     ministry: Ministry!
     provider: Provider!
     budget: BudgetInput!
-    billingGroup: String!
+    billingGroup: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     technicalLeads: [CreateUserInput!]!
@@ -449,7 +453,7 @@ type Mutation {
     description: String!
     ministry: Ministry!
     budget: BudgetInput!
-    billingGroup: String!
+    billingGroup: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     technicalLeads: [CreateUserInput!]!

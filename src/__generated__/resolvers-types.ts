@@ -242,7 +242,7 @@ export type MutationPrivateCloudRequestDecisionArgs = {
 
 
 export type MutationPublicCloudProjectEditRequestArgs = {
-  billingGroup: Scalars['String'];
+  billingGroup?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
@@ -255,7 +255,7 @@ export type MutationPublicCloudProjectEditRequestArgs = {
 
 
 export type MutationPublicCloudProjectRequestArgs = {
-  billingGroup: Scalars['String'];
+  billingGroup?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
@@ -337,7 +337,6 @@ export type PublicCloudProject = {
   billingGroup: Scalars['String'];
   budget: Budget;
   commonComponents: CommonComponents;
-  count?: Maybe<Scalars['Int']>;
   created: Scalars['DateTime'];
   description: Scalars['String'];
   id: Scalars['ID'];
@@ -374,7 +373,7 @@ export type Query = {
   privateCloudProjectById: PrivateCloudProject;
   privateCloudProjects: Array<PrivateCloudProject>;
   privateCloudProjectsById: Array<PrivateCloudProject>;
-  privateCloudProjectsPaginated: ProjectsPaginatedOutput;
+  privateCloudProjectsPaginated: PrivateCloudProjectsPaginatedOutput;
   privateCloudRequestById: PrivateCloudRequest;
   privateCloudRequests: Array<PrivateCloudRequest>;
   publicCloudActiveRequestById: PublicCloudRequest;
@@ -383,7 +382,7 @@ export type Query = {
   publicCloudProjectById: PublicCloudProject;
   publicCloudProjects: Array<PublicCloudProject>;
   publicCloudProjectsById: Array<PublicCloudProject>;
-  publicCloudProjectsPaginated: ProjectsPaginatedOutput;
+  publicCloudProjectsPaginated: PublicCloudProjectsPaginatedOutput;
   publicCloudRequestById: PublicCloudRequest;
   publicCloudRequests: Array<PublicCloudRequest>;
   user?: Maybe<User>;
@@ -597,9 +596,15 @@ export type User = {
   publicCloudProjectTechnicalLead: Array<Maybe<PublicCloudProject>>;
 };
 
-export type ProjectsPaginatedOutput = {
-  __typename?: 'projectsPaginatedOutput';
+export type PrivateCloudProjectsPaginatedOutput = {
+  __typename?: 'privateCloudProjectsPaginatedOutput';
   projects: Array<PrivateCloudProject>;
+  total: Scalars['Int'];
+};
+
+export type PublicCloudProjectsPaginatedOutput = {
+  __typename?: 'publicCloudProjectsPaginatedOutput';
+  projects: Array<PublicCloudProject>;
   total: Scalars['Int'];
 };
 
@@ -711,7 +716,8 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
-  projectsPaginatedOutput: ResolverTypeWrapper<ProjectsPaginatedOutput>;
+  privateCloudProjectsPaginatedOutput: ResolverTypeWrapper<PrivateCloudProjectsPaginatedOutput>;
+  publicCloudProjectsPaginatedOutput: ResolverTypeWrapper<PublicCloudProjectsPaginatedOutput>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -739,7 +745,8 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
   User: User;
-  projectsPaginatedOutput: ProjectsPaginatedOutput;
+  privateCloudProjectsPaginatedOutput: PrivateCloudProjectsPaginatedOutput;
+  publicCloudProjectsPaginatedOutput: PublicCloudProjectsPaginatedOutput;
 }>;
 
 export type LowerCaseDirectiveArgs = { };
@@ -785,8 +792,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'technicalLeads'>>;
-  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'billingGroup' | 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'technicalLeads'>>;
+  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
@@ -834,7 +841,6 @@ export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType e
   billingGroup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   budget?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
-  count?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -871,7 +877,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   privateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectByIdArgs, 'projectId'>>;
   privateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   privateCloudProjectsById?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsByIdArgs>>;
-  privateCloudProjectsPaginated?: Resolver<ResolversTypes['projectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
+  privateCloudProjectsPaginated?: Resolver<ResolversTypes['privateCloudProjectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
   privateCloudRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudRequestByIdArgs, 'requestId'>>;
   privateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   publicCloudActiveRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryPublicCloudActiveRequestByIdArgs, 'requestId'>>;
@@ -880,7 +886,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   publicCloudProjectById?: Resolver<ResolversTypes['PublicCloudProject'], ParentType, ContextType, RequireFields<QueryPublicCloudProjectByIdArgs, 'projectId'>>;
   publicCloudProjects?: Resolver<Array<ResolversTypes['PublicCloudProject']>, ParentType, ContextType>;
   publicCloudProjectsById?: Resolver<Array<ResolversTypes['PublicCloudProject']>, ParentType, ContextType, Partial<QueryPublicCloudProjectsByIdArgs>>;
-  publicCloudProjectsPaginated?: Resolver<ResolversTypes['projectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPublicCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
+  publicCloudProjectsPaginated?: Resolver<ResolversTypes['publicCloudProjectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPublicCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
   publicCloudRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryPublicCloudRequestByIdArgs, 'requestId'>>;
   publicCloudRequests?: Resolver<Array<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -929,8 +935,14 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['projectsPaginatedOutput'] = ResolversParentTypes['projectsPaginatedOutput']> = ResolversObject<{
+export type PrivateCloudProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['privateCloudProjectsPaginatedOutput'] = ResolversParentTypes['privateCloudProjectsPaginatedOutput']> = ResolversObject<{
   projects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PublicCloudProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['publicCloudProjectsPaginatedOutput'] = ResolversParentTypes['publicCloudProjectsPaginatedOutput']> = ResolversObject<{
+  projects?: Resolver<Array<ResolversTypes['PublicCloudProject']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -948,7 +960,8 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
-  projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
+  privateCloudProjectsPaginatedOutput?: PrivateCloudProjectsPaginatedOutputResolvers<ContextType>;
+  publicCloudProjectsPaginatedOutput?: PublicCloudProjectsPaginatedOutputResolvers<ContextType>;
 }>;
 
 export type DirectiveResolvers<ContextType = ContextValue> = ResolversObject<{
