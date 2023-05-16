@@ -3,7 +3,7 @@ import {
   MutationResolvers,
   DecisionStatus,
   RequestDecision,
-  Cluster,
+  Cluster
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
@@ -26,31 +26,31 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        decisionStatus: DecisionStatus.Pending,
+        decisionStatus: DecisionStatus.Pending
       },
       data: {
         decisionStatus: decision,
         humanComment: humanComment,
         active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
-        decisionMakerEmail: authEmail,
+        decisionMakerEmail: authEmail
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
+            secondaryTechnicalLead: true
+          }
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true,
-          },
-        },
-      },
+            secondaryTechnicalLead: true
+          }
+        }
+      }
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -61,16 +61,22 @@ const privateCloudRequestDecision: MutationResolvers = async (
     throw e;
   }
 
+  if (request.type === "DELETE") {
+    throw Error("Delete is dissabled");
+    return;
+  }
+
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject);
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(request.type, request.requestedProject);
+      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
     }
   }
-  if (request.decisionStatus === RequestDecision.Rejected) sendRejectEmail(request)
+  if (request.decisionStatus === RequestDecision.Rejected)
+    sendRejectEmail(request);
   return request;
 };
 

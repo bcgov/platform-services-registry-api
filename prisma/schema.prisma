@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["extendedWhereUnique"]
+  previewFeatures = ["extendedWhereUnique", "fullTextIndex"]
 }
 
 datasource db {
@@ -13,8 +13,8 @@ datasource db {
 
 model User {
   id                                                 String                         @id @default(auto()) @map("_id") @db.ObjectId
-  firstName                                          String
-  lastName                                           String
+  firstName                                          String?
+  lastName                                           String?
   email                                              String                         @unique
   ministry                                           String?
   archived                                           Boolean                        @default(false)
@@ -67,6 +67,7 @@ model PrivateCloudProject {
   commonComponents         CommonComponents
   profileId                String?
   requests                 PrivateCloudRequest[] @relation("project")
+
 }
 
 model PrivateCloudRequestedProject {

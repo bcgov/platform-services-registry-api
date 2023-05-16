@@ -324,6 +324,7 @@ export type QueryPrivateCloudProjectsPaginatedArgs = {
   page: Scalars['Int'];
   pageSize: Scalars['Int'];
   search?: InputMaybe<Scalars['String']>;
+  sortOrder?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -421,9 +422,9 @@ export type User = {
   archived: Scalars['Boolean'];
   created: Scalars['DateTime'];
   email: Scalars['EmailAddress'];
-  firstName: Scalars['String'];
+  firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  lastName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Scalars['String']>;
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
@@ -675,9 +676,9 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
-  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;

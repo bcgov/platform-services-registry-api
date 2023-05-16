@@ -158,8 +158,8 @@ type PrivateCloudRequest {
 
 type User {
   id: ID!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
   email: EmailAddress!
   ministry: String
   archived: Boolean!
@@ -258,6 +258,7 @@ type Query {
     pageSize: Int!
     filter: FilterPrivateCloudProjectsInput
     search: String
+    sortOrder: Int
   ): projectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
 
   privateCloudProjectsWithFilterSearch(
@@ -291,7 +292,7 @@ type Query {
   privateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
-    
+
   privateCloudActiveRequests: [PrivateCloudRequest!]!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])

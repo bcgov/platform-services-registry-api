@@ -1,10 +1,7 @@
 import crypto from "crypto";
 
 const generateLicensePlate = (len = 6) => {
-  const prefix = process.env.NODE_ENV !== "production" ? "t" : "";
-
   const getRandomPrefix = (requiredLength) =>
-    prefix +
     crypto
       .randomBytes(Math.ceil(requiredLength / 2))
       .toString("hex")

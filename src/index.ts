@@ -21,6 +21,7 @@ import {
   getDatabaseHealthCheck,
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
+import { connectToDatabase } from "./db.js";
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
@@ -53,6 +54,8 @@ export const server = new ApolloServer<ContextValue>({
 
 await server.start();
 
+await connectToDatabase();
+
 app.use(
   "/graphql",
   cors<cors.CorsRequest>(),
@@ -63,6 +66,7 @@ app.use(
       const kauth = new KeycloakContext({ req }, keycloak);
       // @ts-ignore
       const email = kauth?.accessToken?.content?.email;
+      const lowerCaseEmail = email?.toLowerCase();
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
@@ -73,7 +77,7 @@ app.use(
         kauth: kauth,
         prisma,
         authRoles: roles,
-        authEmail: email,
+        authEmail: lowerCaseEmail,
         chesService,
       };
     },
@@ -102,8 +106,6 @@ app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
 app.post("/namespace", provisionerCallbackHandler);
 
 // app.post("/predeletion-check")
-
-
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
