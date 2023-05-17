@@ -274,6 +274,7 @@ type Query {
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
 
+  userPrivateCloudDeletionCheck(projectId: ID!): Boolean! @auth
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
   userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
@@ -340,7 +341,11 @@ type Mutation {
     toolsQuota: QuotaInput!
   ): PrivateCloudRequest! @auth
 
-  privateCloudProjectDeleteRequest(projectId: ID!): PrivateCloudRequest! @auth
+  privateCloudProjectDeleteRequest(
+    projectId: ID!
+    licencePlate: String!
+    projectOwnerEmail: EmailAddress!
+  ): PrivateCloudRequest! @auth
 
   privateCloudRequestDecision(
     requestId: ID!
