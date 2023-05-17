@@ -54,10 +54,11 @@ export const generateEmailTemplateData = (
     ? { ...incomingRequest }
     : { ...incomingProject };
 
-  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ?
-    !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead : project.secondaryTechnicalLead || null;
-  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
-  const projectOwner = requestedProject.projectOwner;
+  const secondaryTechnicalLead = 
+  requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id && !!project.secondaryTechnicalLead 
+  ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
+  const primaryTechnicalLead = project.primaryTechnicalLead;
+  const projectOwner = project.projectOwner;
 
   project.testQuota = {
     cpu: DefaultCpuOptions[project.testQuota.cpu],
@@ -275,6 +276,7 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       });
     }
     // *** No Quota changed and Project Contact Change
+
     if (
       !quotaChanged(project, requestedProject) &&
       contactChanged(project, requestedProject)
@@ -428,8 +430,6 @@ export const sendDeleteRequestEmails = async (project) => {
 };
 
 const sendTipsForTeachLeadsEmail = async (teachLeads) => {
- 
-
   try {
     chesService.send({
       bodyType: "html",
@@ -481,7 +481,7 @@ export const sendProvisionedEmails = async (request) => {
         });
       }
 
-      if (type === RequestType.Edit) {
+      if (type === RequestType.Edit && quotaChanged(project, requestedProject)) {
         chesService.send({
           bodyType: "html",
           body: swig.renderFile(
@@ -564,10 +564,10 @@ export const sendProvisionedEmails = async (request) => {
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: ` ${type === RequestType.Create
-            ? "Provisioning"
-            : type === RequestType.Edit
-              ? "Edit"
-              : "Deletion"
+          ? "Provisioning"
+          : type === RequestType.Edit
+            ? "Edit"
+            : "Deletion"
           } request has been rejected`,
       });
     }
@@ -614,10 +614,10 @@ export const sendRejectEmail = async (request) => {
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: ` ${type === RequestType.Create
-          ? "Provisioning"
-          : type === RequestType.Edit
-            ? "Edit"
-            : "Deletion"
+        ? "Provisioning"
+        : type === RequestType.Edit
+          ? "Edit"
+          : "Deletion"
         } request has been rejected`,
     });
   } catch (error) {
