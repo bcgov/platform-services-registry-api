@@ -429,7 +429,7 @@ export const sendDeleteRequestEmails = async (project) => {
   }
 };
 
-const sendTipsForTeachLeadsEmail = async (teachLeads) => {
+const sendTipsForTeachLeadsEmail = async (ProjectName, teachLeads) => {
   try {
     chesService.send({
       bodyType: "html",
@@ -439,7 +439,7 @@ const sendTipsForTeachLeadsEmail = async (teachLeads) => {
         .filter(Boolean)
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: "Tips for teachnical leads",
+      subject: `Your ${ProjectName} quota change request has been approved! `,
     });
   } catch (error) {
     console.error(error);
@@ -507,7 +507,7 @@ export const sendProvisionedEmails = async (request) => {
             "Resource quota for your product in Private Cloud Openshift Platform has changed",
         });
 
-        sendTipsForTeachLeadsEmail([
+        sendTipsForTeachLeadsEmail(requestedProject.name, [
           requestedProject.primaryTechnicalLead,
           requestedProject.secondaryTechnicalLead,
           project.primaryTechnicalLead,

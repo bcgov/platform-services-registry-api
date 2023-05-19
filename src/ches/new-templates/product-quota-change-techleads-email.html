@@ -16,7 +16,7 @@
             max-width: 90%;
             margin: 20px 0 0 0;
             ">
-                    Hi,
+                    Hi there!
                 </h2>
             </td>
         </tr>
@@ -32,12 +32,32 @@
             text-align: left;
             max-width: 90%;
             ">
-                We've reviewed, evaluated, and approved your quota change request. Our goal is to assist platform teams
-                in becoming more responsible stewards of shared platform resources. By using resources efficiently, we
-                can support more projects on the platform without needing additional hardware and licenses. Plus,
-                improved hardware utilization helps reduce our cluster's carbon footprint, aligning with our climate
-                action objectives.
+                We have reviewed and approved your quota change request.
             </p>
+            <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            max-width: 90%;
+            ">
+                Our goal is to empower platform teams to become more independent with the use of shared platform
+                resources. By using them efficiently, we can support more projects on the platform without requiring
+                more hardware and licenses.
+            </p>
+            <p style="
+            color: #313132;
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            word-break: break-word;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+            max-width: 90%;
+            ">
+                Additionally, the improved hardware use helps reduce our cluster's carbon footprint, aligning with our
+                climate action objectives. </p>
         </td>
     </tr>
 </table>
@@ -58,15 +78,14 @@
             max-width: 90%;
             margin: 20px 0 0 0;
             ">
-                    Pro-tip &#129299;
+                    Pro-tip
                 </h3>
             </td>
         </tr>
     </th>
     <tr>
         <td valign="top" align="center">
-            <p style="
-            
+            <p style="            
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
         font-size:14px;
         line-height:18px;
@@ -75,18 +94,27 @@
         padding-top: 5px;
         margin:  0 0 20px 0;
         text-align:left;
-        ">
-                To maximize your project's cluster resource usage, we've compiled some best practices to follow. If
-                you'd like a one-on-one meeting with a platform resource specialist, please use this
-                <a style="
-        color: #003366;          
-        margin:0;
-        font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-        font-size:14px;
-        line-height:18px;
-        " href="https://calendly.com/jason-leach/30min">calendar link</a>
-                to book a session.
+        ">You can book a one-on-one meeting with a platform resource specialist. The session is an opportunity to
+                provide you with more context and allow you to ask specific questions relevant to your team’s project.
             </p>
+            <p style="
+            
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            margin:  0 0 20px 0;
+            text-align:left;
+            ">
+                Please use <a style="
+color: #003366;          
+margin:0;
+font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+font-size:14px;
+line-height:18px;
+" href="https://calendly.com/jason-leach/30min">this calendar</a> to book a session. </p>
         </td>
     </tr>
 </table>
@@ -123,10 +151,10 @@
         padding-top: 5px;
         text-align:left;
         ">
-                Paying attention to CPU resource allocation on the cluster is crucial. When adjusting your application's
-                CPU resources, consider the following strategies for effective management:
+                It is crucial to pay attention to CPU resource allocation on the cluster. When you adjust the
+                application's CPU resources, consider the following strategies for effective management:
             </p>
-            <ul>
+            <ol>
                 <li style="margin:0;
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
         font-size:14px;
@@ -137,8 +165,8 @@
         text-align:left;
         ">
                     Aim to set the requested cpu (request.cpu) at around 80% of what your application uses, plus an
-                    additional 20%. For instance, if your application uses 50m from Monday to Friday, 9-5, set the
-                    "request.cpu" value to 60m.
+                    additional 20%. For example, if your application uses 50m from Monday to Friday, 9:00 a.m. to 5:00
+                    p.m, set the (request.cpu) value to 60m
                 </li>
                 <li style="margin:0;
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -150,7 +178,7 @@
         text-align:left;
         ">
                     Avoid setting the requested cpu below 10m or 20m, as there is limited value in going too low, and it
-                    may have some drawbacks.
+                    may have some drawbacks
                 </li>
                 <li style="margin:0;
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
@@ -161,9 +189,8 @@
         padding-top: 5px;
         text-align:left;
         ">
-                    Be mindful of multithreaded applications or multi-process containers, as threads and processes can
-                    consume quota more quickly, resulting in application throttling.
-                </li>
+                    Be mindful of multithreaded applications or multi-process containers. Threads and processes can
+                    consume quota more quickly, resulting in application throttling </li>
                 <li style="margin:0;
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
         font-size:14px;
@@ -173,10 +200,10 @@
         padding-top: 5px;
         text-align:left;
         ">
-                    Keep in mind that the requested cpu (request.cpu) does not impact your application's performance;
-                    only the CPU limit (limit.cpu) can do this.
+                    Remember that the application’s performance is impacted by the CPU limit (limit.cpu) and not by the
+                    requested cpu (request.cpu)
                 </li>
-            </ul>
+            </ol>
         </td>
     </tr>
 </table>
@@ -204,8 +231,7 @@
     </th>
     <tr>
         <td valign="top" align="center">
-            <p style="
-            
+            <p style="            
         font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
         font-size:14px;
         line-height:18px;
@@ -215,11 +241,29 @@
         margin:  0 0 20px 0;
         text-align:left;
         ">
-                With Openshift 4.x, you can now dynamically expand Persistent Volume Claims (PVC), allowing you to start
-                with limited disk storage and increase it as needed. To monitor PVCs effectively, use SysDig to keep
-                track of capacity and alert your team when it reaches around 80%. Then, you can adjust the size to
-                accommodate future demands. If you need help setting up SysDig alerts for your PVCs, please reach out to
-                Billy Li at CITZ:EX for assistance.
+                With OpenShift 4.x, you can expand Persistent Volume Claims (PVC). You start with limited disk storage
+                but it is possible to increase it as needed.
+            </p>
+            <p style="
+            
+            font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+            font-size:14px;
+            line-height:18px;
+            color: #131313;
+            max-width: 90%;
+            padding-top: 5px;
+            margin:  0 0 20px 0;
+            text-align:left;
+            ">
+                To monitor PVCs effectively, use SysDig to keep track of capacity and alert your team when it reaches at
+                around 80%. You can then adjust the size to accommodate future demands. If you need help setting up
+                SysDig alerts for your PVCs, please reach out to
+                <a style=" color: #003366;          
+margin:0;
+font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+font-size:14px;
+line-height:18px;
+" href="mailto:billy.li@gov.bc.ca">Billy Li</a> for assistance.
             </p>
         </td>
     </tr>
@@ -257,10 +301,10 @@
             padding-top: 5px;
             text-align:left;
             ">
-                Applications usually require a specific amount of memory, and it's often challenging to reduce this
-                requirement. However, there are essential strategies to manage memory resources effectively:
+                Applications usually require a specific amount of memory and it's often challenging to reduce this
+                requirement. Here are essential strategies to manage memory resources effectively:
             </p>
-            <ul>
+            <ol>
                 <li style="margin:0;
             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
             font-size:14px;
@@ -282,8 +326,7 @@
             padding-top: 5px;
             text-align:left;
             ">
-                    Use the "limit.memory" setting as a tool for detecting memory leaks.
-                </li>
+                    Use the “limit.memory” setting as a tool for detecting memory leaks. </li>
                 <li style="margin:0;
             font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
             font-size:14px;
@@ -293,11 +336,10 @@
             padding-top: 5px;
             text-align:left;
             ">
-                    Avoid running your application consistently above the "request.memory" value, as it could lead to
-                    the application being moved between nodes when they adjust their workloads.
+                    Avoid running your application consistently above the "request.memory" value as it could lead to the
+                    application being moved between nodes when they adjust their workloads.
                 </li>
-
-            </ul>
+            </ol>
         </td>
     </tr>
 </table>
