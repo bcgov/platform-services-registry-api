@@ -150,12 +150,11 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       }
     });
 
-    if (isQuotaChanged) {
       await sendEditRequestEmails(
         editRequest.project,
         editRequest.requestedProject
       );
-    }
+
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
