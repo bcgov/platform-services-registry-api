@@ -54,9 +54,9 @@ export const generateEmailTemplateData = (
     ? { ...incomingRequest }
     : { ...incomingProject };
 
-  const secondaryTechnicalLead = 
-  requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id && !!project.secondaryTechnicalLead 
-  ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
+  const secondaryTechnicalLead =
+    (!!project.secondaryTechnicalLead || !!requestedProject.secondaryTechnicalLead) && requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id
+      ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
   const primaryTechnicalLead = project.primaryTechnicalLead;
   const projectOwner = project.projectOwner;
 
