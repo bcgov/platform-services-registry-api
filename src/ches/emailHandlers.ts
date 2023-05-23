@@ -431,7 +431,7 @@ export const sendDeleteRequestEmails = async (project) => {
 
 const sendTipsForTeachLeadsEmail = async (ProjectName, teachLeads) => {
   try {
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/product-quota-change-techleads-email.html"),
