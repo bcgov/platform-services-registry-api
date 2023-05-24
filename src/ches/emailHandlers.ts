@@ -429,24 +429,6 @@ export const sendDeleteRequestEmails = async (project) => {
   }
 };
 
-const sendTipsForTeachLeadsEmail = async (ProjectName, teachLeads) => {
-  try {
-    await chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/new-templates/product-quota-change-techleads-email.html"),
-      to: teachLeads
-        .filter(Boolean)
-        .map(({ email }) => email),
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
-      subject: `Your ${ProjectName} quota change request has been approved! `,
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-
 export const sendProvisionedEmails = async (request) => {
   let { type, decisionStatus, requestedProject, humanComment, project } =
     request;
@@ -507,11 +489,19 @@ export const sendProvisionedEmails = async (request) => {
             "Resource quota for your product in Private Cloud Openshift Platform has changed",
         });
 
-        sendTipsForTeachLeadsEmail(requestedProject.name, [
-          requestedProject.primaryTechnicalLead,
-          requestedProject.secondaryTechnicalLead,
-          project.primaryTechnicalLead,
-          project.secondaryTechnicalLead,])
+        chesService.send({
+          bodyType: "html",
+          body: swig.renderFile(
+            "./src/ches/new-templates/product-quota-change-techleads-email.html"),
+          to: [
+            requestedProject.primaryTechnicalLead,
+            requestedProject.secondaryTechnicalLead,
+            project.primaryTechnicalLead,
+            project.secondaryTechnicalLead,].filter(Boolean)
+            .map(({ email }) => email),
+          from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+          subject: `Your ${requestedProject.name} quota change request has been approved! `,
+        });
       }
 
       if (type === RequestType.Delete) {
@@ -575,7 +565,6 @@ export const sendProvisionedEmails = async (request) => {
     console.error(error);
   }
 };
-
 
 export const sendRejectEmail = async (request) => {
   let { type, requestedProject, humanComment, project } =
