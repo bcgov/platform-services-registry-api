@@ -247,14 +247,20 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       {
         "$addFields": {
           "projectOwnerEmail": { "$toLower": "$projectOwner.email" },
-          "projectOwnerFirstName": { "$toLower": "$projectOwner.firstName" },
-          "projectOwnerLastName": { "$toLower": "$projectOwner.lastName" },
+          "projectOwnerName": {
+            $concat:
+              [{ "$toLower": "$projectOwner.firstName" }, " ", { "$toLower": "$projectOwner.lastName" }]
+          },
           "primaryTechnicalLeadEmail": { "$toLower": "$primaryTechnicalLead.email" },
-          "primaryTechnicalLeadFirstName": { "$toLower": "$primaryTechnicalLead.firstName" },
-          "primaryTechnicalLeadLastName": { "$toLower": "$primaryTechnicalLead.lastName" },
+          "primaryTechnicalLeadName": {
+            $concat:
+              [{ "$toLower": "$primaryTechnicalLead.firstName" }, " ", { "$toLower": "$primaryTechnicalLead.lastName" }]
+          },
+          "secondaryTechnicalLeadName": {
+            $concat:
+              [{ "$toLower": "$secondaryTechnicalLead.firstName" }, " ", { "$toLower": "$secondaryTechnicalLead.lastName" }]
+          },
           "secondaryTechnicalLeadEmail": { "$toLower": "$secondaryTechnicalLead.email" },
-          "secondaryTechnicalLeadFirstName": { "$toLower": "$secondaryTechnicalLead.firstName" },
-          "secondaryTechnicalLeadLastName": { "$toLower": "$secondaryTechnicalLead.lastName" },
         }
       },
       {
@@ -269,28 +275,19 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
                   'projectOwnerEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'projectOwnerFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'projectOwnerLastName': { $regex: search ? search : '' },
+                  'projectOwnerName': { $regex: search ? search : '' },
                 },
                 {
                   'primaryTechnicalLeadEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'primaryTechnicalLeadFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'primaryTechnicalLeadLastName': { $regex: search ? search : '' },
+                  'primaryTechnicalLeadName': { $regex: search ? search : '' },
                 },
                 {
                   'secondaryTechnicalLeadEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'secondaryTechnicalLeadFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'secondaryTechnicalLeadLastName': { $regex: search ? search : '' },
+                  'secondaryTechnicalLeadName': { $regex: search ? search : '' },
                 },
                 {
                   lowerName: { $regex: search ? search : '' },
@@ -416,14 +413,20 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       {
         "$addFields": {
           "projectOwnerEmail": { "$toLower": "$projectOwner.email" },
-          "projectOwnerFirstName": { "$toLower": "$projectOwner.firstName" },
-          "projectOwnerLastName": { "$toLower": "$projectOwner.lastName" },
+          "projectOwnerName": {
+            $concat:
+              [{ "$toLower": "$projectOwner.firstName" }, " ", { "$toLower": "$projectOwner.lastName" }]
+          },
           "primaryTechnicalLeadEmail": { "$toLower": "$primaryTechnicalLead.email" },
-          "primaryTechnicalLeadFirstName": { "$toLower": "$primaryTechnicalLead.firstName" },
-          "primaryTechnicalLeadLastName": { "$toLower": "$primaryTechnicalLead.lastName" },
+          "primaryTechnicalLeadName": {
+            $concat:
+              [{ "$toLower": "$primaryTechnicalLead.firstName" }, " ", { "$toLower": "$primaryTechnicalLead.lastName" }]
+          },
+          "secondaryTechnicalLeadName": {
+            $concat:
+              [{ "$toLower": "$secondaryTechnicalLead.firstName" }, " ", { "$toLower": "$secondaryTechnicalLead.lastName" }]
+          },
           "secondaryTechnicalLeadEmail": { "$toLower": "$secondaryTechnicalLead.email" },
-          "secondaryTechnicalLeadFirstName": { "$toLower": "$secondaryTechnicalLead.firstName" },
-          "secondaryTechnicalLeadLastName": { "$toLower": "$secondaryTechnicalLead.lastName" },
         }
       },
       {
@@ -438,28 +441,19 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
                   'projectOwnerEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'projectOwnerFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'projectOwnerLastName': { $regex: search ? search : '' },
+                  'projectOwnerName': { $regex: search ? search : '' },
                 },
                 {
                   'primaryTechnicalLeadEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'primaryTechnicalLeadFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'primaryTechnicalLeadLastName': { $regex: search ? search : '' },
+                  'primaryTechnicalLeadName': { $regex: search ? search : '' },
                 },
                 {
                   'secondaryTechnicalLeadEmail': { $regex: search ? search : '' },
                 },
                 {
-                  'secondaryTechnicalLeadFirstName': { $regex: search ? search : '' },
-                },
-                {
-                  'secondaryTechnicalLeadLastName': { $regex: search ? search : '' },
+                  'secondaryTechnicalLeadName': { $regex: search ? search : '' },
                 },
                 {
                   lowerName: { $regex: search ? search : '' },
