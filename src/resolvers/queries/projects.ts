@@ -268,6 +268,13 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           status: { $regex: "ACTIVE" },
           $and: [
             {
+              $or: [
+                { "projectOwnerId": { $regex: userId } },
+                { "primaryTechnicalLeadId": { $regex: userId } },
+                { "secondaryTechnicalLeadId": { $regex: userId } }
+              ]
+            },
+            {
               cluster: cluster, 
               ministry:ministry,
               $or: [
@@ -433,6 +440,13 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
         $match: {
           status: { $regex: "ACTIVE" },
           $and: [
+            {
+              $or: [
+                { "projectOwnerId": { $regex: userId } },
+                { "primaryTechnicalLeadId": { $regex: userId } },
+                { "secondaryTechnicalLeadId": { $regex: userId } }
+              ]
+            },
             {
               cluster: cluster, 
               ministry:ministry,
