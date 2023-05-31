@@ -1,0 +1,739 @@
+{
+	"info": {
+		"_postman_id": "4fcae75a-8973-4ac2-ba13-4f51333547ec",
+		"name": "testHappyPath",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27212126",
+		"_collection_link": "https://red-sunset-10273.postman.co/workspace/Platform-Registry-API~62f923ad-ee68-460c-9473-00784d35754e/collection/27212126-4fcae75a-8973-4ac2-ba13-4f51333547ec?action=share&creator=27212126&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "auth-azure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"const token = jsonData.access_token;",
+							"pm.environment.set(\"auth_token\", token);",
+							"",
+							"const testTimeStamp = String(Math.floor(Date.now() / 1000))",
+							"pm.environment.set(\"testTimeStamp\", testTimeStamp);",
+							"",
+							"pm.test(\"auth-azure API returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the token contains more than 300 characters\"] = token.length>300",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "registry-web",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "QwKOUTJlVTTYRgP0UO6seo5PYJ6gpVIL",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{auth_email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{auth_pwd}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{auth-url}}",
+					"host": [
+						"{{auth-url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "My user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.environment.set(\"user_id\", jsonData.data.me.id);",
+							"pm.environment.set(\"firstName\", jsonData.data.me.firstName);",
+							"pm.environment.set(\"lastName\", jsonData.data.me.lastName);",
+							"pm.environment.set(\"email\", jsonData.data.me.email);",
+							"",
+							"pm.test(\"My User API returns a 200 code\", function () {",
+							"        pm.response.to.have.status(200);",
+							"        });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query Me {\n  me {\n    id\n    firstName\n    lastName\n    lastSeen\n    email\n    created\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request Test Descp 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.environment.set(\"requestID\", jsonData.data.publicCloudProjectRequest.id);",
+							"",
+							"let createdByFirstName=JSON.stringify(jsonData.data.publicCloudProjectRequest.createdBy.firstName).replace(/\"/g,'')",
+							"",
+							"",
+							"pm.test(\"Crete Project Request with special characters in description returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the creator First name is the same as the authenticated account \"] = createdByFirstName == pm.environment.get(\"firstName\")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"pm.environment.set(\"name\", testName);",
+							"",
+							"pm.environment.set(\"description\", \"!@#$%^&*()_+=-|}{\\][:';?></.,\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Project Request Test Descp 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"requestID\", jsonData.data.publicCloudProjectRequest.id);",
+							"",
+							"let createdByFirstName=JSON.stringify(jsonData.data.publicCloudProjectRequest.createdBy.firstName).replace(/\"/g,'')",
+							"",
+							"",
+							"pm.test(\"Crete Project Request returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the creator First name is the same as the authenticated account \"] = createdByFirstName == pm.environment.get(\"firstName\")",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let testName=\"This is test with timestamp \" + pm.environment.get(\"testTimeStamp\")",
+							"",
+							"pm.environment.set(\"name\", testName);",
+							"pm.environment.set(\"description\", \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation Mutation($name: String!, $description: String!, $ministry: Ministry!, $provider: Provider!, $budget: BudgetInput!, $billingGroup: String!, $commonComponents: CommonComponentsInput!, $projectOwner: CreateUserInput!, $technicalLeads: [CreateUserInput!]!) {\n  publicCloudProjectRequest(name: $name, description: $description, ministry: $ministry, provider: $provider, budget: $budget, billingGroup: $billingGroup, commonComponents: $commonComponents, projectOwner: $projectOwner, technicalLeads: $technicalLeads) {\n    id\n    active\n    createdBy {\n      firstName\n    }\n  }\n}",
+						"variables": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"ministry\": \"CITZ\",\n    \"provider\": \"AWS\",\n    \"budget\": {\n        \"dev\": 1000,\n        \"test\": 1000,\n        \"prod\": 1000,\n        \"tools\": 1000\n    },\n    \"billingGroup\": \"test billing grout\",\n    \"commonComponents\": {\n        \"addressAndGeolocation\": \"PLANNING_TO_USE\",\n        \"businessIntelligence\": \"IMPLEMENTED\",\n        \"noServices\": false\n    },\n    \"projectOwner\": {\n        \"email\": \"oamar.kanji@gov.bc.ca\",\n        \"firstName\": \"Oamar\",\n        \"lastName\": \"Kanji\",\n        \"ministry\": \"AGRI\"\n    },\n    \"technicalLeads\": [\n        {\n            \"email\": \"oamar.kanji@gov.bc.ca\",\n            \"firstName\": \"Oamar\",\n            \"lastName\": \"Kanji\",\n            \"ministry\": \"AGRI\"\n        }\n    ]\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Active Requests Test",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Env var Create Project Request ID\" + pm.environment.get(\"requestID\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json().data.publicCloudActiveRequests;",
+							"",
+							"let requestID = pm.environment.get(\"requestID\")",
+							"let idArray=[]",
+							"",
+							"for (i=0; i<jsonData.length; i++){",
+							"    idArray.push(jsonData[i].id) ",
+							"}",
+							"const idExists=idArray.includes(requestID)",
+							"",
+							"let nodeIndex=idArray.indexOf(requestID);",
+							"",
+							"pm.environment.set(\"licencePlate\", JSON.stringify(jsonData[nodeIndex].requestedProject.licencePlate).replace(/\"/g,''))",
+							"",
+							"let idRequest =JSON.stringify(jsonData[nodeIndex].id).replace(/\"/g,'')",
+							"let createdType = JSON.stringify(jsonData[nodeIndex].type).replace(/\"/g,'')",
+							"let createddecisionStatus = JSON.stringify(jsonData[nodeIndex].decisionStatus).replace(/\"/g,'')",
+							"let createdByFirstName = JSON.stringify(jsonData[nodeIndex].createdBy.firstName).replace(/\"/g,'')",
+							"let createdByLastName = JSON.stringify(jsonData[nodeIndex].createdBy.lastName).replace(/\"/g,'')",
+							"let createdByEmail = JSON.stringify(jsonData[nodeIndex].createdBy.email).replace(/\"/g,'')",
+							"let requestedProjectName = JSON.stringify(jsonData[nodeIndex].requestedProject.name).replace(/\"/g,'')",
+							"",
+							"pm.test(\"Get All Active Requests returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify a new request has been crested \"] = idExists==true",
+							"tests[\"Verify the ID of the request created in the previous step exist\"] = requestID==idRequest",
+							"tests[\"Verify the typeis set to CREATE\"] = createdType==\"CREATE\"",
+							"tests[\"Verify the decision status is set to PENDING\"] = createddecisionStatus==\"PENDING\"",
+							"tests[\"Verify the creator First name of the request created in the previous step is the same as the authenticated account \"] = createdByFirstName==pm.environment.get(\"firstName\")",
+							"tests[\"Verify the creator Last name of the request created in the previous step is the same as the authenticated account \"] = createdByLastName==pm.environment.get(\"lastName\")",
+							"tests[\"Verify the creator email of the request created in the previous step is the same as the authenticated account \"] = createdByEmail==pm.environment.get(\"email\")",
+							"tests[\"Verify the project name is the one set in the previous step \"] = requestedProjectName == pm.environment.get(\"name\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query PublicCloudActiveRequests {\n  publicCloudActiveRequests {\n    id\n    type\n    decisionStatus\n    requestedProject {\n      id\n      licencePlate\n      name\n      provider\n    }\n    active\n    createdBy {\n      email\n      firstName\n      id\n      lastName\n    }\n    decisionDate\n    decisionMaker {\n      email\n      firstName\n      id\n      lastName\n    }\n    humanComment\n    project {\n      id\n      name\n    }\n    \n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Request Decision",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let comment=\"This is a human comment for request >>>\" + pm.environment.get(\"requestID\") + \"<<< with project name >>>\"+ pm.environment.get(\"name\")+ \"<<<\"",
+							"",
+							"pm.environment.set(\"comment\", comment);",
+							"console.log(comment)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json().data.publicCloudRequestDecision;",
+							"",
+							"let humanComment = JSON.stringify(jsonData.humanComment).replace(/\"/g,'')",
+							"let projectLicencePlate = JSON.stringify(jsonData.requestedProject.licencePlate).replace(/\"/g,'')",
+							"let projectName = JSON.stringify(jsonData.requestedProject.name).replace(/\"/g,'')",
+							"let projectID = JSON.stringify(jsonData.id).replace(/\"/g,'')",
+							"",
+							"pm.test(\"Make Request Decision returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the approved project has the same name as the project submitted for approval\"] = projectName==pm.environment.get(\"name\")",
+							"tests[\"Verify the cooment added by the approver appears in the response\"] = humanComment==pm.environment.get(\"comment\")",
+							"tests[\"Verify the approved project has the same Licence Plate as the project submitted for approval\"] = projectLicencePlate == pm.environment.get(\"licencePlate\")",
+							"tests[\"Verify the approved project has the same project ID as the project submitted for approval\"] = projectID == pm.environment.get(\"requestID\")",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation PublicCloudRequestDecision(\n  $requestId: ID!\n  $decision: RequestDecision!\n  $humanComment: String\n) {\n  publicCloudRequestDecision(\n    requestId: $requestId\n    decision: $decision\n    humanComment: $humanComment\n  ) {\n    active\n    decisionDate\n    decisionMaker {\n      firstName\n    }\n    humanComment\n    id\n    project {\n      id\n      name\n    }\n    type\n    requestedProject {\n      licencePlate\n      name\n      id\n    }\n  }\n}\n",
+						"variables": "{\n  \"requestId\": \"{{requestID}}\",\n  \"decision\": \"APPROVED\",\n  \"humanComment\": \"{{comment}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Active Requests Test 2nd time",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Env var Create Project Request ID\" + pm.environment.get(\"requestID\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json().data.publicCloudActiveRequests;",
+							"",
+							"let requestID = pm.environment.get(\"requestID\")",
+							"",
+							"let idArray=[]",
+							"",
+							"for (i=0; i<jsonData.length; i++){",
+							"    idArray.push(jsonData[i].id) ",
+							"}",
+							"",
+							"const idExists=idArray.includes(requestID)",
+							"",
+							"let nodeIndex=idArray.indexOf(requestID);",
+							"let idRequest =JSON.stringify(jsonData[nodeIndex].id).replace(/\"/g,'')",
+							"let createdType = JSON.stringify(jsonData[nodeIndex].type).replace(/\"/g,'')",
+							"let createddecisionStatus = JSON.stringify(jsonData[nodeIndex].decisionStatus).replace(/\"/g,'')",
+							"let createdByFirstName = JSON.stringify(jsonData[nodeIndex].createdBy.firstName).replace(/\"/g,'')",
+							"let createdByLastName = JSON.stringify(jsonData[nodeIndex].createdBy.lastName).replace(/\"/g,'')",
+							"let createdByEmail = JSON.stringify(jsonData[nodeIndex].createdBy.email).replace(/\"/g,'')",
+							"let requestedProjectName = JSON.stringify(jsonData[nodeIndex].requestedProject.name).replace(/\"/g,'')",
+							"",
+							"",
+							"pm.test(\"Get All Active Requests returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify a new request has been crested \"] = idExists==true",
+							"tests[\"Verify the ID of the request created in the previous step exist\"] = requestID==idRequest",
+							"tests[\"Verify the typeis set to CREATE\"] = createdType==\"CREATE\"",
+							"tests[\"Verify the decision status is set to APPROVED\"] = createddecisionStatus==\"APPROVED\"",
+							"tests[\"Verify the creator First name of the request created in the previous step is the same as the authenticated account \"] = createdByFirstName==pm.environment.get(\"firstName\")",
+							"tests[\"Verify the creator Last name of the request created in the previous step is the same as the authenticated account \"] = createdByLastName==pm.environment.get(\"lastName\")",
+							"tests[\"Verify the creator email of the request created in the previous step is the same as the authenticated account \"] = createdByEmail==pm.environment.get(\"email\")",
+							"tests[\"Verify the project name is the one set in the previous step \"] = requestedProjectName == pm.environment.get(\"name\")",
+							"",
+							"",
+							"requestedProjectName"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query PublicCloudActiveRequests {\n  publicCloudActiveRequests {\n    id\n    type\n    decisionStatus\n    requestedProject {\n      id\n      licencePlate\n      name\n      provider\n    }\n    active\n    createdBy {\n      email\n      firstName\n      id\n      lastName\n    }\n    decisionDate\n    decisionMaker {\n      email\n      firstName\n      id\n      lastName\n    }\n    humanComment\n    project {\n      id\n      name\n    }\n    \n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "provision public cloud Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Provision publicCloud  returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "abcd",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "licencePlate",
+							"value": "{{licencePlate}}",
+							"type": "text"
+						},
+						{
+							"key": "provider",
+							"value": "AWS",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api-url}}/public-cloud",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"public-cloud"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Active Requests Test 3rd time",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"console.log(\"Env var Create Project Request ID\" + pm.environment.get(\"requestID\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json().data.publicCloudActiveRequests;",
+							"",
+							"let requestID = pm.environment.get(\"requestID\")",
+							"",
+							"let idArray=[]",
+							"",
+							"for (i=0; i<jsonData.length; i++){",
+							"    idArray.push(jsonData[i].id) ",
+							"}",
+							"",
+							"const idExists=idArray.includes(requestID)",
+							"",
+							"pm.test(\"Get All Active Requests returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the request does not appear any more as a Active Request, as now it is a project\"] = idExists != true",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query PublicCloudActiveRequests {\n  publicCloudActiveRequests {\n    id\n    type\n    decisionStatus\n    requestedProject {\n      id\n      licencePlate\n      name\n      provider\n    }\n    active\n    createdBy {\n      email\n      firstName\n      id\n      lastName\n    }\n    decisionDate\n    decisionMaker {\n      email\n      firstName\n      id\n      lastName\n    }\n    humanComment\n    project {\n      id\n      name\n    }\n    \n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Projects Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json().data.publicCloudProjects;",
+							"",
+							"let licencePlate = pm.environment.get(\"licencePlate\")",
+							"let licencePlateArray=[]",
+							"",
+							"for (i=0; i<jsonData.length; i++){",
+							"    licencePlateArray.push(jsonData[i].licencePlate) ",
+							"}",
+							"",
+							"const idExists=licencePlateArray.includes(licencePlate)",
+							"",
+							"let nodeIndex=licencePlateArray.indexOf(licencePlate)",
+							"let licencePlateRequest =JSON.stringify(jsonData[nodeIndex].licencePlate).replace(/\"/g,'')",
+							"let status = JSON.stringify(jsonData[nodeIndex].status).replace(/\"/g,'')",
+							"let createdByFirstName = JSON.stringify(jsonData[nodeIndex].projectOwner.firstName).replace(/\"/g,'')",
+							"let createdByLastName = JSON.stringify(jsonData[nodeIndex].projectOwner.lastName).replace(/\"/g,'')",
+							"let createdByEmail = JSON.stringify(jsonData[nodeIndex].projectOwner.email).replace(/\"/g,'')",
+							"let requestedProjectName = JSON.stringify(jsonData[nodeIndex].name).replace(/\"/g,'')",
+							"",
+							"pm.test(\"Get All Projects returns a 200 code\", function () {",
+							"            pm.response.to.have.status(200);",
+							"        });",
+							"tests[\"Verify the request now is a project \"] = idExists==true",
+							"tests[\"Verify the licence Plate of the request created in the previous step exist now as a project\"] = licencePlate==licencePlateRequest",
+							"tests[\"Verify the status is set to ACTIVE\"] = status==\"ACTIVE\"",
+							"tests[\"Verify the creator First name of the request created in the previous step is the same as the authenticated account \"] = createdByFirstName==pm.environment.get(\"firstName\")",
+							"tests[\"Verify the creator Last name of the request created in the previous step is the same as the authenticated account \"] = createdByLastName==pm.environment.get(\"lastName\")",
+							"tests[\"Verify the creator email of the request created in the previous step is the same as the authenticated account \"] = createdByEmail==pm.environment.get(\"email\")",
+							"tests[\"Verify the project name is the one set in the previous step \"] = requestedProjectName == pm.environment.get(\"name\")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query PublicCloudProjects {\n  publicCloudProjects {\n    id\n    licencePlate\n    ministry\n    name\n    projectOwner {\n      firstName\n      lastName\n      email\n    }\n    provider\n    status\n    technicalLeads {\n      firstName\n      id\n      lastName\n      email\n    }\n    created\n    description\n    budget {\n      tools\n      test\n      prod\n      dev\n    }\n    billingGroup\n    activeEditRequest {\n      id\n      active\n      type\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{api-url}}/graphql",
+					"host": [
+						"{{api-url}}"
+					],
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
