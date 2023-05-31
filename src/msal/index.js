@@ -18,17 +18,17 @@ export async function getAccessToken() {
   }
 }
 
-export async function callMsGraph(endpoint, accessToken) {
+export async function callMsGraph(endpoint, accessToken, options = {}) {
   const headers = new Headers();
   const bearer = `Bearer ${accessToken}`;
 
   headers.append("Authorization", bearer);
   headers.append("ConsistencyLevel", "eventual");
 
-  const options = {
+  const defaultOptions = {
     method: "GET",
     headers: headers
   };
 
-  return fetch(endpoint, options);
+  return fetch(endpoint, { ...defaultOptions, ...options });
 }
