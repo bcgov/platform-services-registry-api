@@ -35,8 +35,6 @@ async function updatePrivateCloudProjects() {
         (user) => user.email !== user.lowercaseEmail
       );
 
-      console.log(lowercaseUser);
-
       // Update PrivateCloudProject documents
       const updateFields = {
         projectOwnerId: uppercaseUser._id,
