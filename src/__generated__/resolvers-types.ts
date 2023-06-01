@@ -375,6 +375,7 @@ export type Query = {
   privateCloudProjects: Array<PrivateCloudProject>;
   privateCloudProjectsById: Array<PrivateCloudProject>;
   privateCloudProjectsPaginated: PrivateCloudProjectsPaginatedOutput;
+  privateCloudProjectsWithFilterSearch: Array<PrivateCloudProject>;
   privateCloudRequestById: PrivateCloudRequest;
   privateCloudRequests: Array<PrivateCloudRequest>;
   publicCloudActiveRequestById: PublicCloudRequest;
@@ -436,6 +437,12 @@ export type QueryPrivateCloudProjectsPaginatedArgs = {
   search?: InputMaybe<Scalars['String']>;
   sortOrder?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryPrivateCloudProjectsWithFilterSearchArgs = {
+  filter?: InputMaybe<FilterPrivateCloudProjectsInput>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -880,6 +887,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   privateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   privateCloudProjectsById?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsByIdArgs>>;
   privateCloudProjectsPaginated?: Resolver<ResolversTypes['privateCloudProjectsPaginatedOutput'], ParentType, ContextType, RequireFields<QueryPrivateCloudProjectsPaginatedArgs, 'page' | 'pageSize'>>;
+  privateCloudProjectsWithFilterSearch?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, Partial<QueryPrivateCloudProjectsWithFilterSearchArgs>>;
   privateCloudRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryPrivateCloudRequestByIdArgs, 'requestId'>>;
   privateCloudRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   publicCloudActiveRequestById?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<QueryPublicCloudActiveRequestByIdArgs, 'requestId'>>;

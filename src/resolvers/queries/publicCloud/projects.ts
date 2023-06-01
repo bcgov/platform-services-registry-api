@@ -1,39 +1,26 @@
 import { collections } from '../../../db.js';
 
-// // Testing out full text search, does not work yet. To discuss with Zhanna
 export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
-  let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
-  let { ministry, cluster } = filter;
-
-  search = search === null ? undefined : search.toLowerCase();
-  ministry = ministry === null ? undefined : ministry;
-  cluster = cluster === null ? undefined : cluster;
-
-  const offset = page > 0 ? (page - 1) * pageSize : 0;
-
-  // Find all projects that match the search criteria
-
-  const query = {
-    ...(search && { $text: { $search: `"${search}"` } }),
-    ...(ministry && { ministry }),
-    ...(cluster && { cluster }),
-    status: 'ACTIVE',
-  };
-
-  const rawProjects = await collections.publicCloudProjects
-    .find(query)
-    .skip(offset)
-    .limit(pageSize)
-    .sort({ name: sortOrder })
-    .toArray();
-
-  const projects = rawProjects.map((project) => transformDocument(project));
-
-  const total = await collections.publicCloudProjects.countDocuments(query);
+  const { skip, take } = args;
+  const projects = await prisma.publicCloudProject.findMany({
+    skip,
+    take,
+    orderBy: {
+      name: 'asc',
+    },
+    where: {
+      status: 'ACTIVE',
+    },
+  });
+  const count = await prisma.publicCloudProject.count({
+    where: {
+      status: 'ACTIVE',
+    },
+  });
 
   return {
     projects,
-    total,
+    total: count,
   };
 };
 

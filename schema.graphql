@@ -322,7 +322,7 @@ type Query {
     search: String
     sortOrder: Int
     userId: String
-  ): projectsPaginatedOutput! @auth
+  ): privateCloudProjectsPaginatedOutput! @auth
 
   privateCloudProjectsWithFilterSearch(
     filter: FilterPrivateCloudProjectsInput
