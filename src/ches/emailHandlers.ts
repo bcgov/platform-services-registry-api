@@ -54,10 +54,11 @@ export const generateEmailTemplateData = (
     ? { ...incomingRequest }
     : { ...incomingProject };
 
-  const secondaryTechnicalLead = requestedProject.secondaryTechnicalLead !== project.secondaryTechnicalLead ?
-    !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : project.secondaryTechnicalLead : project.secondaryTechnicalLead || null;
-  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
-  const projectOwner = requestedProject.projectOwner;
+  const secondaryTechnicalLead =
+    (!!project.secondaryTechnicalLead || !!requestedProject.secondaryTechnicalLead) && requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id
+      ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
+  const primaryTechnicalLead = project.primaryTechnicalLead;
+  const projectOwner = project.projectOwner;
 
   project.testQuota = {
     cpu: DefaultCpuOptions[project.testQuota.cpu],
@@ -275,6 +276,7 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       });
     }
     // *** No Quota changed and Project Contact Change
+
     if (
       !quotaChanged(project, requestedProject) &&
       contactChanged(project, requestedProject)
@@ -350,7 +352,7 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
 
 export const sendCreateRequestEmails = async (requestedProject) => {
   try {
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/super-admin-request-email.html",
@@ -365,7 +367,7 @@ export const sendCreateRequestEmails = async (requestedProject) => {
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `New Provisioning request in Registry waiting for your approval`,
     });
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/provisioning-request-received-email.html",
@@ -386,9 +388,11 @@ export const sendCreateRequestEmails = async (requestedProject) => {
     console.error(error);
   }
 };
+
+
 export const sendDeleteRequestEmails = async (project) => {
   try {
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/deletion-request-confirmation-email.html",
@@ -405,7 +409,7 @@ export const sendDeleteRequestEmails = async (project) => {
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: `${project.name} deletion request received`,
     });
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/super-admin-request-email.html",
@@ -424,6 +428,7 @@ export const sendDeleteRequestEmails = async (project) => {
     console.error(error);
   }
 };
+
 export const sendProvisionedEmails = async (request) => {
   let { type, decisionStatus, requestedProject, humanComment, project } =
     request;
@@ -435,7 +440,7 @@ export const sendProvisionedEmails = async (request) => {
   try {
     if (decisionStatus === RequestDecision.Approved) {
       if (type === RequestType.Create) {
-        chesService.send({
+        await chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/provisioning-request-completion-email.html",
@@ -458,8 +463,8 @@ export const sendProvisionedEmails = async (request) => {
         });
       }
 
-      if (type === RequestType.Edit) {
-        chesService.send({
+      if (type === RequestType.Edit && quotaChanged(project, requestedProject)) {
+        await chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/quota-request-completion-email.html",
@@ -483,10 +488,24 @@ export const sendProvisionedEmails = async (request) => {
           subject:
             "Resource quota for your product in Private Cloud Openshift Platform has changed",
         });
+
+        await chesService.send({
+          bodyType: "html",
+          body: swig.renderFile(
+            "./src/ches/new-templates/product-quota-change-techleads-email.html"),
+          to: [
+            requestedProject.primaryTechnicalLead,
+            requestedProject.secondaryTechnicalLead,
+            project.primaryTechnicalLead,
+            project.secondaryTechnicalLead,].filter(Boolean)
+            .map(({ email }) => email),
+          from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+          subject: `Your ${requestedProject.name} quota change request has been approved! `,
+        });
       }
 
       if (type === RequestType.Delete) {
-        chesService.send({
+        await chesService.send({
           bodyType: "html",
           body: swig.renderFile(
             "./src/ches/new-templates/deletion-request-completion-email.html",
@@ -507,7 +526,7 @@ export const sendProvisionedEmails = async (request) => {
     }
 
     if (decisionStatus === RequestDecision.Rejected) {
-      chesService.send({
+      await chesService.send({
         bodyType: "html",
         body: swig.renderFile(
           "./src/ches/new-templates/request-denial-email.html",
@@ -535,10 +554,10 @@ export const sendProvisionedEmails = async (request) => {
           .map(({ email }) => email),
         from: "Registry <PlatformServicesTeam@gov.bc.ca>",
         subject: ` ${type === RequestType.Create
-            ? "Provisioning"
-            : type === RequestType.Edit
-              ? "Edit"
-              : "Deletion"
+          ? "Provisioning"
+          : type === RequestType.Edit
+            ? "Edit"
+            : "Deletion"
           } request has been rejected`,
       });
     }
@@ -546,7 +565,6 @@ export const sendProvisionedEmails = async (request) => {
     console.error(error);
   }
 };
-
 
 export const sendRejectEmail = async (request) => {
   let { type, requestedProject, humanComment, project } =
@@ -557,7 +575,7 @@ export const sendRejectEmail = async (request) => {
   }
 
   try {
-    chesService.send({
+    await chesService.send({
       bodyType: "html",
       body: swig.renderFile(
         "./src/ches/new-templates/request-denial-email.html",
@@ -585,10 +603,10 @@ export const sendRejectEmail = async (request) => {
         .map(({ email }) => email),
       from: "Registry <PlatformServicesTeam@gov.bc.ca>",
       subject: ` ${type === RequestType.Create
-          ? "Provisioning"
-          : type === RequestType.Edit
-            ? "Edit"
-            : "Deletion"
+        ? "Provisioning"
+        : type === RequestType.Edit
+          ? "Edit"
+          : "Deletion"
         } request has been rejected`,
     });
   } catch (error) {

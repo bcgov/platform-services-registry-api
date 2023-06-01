@@ -321,7 +321,14 @@ type Query {
     filter: FilterPrivateCloudProjectsInput
     search: String
     sortOrder: Int
-  ): privateCloudProjectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
+    userId: String
+  ): projectsPaginatedOutput! @auth
+
+  privateCloudProjectsWithFilterSearch(
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+  ): [PrivateCloudProject!]! @auth @hasRole(role: ["admin", "read-only-admin"])
+
   privateCloudProjectById(projectId: ID!): PrivateCloudProject!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])
