@@ -136,8 +136,9 @@ export type FilterPrivateCloudProjectsInput = {
 };
 
 export type FilterPublicCloudProjectsInput = {
+  billingGroup?: InputMaybe<Scalars['String']>;
   ministry?: InputMaybe<Ministry>;
-  priovider?: InputMaybe<Provider>;
+  provider?: InputMaybe<Provider>;
 };
 
 export enum Ministry {
@@ -1026,8 +1027,9 @@ export function FilterPrivateCloudProjectsInputSchema(): yup.SchemaOf<FilterPriv
 
 export function FilterPublicCloudProjectsInputSchema(): yup.SchemaOf<FilterPublicCloudProjectsInput> {
   return yup.object({
+    billingGroup: yup.string(),
     ministry: MinistrySchema,
-    priovider: ProviderSchema
+    provider: ProviderSchema
   })
 }
 

@@ -287,7 +287,8 @@ input FilterPrivateCloudProjectsInput {
 
 input FilterPublicCloudProjectsInput {
   ministry: Ministry
-  priovider: Provider
+  provider: Provider
+  billingGroup: String
 }
 
 enum SortOrder {
