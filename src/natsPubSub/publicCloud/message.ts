@@ -35,6 +35,7 @@ export type PublicCloudRequestedProject =
 
 // Create a test env variable that prefix the namespace name with "t"
 function message(requestedProject: PublicCloudRequestedProject) {
+  console.log(requestedProject);
   return {
     project_set_info: {
       licence_plate: requestedProject.licencePlate,
@@ -45,15 +46,15 @@ function message(requestedProject: PublicCloudRequestedProject) {
       admin_name: `${requestedProject.projectOwner.firstName} ${requestedProject.projectOwner.lastName}`,
       tech_leads: [
         requestedProject.primaryTechnicalLead,
-        requestedProject.secondaryTechnicalLead,
+        requestedProject?.secondaryTechnicalLead,
       ]
-        .map((techLead) => `${techLead.firstName} ${techLead.lastName}`)
+        .map((techLead) => `${techLead?.firstName} ${techLead?.lastName}`)
         .filter(Boolean),
       tech_lead_emails: [
         requestedProject.primaryTechnicalLead,
-        requestedProject.secondaryTechnicalLead,
+        requestedProject?.secondaryTechnicalLead,
       ]
-        .map((techLead) => techLead.email)
+        .map((techLead) => techLead?.email)
         .filter(Boolean),
       budgets: requestedProject.budget,
     },
