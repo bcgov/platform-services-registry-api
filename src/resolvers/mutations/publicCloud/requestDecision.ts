@@ -1,6 +1,5 @@
 import {
   MutationPublicCloudRequestDecisionArgs,
-  MutationResolvers,
   DecisionStatus,
   RequestDecision,
   Cluster,
@@ -25,7 +24,8 @@ const publicCloudRequestDecision = async (
       requestedProject: {
         include: {
           projectOwner: true;
-          technicalLeads: true;
+          primaryTechnicalLead: true;
+          secondaryTechnicalLead: true;
         };
       };
     };
@@ -50,13 +50,15 @@ const publicCloudRequestDecision = async (
         project: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
         requestedProject: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
       },

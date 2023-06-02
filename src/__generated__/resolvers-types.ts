@@ -249,9 +249,10 @@ export type MutationPublicCloudProjectEditRequestArgs = {
   description: Scalars['String'];
   ministry: Ministry;
   name: Scalars['String'];
+  primaryTechnicalLead: CreateUserInput;
   projectId: Scalars['ID'];
   projectOwner: CreateUserInput;
-  technicalLeads: Array<CreateUserInput>;
+  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
 };
 
 
@@ -262,9 +263,10 @@ export type MutationPublicCloudProjectRequestArgs = {
   description: Scalars['String'];
   ministry: Ministry;
   name: Scalars['String'];
+  primaryTechnicalLead: CreateUserInput;
   projectOwner: CreateUserInput;
   provider: Provider;
-  technicalLeads: Array<CreateUserInput>;
+  secondaryTechnicalLead?: InputMaybe<CreateUserInput>;
 };
 
 
@@ -344,16 +346,18 @@ export type PublicCloudProject = {
   licencePlate: Scalars['ID'];
   ministry: Ministry;
   name: Scalars['String'];
+  primaryTechnicalLead: User;
   projectOwner: User;
   provider: Provider;
   requestHistory: Array<Maybe<PublicCloudRequest>>;
+  secondaryTechnicalLead?: Maybe<User>;
   status: ProjectStatus;
-  technicalLeads: Array<Maybe<User>>;
 };
 
 export type PublicCloudRequest = {
   __typename?: 'PublicCloudRequest';
   active: Scalars['Boolean'];
+  created: Scalars['DateTime'];
   createdBy?: Maybe<User>;
   decisionDate?: Maybe<Scalars['DateTime']>;
   decisionMaker?: Maybe<User>;
@@ -801,8 +805,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectId' | 'projectOwner' | 'technicalLeads'>>;
-  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'projectOwner' | 'provider' | 'technicalLeads'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
+  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
@@ -856,16 +860,18 @@ export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType e
   licencePlate?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  primaryTechnicalLead?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   projectOwner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   provider?: Resolver<ResolversTypes['Provider'], ParentType, ContextType>;
   requestHistory?: Resolver<Array<Maybe<ResolversTypes['PublicCloudRequest']>>, ParentType, ContextType>;
+  secondaryTechnicalLead?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProjectStatus'], ParentType, ContextType>;
-  technicalLeads?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type PublicCloudRequestResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PublicCloudRequest'] = ResolversParentTypes['PublicCloudRequest']> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   decisionDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   decisionMaker?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;

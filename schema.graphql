@@ -170,7 +170,8 @@ type PublicCloudProject {
   description: String!
   status: ProjectStatus!
   projectOwner: User!
-  technicalLeads: [User]!
+  primaryTechnicalLead: User!
+  secondaryTechnicalLead: User
   budget: Budget!
   billingGroup: String!
   ministry: Ministry!
@@ -183,6 +184,7 @@ type PublicCloudProject {
 type PublicCloudRequest {
   id: ID!
   active: Boolean!
+  created: DateTime!
   createdBy: User
   decisionMaker: User
   type: RequestType!
@@ -452,7 +454,8 @@ type Mutation {
     billingGroup: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
-    technicalLeads: [CreateUserInput!]!
+    primaryTechnicalLead: CreateUserInput!
+    secondaryTechnicalLead: CreateUserInput
   ): PublicCloudRequest! @auth
 
   publicCloudProjectEditRequest(
@@ -464,7 +467,8 @@ type Mutation {
     billingGroup: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
-    technicalLeads: [CreateUserInput!]!
+    primaryTechnicalLead: CreateUserInput!
+    secondaryTechnicalLead: CreateUserInput
   ): PublicCloudRequest! @auth
 
   publicCloudRequestDecision(

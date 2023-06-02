@@ -16,7 +16,14 @@ export type PublicCloudRequestedProject =
           lastName: true;
         };
       };
-      technicalLeads: {
+      primaryTechnicalLead: {
+        select: {
+          email: true;
+          firstName: true;
+          lastName: true;
+        };
+      };
+      secondaryTechnicalLead: {
         select: {
           email: true;
           firstName: true;
@@ -36,12 +43,18 @@ function message(requestedProject: PublicCloudRequestedProject) {
 
       admin_email: requestedProject.projectOwner.email,
       admin_name: `${requestedProject.projectOwner.firstName} ${requestedProject.projectOwner.lastName}`,
-      tech_leads: requestedProject.technicalLeads.map(
-        (techLead) => `${techLead.firstName} ${techLead.lastName}`
-      ),
-      tech_lead_emails: requestedProject.technicalLeads.map(
-        (techLead) => techLead.email
-      ),
+      tech_leads: [
+        requestedProject.primaryTechnicalLead,
+        requestedProject.secondaryTechnicalLead,
+      ]
+        .map((techLead) => `${techLead.firstName} ${techLead.lastName}`)
+        .filter(Boolean),
+      tech_lead_emails: [
+        requestedProject.primaryTechnicalLead,
+        requestedProject.secondaryTechnicalLead,
+      ]
+        .map((techLead) => techLead.email)
+        .filter(Boolean),
       budgets: requestedProject.budget,
     },
   };

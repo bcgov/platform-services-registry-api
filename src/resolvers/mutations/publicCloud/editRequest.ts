@@ -22,7 +22,8 @@ const publicCloudProjectEditRequest = async (
       requestedProject: {
         include: {
           projectOwner: true;
-          technicalLeads: true;
+          primaryTechnicalLead: true;
+          secondaryTechnicalLead: true;
         };
       };
     };
@@ -31,7 +32,8 @@ const publicCloudProjectEditRequest = async (
   type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
     include: {
       projectOwner: true;
-      technicalLeads: true;
+      primaryTechnicalLead: true;
+      secondaryTechnicalLead: true;
     };
   }>;
 
@@ -55,18 +57,21 @@ const publicCloudProjectEditRequest = async (
       },
       include: {
         projectOwner: true,
-        technicalLeads: true,
+        primaryTechnicalLead: true,
+        secondaryTechnicalLEad: true,
       },
     });
 
-  if (
-    ![args.projectOwner, ...args.technicalLeads]
-      .map((user) => user.email)
-      .includes(authEmail) &&
+  i    if (
+    ![
+      args.projectOwner.email,
+      args.primaryTechnicalLead.email,
+      args.secondaryTechnicalLead?.email,
+    ].includes(authEmail) &&
     !authRoles.includes('admin')
   ) {
     throw new Error(
-      'You need to be a contact on this project or an administrator in order to edit it.'
+      'You need to assign yourself to this project in order to edit it.'
     );
   }
 
@@ -89,14 +94,24 @@ const publicCloudProjectEditRequest = async (
         create: args.projectOwner,
       },
     },
-    technicalLeads: {
-      connectOrCreate: args.technicalLeads.map((user) => ({
+    primaryTechnicalLead: {
+      connectOrCreate: {
         where: {
-          email: user.email,
+          email: args.primaryTechnicalLead.email,
         },
-        create: user,
-      })),
+        create: args.primaryTechnicalLead,
+      },
     },
+    secondaryTechnicalLead: args.secondaryTechnicalLead
+      ? {
+          connectOrCreate: {
+            where: {
+              email: args.secondaryTechnicalLead.email,
+            },
+            create: args.secondaryTechnicalLead,
+          },
+        }
+      : undefined,
   };
 
   const request: Prisma.PublicCloudRequestCreateInput = {
@@ -124,13 +139,15 @@ const publicCloudProjectEditRequest = async (
         project: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
         requestedProject: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
       },

@@ -19,16 +19,19 @@ const publicCloudProjectRequest = async (
       requestedProject: {
         include: {
           projectOwner: true;
-          technicalLeads: true;
+          primaryTechnicalLead: true;
+          secondaryTechnicalLead: true;
         };
       };
     };
   }>;
 
   if (
-    ![args.projectOwner, ...args.technicalLeads]
-      .map((user) => user.email)
-      .includes(authEmail) &&
+    ![
+      args.projectOwner.email,
+      args.primaryTechnicalLead.email,
+      args.secondaryTechnicalLead?.email,
+    ].includes(authEmail) &&
     !authRoles.includes('admin')
   ) {
     throw new Error(
@@ -56,14 +59,24 @@ const publicCloudProjectRequest = async (
         create: args.projectOwner,
       },
     },
-    technicalLeads: {
-      connectOrCreate: args.technicalLeads.map((user) => ({
+    primaryTechnicalLead: {
+      connectOrCreate: {
         where: {
-          email: user.email,
+          email: args.primaryTechnicalLead.email,
         },
-        create: user,
-      })),
+        create: args.primaryTechnicalLead,
+      },
     },
+    secondaryTechnicalLead: args.secondaryTechnicalLead
+      ? {
+          connectOrCreate: {
+            where: {
+              email: args.secondaryTechnicalLead.email,
+            },
+            create: args.secondaryTechnicalLead,
+          },
+        }
+      : undefined,
   };
 
   const request: Prisma.PublicCloudRequestCreateInput = {
@@ -86,7 +99,8 @@ const publicCloudProjectRequest = async (
         requestedProject: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
       },

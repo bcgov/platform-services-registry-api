@@ -5,14 +5,20 @@ const Project = {
         id: project.projectOwnerId,
       },
     }),
-  technicalLeads: async (project, _, { prisma }) =>
-    prisma.user.findMany({
+  primaryTechnicalLead: async (project, _, { prisma }) =>
+    prisma.user.findUnique({
       where: {
-        id: {
-          in: project.technicalLeadIds,
-        },
+        id: project.primaryTechnicalLeadId,
       },
     }),
+  secondaryTechnicalLead: async (project, _, { prisma }) =>
+    project.secondaryTechnicalLeadId == null
+      ? null
+      : prisma.user.findUnique({
+          where: {
+            id: project.secondaryTechnicalLeadId,
+          },
+        }),
   activeEditRequest: async (project, _, { prisma }) =>
     prisma.publicCloudRequest.findFirst({
       where: {

@@ -26,13 +26,15 @@ const provisionerCallbackHandler = async (req, res) => {
         project: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
         requestedProject: {
           include: {
             projectOwner: true,
-            technicalLeads: true,
+            primaryTechnicalLead: true,
+            secondaryTechnicalLead: true,
           },
         },
       },
