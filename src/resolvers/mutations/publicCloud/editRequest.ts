@@ -62,16 +62,14 @@ const publicCloudProjectEditRequest = async (
       },
     });
 
-  i    if (
-    ![
-      args.projectOwner.email,
-      args.primaryTechnicalLead.email,
-      args.secondaryTechnicalLead?.email,
-    ].includes(authEmail) &&
+  if (
+    ![args.projectOwner, args.primaryTechnicalLead, args.secondaryTechnicalLead]
+      .map((user) => user.email)
+      .includes(authEmail) &&
     !authRoles.includes('admin')
   ) {
     throw new Error(
-      'You need to assign yourself to this project in order to edit it.'
+      'You need to be a contact on this project or an administrator in order to edit it.'
     );
   }
 
