@@ -58,14 +58,16 @@ const publicCloudProjectEditRequest = async (
       include: {
         projectOwner: true,
         primaryTechnicalLead: true,
-        secondaryTechnicalLEad: true,
+        secondaryTechnicalLead: true,
       },
     });
 
   if (
-    ![args.projectOwner, args.primaryTechnicalLead, args.secondaryTechnicalLead]
-      .map((user) => user.email)
-      .includes(authEmail) &&
+    ![
+      project.projectOwner.email,
+      project.primaryTechnicalLead.email,
+      project?.secondaryTechnicalLead?.email,
+    ].includes(authEmail) &&
     !authRoles.includes('admin')
   ) {
     throw new Error(
