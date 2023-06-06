@@ -19,7 +19,7 @@ export async function getAccessToken() {
 }
 
 export async function callMsGraph(endpoint, accessToken, options = {}) {
-  const headers = new Headers();
+  const headers = new fetch.Headers();
   const bearer = `Bearer ${accessToken}`;
 
   headers.append("Authorization", bearer);
