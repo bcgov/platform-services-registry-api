@@ -19,6 +19,8 @@ import {
   getReProvisionNatsMessage,
   getIdsForCluster,
   getDatabaseHealthCheck,
+  getIdirEmails,
+  getIdirPhoto
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
 import { connectToDatabase } from "./db.js";
@@ -37,7 +39,7 @@ export const prisma = new PrismaClient();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers,
+  resolvers
 });
 
 schema = applyDirectiveTransformers(schema);
@@ -49,7 +51,7 @@ const httpServer = http.createServer(app);
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true,
+  introspection: true
 });
 
 await server.start();
@@ -70,7 +72,7 @@ app.use(
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: [],
+        roles: []
       };
 
       return {
@@ -78,15 +80,16 @@ app.use(
         prisma,
         authRoles: roles,
         authEmail: lowerCaseEmail,
-        chesService,
+        chesService
       };
-    },
+    }
   })
 );
 
 // The below code is important for auth to work
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get(
   "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
@@ -101,6 +104,10 @@ app.get(
 );
 
 app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
+
+app.get("/api/v1/getIdirEmails", getIdirEmails);
+
+app.get("/api/v1/getIdirPhoto", getIdirPhoto);
 
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
