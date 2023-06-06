@@ -2,7 +2,8 @@ import { callMsGraph, getAccessToken } from "../msal/index.js";
 
 async function getUserPhotoByEmail(req, res) {
   const email = req.query.email;
-  const url = `https://graph.microsoft.com/v1.0/users/${email}/photo/48x48/$value`;
+  const url = `https://graph.microsoft.com/v1.0/users/${email}/photo/$value`;
+
   let imageUrl;
 
   try {
