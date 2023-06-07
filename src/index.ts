@@ -23,6 +23,7 @@ import {
 } from './controllers/index.js';
 import chesService from './ches/index.js';
 import { connectToDatabase } from './db.js';
+import { getIdirEmails, getIdirPhoto } from './controllers/index.js';
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
@@ -78,7 +79,7 @@ app.use(
         kauth: kauth,
         prisma,
         authRoles: roles,
-        authEmail: email,
+        authEmail: lowerCaseEmail,
         chesService,
       };
     },
@@ -88,6 +89,7 @@ app.use(
 // The below code is important for auth to work
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get(
   '/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json',
@@ -102,6 +104,10 @@ app.get(
 );
 
 app.get('/api/v1/database-health-check', getDatabaseHealthCheck);
+
+app.get('/api/v1/getIdirEmails', getIdirEmails);
+
+app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
