@@ -2,6 +2,7 @@ import { collections } from "../../db.js";
 import openshiftDeletionCheck, {
   DeletableField
 } from "../../scripts/deletioncheck.js";
+// import { collections } from "../../db.js";
 
 // // Convert document from MongoDB fromat to a format that Apollo Server can understand
 // function transformDocument(doc) {
