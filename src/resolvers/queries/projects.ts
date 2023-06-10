@@ -916,7 +916,7 @@ export const userPrivateCloudProjectsPaginated = async (
       ({ projectOwner, primaryTechicalLead, secondaryTechnicalLead }) =>
         authEmail === projectOwner.email ||
         authEmail === primaryTechicalLead.email ||
-        authEmail === secondaryTechnicalLead.email
+        authEmail === secondaryTechnicalLead?.email
     );
 
     const total = await prisma.privateCloudProject.count({
