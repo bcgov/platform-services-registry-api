@@ -260,7 +260,16 @@ type Query {
     search: String
     sortOrder: Int
     userId: String
-  ): projectsPaginatedOutput! @auth 
+  ): projectsPaginatedOutput! @auth
+
+  userPrivateCloudProjectsPaginated(
+    page: Int!
+    pageSize: Int!
+    filter: FilterPrivateCloudProjectsInput
+    search: String
+    sortOrder: Int
+    userId: String
+  ): projectsPaginatedOutput! @auth
 
   privateCloudProjectsWithFilterSearch(
     filter: FilterPrivateCloudProjectsInput
