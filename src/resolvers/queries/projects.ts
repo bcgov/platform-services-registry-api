@@ -911,46 +911,41 @@ export const userPrivateCloudProjectsPaginated = async (
     ]
   });
 
-  if (userId !== "") {
-    const userProjects = projects.filter(
-      ({ projectOwner, primaryTechicalLead, secondaryTechnicalLead }) =>
-        authEmail === projectOwner.email ||
-        authEmail === primaryTechicalLead.email ||
-        authEmail === secondaryTechnicalLead?.email
-    );
+  console.log("totalTmp", totalTmp.length > 0 ? totalTmp[0].count : 0);
 
-    const total = await prisma.privateCloudProject.count({
-      where: {
-        OR: [
-          {
-            projectOwner: {
-              email: authEmail
-            }
-          },
-          {
-            primaryTechnicalLead: {
-              email: authEmail
-            }
-          },
-          {
-            secondaryTechnicalLead: {
-              email: authEmail
-            }
+  const userProjects = projects.filter(
+    ({ projectOwner, primaryTechicalLead, secondaryTechnicalLead }) =>
+      authEmail === projectOwner.email ||
+      authEmail === primaryTechicalLead.email ||
+      authEmail === secondaryTechnicalLead?.email
+  );
+
+  const total = await prisma.privateCloudProject.count({
+    where: {
+      OR: [
+        {
+          projectOwner: {
+            email: authEmail
           }
-        ]
-      }
-    });
+        },
+        {
+          primaryTechnicalLead: {
+            email: authEmail
+          }
+        },
+        {
+          secondaryTechnicalLead: {
+            email: authEmail
+          }
+        }
+      ]
+    }
+  });
 
-    return {
-      projects: userProjects,
-      total
-    };
-  }
-
-  const total = totalTmp.length > 0 ? totalTmp[0].count : 0;
+  console.log("total", total);
 
   return {
-    projects,
+    projects: userProjects,
     total
   };
 };
