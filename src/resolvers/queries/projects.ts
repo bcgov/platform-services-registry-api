@@ -1,5 +1,7 @@
 // import { collections } from "../../db.js";
 
+import { user } from "./users";
+
 // // Convert document from MongoDB fromat to a format that Apollo Server can understand
 // function transformDocument(doc) {
 //   const transformedDoc = { ...doc };
@@ -139,8 +141,19 @@ export const userPrivateCloudProjectsByIds = async (
     }
   });
 
-export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
-  let { search, filter = {}, page, pageSize, sortOrder = -1, userId = '' } = args;
+export const privateCloudProjectsPaginated = async (
+  _,
+  args,
+  { prisma, authEmail }
+) => {
+  let {
+    search,
+    filter = {},
+    page,
+    pageSize,
+    sortOrder = -1,
+    userId = ""
+  } = args;
   let { ministry, cluster } = filter;
 
   search = search === null ? undefined : search.toLowerCase();
@@ -153,56 +166,55 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     pipeline: [
       {
         $project: {
-          "id": {
+          id: {
             $toString: "$_id"
           },
-          "name": 1,
-          "licencePlate": 1,
-          "archived": 1,
-          "created": {
+          name: 1,
+          licencePlate: 1,
+          archived: 1,
+          created: {
             $toString: "$created"
           },
-          "description": 1,
-          "status": 1,
-          "projectOwnerId": {
+          description: 1,
+          status: 1,
+          projectOwnerId: {
             $toString: "$projectOwnerId"
           },
-          "secondaryTechnicalLeadId": {
+          secondaryTechnicalLeadId: {
             $toString: "$secondaryTechnicalLeadId"
           },
-          "primaryTechnicalLeadId": {
+          primaryTechnicalLeadId: {
             $toString: "$primaryTechnicalLeadId"
           },
-          "projectOwnerIdSearch": {
+          projectOwnerIdSearch: {
             $toObjectId: "$projectOwnerId"
           },
-          "primaryTechnicalLeadIdSearch": {
+          primaryTechnicalLeadIdSearch: {
             $toObjectId: "$primaryTechnicalLeadId"
           },
-          "secondaryTechnicalLeadIdSearch": {
+          secondaryTechnicalLeadIdSearch: {
             $toObjectId: "$secondaryTechnicalLeadId"
           },
-          "ministry": 1,
-          "cluster": 1,
-          "productionQuota": 1,
-          "testQuota": 1,
-          "developmentQuota": 1,
-          "toolsQuota": 1,
-          "requestHistory": 1,
-          "activeEditRequest": 1,
-          "count": 1,
-          "commonComponents": 1,
-          "lowerDescription": {
-            "$toLower": "$description"
+          ministry: 1,
+          cluster: 1,
+          productionQuota: 1,
+          testQuota: 1,
+          developmentQuota: 1,
+          toolsQuota: 1,
+          requestHistory: 1,
+          activeEditRequest: 1,
+          count: 1,
+          commonComponents: 1,
+          lowerDescription: {
+            $toLower: "$description"
           },
-          "lowerName": {
-            "$toLower": "$name"
-          },
+          lowerName: {
+            $toLower: "$name"
+          }
         }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "projectOwnerIdSearch",
           foreignField: "_id",
@@ -211,12 +223,11 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$projectOwner',
-        },
+          path: "$projectOwner"
+        }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "secondaryTechnicalLeadIdSearch",
           foreignField: "_id",
@@ -225,13 +236,12 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$secondaryTechnicalLead',
-          preserveNullAndEmptyArrays: true,
-        },
+          path: "$secondaryTechnicalLead",
+          preserveNullAndEmptyArrays: true
+        }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "primaryTechnicalLeadIdSearch",
           foreignField: "_id",
@@ -240,27 +250,40 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$primaryTechnicalLead',
-          preserveNullAndEmptyArrays: true,
-        },
+          path: "$primaryTechnicalLead",
+          preserveNullAndEmptyArrays: true
+        }
       },
       {
-        "$addFields": {
-          "projectOwnerEmail": { "$toLower": "$projectOwner.email" },
-          "projectOwnerName": {
-            $concat:
-              [{ "$toLower": "$projectOwner.firstName" }, " ", { "$toLower": "$projectOwner.lastName" }]
+        $addFields: {
+          projectOwnerEmail: { $toLower: "$projectOwner.email" },
+          projectOwnerName: {
+            $concat: [
+              { $toLower: "$projectOwner.firstName" },
+              " ",
+              { $toLower: "$projectOwner.lastName" }
+            ]
           },
-          "primaryTechnicalLeadEmail": { "$toLower": "$primaryTechnicalLead.email" },
-          "primaryTechnicalLeadName": {
-            $concat:
-              [{ "$toLower": "$primaryTechnicalLead.firstName" }, " ", { "$toLower": "$primaryTechnicalLead.lastName" }]
+          primaryTechnicalLeadEmail: {
+            $toLower: "$primaryTechnicalLead.email"
           },
-          "secondaryTechnicalLeadName": {
-            $concat:
-              [{ "$toLower": "$secondaryTechnicalLead.firstName" }, " ", { "$toLower": "$secondaryTechnicalLead.lastName" }]
+          primaryTechnicalLeadName: {
+            $concat: [
+              { $toLower: "$primaryTechnicalLead.firstName" },
+              " ",
+              { $toLower: "$primaryTechnicalLead.lastName" }
+            ]
           },
-          "secondaryTechnicalLeadEmail": { "$toLower": "$secondaryTechnicalLead.email" },
+          secondaryTechnicalLeadName: {
+            $concat: [
+              { $toLower: "$secondaryTechnicalLead.firstName" },
+              " ",
+              { $toLower: "$secondaryTechnicalLead.lastName" }
+            ]
+          },
+          secondaryTechnicalLeadEmail: {
+            $toLower: "$secondaryTechnicalLead.email"
+          }
         }
       },
       {
@@ -269,113 +292,112 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           $and: [
             {
               $or: [
-                { "projectOwnerId": { $regex: userId } },
-                { "primaryTechnicalLeadId": { $regex: userId } },
-                { "secondaryTechnicalLeadId": { $regex: userId } }
+                { projectOwnerId: { $regex: userId } },
+                { primaryTechnicalLeadId: { $regex: userId } },
+                { secondaryTechnicalLeadId: { $regex: userId } }
               ]
             },
             {
-              cluster: cluster, 
-              ministry:ministry,
+              cluster: cluster,
+              ministry: ministry,
               $or: [
                 {
-                  'projectOwnerEmail': { $regex: search ? search : '' },
+                  projectOwnerEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'projectOwnerName': { $regex: search ? search : '' },
+                  projectOwnerName: { $regex: search ? search : "" }
                 },
                 {
-                  'primaryTechnicalLeadEmail': { $regex: search ? search : '' },
+                  primaryTechnicalLeadEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'primaryTechnicalLeadName': { $regex: search ? search : '' },
+                  primaryTechnicalLeadName: { $regex: search ? search : "" }
                 },
                 {
-                  'secondaryTechnicalLeadEmail': { $regex: search ? search : '' },
+                  secondaryTechnicalLeadEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'secondaryTechnicalLeadName': { $regex: search ? search : '' },
+                  secondaryTechnicalLeadName: { $regex: search ? search : "" }
                 },
                 {
-                  lowerName: { $regex: search ? search : '' },
+                  lowerName: { $regex: search ? search : "" }
                 },
                 {
-                  lowerDescription: { $regex: search ? search : '' },
+                  lowerDescription: { $regex: search ? search : "" }
                 },
                 {
-                  licencePlate: { $regex: search ? search : '' },
-                },
+                  licencePlate: { $regex: search ? search : "" }
+                }
               ]
             }
-          ],
+          ]
         }
       },
       {
         $sort: { lowerName: sortOrder }
       },
       {
-        $skip: offset,
+        $skip: offset
       },
       {
-        $limit: pageSize,
+        $limit: pageSize
       }
-    ],
-  })
+    ]
+  });
 
   const totalTmp = await prisma.privateCloudProject.aggregateRaw({
     pipeline: [
       {
         $project: {
-          "id": {
+          id: {
             $toString: "$_id"
           },
-          "name": 1,
-          "licencePlate": 1,
-          "archived": 1,
-          "created": {
+          name: 1,
+          licencePlate: 1,
+          archived: 1,
+          created: {
             $toString: "$created"
           },
-          "description": 1,
-          "status": 1,
-          "projectOwnerId": {
+          description: 1,
+          status: 1,
+          projectOwnerId: {
             $toString: "$projectOwnerId"
           },
-          "secondaryTechnicalLeadId": {
+          secondaryTechnicalLeadId: {
             $toString: "$secondaryTechnicalLeadId"
           },
-          "primaryTechnicalLeadId": {
+          primaryTechnicalLeadId: {
             $toString: "$primaryTechnicalLeadId"
           },
-          "projectOwnerIdSearch": {
+          projectOwnerIdSearch: {
             $toObjectId: "$projectOwnerId"
           },
-          "primaryTechnicalLeadIdSearch": {
+          primaryTechnicalLeadIdSearch: {
             $toObjectId: "$primaryTechnicalLeadId"
           },
-          "secondaryTechnicalLeadIdSearch": {
+          secondaryTechnicalLeadIdSearch: {
             $toObjectId: "$secondaryTechnicalLeadId"
           },
-          "ministry": 1,
-          "cluster": 1,
-          "productionQuota": 1,
-          "testQuota": 1,
-          "developmentQuota": 1,
-          "toolsQuota": 1,
-          "requestHistory": 1,
-          "activeEditRequest": 1,
-          "count": 1,
-          "commonComponents": 1,
-          "lowerDescription": {
-            "$toLower": "$description"
+          ministry: 1,
+          cluster: 1,
+          productionQuota: 1,
+          testQuota: 1,
+          developmentQuota: 1,
+          toolsQuota: 1,
+          requestHistory: 1,
+          activeEditRequest: 1,
+          count: 1,
+          commonComponents: 1,
+          lowerDescription: {
+            $toLower: "$description"
           },
-          "lowerName": {
-            "$toLower": "$name"
-          },
+          lowerName: {
+            $toLower: "$name"
+          }
         }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "projectOwnerIdSearch",
           foreignField: "_id",
@@ -384,12 +406,11 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$projectOwner',
-        },
+          path: "$projectOwner"
+        }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "secondaryTechnicalLeadIdSearch",
           foreignField: "_id",
@@ -398,13 +419,12 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$secondaryTechnicalLead',
-          preserveNullAndEmptyArrays: true,
-        },
+          path: "$secondaryTechnicalLead",
+          preserveNullAndEmptyArrays: true
+        }
       },
       {
-        $lookup:
-        {
+        $lookup: {
           from: "User",
           localField: "primaryTechnicalLeadIdSearch",
           foreignField: "_id",
@@ -413,27 +433,40 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $unwind: {
-          path: '$primaryTechnicalLead',
-          preserveNullAndEmptyArrays: true,
-        },
+          path: "$primaryTechnicalLead",
+          preserveNullAndEmptyArrays: true
+        }
       },
       {
-        "$addFields": {
-          "projectOwnerEmail": { "$toLower": "$projectOwner.email" },
-          "projectOwnerName": {
-            $concat:
-              [{ "$toLower": "$projectOwner.firstName" }, " ", { "$toLower": "$projectOwner.lastName" }]
+        $addFields: {
+          projectOwnerEmail: { $toLower: "$projectOwner.email" },
+          projectOwnerName: {
+            $concat: [
+              { $toLower: "$projectOwner.firstName" },
+              " ",
+              { $toLower: "$projectOwner.lastName" }
+            ]
           },
-          "primaryTechnicalLeadEmail": { "$toLower": "$primaryTechnicalLead.email" },
-          "primaryTechnicalLeadName": {
-            $concat:
-              [{ "$toLower": "$primaryTechnicalLead.firstName" }, " ", { "$toLower": "$primaryTechnicalLead.lastName" }]
+          primaryTechnicalLeadEmail: {
+            $toLower: "$primaryTechnicalLead.email"
           },
-          "secondaryTechnicalLeadName": {
-            $concat:
-              [{ "$toLower": "$secondaryTechnicalLead.firstName" }, " ", { "$toLower": "$secondaryTechnicalLead.lastName" }]
+          primaryTechnicalLeadName: {
+            $concat: [
+              { $toLower: "$primaryTechnicalLead.firstName" },
+              " ",
+              { $toLower: "$primaryTechnicalLead.lastName" }
+            ]
           },
-          "secondaryTechnicalLeadEmail": { "$toLower": "$secondaryTechnicalLead.email" },
+          secondaryTechnicalLeadName: {
+            $concat: [
+              { $toLower: "$secondaryTechnicalLead.firstName" },
+              " ",
+              { $toLower: "$secondaryTechnicalLead.lastName" }
+            ]
+          },
+          secondaryTechnicalLeadEmail: {
+            $toLower: "$secondaryTechnicalLead.email"
+          }
         }
       },
       {
@@ -442,45 +475,45 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
           $and: [
             {
               $or: [
-                { "projectOwnerId": { $regex: userId } },
-                { "primaryTechnicalLeadId": { $regex: userId } },
-                { "secondaryTechnicalLeadId": { $regex: userId } }
+                { projectOwnerId: { $regex: userId } },
+                { primaryTechnicalLeadId: { $regex: userId } },
+                { secondaryTechnicalLeadId: { $regex: userId } }
               ]
             },
             {
-              cluster: cluster, 
-              ministry:ministry,
+              cluster: cluster,
+              ministry: ministry,
               $or: [
                 {
-                  'projectOwnerEmail': { $regex: search ? search : '' },
+                  projectOwnerEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'projectOwnerName': { $regex: search ? search : '' },
+                  projectOwnerName: { $regex: search ? search : "" }
                 },
                 {
-                  'primaryTechnicalLeadEmail': { $regex: search ? search : '' },
+                  primaryTechnicalLeadEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'primaryTechnicalLeadName': { $regex: search ? search : '' },
+                  primaryTechnicalLeadName: { $regex: search ? search : "" }
                 },
                 {
-                  'secondaryTechnicalLeadEmail': { $regex: search ? search : '' },
+                  secondaryTechnicalLeadEmail: { $regex: search ? search : "" }
                 },
                 {
-                  'secondaryTechnicalLeadName': { $regex: search ? search : '' },
+                  secondaryTechnicalLeadName: { $regex: search ? search : "" }
                 },
                 {
-                  lowerName: { $regex: search ? search : '' },
+                  lowerName: { $regex: search ? search : "" }
                 },
                 {
-                  lowerDescription: { $regex: search ? search : '' },
+                  lowerDescription: { $regex: search ? search : "" }
                 },
                 {
-                  licencePlate: { $regex: search ? search : '' },
-                },
+                  licencePlate: { $regex: search ? search : "" }
+                }
               ]
             }
-          ],
+          ]
         }
       },
       {
@@ -489,7 +522,45 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
     ]
   });
 
-  const total = totalTmp.length > 0 ? totalTmp[0].count : 0
+  console.log(totalTmp.length > 0 ? totalTmp[0].count : 0);
+
+  if (userId !== "") {
+    const userProjects = projects.filter(
+      ({ projectOwner, primaryTechicalLead, secondaryTechnicalLead }) =>
+        authEmail === projectOwner.email ||
+        authEmail === primaryTechicalLead.email ||
+        authEmail === secondaryTechnicalLead.email
+    );
+
+    const total = await prisma.privateCloudProject.count({
+      where: {
+        OR: [
+          {
+            projectOwner: {
+              email: authEmail
+            }
+          },
+          {
+            primaryTechnicalLead: {
+              email: authEmail
+            }
+          },
+          {
+            secondaryTechnicalLead: {
+              email: authEmail
+            }
+          }
+        ]
+      }
+    });
+
+    return {
+      projects: userProjects,
+      total
+    };
+  }
+
+  const total = totalTmp.length > 0 ? totalTmp[0].count : 0;
 
   return {
     projects,
