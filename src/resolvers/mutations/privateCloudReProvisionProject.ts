@@ -130,14 +130,13 @@ const privateCloudReProvisionProject: MutationResolvers = async (
 
   await sendNatsMessage(
     reProvisionRequest.type,
-    reProvisionRequest.requestedProject,
-    reProvisionRequest.id
+    reProvisionRequest.requestedProject
   );
 
   if (reProvisionRequest.requestedProject.cluster === Cluster.Gold) {
     const goldDrRequest = { ...reProvisionRequest };
     goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-    await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject,goldDrRequest.id);
+    await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
   }
 
   return reProvisionRequest;

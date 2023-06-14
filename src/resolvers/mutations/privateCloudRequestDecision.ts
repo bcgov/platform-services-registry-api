@@ -67,12 +67,12 @@ const privateCloudRequestDecision: MutationResolvers = async (
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendNatsMessage(request.type, request.requestedProject, request.id);
+    await sendNatsMessage(request.type, request.requestedProject);
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject, goldDrRequest.id);
+      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
     }
   }
   if (request.decisionStatus === RequestDecision.Rejected)
