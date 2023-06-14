@@ -165,12 +165,12 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   }
 
   if (decisionStatus === DecisionStatus.Approved) {
-    await sendNatsMessage(editRequest.type, editRequest.requestedProject, editRequest.id);
+    await sendNatsMessage(editRequest.type, editRequest.requestedProject);
 
     if (editRequest.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...editRequest };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject, goldDrRequest.id);
+      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject);
     }
   }
 
