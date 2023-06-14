@@ -17,7 +17,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
 
   const offset = page > 0 ? (page - 1) * pageSize : 0;
 
-  const projects = await prisma.privateCloudProject.aggregateRaw({
+  const projects = await prisma.publicCloudProject.aggregateRaw({
     pipeline: [
       {
         $project: {
@@ -200,7 +200,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
     ],
   });
 
-  const totalTmp = await prisma.privateCloudProject.aggregateRaw({
+  const totalTmp = await prisma.publicCloudProject.aggregateRaw({
     pipeline: [
       {
         $project: {

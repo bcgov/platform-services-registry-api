@@ -303,6 +303,11 @@ type privateCloudProjectsPaginatedOutput {
   total: Int!
 }
 
+type projectsPaginatedOutput {
+  projects: [PrivateCloudProject!]!
+  total: Int!
+}
+
 type publicCloudProjectsPaginatedOutput {
   projects: [PublicCloudProject!]!
   total: Int!
