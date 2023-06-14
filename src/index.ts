@@ -48,6 +48,8 @@ export const app = express();
 const { keycloak } = configureKeycloak(app, '/');
 const httpServer = http.createServer(app);
 
+app.use(cors());
+
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -89,7 +91,6 @@ app.use(
 // The below code is important for auth to work
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 app.get(
   '/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json',
