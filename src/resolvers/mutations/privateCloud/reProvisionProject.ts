@@ -133,7 +133,8 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
 
     await sendPrivateCloudNatsMessage(
       reProvisionRequest.type,
-      reProvisionRequest.requestedProject
+      reProvisionRequest.requestedProject,
+      reProvisionRequest.id
     );
 
     if (reProvisionRequest.requestedProject.cluster === Cluster.Gold) {
@@ -141,7 +142,8 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
       await sendPrivateCloudNatsMessage(
         goldDrRequest.type,
-        goldDrRequest.requestedProject
+        goldDrRequest.requestedProject,
+        goldDrRequest.id
       );
     }
 

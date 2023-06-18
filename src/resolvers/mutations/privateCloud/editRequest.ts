@@ -171,7 +171,8 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
     if (decisionStatus === DecisionStatus.Approved) {
       await sendPrivateCloudNatsMessage(
         editRequest.type,
-        editRequest.requestedProject
+        editRequest.requestedProject,
+        editRequest.id
       );
 
       if (editRequest.requestedProject.cluster === Cluster.Gold) {
@@ -179,7 +180,8 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         goldDrRequest.requestedProject.cluster = Cluster.Golddr;
         await sendPrivateCloudNatsMessage(
           goldDrRequest.type,
-          goldDrRequest.requestedProject
+          goldDrRequest.requestedProject,
+          goldDrRequest.id
         );
       }
     }

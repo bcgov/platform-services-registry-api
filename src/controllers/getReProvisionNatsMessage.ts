@@ -23,7 +23,7 @@ const getReProvisionNatsMessage = async (req, res) => {
     });
 
     // For example:
-    const result = await message(RequestType.Edit, project);
+    const result = await message(RequestType.Edit, project, project.id);
 
     res.status(200).json(result);
   } catch (error) {

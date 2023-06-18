@@ -5,6 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
 import express from 'express';
+import cron from 'node-cron';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -113,6 +114,13 @@ app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
+
+// cron runs every 5 sec
+
+// cron.schedule("*/5 * * * * *", function () {
+
+//   console.log("running a task every 5 seconds");
+// });
 
 // app.post("/predeletion-check")
 

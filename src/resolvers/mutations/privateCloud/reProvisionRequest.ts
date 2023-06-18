@@ -49,14 +49,19 @@ const privateCloudReProvisionRequest: MutationResolvers['privateCloudReProvision
     }
 
     if (request.decisionStatus === RequestDecision.Approved) {
-      await sendPrivateCloudNatsMessage(request.type, request.requestedProject);
+      await sendPrivateCloudNatsMessage(
+        request.type,
+        request.requestedProject,
+        request.id
+      );
 
       if (request.requestedProject.cluster === Cluster.Gold) {
         const goldDrRequest = { ...request };
         goldDrRequest.requestedProject.cluster = Cluster.Golddr;
         await sendPrivateCloudNatsMessage(
           request.type,
-          request.requestedProject
+          request.requestedProject,
+          request.id
         );
       }
     }
