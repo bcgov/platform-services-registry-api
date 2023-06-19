@@ -34,7 +34,7 @@ export enum ProjectSetNamespace {
   Prod = "prod",
   Test = "test",
   Dev = "dev",
-  Tools = "tools",
+  Tools = "tools"
 }
 
 export default async function openshiftDeletionCheck(
@@ -48,7 +48,7 @@ export default async function openshiftDeletionCheck(
     golddr: process.env.GOLDDR_SERVICE_ACCOUNT_TOKEN || "",
     gold: process.env.GOLD_SERVICE_ACCOUNT_TOKEN || "",
     silver: process.env.SILVER_SERVICE_ACCOUNT_TOKEN || "",
-    emerald: process.env.EMERALD_SERVICE_ACCOUNT_TOKEN || "",
+    emerald: process.env.EMERALD_SERVICE_ACCOUNT_TOKEN || ""
   };
   const url = `https://api.${clusterName}.devops.gov.bc.ca:6443`;
   const BEARER_TOKEN = `Bearer ${CLUSTER_SERVICE_ACCOUNT_TOKEN[clusterName]}`;
@@ -56,13 +56,13 @@ export default async function openshiftDeletionCheck(
   const OC_HEADER = {
     Authorization: BEARER_TOKEN,
     "Content-Type": "application/json",
-    Accept: "application/json",
+    Accept: "application/json"
   };
   const checkResult: DeletableField = {
     namespaceDeletability: false,
     podsDeletability: false,
     pvcDeletability: false,
-    provisionerDeletionChecked: true,
+    provisionerDeletionChecked: true
   };
   console.log(`Deleting namesapce: ${namespacePrefix}`);
   if (namespacePrefix === "261403") {
@@ -73,7 +73,7 @@ export default async function openshiftDeletionCheck(
       namespaceDeletability: true,
       podsDeletability: true,
       pvcDeletability: true,
-      provisionerDeletionChecked: true,
+      provisionerDeletionChecked: true
     };
   }
   // Namespaces check
@@ -83,9 +83,10 @@ export default async function openshiftDeletionCheck(
 
   try {
     const namespaceCheckUrl = `${url}/api/v1/namespaces`;
+    console.log(`namespaceCheckUrl = ${namespaceCheckUrl}`);
     const { data } = await axios.get(`${namespaceCheckUrl}`, {
       headers: OC_HEADER,
-      withCredentials: true,
+      withCredentials: true
     });
 
     const allAvailableNamespacesOnCluster = data.items.map(
@@ -117,7 +118,7 @@ export default async function openshiftDeletionCheck(
         allNamespacesUnderProject.map(async (namespace) =>
           axios.get(`${`${url}/api/v1/namespaces/${namespace}/pods`}`, {
             headers: OC_HEADER,
-            withCredentials: true,
+            withCredentials: true
           })
         )
       );
@@ -140,7 +141,7 @@ export default async function openshiftDeletionCheck(
             `${`${url}/api/v1/namespaces/${namespace}/persistentvolumeclaims`}`,
             {
               headers: OC_HEADER,
-              withCredentials: true,
+              withCredentials: true
             }
           )
         )
