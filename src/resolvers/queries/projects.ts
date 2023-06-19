@@ -110,7 +110,7 @@ export const userPrivateCloudDeletionCheck = async (
 
   const deleteCheckList: DeletableField = await openshiftDeletionCheck(
     project.licencePlate,
-    project.clusterName
+    project.cluster
   );
 
   return Object.values(deleteCheckList).every((field) => field);
