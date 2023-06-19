@@ -2,6 +2,7 @@ import { collections } from "../../db.js";
 import openshiftDeletionCheck, {
   DeletableField
 } from "../../scripts/deletioncheck.js";
+import { PrivateCloudProject } from "@prisma/client";
 // import { collections } from "../../db.js";
 
 import { user } from "./users";
@@ -101,12 +102,13 @@ export const userPrivateCloudDeletionCheck = async (
   { projectId },
   { prisma, user, authEmail }
 ) => {
-  const project = await prisma.privateCloudProject.findUnique({
-    where: {
-      id: projectId,
-      status: "ACTIVE"
-    }
-  });
+  const project: PrivateCloudProject =
+    await prisma.privateCloudProject.findUnique({
+      where: {
+        id: projectId,
+        status: "ACTIVE"
+      }
+    });
 
   const deleteCheckList: DeletableField = await openshiftDeletionCheck(
     project.licencePlate,

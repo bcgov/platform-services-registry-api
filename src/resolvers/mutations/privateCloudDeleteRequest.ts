@@ -5,7 +5,7 @@ import {
   DecisionStatus,
   MutationPrivateCloudProjectDeleteRequestArgs
 } from "../../__generated__/resolvers-types.js";
-import { Prisma } from "@prisma/client";
+import { Prisma, PrivateCloudProject } from "@prisma/client";
 import { sendDeleteRequestEmails } from "../../ches/emailHandlers.js";
 import openshiftDeletionCheck, {
   DeletableField
@@ -19,7 +19,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
   let createRequest;
 
   try {
-    const { id, ...project } =
+    const { id, ...project }: PrivateCloudProject =
       await prisma.privateCloudProject.findUniqueOrThrow({
         where: {
           id: args.projectId,
@@ -78,7 +78,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
 
     const deleteCheckList: DeletableField = await openshiftDeletionCheck(
       project.licencePlate,
-      project.clusterName
+      project.cluster
     );
 
     if (!Object.values(deleteCheckList).every((field) => field)) {
