@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, RequestType } from '@prisma/client';
 
 export type PublicCloudRequestedProject =
   Prisma.PublicCloudRequestedProjectGetPayload<{
@@ -34,11 +34,15 @@ export type PublicCloudRequestedProject =
   }>;
 
 // Create a test env variable that prefix the namespace name with "t"
-function message(requestedProject: PublicCloudRequestedProject) {
+function message(
+  requestType: RequestType,
+  requestedProject: PublicCloudRequestedProject
+) {
   console.log(requestedProject);
   return {
     project_set_info: {
       licence_plate: requestedProject.licencePlate,
+      request_type: requestType,
       project_name: requestedProject.name,
       billing_group: requestedProject.billingGroup,
 
