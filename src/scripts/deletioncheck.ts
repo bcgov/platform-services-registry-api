@@ -39,7 +39,7 @@ export enum ProjectSetNamespace {
 
 export default async function openshiftDeletionCheck(
   namespacePrefix: string,
-  clusterName: string
+  clusterNameParam: string
 ): Promise<DeletableField> {
   const CLUSTER_SERVICE_ACCOUNT_TOKEN = {
     clab: process.env.CLAB_SERVICE_ACCOUNT_TOKEN || "",
@@ -50,6 +50,9 @@ export default async function openshiftDeletionCheck(
     silver: process.env.SILVER_SERVICE_ACCOUNT_TOKEN || "",
     emerald: process.env.EMERALD_SERVICE_ACCOUNT_TOKEN || ""
   };
+
+  const clusterName = clusterNameParam.toLowerCase();
+
   const url = `https://api.${clusterName}.devops.gov.bc.ca:6443`;
   const BEARER_TOKEN = `Bearer ${CLUSTER_SERVICE_ACCOUNT_TOKEN[clusterName]}`;
 
