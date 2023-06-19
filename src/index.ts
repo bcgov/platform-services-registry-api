@@ -5,6 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import express from "express";
+import cron from "node-cron";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -48,6 +49,8 @@ export const app = express();
 const { keycloak } = configureKeycloak(app, "/");
 const httpServer = http.createServer(app);
 
+app.use(cors());
+
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -89,7 +92,6 @@ app.use(
 // The below code is important for auth to work
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 app.get(
   "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
@@ -111,6 +113,13 @@ app.get("/api/v1/getIdirPhoto", getIdirPhoto);
 
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
+
+// cron runs every 5 sec
+
+// cron.schedule("*/5 * * * * *", function () {
+  
+//   console.log("running a task every 5 seconds");
+// });
 
 // app.post("/predeletion-check")
 
