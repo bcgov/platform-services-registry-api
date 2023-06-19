@@ -1,3 +1,7 @@
+import { collections } from "../../db.js";
+import openshiftDeletionCheck, {
+  DeletableField
+} from "../../scripts/deletioncheck.js";
 // import { collections } from "../../db.js";
 
 import { user } from "./users";
@@ -91,6 +95,26 @@ export const privateCloudProjectById = (_, { projectId }, { prisma }) =>
       status: "ACTIVE"
     }
   });
+
+export const userPrivateCloudDeletionCheck = async (
+  _,
+  { projectId },
+  { prisma, user, authEmail }
+) => {
+  const project = await prisma.privateCloudProject.findUnique({
+    where: {
+      id: projectId,
+      status: "ACTIVE"
+    }
+  });
+
+  const deleteCheckList: DeletableField = await openshiftDeletionCheck(
+    project.licencePlate,
+    project.clusterName
+  );
+
+  return Object.values(deleteCheckList).every((field) => field);
+};
 
 export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
   prisma.privateCloudProject.findMany({
