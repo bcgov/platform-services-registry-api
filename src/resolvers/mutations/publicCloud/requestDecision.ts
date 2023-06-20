@@ -31,7 +31,16 @@ const publicCloudRequestDecision = async (
     };
   }>;
 
+  type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
+    include: {
+      projectOwner: true;
+      primaryTechnicalLead: true;
+      secondaryTechnicalLead: true;
+    };
+  }>;
+
   let request: PublicCloudRequest;
+  let project: PublicCloudProject | null;
 
   try {
     request = await prisma.publicCloudRequest.update({
@@ -63,6 +72,17 @@ const publicCloudRequestDecision = async (
         },
       },
     });
+
+    project = await prisma.publicCloudProject.findFirst({
+      where: {
+        id: request.projectId,
+      },
+      include: {
+        projectOwner: true,
+        primaryTechnicalLead: true,
+        secondaryTechnicalLead: true,
+      },
+    });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
@@ -73,7 +93,11 @@ const publicCloudRequestDecision = async (
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendPublicCloudNatsMessage(request.requestedProject);
+    await sendPublicCloudNatsMessage(
+      request.type,
+      request.requestedProject,
+      project
+    );
   }
 
   if (request.decisionStatus === RequestDecision.Rejected) {

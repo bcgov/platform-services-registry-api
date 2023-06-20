@@ -4,12 +4,12 @@ import { connect, StringCodec, JSONCodec } from 'nats';
 import createPrivateCloudMessage from './privateCloud/message.js';
 import { Cluster } from './privateCloud/constants.js';
 import createPublicCloudMessage from './publicCloud/message.js';
-import {
-  RequestType,
-  PrivateCloudRequest,
-  PublicCloudRequestedProject,
-} from '@prisma/client';
+import { RequestType, PrivateCloudRequest } from '@prisma/client';
 import { PrivateCloudRequestedProject } from './privateCloud/message.js';
+import {
+  PublicCloudRequestedProject,
+  PublicCloudProject,
+} from './publicCloud/message.js';
 
 const serverURL = `${process.env.NATS_HOST}:${process.env.NATS_PORT}`;
 
@@ -51,11 +51,16 @@ export function sendPrivateCloudNatsMessage(
 
 export function sendPublicCloudNatsMessage(
   requestType: RequestType,
-  requestedProject: PublicCloudRequestedProject
+  requestedProject: PublicCloudRequestedProject,
+  currentProject: PublicCloudProject
 ) {
   const natsSubject = 'registry_project_provisioning_aws';
 
-  const messageBody = createPublicCloudMessage(requestType, requestedProject);
+  const messageBody = createPublicCloudMessage(
+    requestType,
+    requestedProject,
+    currentProject
+  );
 
   return sendNatsMessage(natsSubject, messageBody);
 }
