@@ -150,11 +150,10 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       }
     });
 
-      await sendEditRequestEmails(
-        editRequest.project,
-        editRequest.requestedProject
-      );
-
+    await sendEditRequestEmails(
+      editRequest.project,
+      editRequest.requestedProject
+    );
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
@@ -165,12 +164,20 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
   }
 
   if (decisionStatus === DecisionStatus.Approved) {
-    await sendNatsMessage(editRequest.type, editRequest.requestedProject, editRequest.id);
+    await sendNatsMessage(
+      editRequest.type,
+      editRequest.requestedProject,
+      editRequest.id
+    );
 
     if (editRequest.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...editRequest };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject, goldDrRequest.id);
+      await sendNatsMessage(
+        goldDrRequest.type,
+        goldDrRequest.requestedProject,
+        goldDrRequest.id
+      );
     }
   }
 

@@ -74,8 +74,10 @@ const privateCloudRequestDecision: MutationResolvers = async (
       );
     }
   }
-  if (request.decisionStatus === RequestDecision.Rejected)
+  if (request.decisionStatus === RequestDecision.Rejected) {
     sendRejectEmail(request);
+  }
+
   return request;
 };
 
