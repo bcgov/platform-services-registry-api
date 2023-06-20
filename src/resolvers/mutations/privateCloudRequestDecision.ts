@@ -61,18 +61,17 @@ const privateCloudRequestDecision: MutationResolvers = async (
     throw e;
   }
 
-  if (request.type === "DELETE") {
-    throw Error("Delete is dissabled");
-    return;
-  }
-
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject, request.id);
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(goldDrRequest.type, goldDrRequest.requestedProject, goldDrRequest.id);
+      await sendNatsMessage(
+        goldDrRequest.type,
+        goldDrRequest.requestedProject,
+        goldDrRequest.id
+      );
     }
   }
   if (request.decisionStatus === RequestDecision.Rejected)
