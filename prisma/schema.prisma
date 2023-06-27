@@ -31,6 +31,7 @@ model User {
 model PrivateCloudRequest {
   id                 String                       @id @default(auto()) @map("_id") @db.ObjectId
   licencePlate       String
+  cluster            Cluster
   createdByEmail     String
   decisionMakerEmail String?
   type               RequestType
@@ -67,7 +68,6 @@ model PrivateCloudProject {
   commonComponents         CommonComponents
   profileId                String?
   requests                 PrivateCloudRequest[] @relation("project")
-
 }
 
 model PrivateCloudRequestedProject {

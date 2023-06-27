@@ -98,6 +98,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         active: true,
         createdByEmail: authEmail,
         licencePlate: project.licencePlate,
+        cluster: project.cluster,
         requestedProject: {
           create: project
         },

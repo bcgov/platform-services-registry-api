@@ -48,6 +48,7 @@ const privateCloudProjectRequest: MutationResolvers = async (
         active: true,
         createdByEmail: authEmail,
         licencePlate,
+        cluster:args.cluster,
         requestedProject: {
           create: {
             name: args.name,

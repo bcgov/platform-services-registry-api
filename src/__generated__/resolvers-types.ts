@@ -251,6 +251,7 @@ export type PrivateCloudProject = {
 export type PrivateCloudRequest = {
   __typename?: 'PrivateCloudRequest';
   active: Scalars['Boolean'];
+  cluster?: Maybe<Cluster>;
   created: Scalars['DateTime'];
   createdBy?: Maybe<User>;
   decisionDate?: Maybe<Scalars['DateTime']>;
@@ -646,6 +647,7 @@ export type PrivateCloudProjectResolvers<ContextType = ContextValue, ParentType 
 
 export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PrivateCloudRequest'] = ResolversParentTypes['PrivateCloudRequest']> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  cluster?: Resolver<Maybe<ResolversTypes['Cluster']>, ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   createdBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   decisionDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
