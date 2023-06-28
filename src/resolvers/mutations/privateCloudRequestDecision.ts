@@ -3,11 +3,12 @@ import {
   MutationResolvers,
   DecisionStatus,
   RequestDecision,
-  Cluster
+  Cluster,
 } from "../../__generated__/resolvers-types.js";
 import { Prisma } from "@prisma/client";
 import sendNatsMessage from "../../nats/sendNatsMessage.js";
 import { sendRejectEmail } from "../../ches/emailHandlers.js";
+import { subscribeUserToMessages } from "../../mautic/index.js";
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -26,31 +27,31 @@ const privateCloudRequestDecision: MutationResolvers = async (
     request = await prisma.privateCloudRequest.update({
       where: {
         id: requestId,
-        decisionStatus: DecisionStatus.Pending
+        decisionStatus: DecisionStatus.Pending,
       },
       data: {
         decisionStatus: decision,
         humanComment: humanComment,
         active: decision === RequestDecision.Approved,
         decisionDate: new Date(),
-        decisionMakerEmail: authEmail
+        decisionMakerEmail: authEmail,
       },
       include: {
         project: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
+            secondaryTechnicalLead: true,
+          },
         },
         requestedProject: {
           include: {
             projectOwner: true,
             primaryTechnicalLead: true,
-            secondaryTechnicalLead: true
-          }
-        }
-      }
+            secondaryTechnicalLead: true,
+          },
+        },
+      },
     });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -63,6 +64,14 @@ const privateCloudRequestDecision: MutationResolvers = async (
 
   if (request.decisionStatus === RequestDecision.Approved) {
     await sendNatsMessage(request.type, request.requestedProject, request.id);
+
+    const users = [
+      request.project.projectOwner,
+      request.project.primaryTechnicalLead,
+      request.project?.secondaryTechnicalLead,
+    ].filter(Boolean);
+
+    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
