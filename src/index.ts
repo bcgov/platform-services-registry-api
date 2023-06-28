@@ -6,7 +6,6 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
 import express from "express";
 import cron from "node-cron";
-import axios from "axios";
 import http from "http";
 import cors from "cors";
 import bodyParser from "body-parser";
