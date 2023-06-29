@@ -171,7 +171,7 @@ const privateCloudProjectEditRequest: MutationResolvers = async (
       args?.secondaryTechnicalLead,
     ].filter(Boolean);
 
-    Promise.all(users.map((user) => suscribeUserToMessages(user.email)));
+    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
     await sendNatsMessage(
       editRequest.type,
       editRequest.requestedProject,

@@ -66,9 +66,9 @@ const privateCloudRequestDecision: MutationResolvers = async (
     await sendNatsMessage(request.type, request.requestedProject, request.id);
 
     const users = [
-      request.project.projectOwner,
-      request.project.primaryTechnicalLead,
-      request.project?.secondaryTechnicalLead,
+      request.requestedProject.projectOwner,
+      request.requestedProject.primaryTechnicalLead,
+      request.requestedProject?.secondaryTechnicalLead,
     ].filter(Boolean);
 
     Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
