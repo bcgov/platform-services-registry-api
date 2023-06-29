@@ -69,7 +69,7 @@ export type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
 function message(
   requestType: RequestType,
   requestedProject: PublicCloudRequestedProject,
-  currentProject: PublicCloudProject | null
+  currentProject?: PublicCloudProject 
 ) {
   return {
     project_set_info: {

@@ -52,7 +52,7 @@ export function sendPrivateCloudNatsMessage(
 export function sendPublicCloudNatsMessage(
   requestType: RequestType,
   requestedProject: PublicCloudRequestedProject,
-  currentProject: PublicCloudProject
+  currentProject?: PublicCloudProject
 ) {
   const natsSubject = 'registry_project_provisioning_aws';
 

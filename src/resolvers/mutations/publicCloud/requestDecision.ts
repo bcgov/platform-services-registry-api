@@ -2,6 +2,7 @@ import {
   MutationPublicCloudRequestDecisionArgs,
   DecisionStatus,
   RequestDecision,
+  RequestType,
   Cluster,
 } from '../../../__generated__/resolvers-types.js';
 import { Prisma } from '@prisma/client';
@@ -73,16 +74,18 @@ const publicCloudRequestDecision = async (
       },
     });
 
-    project = await prisma.publicCloudProject.findFirst({
-      where: {
-        id: request.projectId,
-      },
-      include: {
-        projectOwner: true,
-        primaryTechnicalLead: true,
-        secondaryTechnicalLead: true,
-      },
-    });
+    if (request.type !== 'CREATE') {
+      project = await prisma.publicCloudProject.findFirst({
+        where: {
+          id: request.projectId,
+        },
+        include: {
+          projectOwner: true,
+          primaryTechnicalLead: true,
+          secondaryTechnicalLead: true,
+        },
+      });
+    }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
