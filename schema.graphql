@@ -146,7 +146,6 @@ type PrivateCloudRequest {
   id: ID!
   active: Boolean!
   createdBy: User
-  cluster: Cluster
   decisionMaker: User
   type: RequestType!
   decisionStatus: DecisionStatus!

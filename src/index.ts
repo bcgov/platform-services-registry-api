@@ -122,10 +122,13 @@ cron.schedule("*/5* * * * *", async function () {
     where: {
       active: true,
     },
+    include:{
+      requestedProject:true
+    }
   });
 
   requestsArr.map((request) => {
-    getRequestStatus(request.id, request.licencePlate, request.cluster.toLowerCase())
+    getRequestStatus(request.id, request.licencePlate, request.requestedProject.cluster.toLowerCase())
   })
 });
 
