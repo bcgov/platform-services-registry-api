@@ -6,7 +6,7 @@ export type PublicCloudRequestedProject =
       id: true;
       licencePlate: true;
       name: true;
-      billingGroup: true;
+      accountCoding: true;
       budget: true;
       provider: true;
       projectOwner: {
@@ -38,7 +38,7 @@ export type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
     id: true;
     licencePlate: true;
     name: true;
-    billingGroup: true;
+    accountCoding: true;
     budget: true;
     provider: true;
     projectOwner: {
@@ -76,7 +76,7 @@ function message(
       licence_plate: requestedProject.licencePlate,
       request_type: requestType,
       project_name: requestedProject.name,
-      billing_group: requestedProject.billingGroup,
+      account_coding: requestedProject.accountCoding,
       budgets: requestedProject.budget,
 
       requested_product_owner: {

@@ -136,7 +136,7 @@ export type FilterPrivateCloudProjectsInput = {
 };
 
 export type FilterPublicCloudProjectsInput = {
-  billingGroup?: InputMaybe<Scalars['String']>;
+  accountCoding?: InputMaybe<Scalars['String']>;
   ministry?: InputMaybe<Ministry>;
   provider?: InputMaybe<Provider>;
 };
@@ -243,7 +243,7 @@ export type MutationPrivateCloudRequestDecisionArgs = {
 
 
 export type MutationPublicCloudProjectEditRequestArgs = {
-  billingGroup?: InputMaybe<Scalars['String']>;
+  accountCoding?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
@@ -257,7 +257,7 @@ export type MutationPublicCloudProjectEditRequestArgs = {
 
 
 export type MutationPublicCloudProjectRequestArgs = {
-  billingGroup?: InputMaybe<Scalars['String']>;
+  accountCoding?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
@@ -336,8 +336,8 @@ export enum PublicCloudPlatform {
 
 export type PublicCloudProject = {
   __typename?: 'PublicCloudProject';
+  accountCoding: Scalars['String'];
   activeEditRequest?: Maybe<PublicCloudRequest>;
-  billingGroup: Scalars['String'];
   budget: Budget;
   commonComponents: CommonComponents;
   created: Scalars['DateTime'];
@@ -869,8 +869,8 @@ export type PrivateCloudRequestResolvers<ContextType = ContextValue, ParentType 
 }>;
 
 export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['PublicCloudProject'] = ResolversParentTypes['PublicCloudProject']> = ResolversObject<{
+  accountCoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   activeEditRequest?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
-  billingGroup?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   budget?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -1069,7 +1069,7 @@ export function FilterPrivateCloudProjectsInputSchema(): yup.SchemaOf<FilterPriv
 
 export function FilterPublicCloudProjectsInputSchema(): yup.SchemaOf<FilterPublicCloudProjectsInput> {
   return yup.object({
-    billingGroup: yup.string(),
+    accountCoding: yup.string(),
     ministry: MinistrySchema,
     provider: ProviderSchema
   })

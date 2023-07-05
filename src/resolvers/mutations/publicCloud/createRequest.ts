@@ -49,7 +49,7 @@ const publicCloudProjectRequest = async (
     ministry: args.ministry,
     status: ProjectStatus.Active,
     licencePlate: licencePlate,
-    billingGroup: args.billingGroup,
+    accountCoding: args.accountCoding,
     commonComponents: args.commonComponents,
     projectOwner: {
       connectOrCreate: {

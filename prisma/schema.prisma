@@ -124,7 +124,7 @@ model PublicCloudProject {
   description              String
   status                   ProjectStatus
   created                  DateTime             @default(now())
-  billingGroup             String
+  accountCoding             String
   budget                   Budget
   projectOwnerId           String               @db.ObjectId
   projectOwner             User                 @relation("publicCloudProjectOwner", fields: [projectOwnerId], references: [id])
@@ -145,7 +145,7 @@ model PublicCloudRequestedProject {
   description              String
   status                   ProjectStatus
   created                  DateTime            @default(now())
-  billingGroup             String
+  accountCoding             String
   budget                   Budget
   projectOwnerId           String              @db.ObjectId
   projectOwner             User                @relation("publicCloudRequestedProjectOwner", fields: [projectOwnerId], references: [id])
