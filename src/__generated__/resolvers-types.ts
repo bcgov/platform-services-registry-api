@@ -610,6 +610,7 @@ export type User = {
   email: Scalars['EmailAddress'];
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  isNew?: Maybe<Scalars['Boolean']>;
   lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Scalars['String']>;
@@ -960,6 +961,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  isNew?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

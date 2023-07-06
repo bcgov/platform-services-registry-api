@@ -209,6 +209,7 @@ type User {
   privateCloudProjectSecondaryTechnicalLead: [PrivateCloudProject]!
   publicCloudProjectOwner: [PublicCloudProject]!
   publicCloudProjectTechnicalLead: [PublicCloudProject]!
+  isNew: Boolean
 }
 
 input CommonComponentsInput {

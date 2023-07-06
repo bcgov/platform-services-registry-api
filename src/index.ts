@@ -5,7 +5,6 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
 import express from 'express';
-import cron from 'node-cron';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
