@@ -138,7 +138,7 @@ To create a public cloud project request, use the `publicCloudProjectRequest` mu
 - `ministry`: The ministry associated with the project.
 - `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
 - `budget`: The budget for the project.
-- `billingGroup`: The billing group for the project.
+- `accountCoding`: The account coding for the project.
 - `commonComponents`: Common components to be used in the project.
 - `projectOwner`: Information about the project owner.
 - `technicalLeads`: Information about the technical leads.
@@ -169,7 +169,7 @@ const variables = {
       dev: 500,
       tools: 100,
     },
-    billingGroup: 'example-billing-group',
+    accountCoding: 'example-account-coding',
     commonComponents: {
       addressAndGeolocation: 'IMPLEMENTED',
       workflowManagement: 'PLANNING_TO_USE',
@@ -217,7 +217,7 @@ This mutation accepts the following arguments:
 - `ministry`: The ministry associated with the project.
 - `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
 - `budget`: The budget for the project.
-- `billingGroup`: The billing group for the project.
+- `accountCoding`: The account coding for the project.
 - `commonComponents`: Common components to be used in the project.
 - `projectOwner`: Information about the project owner.
 - `technicalLeads`: Information about the technical leads.
@@ -249,7 +249,7 @@ const variables = {
       dev: 600,
       tools: 200,
     },
-    billingGroup: 'updated-billing-group',
+    accountCoding: 'updated-account-coding',
     commonComponents: {
       addressAndGeolocation: 'IMPLEMENTED',
       workflowManagement: 'PLANNING_TO_USE',
@@ -319,7 +319,7 @@ const query = `
       prod
       dev
     }
-    billingGroup
+    accountCoding
     activeEditRequest {
       id
       active
@@ -397,7 +397,7 @@ To create a public cloud project request, use the `publicCloudProjectRequest` mu
 - `ministry`: The ministry associated with the project.
 - `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
 - `budget`: The budget for the project.
-- `billingGroup`: The billing group for the project.
+- `accountCoding`: The account coding for the project.
 - `commonComponents`: Common components to be used in the project.
 - `projectOwner`: Information about the project owner.
 - `technicalLeads`: Information about the technical leads.
@@ -430,7 +430,7 @@ const variables = {
       dev: 500,
       tools: 100,
     },
-    billingGroup: 'example-billing-group',
+    accountCoding: 'example-account-coding',
     commonComponents: {
       addressAndGeolocation: 'IMPLEMENTED',
       workflowManagement: 'PLANNING_TO_USE',
@@ -480,7 +480,7 @@ This mutation accepts the following arguments:
 - `ministry`: The ministry associated with the project.
 - `provider`: The public cloud provider (e.g., `GOOGLE` or `AWS`).
 - `budget`: The budget for the project.
-- `billingGroup`: The billing group for the project.
+- `accountCoding`: The account coding for the project.
 - `commonComponents`: Common components to be used in the project.
 - `projectOwner`: Information about the project owner.
 - `technicalLeads`: Information about the technical leads.
@@ -512,7 +512,7 @@ const variables = {
       dev: 600,
       tools: 200,
     },
-    billingGroup: 'updated-billing-group',
+    accountCoding: 'updated-account-coding',
     commonComponents: {
       addressAndGeolocation: 'IMPLEMENTED',
       workflowManagement: 'PLANNING_TO_USE',
@@ -634,7 +634,7 @@ const query = `
       prod
       dev
     }
-    billingGroup
+    accountCoding
     activeEditRequest {
       id
       active

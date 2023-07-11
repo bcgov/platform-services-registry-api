@@ -83,7 +83,7 @@ const publicCloudProjectEditRequest = async (
     ministry: args.ministry,
     status: project.status,
     licencePlate: project.licencePlate,
-    billingGroup: project.billingGroup,
+    accountCoding: project.accountCoding,
     commonComponents: args.commonComponents as CommonComponentsPrisma,
     created: project.created,
     projectOwner: {

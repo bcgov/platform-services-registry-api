@@ -173,7 +173,7 @@ type PublicCloudProject {
   primaryTechnicalLead: User!
   secondaryTechnicalLead: User
   budget: Budget!
-  billingGroup: String!
+  accountCoding: String!
   ministry: Ministry!
   provider: Provider!
   requestHistory: [PublicCloudRequest]!
@@ -291,7 +291,7 @@ input FilterPrivateCloudProjectsInput {
 input FilterPublicCloudProjectsInput {
   ministry: Ministry
   provider: Provider
-  billingGroup: String
+  accountCoding: String
 }
 
 enum SortOrder {
@@ -466,7 +466,7 @@ type Mutation {
     ministry: Ministry!
     provider: Provider!
     budget: BudgetInput!
-    billingGroup: String
+    accountCoding: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
@@ -479,7 +479,7 @@ type Mutation {
     description: String!
     ministry: Ministry!
     budget: BudgetInput!
-    billingGroup: String
+    accountCoding: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
