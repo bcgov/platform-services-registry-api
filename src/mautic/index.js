@@ -14,14 +14,15 @@ const suscribeData = (contactId) => ({
   SegmentsAndIds: SELECTEDCOMMUNICATIONS,
 });
 
-export const getToken = async () => {
-  const keycloakClientSecret =
-    process.env.MAUTIC_SUBSSCRIPTION_API_CLIENT_SECRET;
+const getToken = async () => {
   const url = process.env.MAUTIC_TOKEN_URL || "";
 
+  const auth = {
+    username: process.env.MAUTIC_CLIENT_ID,
+    password: process.env.MAUTIC_SUBSSCRIPTION_API_CLIENT_SECRET,
+  };
+
   const params = {
-    client_id: "mautic-subscription-api",
-    client_secret: keycloakClientSecret,
     grant_type: "client_credentials",
   };
 
@@ -32,12 +33,14 @@ export const getToken = async () => {
       headers: {
         "Content-type": "application/x-www-form-urlencoded",
       },
+      auth: auth, // Pass the auth object here
       withCredentials: true,
     });
 
     return data.access_token;
   } catch (error) {
-    return error.response;
+    console.error(error.response);
+    throw error;
   }
 };
 
