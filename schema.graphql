@@ -383,7 +383,7 @@ type Query {
     filter: FilterPublicCloudProjectsInput
     search: String
     sortOrder: Int
-  ): publicCloudProjectsPaginatedOutput! @auth @hasRole(role: ["admin", "read-only-admin"])
+  ): publicCloudProjectsPaginatedOutput! @auth 
   publicCloudProjectById(projectId: ID!): PublicCloudProject!
     @auth
     @hasRole(role: ["admin", "read-only-admin"])

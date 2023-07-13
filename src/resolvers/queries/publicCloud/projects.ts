@@ -9,6 +9,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
     sortOrder = -1,
     userId = '',
   } = args;
+ 
   let { ministry, provider } = filter;
 
   search = search === null ? undefined : search.toLowerCase();
