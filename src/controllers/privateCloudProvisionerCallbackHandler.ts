@@ -17,9 +17,9 @@ const provisionerCallbackHandler = async (req, res) => {
         licencePlate: licencePlate,
         active: true,
         decisionStatus: DecisionStatus.Approved,
-        requestedProject: {
-          cluster: cluster,
-        },
+        // requestedProject: {
+        //   cluster,
+        // },
       },
       include: {
         project: {
