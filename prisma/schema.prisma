@@ -67,7 +67,6 @@ model PrivateCloudProject {
   commonComponents         CommonComponents
   profileId                String?
   requests                 PrivateCloudRequest[] @relation("project")
-
 }
 
 model PrivateCloudRequestedProject {

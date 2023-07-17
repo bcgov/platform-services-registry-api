@@ -33,7 +33,7 @@ async function sendNatsMessage(action, requestedProject, requestId) {
     // const messageBody = testMessage;
     console.log("NATS SUBJECT: ", natsSubject);
     console.log("MESSAGE BODY: ", JSON.stringify(messageBody));
-    console.log("serverURL: ", serverURL);
+    
     const nc = await connect({ servers: serverURL });
 
     // const sc = StringCodec();

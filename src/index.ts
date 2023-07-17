@@ -21,10 +21,12 @@ import {
   getIdsForCluster,
   getDatabaseHealthCheck,
   getIdirEmails,
-  getIdirPhoto
+  getIdirPhoto,
+  getRequestStatus,
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
 import { connectToDatabase } from "./db.js";
+
 
 const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
 
@@ -114,12 +116,21 @@ app.get("/api/v1/getIdirPhoto", getIdirPhoto);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
 
-// cron runs every 5 sec
 
-// cron.schedule("*/5 * * * * *", function () {
-  
-//   console.log("running a task every 5 seconds");
-// });
+cron.schedule("*/5* * * * *", async function () {
+ const requestsArr =  await prisma.privateCloudRequest.findMany({
+    where: {
+      active: true,
+    },
+    include:{
+      requestedProject:true
+    }
+  });
+
+  requestsArr.map((request) => {
+    getRequestStatus(request.id, request.licencePlate, request.requestedProject.cluster.toLowerCase())
+  })
+});
 
 // app.post("/predeletion-check")
 

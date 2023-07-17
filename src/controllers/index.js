@@ -4,6 +4,7 @@ import provisionerCallbackHandler from "./provisionerCallbackHandler.js";
 import getDatabaseHealthCheck from "./getDatabaseHealthCheck.js";
 import getIdirEmails from "./getIdirEmails.js";
 import getIdirPhoto from "./getIdirPhoto.js";
+import getRequestStatus from "./getRequestStatus.js"
 
 export {
   getIdirEmails,
@@ -11,5 +12,6 @@ export {
   getReProvisionNatsMessage,
   provisionerCallbackHandler,
   getDatabaseHealthCheck,
-  getIdirPhoto
+  getIdirPhoto,
+  getRequestStatus
 };
