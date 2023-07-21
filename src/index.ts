@@ -5,6 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
 import express from 'express';
+import cron from "node-cron";
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -13,7 +14,7 @@ import { readFileSync } from 'fs';
 import configureKeycloak from './auth/config.js';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import applyDirectiveTransformers from './transformers/index.js';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 import {
   privateCloudProvisionerCallbackHandler,
   publicCloudProvisionerCallbackHandler,
@@ -23,7 +24,11 @@ import {
 } from './controllers/index.js';
 import chesService from './ches/index.js';
 import { connectToDatabase } from './db.js';
-import { getIdirEmails, getIdirPhoto } from './controllers/index.js';
+import {
+  getIdirEmails,
+  getIdirPhoto,
+  getRequestStatus,
+} from './controllers/index.js';
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
@@ -114,12 +119,24 @@ app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
-// cron runs every 5 sec
+cron.schedule('*/5* * * * *', async function () {
+  const requestsArr = await prisma.privateCloudRequest.findMany({
+    where: {
+      active: true,
+    },
+    include: {
+      requestedProject: true,
+    },
+  });
 
-// cron.schedule("*/5 * * * * *", function () {
-
-//   console.log("running a task every 5 seconds");
-// });
+  requestsArr.map((request) => {
+    getRequestStatus(
+      request.id,
+      request.licencePlate,
+      request.requestedProject.cluster.toLowerCase()
+    );
+  });
+});
 
 // app.post("/predeletion-check")
 

@@ -4,6 +4,9 @@ import { connect, StringCodec, JSONCodec } from 'nats';
 import createPrivateCloudMessage from './privateCloud/message.js';
 import { Cluster } from './privateCloud/constants.js';
 import createPublicCloudMessage from './publicCloud/message.js';
+import openshiftDeletionCheck, {
+  DeletableField,
+} from '../scripts/deletioncheck.js';
 import { RequestType, PrivateCloudRequest } from '@prisma/client';
 import { PrivateCloudRequestedProject } from './privateCloud/message.js';
 import {
@@ -31,7 +34,7 @@ async function sendNatsMessage(natsSubject, messageBody) {
   }
 }
 
-export function sendPrivateCloudNatsMessage(
+export async function sendPrivateCloudNatsMessage(
   requestType: RequestType,
   requestedProject: PrivateCloudRequestedProject,
   requestId: PrivateCloudRequest['id']
@@ -39,6 +42,23 @@ export function sendPrivateCloudNatsMessage(
   const natsSubject = `registry_project_provisioning_${
     Cluster[requestedProject.cluster]
   }`;
+
+  // Perform deletion check if request is a delete request
+  if (
+    requestType === RequestType.Delete ||
+    requestType.toLowerCase() === 'delete'
+  ) {
+    const deleteCheckList: DeletableField = await openshiftDeletionCheck(
+      requestedProject.licencePlate,
+      requestedProject.cluster
+    );
+
+    if (!Object.values(deleteCheckList).every((field) => field)) {
+      throw new Error(
+        'This project is not deletable as it is not empty. Please delete all resources before deleting the project.'
+      );
+    }
+  }
 
   const messageBody = createPrivateCloudMessage(
     requestType,

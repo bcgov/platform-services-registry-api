@@ -193,7 +193,9 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationPrivateCloudProjectDeleteRequestArgs = {
+  licencePlate: Scalars['String'];
   projectId: Scalars['ID'];
+  projectOwnerEmail: Scalars['EmailAddress'];
 };
 
 
@@ -396,6 +398,7 @@ export type Query = {
   userPrivateCloudActiveRequestById: PrivateCloudRequest;
   userPrivateCloudActiveRequests: Array<PrivateCloudRequest>;
   userPrivateCloudActiveRequestsByIds: PrivateCloudRequest;
+  userPrivateCloudDeletionCheck: Scalars['Boolean'];
   userPrivateCloudProjectById: PrivateCloudProject;
   userPrivateCloudProjects: Array<PrivateCloudProject>;
   userPrivateCloudProjectsByIds: PrivateCloudProject;
@@ -507,6 +510,11 @@ export type QueryUserPrivateCloudActiveRequestByIdArgs = {
 
 export type QueryUserPrivateCloudActiveRequestsByIdsArgs = {
   requestIds?: InputMaybe<Array<Scalars['ID']>>;
+};
+
+
+export type QueryUserPrivateCloudDeletionCheckArgs = {
+  projectId: Scalars['ID'];
 };
 
 
@@ -819,7 +827,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 
 export type MutationResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
-  privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'projectId'>>;
+  privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'licencePlate' | 'projectId' | 'projectOwnerEmail'>>;
   privateCloudProjectEditRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectEditRequestArgs, 'commonComponents' | 'description' | 'developmentQuota' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'productionQuota' | 'projectId' | 'projectOwner' | 'testQuota' | 'toolsQuota'>>;
   privateCloudProjectRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectRequestArgs, 'cluster' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner'>>;
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
@@ -930,6 +938,7 @@ export type QueryResolvers<ContextType = ContextValue, ParentType extends Resolv
   userPrivateCloudActiveRequestById?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudActiveRequestByIdArgs, 'requestId'>>;
   userPrivateCloudActiveRequests?: Resolver<Array<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType>;
   userPrivateCloudActiveRequestsByIds?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, Partial<QueryUserPrivateCloudActiveRequestsByIdsArgs>>;
+  userPrivateCloudDeletionCheck?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudDeletionCheckArgs, 'projectId'>>;
   userPrivateCloudProjectById?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, RequireFields<QueryUserPrivateCloudProjectByIdArgs, 'projectId'>>;
   userPrivateCloudProjects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   userPrivateCloudProjectsByIds?: Resolver<ResolversTypes['PrivateCloudProject'], ParentType, ContextType, Partial<QueryUserPrivateCloudProjectsByIdsArgs>>;
