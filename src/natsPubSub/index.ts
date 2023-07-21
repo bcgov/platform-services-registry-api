@@ -45,7 +45,7 @@ export async function sendPrivateCloudNatsMessage(
 
   // Perform deletion check if request is a delete request
   if (
-    requestType === RequestType.Delete ||
+    requestType === RequestType.DELETE ||
     requestType.toLowerCase() === 'delete'
   ) {
     const deleteCheckList: DeletableField = await openshiftDeletionCheck(

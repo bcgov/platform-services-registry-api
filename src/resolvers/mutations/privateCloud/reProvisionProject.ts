@@ -147,7 +147,7 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
       );
     }
 
-    return reProvisionRequest.id;
+    return reProvisionRequest;
   };
 
 export default privateCloudReProvisionProject;
