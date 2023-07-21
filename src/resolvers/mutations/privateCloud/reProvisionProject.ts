@@ -8,6 +8,8 @@ import {
 import { Prisma, PrivateCloudRequest } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 
+// This is the mutation resolver for the re-provision project form, which is used to re-provision a project to re apply the same quota and contacts. This is usually needed if there was a but in the provisioning previous project.
+
 const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvisionProject'] =
   async (
     _,

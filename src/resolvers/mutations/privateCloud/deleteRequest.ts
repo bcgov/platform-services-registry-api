@@ -19,6 +19,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
   let createRequest;
 
   try {
+    // Check if the user has inputed the correct arguments to delete a project
     const { id, ...project }: PrivateCloudProject =
       await prisma.privateCloudProject.findUniqueOrThrow({
         where: {
@@ -28,6 +29,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
         },
       });
 
+    // Make sure there are no other projects with the same licence plate
     const projects = await prisma.privateCloudProject.findMany({
       where: {
         licencePlate: args.licencePlate,
@@ -40,6 +42,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
       );
     }
 
+    // Check if the user inputed the correct project owner email in the delete form
     const projectOwner = await prisma.user.findUnique({
       where: {
         id: project.projectOwnerId,
@@ -52,6 +55,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
       );
     }
 
+    // Check if the user is allowed to delete the project
     const users = await prisma.user.findMany({
       where: {
         id: {
@@ -76,6 +80,7 @@ const privateCloudProjectDeleteRequest: MutationResolvers = async (
       );
     }
 
+    // Check if the project is empty
     const deleteCheckList: DeletableField = await openshiftDeletionCheck(
       project.licencePlate,
       project.cluster

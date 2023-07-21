@@ -22,6 +22,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
     let decisionStatus: DecisionStatus;
 
     try {
+      // Check if the project already has an active request
       const existingRequest: PrivateCloudRequest =
         await prisma.privateCloudRequest.findFirst({
           where: {
@@ -46,6 +47,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
       });
 
+      // Check if the user is allowed to edit the project
       if (
         ![
           project.projectOwner.email,

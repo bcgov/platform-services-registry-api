@@ -7,6 +7,8 @@ import {
 } from '../../../__generated__/resolvers-types.js';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 
+// This is the mutation resolver for the re-provision request form, which is used to re-provision a request that is stuck in a provisioning state.
+
 const privateCloudReProvisionRequest: MutationResolvers = async (
   _,
   args: MutationPrivateCloudReProvisionRequestArgs,

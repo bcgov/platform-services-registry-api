@@ -19,6 +19,8 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
     args: MutationPrivateCloudProjectRequestArgs,
     { authRoles, authEmail, prisma }
   ) => {
+
+    // Check if the user is allowed to create a project
     if (
       ![
         args.projectOwner.email,

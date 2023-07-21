@@ -5,7 +5,11 @@ import { projectA } from '../__mocks__/constants';
 
 describe('Nats messagge', () => {
   it('Should create a message object', async () => {
-    const messageObject = privateCloudNatsMessage('CREATE', projectA as any);
+    const messageObject = privateCloudNatsMessage(
+      'CREATE',
+      projectA as any,
+      '123abc'
+    );
     expect(messageObject).toBeDefined();
   });
 });
@@ -16,7 +20,7 @@ describe('message', () => {
       id: '1',
       licencePlate: 'ABCD1234',
       name: 'Test Project',
-      billingGroup: 'Test Billing Group',
+      accountCoding: 'abcdefg123',
       budget: {
         test: 10000,
         dev: 10000,
@@ -29,31 +33,42 @@ describe('message', () => {
         firstName: 'John',
         lastName: 'Doe',
       },
-      technicalLeads: [
-        {
-          email: 'techlead1@example.com',
-          firstName: 'Jane',
-          lastName: 'Smith',
-        },
-        {
-          email: 'techlead2@example.com',
-          firstName: 'Mike',
-          lastName: 'Brown',
-        },
-      ],
+      primaryTechnicalLead: {
+        email: 'techlead1@example.com',
+        firstName: 'Jane',
+        lastName: 'Smith',
+      },
+      secondaryTechnicalLead: {
+        email: 'techlead2@example.com',
+        firstName: 'Mike',
+        lastName: 'Brown',
+      },
     };
 
-    const result = publicCloudNatsMessage(requestedProject);
+    const result = publicCloudNatsMessage('CREATE', requestedProject);
 
     expect(result).toEqual({
       project_set_info: {
         licence_plate: 'ABCD1234',
+        request_type: 'CREATE',
         project_name: 'Test Project',
-        billing_group: 'Test Billing Group',
-        admin_email: 'owner@example.com',
-        admin_name: 'John Doe',
-        tech_leads: ['Jane Smith', 'Mike Brown'],
-        tech_lead_emails: ['techlead1@example.com', 'techlead2@example.com'],
+        account_coding: 'abcdefg123',
+        requested_product_owner: {
+          name: 'John Doe',
+          email: 'owner@example.com',
+        },
+        current_product_owner: null,
+        requested_tech_leads: [
+          {
+            name: 'Jane Smith',
+            email: 'techlead1@example.com',
+          },
+          {
+            name: 'Mike Brown',
+            email: 'techlead2@example.com',
+          },
+        ],
+        current_tech_leads: null,
         budgets: {
           test: 10000,
           dev: 10000,
