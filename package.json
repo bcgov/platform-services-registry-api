@@ -33,6 +33,7 @@
     "axios-token-interceptor": "^0.2.0",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
+    "cron": "^2.3.1",
     "crypto": "^1.0.1",
     "dataloader": "^2.1.0",
     "dotenv": "^16.0.3",
