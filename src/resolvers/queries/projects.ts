@@ -314,7 +314,7 @@ export const privateCloudProjectsPaginated = async (
       },
       {
         $match: {
-          status: { $regex: "ACTIVE" },
+          status: "ACTIVE",
           $and: [
             {
               $or: [
@@ -497,7 +497,7 @@ export const privateCloudProjectsPaginated = async (
       },
       {
         $match: {
-          status: { $regex: "ACTIVE" },
+          status: "ACTIVE",
           $and: [
             {
               $or: [
@@ -697,7 +697,7 @@ export const userPrivateCloudProjectsPaginated = async (
         },
         {
           $match: {
-            status: { $regex: "ACTIVE" },
+            status: "ACTIVE",
             $and: [
               {
                 $or: [
@@ -889,7 +889,7 @@ export const userPrivateCloudProjectsPaginated = async (
         },
         {
           $match: {
-            status: { $regex: "ACTIVE" },
+            status: "ACTIVE",
             $and: [
               {
                 $or: [
