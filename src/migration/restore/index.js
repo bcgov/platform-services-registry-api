@@ -68,7 +68,9 @@ async function backedUpUsers() {
             email,
             firstName,
             lastName,
-            ministry: null
+            ministry: null,
+            idir: null,
+            upn: null,
           }
         });
 
@@ -99,7 +101,9 @@ async function restoreUsers() {
               email: contact.email,
               firstName: null,
               lastName: null,
-              ministry: null
+              ministry: null,
+              idir: null,
+              upn: null,
             }
           });
           // console.log("User created:", user);
@@ -171,10 +175,10 @@ async function restoreProjects() {
       primaryTechnicalLead: { connect: { email: contacts[1].email } },
       secondaryTechnicalLead: contacts[2]?.email
         ? {
-            connect: {
-              email: contacts[2].email
-            }
+          connect: {
+            email: contacts[2].email
           }
+        }
         : undefined,
 
       ministry: jsonObject.prod.ministry_id,

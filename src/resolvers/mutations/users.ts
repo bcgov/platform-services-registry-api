@@ -10,7 +10,6 @@ export const createUser: MutationResolvers = async (
   { prisma }
 ) => {
   let user;
-
   try {
     user = await prisma.user.create({
       data: input

@@ -162,6 +162,8 @@ type User {
   lastName: String
   email: EmailAddress!
   ministry: String
+  upn: String
+  idir: String
   archived: Boolean!
   created: DateTime!
   lastSeen: DateTime
@@ -203,12 +205,16 @@ input CreateUserInput {
   lastName: String!
   email: EmailAddress!
   ministry: String
+  upn: String
+  idir: String
 }
 
 input UpdateUserInput {
   firstName: String
   lastName: String
   email: EmailAddress
+   upn: String
+  idir: String
   archived: Boolean
   lastSeen: DateTime
   projectOwner: [ID!]

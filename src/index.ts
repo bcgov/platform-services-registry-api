@@ -23,6 +23,8 @@ import {
   getIdirEmails,
   getIdirPhoto,
   getRequestStatus,
+  getIdir,
+
 } from "./controllers/index.js";
 import chesService from "./ches/index.js";
 import { connectToDatabase } from "./db.js";
@@ -113,6 +115,7 @@ app.get("/api/v1/getIdirEmails", getIdirEmails);
 
 app.get("/api/v1/getIdirPhoto", getIdirPhoto);
 
+app.get("/api/v1/getIdir", getIdir);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post("/namespace", provisionerCallbackHandler);
 
