@@ -16,5 +16,4 @@ export {
   publicCloudProvisionerCallbackHandler,
   getIdirPhoto,
   getRequestStatus,
-  provisionerCallbackHandler,
 };
