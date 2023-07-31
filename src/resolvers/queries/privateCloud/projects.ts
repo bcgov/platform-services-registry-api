@@ -1,78 +1,7 @@
-// import { collections } from "../../db.js";
-
-// // Convert document from MongoDB fromat to a format that Apollo Server can understand
-// function transformDocument(doc) {
-//   const transformedDoc = { ...doc };
-
-//   // Convert ObjectId to a string for required properties
-//   transformedDoc.id = transformedDoc._id.toString();
-//   transformedDoc.projectOwnerId = transformedDoc.projectOwnerId.toString();
-//   transformedDoc.primaryTechnicalLeadId =
-//     transformedDoc.primaryTechnicalLeadId.toString();
-
-//   if (transformedDoc.secondaryTechnicalLeadId) {
-//     transformedDoc.secondaryTechnicalLeadId =
-//       transformedDoc.secondaryTechnicalLeadId.toString();
-//   }
-
-//   // Remove the '_id' property from the new object
-//   delete transformedDoc._id;
-
-//   return transformedDoc;
-// }
-
-// function sortObjectsByName(objects, sortOrder) {
-//   objects.sort(function (a, b) {
-//     var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-//     var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-//     if (nameA < nameB) {
-//       return -1 * sortOrder;
-//     }
-//     if (nameA > nameB) {
-//       return 1 * sortOrder;
-//     }
-//     // names must be equal
-//     return 0;
-//   });
-//   return objects;
-// }
-
-// // // Testing out full text search, does not work yet. To discuss with Zahhan
-// export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
-//   let { search, filter = {}, page, pageSize, sortOrder = -1 } = args;
-//   let { ministry, cluster } = filter;
-
-//   search = search === null ? undefined : search.toLowerCase();
-//   ministry = ministry === null ? undefined : ministry;
-//   cluster = cluster === null ? undefined : cluster;
-
-//   const offset = page > 0 ? (page - 1) * pageSize : 0;
-
-//   // Find all projects that match the search criteria
-
-//   const query = {
-//     ...(search && { $text: { $search: `"${search}"` } }),
-//     ...(ministry && { ministry }),
-//     ...(cluster && { cluster }),
-//     status: "ACTIVE",
-//   };
-
-//   const rawProjects = await collections.privateCloudProjects
-//     .find(query)
-//     .skip(offset)
-//     .limit(pageSize)
-//     .sort({ name: sortOrder })
-//     .toArray();
-
-//   const projects = rawProjects.map((project) => transformDocument(project));
-
-//   const total = await collections.privateCloudProjects.countDocuments(query);
-
-//   return {
-//     projects,
-//     total,
-//   };
-// };
+import openshiftDeletionCheck, {
+  DeletableField,
+} from '../../../scripts/deletioncheck.js';
+import { PrivateCloudProject } from '@prisma/client';
 
 export const privateCloudProjects = (_, __, { prisma }) => {
   return prisma.privateCloudProject.findMany({
@@ -574,4 +503,25 @@ export const privateCloudProjectsWithFilterSearch = async (
   });
 
   return projects;
+};
+
+export const userPrivateCloudDeletionCheck = async (
+  _,
+  { projectId },
+  { prisma, user, authEmail }
+) => {
+  const project: PrivateCloudProject =
+    await prisma.privateCloudProject.findUnique({
+      where: {
+        id: projectId,
+        status: 'ACTIVE',
+      },
+    });
+
+  const deleteCheckList: DeletableField = await openshiftDeletionCheck(
+    project.licencePlate,
+    project.cluster
+  );
+
+  return Object.values(deleteCheckList).every((field) => field);
 };

@@ -119,24 +119,24 @@ app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
-cron.schedule('*/5* * * * *', async function () {
-  const requestsArr = await prisma.privateCloudRequest.findMany({
-    where: {
-      active: true,
-    },
-    include: {
-      requestedProject: true,
-    },
-  });
+// cron.schedule('*/5* * * * *', async function () {
+//   const requestsArr = await prisma.privateCloudRequest.findMany({
+//     where: {
+//       active: true,
+//     },
+//     include: {
+//       requestedProject: true,
+//     },
+//   });
 
-  requestsArr.map((request) => {
-    getRequestStatus(
-      request.id,
-      request.licencePlate,
-      request.requestedProject.cluster.toLowerCase()
-    );
-  });
-});
+//   requestsArr.map((request) => {
+//     getRequestStatus(
+//       request.id,
+//       request.licencePlate,
+//       request.requestedProject.cluster.toLowerCase()
+//     );
+//   });
+// });
 
 // app.post("/predeletion-check")
 
