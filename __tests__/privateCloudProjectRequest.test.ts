@@ -1,4 +1,4 @@
-import "../src/env";
+import '../src/env';
 import {
   Cluster,
   Ministry,
@@ -10,26 +10,35 @@ import {
   DefaultCpuOptions,
   DefaultMemoryOptions,
   DefaultStorageOptions,
-} from "../src/__generated__/resolvers-types.js";
-import resolvers from "../src/resolvers/index.js";
-import { ApolloServer } from "@apollo/server";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
-import { readFileSync } from "fs";
-import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "../src/transformers/index.js";
-import { PrismaClient } from "@prisma/client";
-import req from "../src/auth/kauthContextMock.js";
-import assert from "assert";
-import supertest from "supertest";
+} from '../src/__generated__/resolvers-types.js';
+import resolvers from '../src/resolvers/index.js';
+import { ApolloServer } from '@apollo/server';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
+import { readFileSync } from 'fs';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
+import applyDirectiveTransformers from '../src/transformers/index.js';
+import { PrismaClient } from '@prisma/client';
+import req from '../src/auth/kauthContextMock.js';
+import assert from 'assert';
+import supertest from 'supertest';
 import {
   mockProjectOwner,
   mockPrimaryTechnicalLead,
   mockSecondaryTechnicalLead,
   mockProjectA,
   mockProjectB,
-} from "../__mocks__/constants.js";
-// import { defaultQuota } from "../../src/utils/defaultQuota";
+} from '../__mocks__/constants.js';
+
+jest.mock('../src/scripts/deletioncheck.js', () => ({
+  __esModule: true, // this property makes it work
+  default: jest.fn().mockResolvedValue({
+    namespaceDeletability: true,
+    podsDeletability: true,
+    pvcDeletability: true,
+    provisionerDeletionChecked: true,
+  }),
+}));
 
 interface ContextValue {
   kauth: KeycloakContext;
@@ -44,11 +53,11 @@ const contextValue: ContextValue = {
   prisma: prisma,
   // @ts-ignore
   kauth: new KeycloakContext({ req }),
-  authEmail: "oamar.kanji@gov.bc.ca",
-  authRoles: ["admin"],
+  authEmail: 'oamar.kanji@gov.bc.ca',
+  authRoles: ['admin'],
 };
 
-const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
+const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
@@ -61,11 +70,28 @@ const server = new ApolloServer<ContextValue>({
   schema,
 });
 
+async function cleanUp() {
+  const deleteRequests = prisma.privateCloudRequest.deleteMany();
+  const deleteProjects = prisma.privateCloudProject.deleteMany();
+  const deleteRequestedProjects =
+    prisma.privateCloudRequestedProject.deleteMany();
+  const deleteUsers = prisma.user.deleteMany();
+
+  await prisma.$transaction([
+    deleteRequests,
+    deleteProjects,
+    deleteRequestedProjects,
+    deleteUsers,
+  ]);
+}
+
 let createRequestIdA;
 let createRequestIdB;
 
-describe("Request tests", () => {
+describe('Request tests', () => {
   beforeAll(async () => {
+    await cleanUp();
+
     await prisma.user.createMany({
       data: [
         mockProjectOwner,
@@ -81,26 +107,15 @@ describe("Request tests", () => {
     await prisma.privateCloudProject.create({
       data: mockProjectB,
     });
-  });
+  }, 20000);
 
   afterAll(async () => {
-    const deleteRequests = prisma.privateCloudRequest.deleteMany();
-    const deleteProjects = prisma.privateCloudProject.deleteMany();
-    const deleteRequestedProjects =
-      prisma.privateCloudRequestedProject.deleteMany();
-    const deleteUsers = prisma.user.deleteMany();
-
-    await prisma.$transaction([
-      deleteRequests,
-      deleteProjects,
-      deleteRequestedProjects,
-      deleteUsers,
-    ]);
+    await cleanUp();
 
     await prisma.$disconnect();
-  });
+  }, 20000);
 
-  test("creates a private cloud project request without secondary technical lead", async () => {
+  test('creates a private cloud project request without secondary technical lead', async () => {
     const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectRequest(
         $name: String!,
         $description: String!,
@@ -140,27 +155,27 @@ describe("Request tests", () => {
       }
     }`;
 
-    const name: string = "Test Project";
-    const description: string = "Test Description";
+    const name: string = 'Test Project';
+    const description: string = 'Test Description';
     const ministry: Ministry = Ministry.Ag;
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
-      other: "test",
+      other: 'test',
       noServices: false,
     };
 
     const projectOwner: CreateUserInput = {
-      email: "oamar.kanji@gov.bc.ca",
-      firstName: "Oamar",
-      lastName: "Kanji",
+      email: 'oamar.kanji@gov.bc.ca',
+      firstName: 'Oamar',
+      lastName: 'Kanji',
       ministry: Ministry.Ag,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
-      email: "xyz@test.com",
-      firstName: "Jane",
-      lastName: "Smith",
+      email: 'xyz@test.com',
+      firstName: 'Jane',
+      lastName: 'Smith',
       ministry: Ministry.Hlth,
     };
 
@@ -182,7 +197,7 @@ describe("Request tests", () => {
       }
     );
 
-    assert(response.body.kind === "single");
+    assert(response.body.kind === 'single');
     expect(response.body.singleResult.errors).toBeUndefined();
     expect(response).toMatchSnapshot({
       body: {
@@ -249,9 +264,9 @@ describe("Request tests", () => {
     expect(primaryTechnicalLeadUser?.ministry).toBe(
       primaryTechnicalLead.ministry
     );
-  });
+  }, 20000);
 
-  test("Creates a private cloud project request with secondary technical lead", async () => {
+  test('Creates a private cloud project request with secondary technical lead', async () => {
     const CREATE_PRIVATE_CLOUD_PROJECT_REQUEST = `
     mutation PrivateCloudProjectRequest(
       $name: String!,
@@ -289,34 +304,34 @@ describe("Request tests", () => {
     }
   }`;
 
-    const name: string = "Test Project";
-    const description: string = "Test Description";
+    const name: string = 'Test Project';
+    const description: string = 'Test Description';
     const ministry: Ministry = Ministry.Ag;
     const cluster: Cluster = Cluster.Klab;
 
     const commonComponents: CommonComponentsInput = {
-      other: "test",
+      other: 'test',
       noServices: false,
     };
 
     const projectOwner: CreateUserInput = {
-      email: "oamar.kanji@gov.bc.ca",
-      firstName: "Oamar",
-      lastName: "Kanji",
+      email: 'oamar.kanji@gov.bc.ca',
+      firstName: 'Oamar',
+      lastName: 'Kanji',
       ministry: Ministry.Ag,
     };
 
     const primaryTechnicalLead: CreateUserInput = {
-      email: "xyz@test.com",
-      firstName: "Jane",
-      lastName: "Smith",
+      email: 'xyz@test.com',
+      firstName: 'Jane',
+      lastName: 'Smith',
       ministry: Ministry.Hlth,
     };
 
     const secondaryTechnicalLead: CreateUserInput = {
-      email: "testSecondaryTechnicalLead@test.com",
-      firstName: "John",
-      lastName: "Doe",
+      email: 'testSecondaryTechnicalLead@test.com',
+      firstName: 'John',
+      lastName: 'Doe',
       ministry: Ministry.Citz,
     };
 
@@ -339,7 +354,7 @@ describe("Request tests", () => {
       }
     );
 
-    assert(response.body.kind === "single");
+    assert(response.body.kind === 'single');
     expect(response.body.singleResult.errors).toBeUndefined();
     expect(response).toMatchSnapshot({
       body: {
@@ -377,9 +392,9 @@ describe("Request tests", () => {
     expect(secondaryTechnicalLeadUser?.ministry).toBe(
       secondaryTechnicalLead.ministry
     );
-  });
+  }, 20000);
 
-  test("Approve a private cloud project request", async () => {
+  test('Approve a private cloud project request', async () => {
     const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `
     mutation PrivateCloudRequestDecision(
       $requestId: ID!,
@@ -439,7 +454,7 @@ describe("Request tests", () => {
     expect(request?.createdByEmail).toBe(contextValue.authEmail);
   });
 
-  test("Reject a private cloud project request", async () => {
+  test('Reject a private cloud project request', async () => {
     const MAKE_PRIVATE_CLOUD_PROJECT_REQUEST_DECISION = `mutation PrivateCloudRequestDecision(
       $requestId: ID!,
       $decision: RequestDecision!) {
@@ -491,11 +506,11 @@ describe("Request tests", () => {
     expect(request).not.toBeNull();
     expect(request?.decisionStatus).toBe(RequestDecision.Rejected);
     expect(request?.createdByEmail).toBe(contextValue.authEmail);
-  });
+  }, 20000);
 
-  test("Delete request", async () => {
-    const DELETE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectDeleteRequest($projectId: ID!) {
-      privateCloudProjectDeleteRequest(projectId: $projectId) {
+  test('Delete request', async () => {
+    const DELETE_PRIVATE_CLOUD_PROJECT_REQUEST = `mutation PrivateCloudProjectDeleteRequest($projectId: ID!, $licencePlate: String!, $projectOwnerEmail: EmailAddress!) {
+      privateCloudProjectDeleteRequest(projectId: $projectId, licencePlate: $licencePlate, projectOwnerEmail: $projectOwnerEmail) {
         id
         active
         createdBy {
@@ -518,6 +533,8 @@ describe("Request tests", () => {
         query: DELETE_PRIVATE_CLOUD_PROJECT_REQUEST,
         variables: {
           projectId: mockProjectA.id,
+          licencePlate: mockProjectA.licencePlate,
+          projectOwnerEmail: 'oamarkanji@gmail.com',
         },
       },
       {
@@ -525,6 +542,8 @@ describe("Request tests", () => {
       }
     );
 
+    // @ts-ignore
+    console.log(response.body?.singleResult?.errors);
     const request = await prisma.privateCloudRequest.findUnique({
       where: {
         // @ts-ignore
@@ -547,9 +566,9 @@ describe("Request tests", () => {
     expect(request).not.toBeNull();
     expect(request?.active).toBe(true);
     expect(request?.type).toBe(RequestType.Delete);
-  });
+  }, 40000);
 
-  test("Makes an edit request", async () => {
+  test('Makes an edit request', async () => {
     const EDIT_REQUEST = `mutation Mutation(
       $projectId: ID!,
       $name: String!,
@@ -584,18 +603,18 @@ describe("Request tests", () => {
 
     const variables = {
       projectId: mockProjectB.id,
-      name: "new name",
-      description: "new description",
+      name: 'new name',
+      description: 'new description',
       projectOwner: {
-        email: "oamarkanji@gmail.com",
-        firstName: "testA",
-        lastName: "testA",
+        email: 'oamarkanji@gmail.com',
+        firstName: 'testA',
+        lastName: 'testA',
         ministry: Ministry.Ag,
       },
       primaryTechnicalLead: {
-        email: "new@test.com",
-        firstName: "testA",
-        lastName: "testA",
+        email: 'new@test.com',
+        firstName: 'testA',
+        lastName: 'testA',
         ministry: Ministry.Ag,
       },
       commonComponents: {
@@ -674,7 +693,7 @@ describe("Request tests", () => {
       addressAndGeolocation: null,
       workflowManagement: null,
       formDesignAndSubmission: null,
-      identityManagement: "PLANNING_TO_USE",
+      identityManagement: 'PLANNING_TO_USE',
       paymentServices: null,
       documentManagement: null,
       endUserNotificationAndSubscription: null,
@@ -691,5 +710,5 @@ describe("Request tests", () => {
       memory: DefaultMemoryOptions.MemoryRequest_64Limit_128,
       storage: DefaultStorageOptions.Storage_16,
     });
-  });
+  }, 20000);
 });

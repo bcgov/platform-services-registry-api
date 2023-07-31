@@ -8,7 +8,7 @@ const { PrismaClient } = require("@prisma/client");
 const { data } = require("./data.js");
 const prisma = new PrismaClient();
 
-const CLUSTER = "GOLD"; // Replace with the cluster you want to set for all projects
+const CLUSTER = "CLAB"; // Replace with the cluster you want to set for all projects
 
 console.log(CLUSTER);
 

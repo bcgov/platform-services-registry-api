@@ -2,9 +2,12 @@ import {
   MutationPrivateCloudReProvisionRequestArgs,
   MutationResolvers,
   RequestDecision,
-  Cluster
-} from "../../__generated__/resolvers-types.js";
-import sendNatsMessage from "../../nats/sendNatsMessage.js";
+  Cluster,
+  PrivateCloudRequest,
+} from '../../../__generated__/resolvers-types.js';
+import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
+
+// This is the mutation resolver for the re-provision request form, which is used to re-provision a request that is stuck in a provisioning state.
 
 const privateCloudReProvisionRequest: MutationResolvers = async (
   _,
@@ -13,46 +16,54 @@ const privateCloudReProvisionRequest: MutationResolvers = async (
 ) => {
   const { requestId } = args;
 
-  if (!authRoles.includes("admin")) {
-    throw new Error("You must be an admin to re provision a request.");
+  if (!authRoles.includes('admin')) {
+    throw new Error('You must be an admin to re provision a request.');
   }
 
   const request = await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
-      active: true
+      active: true,
     },
     include: {
       project: {
         include: {
           projectOwner: true,
           primaryTechnicalLead: true,
-          secondaryTechnicalLead: true
-        }
+          secondaryTechnicalLead: true,
+        },
       },
       requestedProject: {
         include: {
           projectOwner: true,
           primaryTechnicalLead: true,
-          secondaryTechnicalLead: true
-        }
-      }
-    }
+          secondaryTechnicalLead: true,
+        },
+      },
+    },
   });
 
   const { decisionStatus, active } = request;
 
   if (decisionStatus !== RequestDecision.Approved || !active) {
-    throw new Error("Request must be active and approved.");
+    throw new Error('Request must be active and approved.');
   }
 
   if (request.decisionStatus === RequestDecision.Approved) {
-    await sendNatsMessage(request.type, request.requestedProject, request.id);
+    await sendPrivateCloudNatsMessage(
+      request.type,
+      request.requestedProject,
+      request.id
+    );
 
     if (request.requestedProject.cluster === Cluster.Gold) {
       const goldDrRequest = { ...request };
       goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendNatsMessage(request.type, request.requestedProject, request.id);
+      await sendPrivateCloudNatsMessage(
+        request.type,
+        request.requestedProject,
+        request.id
+      );
     }
   }
 

@@ -2,9 +2,50 @@ import {
   Cluster,
   RequestType,
   DefaultCpuOptions,
+  CpuOption,
+  MemoryOption,
+  StorageOption,
   DefaultMemoryOptions,
-  DefaultStorageOptions
-} from "./constants.js";
+  DefaultStorageOptions,
+} from './constants.js';
+import { Prisma, RequestType as Action } from '@prisma/client';
+
+export type PrivateCloudRequestedProject =
+  Prisma.PrivateCloudRequestedProjectGetPayload<{
+    select: {
+      productionQuota: true;
+      developmentQuota: true;
+      testQuota: true;
+      toolsQuota: true;
+      id: true;
+      licencePlate: true;
+      name: true;
+      description: true;
+      ministry: true;
+      cluster: true;
+      projectOwner: {
+        select: {
+          email: true;
+        };
+      };
+      primaryTechnicalLead: {
+        select: {
+          email: true;
+        };
+      };
+      secondaryTechnicalLead: {
+        select: {
+          email: true;
+        };
+      };
+    };
+  }>;
+
+type QuotaOption = {
+  cpu: CpuOption;
+  memory: MemoryOption;
+  storage: StorageOption;
+};
 
 // Create a test env variable that prefix the namespace name with "t"
 function message(action, requestedProject, requestId) {
@@ -21,73 +62,73 @@ function message(action, requestedProject, requestId) {
     toolsQuota,
     projectOwner,
     primaryTechnicalLead,
-    secondaryTechnicalLead
+    secondaryTechnicalLead,
   } = requestedProject;
-  
+
   const snapshot = {
-    name: "snapshot-5",
-    snapshotCount: 5
+    name: 'snapshot-5',
+    snapshotCount: 5,
   };
 
-  testQuota = {
+  const provisionerTestQuota: QuotaOption = {
     cpu: DefaultCpuOptions[testQuota.cpu],
     memory: DefaultMemoryOptions[testQuota.memory],
-    storage: DefaultStorageOptions[testQuota.storage]
+    storage: DefaultStorageOptions[testQuota.storage],
   };
 
-  productionQuota = {
+  const provisionerProductionQuota: QuotaOption = {
     cpu: DefaultCpuOptions[productionQuota.cpu],
     memory: DefaultMemoryOptions[productionQuota.memory],
-    storage: DefaultStorageOptions[productionQuota.storage]
+    storage: DefaultStorageOptions[productionQuota.storage],
   };
 
-  developmentQuota = {
+  const provisionerDevelopmentQuota: QuotaOption = {
     cpu: DefaultCpuOptions[developmentQuota.cpu],
     memory: DefaultMemoryOptions[developmentQuota.memory],
-    storage: DefaultStorageOptions[developmentQuota.storage]
+    storage: DefaultStorageOptions[developmentQuota.storage],
   };
 
-  toolsQuota = {
+  const provisionerToolsQuota: QuotaOption = {
     cpu: DefaultCpuOptions[toolsQuota.cpu],
     memory: DefaultMemoryOptions[toolsQuota.memory],
-    storage: DefaultStorageOptions[toolsQuota.storage]
+    storage: DefaultStorageOptions[toolsQuota.storage],
   };
 
-  let allianceLabel = "";
+  let allianceLabel = '';
   switch (ministry.toLocaleLowerCase()) {
-    case "ag":
-    case "pssg":
-    case "embc":
-    case "mah":
-      allianceLabel = "JAG";
+    case 'ag':
+    case 'pssg':
+    case 'embc':
+    case 'mah':
+      allianceLabel = 'JAG';
       break;
     default:
-      allianceLabel = "none";
+      allianceLabel = 'none';
       break;
   }
 
   const projectOwnerContact = {
     email: projectOwner.email,
-    role: "owner"
+    role: 'owner',
   };
 
   const primaryTechnicalLeadContact = {    
     email: primaryTechnicalLead.email,
-    role: "lead"
+    role: 'lead',
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
     ? {      
         email: secondaryTechnicalLead.email,
-        role: "lead"
+        role: 'lead',
       }
     : null;
 
   const namespaces = [
-    { quotaName: "tools", quota: toolsQuota },
-    { quotaName: "prod", quota: productionQuota },
-    { quotaName: "dev", quota: developmentQuota },
-    { quotaName: "test", quota: testQuota }
+    { quotaName: 'tools', quota: provisionerToolsQuota },
+    { quotaName: 'prod', quota: provisionerProductionQuota },
+    { quotaName: 'dev', quota: provisionerDevelopmentQuota },
+    { quotaName: 'test', quota: provisionerTestQuota },
   ].map(({ quotaName, quota }) => ({
     // namespace_id: 21,
     name: `${licencePlate}-${[quotaName]}`,
@@ -95,46 +136,46 @@ function message(action, requestedProject, requestId) {
       cpu: quota.cpu.name,
       memory: quota.memory.name,
       storage: quota.storage.name,
-      snapshot: snapshot.name
+      snapshot: snapshot.name,
     },
     quotas: {
       cpu: { requests: quota.cpu.cpuRequests, limits: quota.cpu.cpuLimits },
       memory: {
         requests: quota.memory.memoryRequests,
-        limits: quota.memory.memoryLimits
+        limits: quota.memory.memoryLimits,
       },
       storage: {
         block: quota.storage.storageBlock,
         file: quota.storage.storageFile,
         backup: quota.storage.storageBackup,
         capacity: quota.storage.storageCapacity,
-        pvc_count: quota.storage.storagePvcCount
+        pvc_count: quota.storage.storagePvcCount,
       },
-      snapshot: { count: snapshot.snapshotCount }
-    }
+      snapshot: { count: snapshot.snapshotCount },
+    },
   }));
 
-  const request = {
+  const messageBody = {
     action: RequestType[action],
     profile_id: id,
     licencePlate: licencePlate,
-    workflow: `${Cluster[cluster]}-${licencePlate}-${requestId}`,//should be unique request ID _id request
+    workflow: `${Cluster[cluster]}-${licencePlate}-${requestId}`, //should be unique request ID _id request
     // cluster_id: cluster,
     cluster_name: Cluster[cluster],
     display_name: name,
     description: description,
     ministry_id: ministry,
-    merge_type: "auto", // Make this a variable
+    merge_type: 'auto', // Make this a variable
     alliance: allianceLabel, // "JAG" for Justice Attornies Group, else "none"
     namespaces,
     contacts: [
       projectOwnerContact,
       primaryTechnicalLeadContact,
-      secondaryTechnicalLeadContact
-    ].filter(Boolean)
+      secondaryTechnicalLeadContact,
+    ].filter(Boolean),
   };
 
-  return request;
+  return messageBody;
 }
 
 export default message;

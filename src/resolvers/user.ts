@@ -23,6 +23,15 @@ const User = {
         },
       })
       .privateCloudProjectSecondaryTechnicalLead(),
+  isNew: async (user, _, { prisma }) => {
+    await prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    return !!user;
+  },
 };
 
 export default User;
