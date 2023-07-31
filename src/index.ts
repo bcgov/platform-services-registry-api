@@ -5,7 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
 import express from 'express';
-import cron from "node-cron";
+import cron from 'node-cron';
 import http from 'http';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -14,7 +14,7 @@ import { readFileSync } from 'fs';
 import configureKeycloak from './auth/config.js';
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import applyDirectiveTransformers from './transformers/index.js';
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 import {
   privateCloudProvisionerCallbackHandler,
   publicCloudProvisionerCallbackHandler,
@@ -115,7 +115,6 @@ app.get('/api/v1/getIdirEmails', getIdirEmails);
 
 app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 
-// app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
@@ -137,8 +136,6 @@ app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 //     );
 //   });
 // });
-
-// app.post("/predeletion-check")
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
