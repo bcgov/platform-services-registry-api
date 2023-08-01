@@ -3,7 +3,7 @@ import { DecisionStatus } from '../__generated__/resolvers-types.js';
 import { sendProvisionedEmails } from '../ches/emailHandlers.js';
 
 const provisionerCallbackHandler = async (req, res) => {
-  const { prefix: licencePlate, cluster } = req.body;
+  const { prefix: licencePlate, clusterName: cluster } = req.body;
 
   if (!licencePlate || !cluster) {
     return res.status(400).json({
