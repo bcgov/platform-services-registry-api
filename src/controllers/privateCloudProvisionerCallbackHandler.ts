@@ -5,6 +5,10 @@ import { sendProvisionedEmails } from '../ches/emailHandlersPrivate.js';
 const provisionerCallbackHandler = async (req, res) => {
   const { prefix: licencePlate, clusterName: cluster } = req.body;
 
+  console.log('Received provisioner callback for project: ' + licencePlate)
+  console.log('Cluster: ' + cluster)
+  console.log("Licence Plate: " + licencePlate)
+
   if (!licencePlate || !cluster) {
     return res.status(400).json({
       error: true,
@@ -18,7 +22,7 @@ const provisionerCallbackHandler = async (req, res) => {
         active: true,
         decisionStatus: DecisionStatus.Approved,
         requestedProject: {
-          cluster: cluster,
+          cluster: cluster.toUpperCase(),
         },
       },
       include: {
