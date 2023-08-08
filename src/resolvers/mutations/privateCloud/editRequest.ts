@@ -7,7 +7,7 @@ import {
 } from '../../../__generated__/resolvers-types.js';
 import { Prisma, PrivateCloudRequest } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
-import { sendEditRequestEmails } from '../../../ches/emailHandlers.js';
+import { sendEditRequestEmails } from '../../../ches/emailHandlersPrivate.js';
 
 const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEditRequest'] =
   async (

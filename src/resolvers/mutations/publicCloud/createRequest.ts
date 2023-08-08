@@ -7,7 +7,7 @@ import {
 } from '../../../__generated__/resolvers-types.js';
 import generateLicensePlate from '../../../utils/generateLicencePlate.js';
 import { Prisma } from '@prisma/client';
-import { sendCreateRequestEmails } from '../../../ches/emailHandlers.js';
+import { sendCreateRequestEmails } from '../../../ches/emailHandlersPublic.js';
 
 const publicCloudProjectRequest = async (
   _,
@@ -112,7 +112,7 @@ const publicCloudProjectRequest = async (
     throw e;
   }
 
-  // sendCreateRequestEmails(createRequest.requestedProject);
+  sendCreateRequestEmails(createRequest.requestedProject);
 
   return createRequest as PublicCloudCreateRequest;
 };

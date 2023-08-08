@@ -1,6 +1,6 @@
 import { prisma } from '../index.js';
 import { DecisionStatus } from '../__generated__/resolvers-types.js';
-import { sendProvisionedEmails } from '../ches/emailHandlers.js';
+import { sendProvisionedEmails } from '../ches/emailHandlersPublic.js';
 
 const provisionerCallbackHandler = async (req, res) => {
   const { licencePlate, provider } = req.body;
@@ -78,7 +78,7 @@ const provisionerCallbackHandler = async (req, res) => {
 
       return updateRequest;
     });
-    // sendProvisionedEmails(request);
+    sendProvisionedEmails(request);
     console.log(`Provisioned project: ${licencePlate}`);
     res.status(200).end();
   } catch (error) {

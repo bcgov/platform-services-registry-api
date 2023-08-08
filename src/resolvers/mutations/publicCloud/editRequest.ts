@@ -10,7 +10,7 @@ import {
   CommonComponents as CommonComponentsPrisma,
 } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
-import { sendEditRequestEmails } from '../../../ches/emailHandlers.js';
+import { sendEditRequestEmails } from '../../../ches/emailHandlersPrivate.js';
 
 const publicCloudProjectEditRequest = async (
   _,
