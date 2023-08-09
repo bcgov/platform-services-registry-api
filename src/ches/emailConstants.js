@@ -1,6 +1,6 @@
-// export const adminEmails = ["faisal.hamood@gov.bc.ca", "jason.leach@fullboar.ca", "oamar.kanji@gov.bc.ca"];
-export const adminPublicEmails = ["zhanna@bcdevexchange.org"];
-export const adminEmails=[""]
+export const adminEmails = ["faisal.hamood@gov.bc.ca", "jason.leach@fullboar.ca", "oamar.kanji@gov.bc.ca"];
+export const adminPublicEmails = [];
+
 export const ministriesNames = [
   {
     id: 1,
