@@ -15,7 +15,7 @@
                                           text-align: left;
                                           max-width: 90%;
                                           ">
-                                          Your resource quota change request for an Openshift namespace has been received!
+                                          Your product details change request for an AWS has been received!
                                        </h2>
                                     </td>
                                  </tr>
@@ -36,23 +36,7 @@
                                           text-align: left;
                                           max-width: 90%;
                                           ">
-                                         We have received your quota change request. Platform Resource Tuning Advisor Jason Leach will review your request.     
-                                        </p>
-                                       <p style="
-                                          color: #313132;
-                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
-                                          word-break: break-word;
-                                          font-size: 14px;
-                                          line-height: 1.5;
-                                          text-align: left;
-                                          max-width: 90%;
-                                          ">
-                                         If you haven't discussed this change with Jason, please email supporting information for your request to <a style="
-                                         color: #003366;                                    
-                                         font-style: bold;
-                                         "
-                                         href="mailto:PlatformServicesTeam@gov.bc.ca">PlatformServicesTeam@gov.bc.ca</a>. You need to provide justification for your quota change. This should include historic consumption data for the resource that you are requesting a quota change for (such as CPU, RAM, and/or data storage).    
-                                       </p>
+                                         We have received your product change request.      </p>
                                     </td>
                                  </tr>
                               </table>
@@ -282,9 +266,9 @@
                                 <![endif]-->
                               </div>
                               {% endif %}   
-                              {% if AccountCodingReq!=AccountCodingReq%}
+                              {% if isAccountCodingChanged%}
                               <div class="two-col"
-                                style="text-align:center;font-size:0;background-color: #ffffff;  ">
+                                style="text-align:center;font-size:0;background-color: #ffffff; ">
                                 <!--[if mso]>
                                 <table role="presentation" width="100%">
                                   <tr>
@@ -334,7 +318,9 @@
                               </div>
                               {% endif %} 
                               <div class="spacer" style="line-height:0px;height:0px;mso-line-height-rule:exactly;border-bottom:1px solid #B0BFC6;">&nbsp;
-                              </div>  
+                            </div> 
+                            <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;
+                            </div>
                             <table role="presentation"
                               style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
                               <tr>
@@ -560,7 +546,7 @@
                                 <![endif]-->
                               </div>
                               {% endif %}   
-                              {% if AccountCodingReq!=AccountCodingReq%}
+                              {% if isAccountCodingChanged%}
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -611,6 +597,8 @@
                                 <![endif]-->
                               </div>
                               {% endif %} 
+                              <div class="spacer" style="line-height:24px;height:24px;border-top:1px solid #B0BFC6;mso-line-height-rule:exactly;">&nbsp;
+                            </div>
                            <table role="presentation"
                            style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
                            <tr>

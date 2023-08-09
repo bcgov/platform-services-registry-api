@@ -240,7 +240,7 @@ export const generateEmailTemplatePublicData = (
         ? { ...incomingRequest }
         : { ...incomingProject };
 
-        
+
     const secondaryTechnicalLead =
         (!!project.secondaryTechnicalLead || !!requestedProject.secondaryTechnicalLead) && requestedProject.secondaryTechnicalLead.id !== project.secondaryTechnicalLead.id
             ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
@@ -270,16 +270,17 @@ export const generateEmailTemplatePublicData = (
             ? secondaryTechnicalLead?.POIDIR
             : null,
         isBudgetChanged: isObjectChanged(requestedProject.budget, project.budget),
+        isAccountCodingChanged: requestedProject.accountCoding !== project.accountCoding,
         BudgetDev: requestedProject.budget.dev,
         BudgetTest: requestedProject.budget.test,
         BudgetProd: requestedProject.budget.prod,
         BudgetTools: requestedProject.budget.tools,
-        AccountCoding: requestedProject.accountCoding,
+        AccountCoding: requestedProject.accountCoding.replace(/(.{3})(.{5})(.{5})(.{4})(.{7})/g, "$1 $2 $3 $4 $5"),
         BudgetDevReq: project.budget.dev,
         BudgetTestReq: project.budget.test,
         BudgetProdReq: project.budget.prod,
         BudgetToolsReq: project.budget.tools,
-        AccountCodingReq: project.accountCoding,
+        AccountCodingReq: project.accountCoding.replace(/(.{3})(.{5})(.{5})(.{4})(.{7})/g, "$1 $2 $3 $4 $5"),
         ...other,
     };
 };
