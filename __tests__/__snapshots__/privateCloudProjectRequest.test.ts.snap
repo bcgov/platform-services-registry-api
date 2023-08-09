@@ -94,39 +94,6 @@ exports[`Request tests Delete request 1`] = `
 }
 `;
 
-exports[`Request tests Delete request 2`] = `
-{
-  "body": {
-    "kind": "single",
-    "singleResult": {
-      "data": {
-        "privateCloudProjectDeleteRequest": {
-          "active": true,
-          "createdBy": {
-            "email": "oamar.kanji@gov.bc.ca",
-          },
-          "decisionDate": null,
-          "decisionMaker": null,
-          "decisionStatus": "PENDING",
-          "id": Any<String>,
-          "project": {
-            "name": "test project",
-          },
-          "type": "DELETE",
-        },
-      },
-      "errors": undefined,
-    },
-  },
-  "http": {
-    "headers": Map {
-      "cache-control" => "no-store",
-    },
-    "status": undefined,
-  },
-}
-`;
-
 exports[`Request tests Makes an edit request 1`] = `
 {
   "body": {
