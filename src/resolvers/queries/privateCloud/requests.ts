@@ -28,8 +28,10 @@ export const userPrivateCloudRequestById = async (
   _,
   { requestId },
   { prisma, authEmail }
-) =>
-  await prisma.privateCloudRequest.findUnique({
+) => {
+  console.log('authEmail', authEmail);
+  console.log('requestId', requestId);
+  return await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
       OR: [
@@ -54,6 +56,7 @@ export const userPrivateCloudRequestById = async (
       ],
     },
   });
+};
 
 export const userPrivateCloudRequests = (_, __, { prisma, authEmail }) => {
   return prisma.privateCloudRequest.findMany({

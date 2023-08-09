@@ -211,7 +211,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $match: {
-          status: { $regex: 'ACTIVE' },
+          status: 'ACTIVE',
           $and: [
             {
               $or: [
@@ -394,7 +394,7 @@ export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $match: {
-          status: { $regex: 'ACTIVE' },
+          status: 'ACTIVE',
           $and: [
             {
               $or: [
