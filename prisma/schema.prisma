@@ -126,6 +126,7 @@ model PublicCloudProject {
   created                  DateTime             @default(now())
   accountCoding            String
   budget                   Budget
+  enterpriseSupport        EnterpriseSupport
   projectOwnerId           String               @db.ObjectId
   projectOwner             User                 @relation("publicCloudProjectOwner", fields: [projectOwnerId], references: [id])
   primaryTechnicalLeadId   String               @db.ObjectId
@@ -147,6 +148,7 @@ model PublicCloudRequestedProject {
   created                  DateTime            @default(now())
   accountCoding            String
   budget                   Budget
+  enterpriseSupport        EnterpriseSupport
   projectOwnerId           String              @db.ObjectId
   projectOwner             User                @relation("publicCloudRequestedProjectOwner", fields: [projectOwnerId], references: [id])
   primaryTechnicalLeadId   String              @db.ObjectId
@@ -170,6 +172,13 @@ type Budget {
   test  Int
   prod  Int
   tools Int
+}
+
+type EnterpriseSupport {
+  dev   Boolean
+  test  Boolean
+  prod  Boolean
+  tools Boolean
 }
 
 type CommonComponents {

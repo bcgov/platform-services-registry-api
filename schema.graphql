@@ -173,6 +173,7 @@ type PublicCloudProject {
   primaryTechnicalLead: User!
   secondaryTechnicalLead: User
   budget: Budget!
+  enterpriseSupport: EnterpriseSupport!
   accountCoding: String!
   ministry: Ministry!
   provider: Provider!
@@ -274,6 +275,20 @@ type Budget {
   test: Int!
   dev: Int!
   tools: Int!
+}
+
+type EnterpriseSupport {
+  dev: Boolean!
+  prod: Boolean!
+  test: Boolean!
+  tools: Boolean!
+}
+
+input EnterpriseSupportInput {
+  dev: Boolean!
+  prod: Boolean!
+  test: Boolean!
+  tools: Boolean!
 }
 
 input BudgetInput {
@@ -472,6 +487,7 @@ type Mutation {
     ministry: Ministry!
     provider: Provider!
     budget: BudgetInput!
+    enterpriseSupport: EnterpriseSupportInput!
     accountCoding: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
@@ -485,6 +501,7 @@ type Mutation {
     description: String!
     ministry: Ministry!
     budget: BudgetInput!
+    enterpriseSupport: EnterpriseSupportInput!
     accountCoding: String
     commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!

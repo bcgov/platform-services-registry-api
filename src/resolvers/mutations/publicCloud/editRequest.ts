@@ -80,6 +80,7 @@ const publicCloudProjectEditRequest = async (
     description: args.description,
     provider: project.provider,
     budget: args.budget,
+    enterpriseSupport: args.enterpriseSupport,
     ministry: args.ministry,
     status: project.status,
     licencePlate: project.licencePlate,

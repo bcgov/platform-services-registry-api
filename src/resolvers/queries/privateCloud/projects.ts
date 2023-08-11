@@ -68,7 +68,7 @@ export const userPrivateCloudProjectsByIds = async (
     },
   });
 
-export const privateCloudProjectsPaginated = async (_, args, { prisma }) => {
+export const userPrivateCloudProjectsPaginated = async (_, args, { prisma }) => {
   let {
     search,
     filter = {},

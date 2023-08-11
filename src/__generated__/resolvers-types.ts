@@ -123,6 +123,21 @@ export enum DefaultStorageOptions {
   Storage_512 = 'STORAGE_512'
 }
 
+export type EnterpriseSupport = {
+  __typename?: 'EnterpriseSupport';
+  dev: Scalars['Boolean'];
+  prod: Scalars['Boolean'];
+  test: Scalars['Boolean'];
+  tools: Scalars['Boolean'];
+};
+
+export type EnterpriseSupportInput = {
+  dev: Scalars['Boolean'];
+  prod: Scalars['Boolean'];
+  test: Scalars['Boolean'];
+  tools: Scalars['Boolean'];
+};
+
 export enum Environment {
   Development = 'DEVELOPMENT',
   Production = 'PRODUCTION',
@@ -249,6 +264,7 @@ export type MutationPublicCloudProjectEditRequestArgs = {
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
+  enterpriseSupport: EnterpriseSupportInput;
   ministry: Ministry;
   name: Scalars['String'];
   primaryTechnicalLead: CreateUserInput;
@@ -263,6 +279,7 @@ export type MutationPublicCloudProjectRequestArgs = {
   budget: BudgetInput;
   commonComponents: CommonComponentsInput;
   description: Scalars['String'];
+  enterpriseSupport: EnterpriseSupportInput;
   ministry: Ministry;
   name: Scalars['String'];
   primaryTechnicalLead: CreateUserInput;
@@ -344,6 +361,7 @@ export type PublicCloudProject = {
   commonComponents: CommonComponents;
   created: Scalars['DateTime'];
   description: Scalars['String'];
+  enterpriseSupport: EnterpriseSupport;
   id: Scalars['ID'];
   licencePlate: Scalars['ID'];
   ministry: Ministry;
@@ -732,6 +750,8 @@ export type ResolversTypes = ResolversObject<{
   DefaultMemoryOptions: DefaultMemoryOptions;
   DefaultStorageOptions: DefaultStorageOptions;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
+  EnterpriseSupport: ResolverTypeWrapper<EnterpriseSupport>;
+  EnterpriseSupportInput: EnterpriseSupportInput;
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
@@ -771,6 +791,8 @@ export type ResolversParentTypes = ResolversObject<{
   CreateUserInput: CreateUserInput;
   DateTime: Scalars['DateTime'];
   EmailAddress: Scalars['EmailAddress'];
+  EnterpriseSupport: EnterpriseSupport;
+  EnterpriseSupportInput: EnterpriseSupportInput;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
   ID: Scalars['ID'];
@@ -826,6 +848,14 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
   name: 'EmailAddress';
 }
 
+export type EnterpriseSupportResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['EnterpriseSupport'] = ResolversParentTypes['EnterpriseSupport']> = ResolversObject<{
+  dev?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  prod?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  test?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  tools?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'input'>>;
   privateCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPrivateCloudProjectDeleteRequestArgs, 'licencePlate' | 'projectId' | 'projectOwnerEmail'>>;
@@ -834,8 +864,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
-  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'enterpriseSupport' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
+  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'enterpriseSupport' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
@@ -885,6 +915,7 @@ export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType e
   commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  enterpriseSupport?: Resolver<ResolversTypes['EnterpriseSupport'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   licencePlate?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   ministry?: Resolver<ResolversTypes['Ministry'], ParentType, ContextType>;
@@ -1006,6 +1037,7 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   CommonComponents?: CommonComponentsResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
+  EnterpriseSupport?: EnterpriseSupportResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PrivateCloudProject?: PrivateCloudProjectResolvers<ContextType>;
   PrivateCloudRequest?: PrivateCloudRequestResolvers<ContextType>;
@@ -1069,6 +1101,15 @@ export const DefaultCpuOptionsSchema = yup.mixed().oneOf([DefaultCpuOptions.CpuR
 export const DefaultMemoryOptionsSchema = yup.mixed().oneOf([DefaultMemoryOptions.MemoryRequest_2Limit_4, DefaultMemoryOptions.MemoryRequest_4Limit_8, DefaultMemoryOptions.MemoryRequest_8Limit_16, DefaultMemoryOptions.MemoryRequest_16Limit_32, DefaultMemoryOptions.MemoryRequest_32Limit_64, DefaultMemoryOptions.MemoryRequest_64Limit_128]);
 
 export const DefaultStorageOptionsSchema = yup.mixed().oneOf([DefaultStorageOptions.Storage_1, DefaultStorageOptions.Storage_2, DefaultStorageOptions.Storage_4, DefaultStorageOptions.Storage_16, DefaultStorageOptions.Storage_32, DefaultStorageOptions.Storage_64, DefaultStorageOptions.Storage_128, DefaultStorageOptions.Storage_256, DefaultStorageOptions.Storage_512]);
+
+export function EnterpriseSupportInputSchema(): yup.SchemaOf<EnterpriseSupportInput> {
+  return yup.object({
+    dev: yup.boolean().defined(),
+    prod: yup.boolean().defined(),
+    test: yup.boolean().defined(),
+    tools: yup.boolean().defined()
+  })
+}
 
 export const EnvironmentSchema = yup.mixed().oneOf([Environment.Development, Environment.Production, Environment.Test, Environment.Tools]);
 

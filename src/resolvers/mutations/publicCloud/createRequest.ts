@@ -46,6 +46,7 @@ const publicCloudProjectRequest = async (
     description: args.description,
     provider: args.provider,
     budget: args.budget,
+    enterpriseSupport: args.enterpriseSupport,
     ministry: args.ministry,
     status: ProjectStatus.Active,
     licencePlate: licencePlate,
