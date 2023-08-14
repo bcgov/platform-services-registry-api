@@ -52,6 +52,41 @@ const privateCloudRequestDecision: MutationResolvers = async (
         },
       },
     });
+
+    const project = await prisma.privateCloudProject.findUnique({
+      where: {
+        id: request.projectId,
+      },
+      include: {
+        projectOwner: true,
+        primaryTechnicalLead: true,
+        secondaryTechnicalLead: true,
+      },
+    });
+
+    if (request.decisionStatus === RequestDecision.Approved) {
+      await sendPrivateCloudNatsMessage(
+        request.type,
+        request.requestedProject,
+        request.id,
+        project
+      );
+
+      if (request.requestedProject.cluster === Cluster.Gold) {
+        const goldDrRequest = { ...request };
+        goldDrRequest.requestedProject.cluster = Cluster.Golddr;
+        await sendPrivateCloudNatsMessage(
+          goldDrRequest.type,
+          goldDrRequest.requestedProject,
+          goldDrRequest.id,
+          project
+        );
+      }
+    }
+    if (request.decisionStatus === RequestDecision.Rejected) {
+      sendRejectEmail(request);
+    }
+
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
@@ -59,27 +94,6 @@ const privateCloudRequestDecision: MutationResolvers = async (
       }
     }
     throw e;
-  }
-
-  if (request.decisionStatus === RequestDecision.Approved) {
-    await sendPrivateCloudNatsMessage(
-      request.type,
-      request.requestedProject,
-      request.id
-    );
-
-    if (request.requestedProject.cluster === Cluster.Gold) {
-      const goldDrRequest = { ...request };
-      goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendPrivateCloudNatsMessage(
-        goldDrRequest.type,
-        goldDrRequest.requestedProject,
-        goldDrRequest.id
-      );
-    }
-  }
-  if (request.decisionStatus === RequestDecision.Rejected) {
-    sendRejectEmail(request);
   }
 
   return request;
