@@ -118,7 +118,7 @@ app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
-cron.schedule('*/5* * * * *', async function () {
+cron.schedule('*/5 * * * *', async function () {
   const requestsArr = await prisma.privateCloudRequest.findMany({
     where: {
       active: true,
