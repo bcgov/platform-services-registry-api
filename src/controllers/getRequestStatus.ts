@@ -5,9 +5,9 @@ function getRequestStatus(id, licencePlate, cluster) {
     .then(function (response) {
       if (response.data.metadata.labels['workflows.argoproj.io/completed'] === 'true' &&
         response.data.metadata.labels['workflows.argoproj.io/phase'] === 'Succeeded') {
-        console.log("Provisioned successfully")
+        console.log(`Product with cluster - ${cluster}, licencePlate - ${licencePlate} id - ${id} - Provisioned successfully`)
       }
-      else console.log("Not provisioned successfully")
+      else console.log(`Product with cluster - ${cluster}, licencePlate - ${licencePlate} id - ${id} - Provisioned NOT successfully`)
     })
     .catch(function (error) {
       console.log(error);
