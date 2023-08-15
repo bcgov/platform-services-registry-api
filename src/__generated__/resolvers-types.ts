@@ -82,12 +82,8 @@ export type CreateUserInput = {
   firstName: Scalars['String'];
   idir?: InputMaybe<Scalars['String']>;
   lastName: Scalars['String'];
-<<<<<<< HEAD
   ministry?: InputMaybe<Scalars['String']>;
   upn?: InputMaybe<Scalars['String']>;
-=======
-  ministry?: InputMaybe<Ministry>;
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
 };
 
 export enum DecisionStatus {
@@ -627,29 +623,23 @@ export type User = {
   email: Scalars['EmailAddress'];
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-<<<<<<< HEAD
   idir?: Maybe<Scalars['String']>;
-=======
   isNew?: Maybe<Scalars['Boolean']>;
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
   lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Scalars['String']>;
   privateCloudProjectOwner: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectPrimaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
-<<<<<<< HEAD
-  upn?: Maybe<Scalars['String']>;
-=======
   publicCloudProjectOwner: Array<Maybe<PublicCloudProject>>;
   publicCloudProjectTechnicalLead: Array<Maybe<PublicCloudProject>>;
+  upn?: Maybe<Scalars['String']>;
 };
 
 export type PrivateCloudProjectsPaginatedOutput = {
   __typename?: 'privateCloudProjectsPaginatedOutput';
   projects: Array<PrivateCloudProject>;
   total: Scalars['Int'];
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
 };
 
 export type ProjectsPaginatedOutput = {
@@ -987,29 +977,23 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-<<<<<<< HEAD
   idir?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-=======
   isNew?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   privateCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectPrimaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
-<<<<<<< HEAD
-  upn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-=======
   publicCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   publicCloudProjectTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
+  upn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type PrivateCloudProjectsPaginatedOutputResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['privateCloudProjectsPaginatedOutput'] = ResolversParentTypes['privateCloudProjectsPaginatedOutput']> = ResolversObject<{
   projects?: Resolver<Array<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1083,12 +1067,8 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
     firstName: yup.string().defined(),
     idir: yup.string(),
     lastName: yup.string().defined(),
-<<<<<<< HEAD
     ministry: yup.string(),
     upn: yup.string()
-=======
-    ministry: MinistrySchema
->>>>>>> 6738de4ce060f3afeffb1e4cf5a2512e22ffd69d
   })
 }
 
