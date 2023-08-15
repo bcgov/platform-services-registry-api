@@ -834,8 +834,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'accountCoding' |'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
-  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'accountCoding' |'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
+  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
