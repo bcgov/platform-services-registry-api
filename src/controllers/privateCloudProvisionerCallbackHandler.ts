@@ -1,6 +1,6 @@
 import { prisma } from '../index.js';
 import { DecisionStatus } from '../__generated__/resolvers-types.js';
-import { sendProvisionedEmails } from '../ches/emailHandlers.js';
+import { sendProvisionedEmails } from '../ches/emailHandlersPrivate.js';
 
 const provisionerCallbackHandler = async (req, res) => {
   const { prefix: licencePlate, clusterName: cluster } = req.body;

@@ -5,7 +5,7 @@ import {
   DecisionStatus,
   MutationPrivateCloudProjectDeleteRequestArgs,
 } from '../../../__generated__/resolvers-types.js';
-import { sendDeleteRequestEmails } from '../../../ches/emailHandlers.js';
+import { sendDeleteRequestEmails } from '../../../ches/emailHandlersPrivate.js';
 import { Prisma, PrivateCloudProject } from '@prisma/client';
 import openshiftDeletionCheck, {
   DeletableField,

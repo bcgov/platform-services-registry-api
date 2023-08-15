@@ -10,7 +10,7 @@ import {
   CommonComponents as CommonComponentsPrisma,
 } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
-import { sendEditRequestEmails } from '../../../ches/emailHandlers.js';
+import { sendEditRequestEmails } from '../../../ches/emailHandlersPublic.js';
 
 const publicCloudProjectEditRequest = async (
   _,
@@ -83,7 +83,7 @@ const publicCloudProjectEditRequest = async (
     ministry: args.ministry,
     status: project.status,
     licencePlate: project.licencePlate,
-    accountCoding: project.accountCoding,
+    accountCoding: args.accountCoding,
     commonComponents: args.commonComponents as CommonComponentsPrisma,
     created: project.created,
     projectOwner: {
@@ -152,11 +152,8 @@ const publicCloudProjectEditRequest = async (
         },
       },
     });
-
-    // await sendPublicCloudEditRequestEmails(
-    //   editRequest.project,
-    //   editRequest.requestedProject
-    // );
+    
+    await sendEditRequestEmails(editRequest);
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {

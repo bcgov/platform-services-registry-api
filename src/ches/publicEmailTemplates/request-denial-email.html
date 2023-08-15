@@ -1,0 +1,808 @@
+{% extends 'header.html' %}
+{% block content %}
+                              <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+                                 style="border-top:1px solid #B0BFC6; border-bottom:1px solid #B0BFC6; ">
+                                 <th>
+                                 <tr>
+                                    <td valign="middle" align="center" style="padding: 20px 0 0 0;" >
+                                       <h2 style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 32px;
+                                          font-weight: 700;
+                                          line-height: 37px;
+                                          text-align: left;
+                                          max-width: 90%;
+                                          margin: auto;
+                                          ">
+                                          {{requestType}} request has been denied
+                                       </h2>
+                                    </td>
+                                 </tr>
+                                 </th>
+                                 <tr>
+                                    <td align="center" style="font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;text-align: center;">
+                                       <img src="https://platsrv-registry-web-101ed4-test.apps.silver.devops.gov.bc.ca/approved.svg" width="340" alt="Diagram showing two steps. The first step is “Request Received” and the second step is “Request Completed.” The second step is selected." style="max-width:100%;height:auto;" />
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td valign="top" align="center">
+                                       <p style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 14px;
+                                          line-height: 1.5;
+                                          max-width: 90%;
+                                          text-align: left;
+                                          padding: 0 0 20px 0;
+                                          margin: 0;
+                                          ">
+                                          Unfortunately, your request was not approved. Please see the comments from the reviewer below. If you have any more questions, reach out to the Cloud Pathfinder Team in the <a style="
+                                             color: #003366;                                    
+                                             font-style: bold;
+                                             "
+                                             href="https://chat.developer.gov.bc.ca/channel/devops-operations">#devops&#8209;operations</a> channel in Rocket Chat.                                        
+                                       </p>
+                                    </td>
+                                 </tr>
+                              </table>
+                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+                              {% if  humanActionComment%}
+                              <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" aria-label="greeting"
+                                 style="border-top:1px solid #B0BFC6;border-bottom:1px solid #B0BFC6; ">
+                                 <th>
+                                    <tr>
+                                    <td valign="middle" align="center" >
+                                       <h3 style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 32px;
+                                          font-weight: 700;
+                                          line-height: 37px;
+                                          text-align: left;
+                                          max-width: 90%;
+                                          margin: 20px 0 0 0;
+                                          ">
+                                          Reviewer’s comments
+                                       </h3>
+                                    </td>
+                                 </tr>
+                                 </th>
+                                 <tr>
+                                    <td valign="top" align="center" >
+                                       <p style="
+                                          color: #313132;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          word-break: break-word;
+                                          font-size: 14px;
+                                          line-height: 1.5;
+                                          text-align: left;
+                                          max-width: 90%;
+                                          margin: 20px 0 20px 0;
+                                          ">
+                                          {{humanActionComment}} 
+                                       </p>
+                                    </td>
+                                 </tr>
+                              </table>
+                              <div class="spacer" style="line-height:24px;height:24px;mso-line-height-rule:exactly;">&nbsp;</div>
+                              {% endif %}
+                              <table role="presentation"
+                              style="width:100%;border:0;border-spacing:0;border-top:1px solid #B0BFC6;background-color: #ffffff;">
+                              <tr>
+                                <td
+                                  style="padding:10px 10px 20px 10px;font-family:Arial,sans-serif;font-size:24px;line-height:28px;font-weight:bold;">
+                                  <h3 style="
+                                    color: #313132;
+                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                    word-break: break-word;
+                                    font-size: 32px;
+                                    font-weight: 700;
+                                    line-height: 37px;
+                                    margin-bottom: 5px;
+                                    text-align: left;
+                                    padding-left:3%;
+                                    ">
+                                    Product details
+                                  </h3>
+                                </td>
+                              </tr>
+                            </table>
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left;
+                                          padding-left:5%;
+                                          ">
+                                          Product Name:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ projectName }}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            {% if !isQuotaRequest %}
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left;
+                                          padding-left:5%;
+                                          ">
+                                          Product Description:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;                                                   
+                                          ">
+                                          {{ productDescription }}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left;
+                                          padding-left:5%;
+                                          ">
+                                          Product Ministry:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ productMinistry }}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            {% endif %}
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left; padding-left:5%;
+                                          ">
+                                          Product Owner:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ POName }}
+                                        </p>
+                                        <a style="
+                                          color: #003366;                                          
+                                          font-style: bold;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          display: block;
+                                          " href="mailto:{{ POEmail }}">{{POEmail }}</a>
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ POGitHubOrIDIR }}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left; padding-left:5%;
+                                          ">
+                                          Primary Technical Lead:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ PriTLName}}
+                                        </p>
+                                        <a style="
+                                          color: #003366;                                          
+                                          font-style: bold;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          display: block;
+                                          " href="mailto:{{ PriTLEmail }}">{{
+                                        PriTLEmail }}</a>
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ PriTLGitHubOrIDIR}}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            {% if SecTLName %}
+                            <div class="two-col"
+                              style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                              <!--[if mso]>
+                              <table role="presentation" width="100%">
+                                <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          font-weight: 400;
+                                          color: #313132;
+                                          max-width: 90%;
+                                          text-align:left; 
+                                          padding-left:5%;
+                                          ">
+                                          Secondary Technical Lead:
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                    <![endif]-->
+                                    <div class="column"
+                                      style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                      <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{SecTLName }}
+                                        </p>
+                                        <a style="
+                                          color: #003366;                                          
+                                          font-style: bold;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          display: block;
+                                          " href="mailto:{{ SecTLEmail }}">{{
+                                        SecTLEmail }}</a>
+                                        <p style="margin:0;
+                                          font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                          font-size:14px;
+                                          line-height:18px;
+                                          color: #131313;
+                                          max-width: 90%;
+                                          padding-top: 5px;
+                                          text-align:right;
+                                          ">
+                                          {{ SecTLGitHubOrIDIR}}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                              <![endif]-->
+                            </div>
+                            {% endif %}
+                            <div class="two-col"
+                               style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                               <!--[if mso]>
+                               <table role="presentation" width="100%">
+                                  <tr>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column"
+                                           style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 font-weight: 400;
+                                                 color: #313132;
+                                                 max-width: 90%;
+                                                 text-align:left;
+                                                 padding-left: 8%;
+                                                 ">
+                                                 Platform Provider:
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column"
+                                           style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 color: #131313;
+                                                 max-width: 90%;
+                                                 padding-top: 5px;
+                                                 text-align:right;
+                                                 ">
+                                                Amazon Web Services
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                  </tr>
+                               </table>
+                               <![endif]-->
+                            </div>
+                            <div class="two-col"
+                               style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                               <!--[if mso]>
+                               <table role="presentation" width="100%">
+                                  <tr>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 font-weight: 400;
+                                                 color: #313132;
+                                                 max-width: 90%;
+                                                 text-align:left;
+                                                 padding-left: 8%;
+                                                 ">
+                                                 Budget Dev:
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 color: #131313;
+                                                 max-width: 90%;
+                                                 padding-top: 5px;
+                                                 text-align:right;
+                                                 ">
+                                                 {{ BudgetDev }}
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                  </tr>
+                               </table>
+                               <![endif]-->
+                            </div>
+                            <div class="two-col" style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                               <!--[if mso]>
+                               <table role="presentation" width="100%">
+                                  <tr>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 font-weight: 400;
+                                                 color: #313132;
+                                                 max-width: 90%;
+                                                 text-align:left;
+                                                 padding-left: 8%;
+                                                 ">
+                                                 Budget Test:
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 color: #131313;
+                                                 max-width: 90%;
+                                                 padding-top: 5px;
+                                                 text-align:right;
+                                                 ">
+                                                 {{ BudgetTest }}
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                  </tr>
+                               </table>
+                               <![endif]-->
+                            </div>
+                            <div class="two-col"
+                               style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                               <!--[if mso]>
+                               <table role="presentation" width="100%">
+                                  <tr>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 font-weight: 400;
+                                                 color: #313132;
+                                                 max-width: 90%;
+                                                 text-align:left;
+                                                 padding-left: 8%;
+                                                 ">
+                                                 Budget Prod:
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 color: #131313;
+                                                 max-width: 90%;
+                                                 padding-top: 5px;
+                                                 text-align:right;
+                                                 ">
+                                                 {{ BudgetProd }}
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                  </tr>
+                               </table>
+                               <![endif]-->
+                            </div>
+                            <div class="two-col"
+                               style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                               <!--[if mso]>
+                               <table role="presentation" width="100%">
+                                  <tr>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 font-weight: 400;
+                                                 color: #313132;
+                                                 max-width: 90%;
+                                                 text-align:left;
+                                                 padding-left: 8%;
+                                                 ">
+                                                 Budget Tools:
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                     <td style="width:50%;padding:10px;" valign="middle">
+                                        <![endif]-->
+                                        <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                           <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                              <p style="margin:0;
+                                                 font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                                 font-size:14px;
+                                                 line-height:18px;
+                                                 color: #131313;
+                                                 max-width: 90%;
+                                                 padding-top: 5px;
+                                                 text-align:right;
+                                                 ">
+                                                 {{ BudgetTools }}
+                                              </p>
+                                           </div>
+                                        </div>
+                                        <!--[if mso]>
+                                     </td>
+                                  </tr>
+                               </table>
+                               <![endif]-->
+                            </div>
+                            <div class="two-col"
+                            style="text-align:center;font-size:0;background-color: #ffffff;  border-bottom:1px solid #B0BFC6; ">
+                            <!--[if mso]>
+                            <table role="presentation" width="100%">
+                               <tr>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                     <![endif]-->
+                                     <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;">
+                                           <p style="margin:0;
+                                              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                              font-size:14px;
+                                              line-height:18px;
+                                              font-weight: 400;
+                                              color: #313132;
+                                              max-width: 90%;
+                                              text-align:left;
+                                              padding-left: 8%;
+                                              ">
+                                              Account Coding:
+                                           </p>
+                                        </div>
+                                     </div>
+                                     <!--[if mso]>
+                                  </td>
+                                  <td style="width:50%;padding:10px;" valign="middle">
+                                     <![endif]-->
+                                     <div class="column" style="width:100%;max-width:330px;display:inline-block;vertical-align:middle;">
+                                        <div style="padding:10px;font-size:14px;line-height:18px;text-align:left;">
+                                           <p style="margin:0;
+                                              font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                              font-size:14px;
+                                              line-height:18px;
+                                              color: #131313;
+                                              max-width: 90%;
+                                              padding-top: 5px;
+                                              text-align:right;
+                                              ">
+                                              {{ AccountCoding }}
+                                           </p>
+                                        </div>
+                                     </div>
+                                     <!--[if mso]>
+                                  </td>
+                               </tr>
+                            </table>
+                            <![endif]-->
+                            </div>
+                            <table role="presentation"
+                              style="width:100%;border:0;border-spacing:0;">
+                              <tr>
+                                <td style="padding:10px 10px 20px 10px;">
+                                  <p style="
+                                    color: #7E7E7E;
+                                    font-family: BCSans, Arial, Noto Sans, Verdana,  sans-serif;
+                                    font-size: 14px;
+                                    line-height: 21px;
+                                    text-align: center;
+                                    max-width: 100%;
+                                    font-weight: 700;
+                                    ">
+                                    Love, The Registry Team
+                                  </p>
+                                </td>
+                              </tr>
+                            </table>
+                            <div class="spacer" style="line-height:40px;height:40px;mso-line-height-rule:exactly;">&nbsp;
+                            </div>
+                            </div>
+                            <!--[if mso]>
+                            </td>
+                            </tr>
+                            </table>
+                            <![endif]-->
+                            </td>
+                            </tr>
+                            </table>
+                            </div>
+                            </body>
+                            </html>
+                            {% endblock %}
