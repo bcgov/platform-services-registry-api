@@ -9,6 +9,7 @@ export type PublicCloudRequestedProject =
       accountCoding: true;
       budget: true;
       provider: true;
+      ministry: true;
       projectOwner: {
         select: {
           email: true;
@@ -41,6 +42,7 @@ export type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
     accountCoding: true;
     budget: true;
     provider: true;
+    ministry: true;
     projectOwner: {
       select: {
         email: true;
@@ -74,6 +76,7 @@ function message(
   return {
     project_set_info: {
       licence_plate: requestedProject.licencePlate,
+      ministry_name : requestedProject.ministry,
       request_type: requestType,
       project_name: requestedProject.name,
       account_coding: requestedProject.accountCoding,
