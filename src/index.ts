@@ -21,14 +21,13 @@ import {
   getReProvisionNatsMessage,
   getIdsForCluster,
   getDatabaseHealthCheck,
-} from './controllers/index.js';
-import chesService from './ches/index.js';
-import { connectToDatabase } from './db.js';
-import {
   getIdirEmails,
   getIdirPhoto,
   getRequestStatus,
+  getIdir,
 } from './controllers/index.js';
+import chesService from './ches/index.js';
+import { connectToDatabase } from './db.js';
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
@@ -115,6 +114,8 @@ app.get('/api/v1/getIdirEmails', getIdirEmails);
 
 app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 
+app.get('/api/v1/getIdir', getIdir);
+// app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
