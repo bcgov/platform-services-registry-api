@@ -112,13 +112,13 @@ function message(action, requestedProject, requestId) {
     role: 'owner',
   };
 
-  const primaryTechnicalLeadContact = {
+  const primaryTechnicalLeadContact = {    
     email: primaryTechnicalLead.email,
     role: 'lead',
   };
 
   const secondaryTechnicalLeadContact = secondaryTechnicalLead
-    ? {
+    ? {      
         email: secondaryTechnicalLead.email,
         role: 'lead',
       }
