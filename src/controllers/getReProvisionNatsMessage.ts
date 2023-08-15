@@ -1,5 +1,5 @@
 import { prisma } from "../index.js";
-import message from "../nats/message.js";
+import message from "../natsPubSub/privateCloud/message.js";
 import { RequestType } from "../__generated__/resolvers-types.js";
 
 const getReProvisionNatsMessage = async (req, res) => {

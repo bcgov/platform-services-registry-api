@@ -1,35 +1,35 @@
-export const privateCloudActiveRequests = async (_, __, { prisma }) =>
-  await prisma.privateCloudRequest.findMany({
+export const publicCloudActiveRequests = async (_, __, { prisma }) =>
+  await prisma.publicCloudRequest.findMany({
     where: {
       active: true,
     },
   });
 
-export const privateCloudActiveRequestById = async (
+export const publicCloudActiveRequestById = async (
   _,
   { requestId },
   { prisma }
 ) =>
-  await prisma.privateCloudRequest.findUnique({
+  await prisma.publicCloudRequest.findUnique({
     where: {
       id: requestId,
       active: true,
     },
   });
 
-export const privateCloudRequestById = async (_, { requestId }, { prisma }) =>
-  await prisma.privateCloudRequest.findUnique({
+export const publicCloudRequestById = async (_, { requestId }, { prisma }) =>
+  await prisma.publicCloudRequest.findUnique({
     where: {
       id: requestId,
     },
   });
 
-export const userPrivateCloudRequestById = async (
+export const userPublicCloudRequestById = async (
   _,
   { requestId },
   { prisma, authEmail }
 ) =>
-  await prisma.privateCloudRequest.findUnique({
+  await prisma.publicCloudRequest.findUnique({
     where: {
       id: requestId,
       OR: [
@@ -55,8 +55,8 @@ export const userPrivateCloudRequestById = async (
     },
   });
 
-export const userPrivateCloudRequests = (_, __, { prisma, authEmail }) => {
-  return prisma.privateCloudRequest.findMany({
+export const userPublicCloudRequests = (_, __, { prisma, authEmail }) => {
+  return prisma.publicCloudRequest.findMany({
     where: {
       OR: [
         {
@@ -82,12 +82,12 @@ export const userPrivateCloudRequests = (_, __, { prisma, authEmail }) => {
   });
 };
 
-export const userPrivateCloudActiveRequests = (
+export const userPublicCloudActiveRequests = (
   _,
   request,
   { prisma, authEmail }
 ) =>
-  prisma.privateCloudRequest.findMany({
+  prisma.publicCloudRequest.findMany({
     where: {
       active: true,
       OR: [
@@ -113,24 +113,24 @@ export const userPrivateCloudActiveRequests = (
     },
   });
 
-export const userPrivateCloudActiveRequestById = async (
+export const userPublicCloudActiveRequestById = async (
   _,
   { requestId },
   { prisma, authEmail }
 ) =>
-  await prisma.privateCloudRequest.findUnique({
+  await prisma.publicCloudRequest.findUnique({
     where: {
       id: requestId,
       active: true,
     },
   });
 
-export const userPrivateCloudActiveRequestsByIds = async (
+export const userPublicCloudActiveRequestsByIds = async (
   _,
   { requestIds },
   { prisma, authEmail }
 ) =>
-  await prisma.privateCloudRequest.findMany({
+  await prisma.publicCloudRequest.findMany({
     where: {
       user: { email: authEmail },
       id: { in: requestIds },

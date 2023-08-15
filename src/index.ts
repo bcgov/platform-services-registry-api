@@ -1,22 +1,23 @@
-import "./env.js";
-import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { KeycloakContext, KeycloakTypeDefs } from "keycloak-connect-graphql";
-import express from "express";
-import cron from "node-cron";
-import http from "http";
-import cors from "cors";
-import bodyParser from "body-parser";
-import resolvers from "./resolvers/index.js";
-import { readFileSync } from "fs";
-import configureKeycloak from "./auth/config.js";
-import { DIRECTIVES } from "@graphql-codegen/typescript-mongodb";
-import applyDirectiveTransformers from "./transformers/index.js";
-import { PrismaClient } from "@prisma/client";
+import './env.js';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { KeycloakContext, KeycloakTypeDefs } from 'keycloak-connect-graphql';
+import express from 'express';
+import cron from 'node-cron';
+import http from 'http';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import resolvers from './resolvers/index.js';
+import { readFileSync } from 'fs';
+import configureKeycloak from './auth/config.js';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
+import applyDirectiveTransformers from './transformers/index.js';
+import { PrismaClient } from '@prisma/client';
 import {
-  provisionerCallbackHandler,
+  privateCloudProvisionerCallbackHandler,
+  publicCloudProvisionerCallbackHandler,
   getReProvisionNatsMessage,
   getIdsForCluster,
   getDatabaseHealthCheck,
@@ -24,13 +25,11 @@ import {
   getIdirPhoto,
   getRequestStatus,
   getIdir,
+} from './controllers/index.js';
+import chesService from './ches/index.js';
+import { connectToDatabase } from './db.js';
 
-} from "./controllers/index.js";
-import chesService from "./ches/index.js";
-import { connectToDatabase } from "./db.js";
-
-
-const typeDefs = readFileSync("./schema.graphql", { encoding: "utf-8" });
+const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
 export interface ContextValue {
   kauth: KeycloakContext;
@@ -44,13 +43,13 @@ export const prisma = new PrismaClient();
 
 let schema = makeExecutableSchema({
   typeDefs: [KeycloakTypeDefs, typeDefs, DIRECTIVES],
-  resolvers
+  resolvers,
 });
 
 schema = applyDirectiveTransformers(schema);
 
 export const app = express();
-const { keycloak } = configureKeycloak(app, "/");
+const { keycloak } = configureKeycloak(app, '/');
 const httpServer = http.createServer(app);
 
 app.use(cors());
@@ -58,7 +57,7 @@ app.use(cors());
 export const server = new ApolloServer<ContextValue>({
   schema,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  introspection: true
+  introspection: true,
 });
 
 await server.start();
@@ -66,7 +65,7 @@ await server.start();
 await connectToDatabase();
 
 app.use(
-  "/graphql",
+  '/graphql',
   cors<cors.CorsRequest>(),
   bodyParser.json(),
   expressMiddleware(server, {
@@ -79,7 +78,7 @@ app.use(
       // @ts-ignore
       const resource_access = kauth?.accessToken?.content?.resource_access;
       const { roles } = resource_access?.[process.env.AUTH_RESOURCE] || {
-        roles: []
+        roles: [],
       };
 
       return {
@@ -87,9 +86,9 @@ app.use(
         prisma,
         authRoles: roles,
         authEmail: lowerCaseEmail,
-        chesService
+        chesService,
       };
-    }
+    },
   })
 );
 
@@ -98,44 +97,46 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get(
-  "/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json",
+  '/api/v1/provision/sync/:profile_id/provisioned-profile-bot-json',
   keycloak.protect(),
   getReProvisionNatsMessage
 );
 
 app.get(
-  "/api/v1/provision/sync/provisioned-profile-ids",
+  '/api/v1/provision/sync/provisioned-profile-ids',
   keycloak.protect(),
   getIdsForCluster
 );
 
-app.get("/api/v1/database-health-check", getDatabaseHealthCheck);
+app.get('/api/v1/database-health-check', getDatabaseHealthCheck);
 
-app.get("/api/v1/getIdirEmails", getIdirEmails);
+app.get('/api/v1/getIdirEmails', getIdirEmails);
 
-app.get("/api/v1/getIdirPhoto", getIdirPhoto);
+app.get('/api/v1/getIdirPhoto', getIdirPhoto);
 
-app.get("/api/v1/getIdir", getIdir);
+app.get('/api/v1/getIdir', getIdir);
 // app.post("/namespace", keycloak.protect(), provisionerCallbackHandler);
-app.post("/namespace", provisionerCallbackHandler);
+app.post('/namespace', privateCloudProvisionerCallbackHandler);
+app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
 
-
-cron.schedule("*/5* * * * *", async function () {
- const requestsArr =  await prisma.privateCloudRequest.findMany({
+cron.schedule('*/5 * * * *', async function () {
+  const requestsArr = await prisma.privateCloudRequest.findMany({
     where: {
       active: true,
     },
-    include:{
-      requestedProject:true
-    }
+    include: {
+      requestedProject: true,
+    },
   });
 
   requestsArr.map((request) => {
-    getRequestStatus(request.id, request.licencePlate, request.requestedProject.cluster.toLowerCase())
-  })
+    getRequestStatus(
+      request.id,
+      request.licencePlate,
+      request.requestedProject.cluster.toLowerCase()
+    );
+  });
 });
-
-// app.post("/predeletion-check")
 
 await new Promise<void>((resolve) =>
   httpServer.listen({ port: 4000 }, resolve)
