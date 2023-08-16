@@ -244,7 +244,7 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   email: EmailAddress! @lowerCase
-  ministry: Ministry
+  ministry: String
 }
 
 input UpdateUserInput {
