@@ -21,7 +21,13 @@ describe('message', () => {
       licencePlate: 'ABCD1234',
       name: 'Test Project',
       accountCoding: 'abcdefg123',
-      ministry: "AEST",
+      ministry: 'AEST',
+      enterpriseSupport: {
+        test: false,
+        dev: false,
+        prod: true,
+        tools: true,
+      },
       budget: {
         test: 10000,
         dev: 10000,
@@ -54,6 +60,12 @@ describe('message', () => {
         request_type: 'CREATE',
         project_name: 'Test Project',
         account_coding: 'abcdefg123',
+        enterprise_support: {
+          test: false,
+          dev: false,
+          prod: true,
+          tools: true,
+        },
         ministry_name: 'AEST',
         requested_product_owner: {
           name: 'John Doe',
