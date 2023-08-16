@@ -7,7 +7,7 @@ import {
 } from '../../../__generated__/resolvers-types.js';
 import { Prisma } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
-import { sendRejectEmail } from '../../../ches/emailHandlers.js';
+import { sendRejectEmail } from '../../../ches/emailHandlersPublic.js';
 
 const publicCloudRequestDecision = async (
   _,
