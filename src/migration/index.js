@@ -201,8 +201,6 @@ function generateUsersPerProject(userData, contatctProfileData) {
       lastName: last_name,
       email,
       ministry: null,
-      idir: null,
-      upn: null,
       archived: false,
       created: created_at,
       lastSeen: new Date(),

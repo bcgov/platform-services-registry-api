@@ -80,10 +80,8 @@ export enum CommonComponentsOptions {
 export type CreateUserInput = {
   email: Scalars['EmailAddress'];
   firstName: Scalars['String'];
-  idir?: InputMaybe<Scalars['String']>;
   lastName: Scalars['String'];
-  ministry?: InputMaybe<Scalars['String']>;
-  upn?: InputMaybe<Scalars['String']>;
+  ministry?: InputMaybe<Ministry>;
 };
 
 export enum DecisionStatus {
@@ -608,12 +606,10 @@ export type UpdateUserInput = {
   archived?: InputMaybe<Scalars['Boolean']>;
   email?: InputMaybe<Scalars['EmailAddress']>;
   firstName?: InputMaybe<Scalars['String']>;
-  idir?: InputMaybe<Scalars['String']>;
   lastName?: InputMaybe<Scalars['String']>;
   lastSeen?: InputMaybe<Scalars['DateTime']>;
   projectOwner?: InputMaybe<Array<Scalars['ID']>>;
   technicalLead?: InputMaybe<Array<Scalars['ID']>>;
-  upn?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -623,7 +619,6 @@ export type User = {
   email: Scalars['EmailAddress'];
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  idir?: Maybe<Scalars['String']>;
   isNew?: Maybe<Scalars['Boolean']>;
   lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
@@ -633,7 +628,6 @@ export type User = {
   privateCloudProjectSecondaryTechnicalLead: Array<Maybe<PrivateCloudProject>>;
   publicCloudProjectOwner: Array<Maybe<PublicCloudProject>>;
   publicCloudProjectTechnicalLead: Array<Maybe<PublicCloudProject>>;
-  upn?: Maybe<Scalars['String']>;
 };
 
 export type PrivateCloudProjectsPaginatedOutput = {
@@ -977,7 +971,6 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   email?: Resolver<ResolversTypes['EmailAddress'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  idir?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   isNew?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -987,7 +980,6 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   privateCloudProjectSecondaryTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PrivateCloudProject']>>, ParentType, ContextType>;
   publicCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   publicCloudProjectTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
-  upn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1065,10 +1057,8 @@ export function CreateUserInputSchema(): yup.SchemaOf<CreateUserInput> {
   return yup.object({
     email: yup.mixed().defined(),
     firstName: yup.string().defined(),
-    idir: yup.string(),
     lastName: yup.string().defined(),
-    ministry: yup.string(),
-    upn: yup.string()
+    ministry: MinistrySchema
   })
 }
 
@@ -1126,11 +1116,9 @@ export function UpdateUserInputSchema(): yup.SchemaOf<UpdateUserInput> {
     archived: yup.boolean(),
     email: yup.mixed(),
     firstName: yup.string(),
-    idir: yup.string(),
     lastName: yup.string(),
     lastSeen: yup.mixed(),
     projectOwner: yup.array().of(yup.string().defined()).optional(),
-    technicalLead: yup.array().of(yup.string().defined()).optional(),
-    upn: yup.string()
+    technicalLead: yup.array().of(yup.string().defined()).optional()
   })
 }

@@ -17,8 +17,6 @@ model User {
   lastName                                           String?
   email                                              String                         @unique
   ministry                                           String?
-  upn                                                String?
-  idir                                               String?
   archived                                           Boolean                        @default(false)
   created                                            DateTime                       @default(now())
   lastSeen                                           DateTime                       @updatedAt

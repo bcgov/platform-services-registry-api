@@ -6,7 +6,6 @@ import getDatabaseHealthCheck from './getDatabaseHealthCheck.js';
 import getIdirEmails from './getIdirEmails.js';
 import getIdirPhoto from './getIdirPhoto.js';
 import getRequestStatus from './getRequestStatus.js';
-import getIdir from './getIdir.js';
 
 export {
   getIdirEmails,
@@ -17,5 +16,4 @@ export {
   publicCloudProvisionerCallbackHandler,
   getIdirPhoto,
   getRequestStatus,
-  getIdir,
 };
