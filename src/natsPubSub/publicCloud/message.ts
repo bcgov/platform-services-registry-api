@@ -8,6 +8,7 @@ export type PublicCloudRequestedProject =
       name: true;
       accountCoding: true;
       budget: true;
+      enterpriseSupport: true;
       provider: true;
       ministry: true;
       projectOwner: {
@@ -41,6 +42,7 @@ export type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
     name: true;
     accountCoding: true;
     budget: true;
+    enterpriseSupport: true;
     provider: true;
     ministry: true;
     projectOwner: {
@@ -71,16 +73,17 @@ export type PublicCloudProject = Prisma.PublicCloudProjectGetPayload<{
 function message(
   requestType: RequestType,
   requestedProject: PublicCloudRequestedProject,
-  currentProject?: PublicCloudProject 
+  currentProject?: PublicCloudProject
 ) {
   return {
     project_set_info: {
       licence_plate: requestedProject.licencePlate,
-      ministry_name : requestedProject.ministry,
+      ministry_name: requestedProject.ministry,
       request_type: requestType,
       project_name: requestedProject.name,
       account_coding: requestedProject.accountCoding,
       budgets: requestedProject.budget,
+      enterprise_support: requestedProject.enterpriseSupport,
 
       requested_product_owner: {
         name: `${requestedProject.projectOwner.firstName} ${requestedProject.projectOwner.lastName}`,
