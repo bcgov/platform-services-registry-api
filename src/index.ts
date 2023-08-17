@@ -21,17 +21,6 @@ import {
   getReProvisionNatsMessage,
   getIdsForCluster,
   getDatabaseHealthCheck,
-<<<<<<< HEAD
-} from './controllers/index.js';
-import chesService from './ches/index.js';
-import { connectToDatabase } from './db.js';
-import {
-  getIdirEmails,
-  getIdirPhoto,
-  getRequestStatus,
-  getIdir,
-} from './controllers/index.js';
-=======
 } from './controllers/index.js';
 import chesService from './ches/index.js';
 import { connectToDatabase } from './db.js';
@@ -40,7 +29,6 @@ import {
   getIdirPhoto,
   getRequestStatus,
 } from './controllers/index.js';
->>>>>>> parent of ce28f38 (Merge pull request #63 from bcgov/upn-user)
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
