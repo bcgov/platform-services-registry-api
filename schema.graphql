@@ -178,7 +178,7 @@ type PublicCloudProject {
   provider: Provider!
   requestHistory: [PublicCloudRequest]!
   activeEditRequest: PublicCloudRequest
-  commonComponents: CommonComponents!
+  # commonComponents: CommonComponents!
 }
 
 type PublicCloudRequest {
@@ -473,7 +473,7 @@ type Mutation {
     provider: Provider!
     budget: BudgetInput!
     accountCoding: String
-    commonComponents: CommonComponentsInput!
+    # commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
     secondaryTechnicalLead: CreateUserInput
@@ -486,7 +486,7 @@ type Mutation {
     ministry: Ministry!
     budget: BudgetInput!
     accountCoding: String
-    commonComponents: CommonComponentsInput!
+    # commonComponents: CommonComponentsInput!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
     secondaryTechnicalLead: CreateUserInput

@@ -247,7 +247,6 @@ export type MutationPrivateCloudRequestDecisionArgs = {
 export type MutationPublicCloudProjectEditRequestArgs = {
   accountCoding?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
-  commonComponents: CommonComponentsInput;
   description: Scalars['String'];
   ministry: Ministry;
   name: Scalars['String'];
@@ -261,7 +260,6 @@ export type MutationPublicCloudProjectEditRequestArgs = {
 export type MutationPublicCloudProjectRequestArgs = {
   accountCoding?: InputMaybe<Scalars['String']>;
   budget: BudgetInput;
-  commonComponents: CommonComponentsInput;
   description: Scalars['String'];
   ministry: Ministry;
   name: Scalars['String'];
@@ -341,7 +339,6 @@ export type PublicCloudProject = {
   accountCoding: Scalars['String'];
   activeEditRequest?: Maybe<PublicCloudRequest>;
   budget: Budget;
-  commonComponents: CommonComponents;
   created: Scalars['DateTime'];
   description: Scalars['String'];
   id: Scalars['ID'];
@@ -834,8 +831,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
-  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'commonComponents' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
+  publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
@@ -882,7 +879,6 @@ export type PublicCloudProjectResolvers<ContextType = ContextValue, ParentType e
   accountCoding?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   activeEditRequest?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType>;
   budget?: Resolver<ResolversTypes['Budget'], ParentType, ContextType>;
-  commonComponents?: Resolver<ResolversTypes['CommonComponents'], ParentType, ContextType>;
   created?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;

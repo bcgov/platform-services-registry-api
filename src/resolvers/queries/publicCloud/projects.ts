@@ -59,7 +59,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
           requestHistory: 1,
           activeEditRequest: 1,
           count: 1,
-          commonComponents: 1,
+          // commonComponents: 1,
           lowerDescription: {
             $toLower: '$description',
           },
@@ -242,7 +242,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
           requestHistory: 1,
           activeEditRequest: 1,
           count: 1,
-          commonComponents: 1,
+          // commonComponents: 1,
           lowerDescription: {
             $toLower: '$description',
           },
