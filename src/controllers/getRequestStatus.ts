@@ -15,13 +15,3 @@ function getRequestStatus(id, licencePlate, cluster) {
 }
 
 export default getRequestStatus;
-
-// Completed with error (failed)
-//     completed: true
-//     phase: Error - we have a problem
-// Completed successfully
-//     completed: true
-//     phase: Succeeded - completed 
-// In progress
-//     completed: null
-//     phase: Running   - in progress
