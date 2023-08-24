@@ -50,7 +50,7 @@ const publicCloudProjectRequest = async (
     status: ProjectStatus.Active,
     licencePlate: licencePlate,
     accountCoding: args.accountCoding,
-    commonComponents: args.commonComponents,
+    // commonComponents: args.commonComponents,
     projectOwner: {
       connectOrCreate: {
         where: {
