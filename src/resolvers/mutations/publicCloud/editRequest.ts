@@ -11,6 +11,7 @@ import {
 } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlersPublic.js';
+import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const publicCloudProjectEditRequest = async (
   _,
@@ -152,8 +153,16 @@ const publicCloudProjectEditRequest = async (
         },
       },
     });
-    
+
     await sendEditRequestEmails(editRequest);
+
+    const users = [
+      args.projectOwner,
+      args.primaryTechnicalLead,
+      args?.secondaryTechnicalLead,
+    ].filter(Boolean);
+
+    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {

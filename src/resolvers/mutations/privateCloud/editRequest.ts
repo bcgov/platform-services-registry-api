@@ -8,6 +8,7 @@ import {
 import { Prisma, PrivateCloudRequest } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlersPrivate.js';
+import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEditRequest'] =
   async (
@@ -160,8 +161,15 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         );
       }
 
-       if (decisionStatus === DecisionStatus.Approved) {
-        console.log('who poke me??? 1')
+      if (decisionStatus === DecisionStatus.Approved) {
+        const users = [
+          args.projectOwner,
+          args.primaryTechnicalLead,
+          args?.secondaryTechnicalLead,
+        ].filter(Boolean);
+
+        Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+
         await sendPrivateCloudNatsMessage(
           editRequest.type,
           editRequest.requestedProject,
@@ -172,7 +180,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         if (editRequest.requestedProject.cluster === Cluster.Gold) {
           const goldDrRequest = { ...editRequest };
           goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-          console.log('who poke me??? 2')
+          console.log('who poke me??? 2');
           await sendPrivateCloudNatsMessage(
             goldDrRequest.type,
             goldDrRequest.requestedProject,
@@ -180,8 +188,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
             project
           );
         }
-    }
-
+      }
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
@@ -192,8 +199,6 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
       }
       throw e;
     }
-
-   
 
     return editRequest;
   };
