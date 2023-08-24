@@ -1,24 +1,39 @@
-import { callMsGraph, getAccessToken } from "../msal/index.js";
+import { callMsGraph, getAccessToken } from '../msal/index.js';
 
-async function getIdirEmails(req, res) {
-  const email = req.query.email;
+export async function getIdirFromEmail(email) {
   const url = `https://graph.microsoft.com/v1.0/users?$filter=startswith(mail,'${email}')&$orderby=userPrincipalName&$count=true&$top=25`;
 
   try {
     const accessToken = await getAccessToken();
 
     if (!accessToken) {
-      return res.status(401).json([]);
+      throw Error('Not able to get access token');
     }
 
     const response = await callMsGraph(url, accessToken);
     const data = await response.json();
 
-    return res.json(data.value);
+    return data.value;
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error fetching users" });
+    throw Error('Error getting IDIR from email');
   }
 }
 
-export default getIdirEmails;
+async function apiEndpoint(req, res) {
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    const idir = await getIdirFromEmail(email);
+    return res.json({ idir });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error getting IDIR from email' });
+  }
+}
+
+export default apiEndpoint;

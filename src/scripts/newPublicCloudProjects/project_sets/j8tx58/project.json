@@ -1,0 +1,28 @@
+{
+    "licence_plate":"j8tx58",
+    "project_name": "BC Parks Reservation Services",
+    "billing_group": "j8tx58",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "jessica.wade@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "mark.lise@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "daniel.truong@gov.bc.ca"
+      },
+    "account_coding": "0482963N3120063012900000"
+}

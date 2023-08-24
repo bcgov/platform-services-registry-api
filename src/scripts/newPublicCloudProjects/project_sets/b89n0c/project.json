@@ -1,0 +1,28 @@
+{
+        "licence_plate":"b89n0c",
+        "project_name": "Work BC Website PoC",
+        "billing_group": "b89n0c",
+        "provider": "AWS",
+        "budget": { 
+            "dev": 10000,
+            "test": 10000,
+            "tools": 10000,
+            "prod": 10000
+         },
+        "enterprise_support": { 
+            "dev": "false",
+            "test": "false",
+            "tools": "false",
+            "prod": "true"
+         },           
+         "productOwner": {
+            "email": "tim.gerhardt@gov.bc.ca"
+          },
+          "primaryTechnicalLeadId": {
+            "email": "jack.tang@gov.bc.ca"
+          },
+          "secondaryTechnicalLeadId": {
+            "email": "pearl.guo@gov.bc.ca"
+          },
+        "account_coding": "019110271812063091180300"
+}

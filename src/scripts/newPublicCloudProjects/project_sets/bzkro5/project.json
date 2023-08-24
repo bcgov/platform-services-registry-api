@@ -1,0 +1,25 @@
+{
+    "licence_plate":"bzkro5",
+    "project_name": "Platform Services ROSA",
+    "billing_group": "bzkro5",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "olena.mitovska@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "nick.corcoran@gov.bc.ca"
+      },
+    "account_coding": "000000000000000000000000"
+}

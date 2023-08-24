@@ -1,0 +1,28 @@
+{
+    "licence_plate":"tygsv5",
+    "project_name": "Observability Metrics",
+    "billing_group": "tygsv5",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "mary.carrigan@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "matthew.bystedt@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "grace.ruan@gov.bc.ca"
+      },
+    "account_coding": "115292113035363312900043"
+}

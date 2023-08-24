@@ -1,0 +1,25 @@
+{
+    "licence_plate":"lqc63d",
+    "project_name": "Parks ResourceSpace",
+    "billing_group": "lqc63d",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "robert.fiddler@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "robert.fiddler@gov.bc.ca"
+      },
+    "account_coding": "301297323000163012900304"
+}

@@ -1,0 +1,28 @@
+{
+    "licence_plate":"sfha4x",
+    "project_name": "Forest Client API",
+    "billing_group": "sfha4x",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "Pete.Tollestrup@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "basil.vandegriend@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "derek.roberts@gov.bc.ca"
+      },
+    "account_coding": "048303532924D63972901574"
+}

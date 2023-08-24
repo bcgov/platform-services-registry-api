@@ -134,7 +134,6 @@ model PublicCloudProject {
   secondaryTechnicalLead   User?                @relation("publicCloudSecondaryTechnicalLead", fields: [secondaryTechnicalLeadId], references: [id])
   ministry                 Ministry
   provider                 Provider
-  // commonComponents         CommonComponents
   requests                 PublicCloudRequest[] @relation("publicCloudProject")
 }
 

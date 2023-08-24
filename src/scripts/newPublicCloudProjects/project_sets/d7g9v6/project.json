@@ -1,0 +1,25 @@
+{
+    "licence_plate":"d7g9v6",
+    "project_name": "Platform Services",
+    "billing_group": "d7g9v6",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "olena.mitovska@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "olena.mitovska@gov.bc.ca"
+      },
+    "account_coding": "000000000000000000000000"
+}
