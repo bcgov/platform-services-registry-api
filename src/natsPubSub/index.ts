@@ -37,7 +37,8 @@ async function sendNatsMessage(natsSubject, messageBody) {
 export async function sendPrivateCloudNatsMessage(
   requestType: RequestType,
   requestedProject: PrivateCloudRequestedProject,
-  requestId: PrivateCloudRequest['id']
+  requestId: PrivateCloudRequest['id'],
+  currentProject?: PrivateCloudRequestedProject
 ) {
   const natsSubject = `registry_project_provisioning_${
     Cluster[requestedProject.cluster]
@@ -63,7 +64,8 @@ export async function sendPrivateCloudNatsMessage(
   const messageBody = createPrivateCloudMessage(
     requestType,
     requestedProject,
-    requestId
+    requestId,
+    currentProject
   );
 
   return sendNatsMessage(natsSubject, messageBody);

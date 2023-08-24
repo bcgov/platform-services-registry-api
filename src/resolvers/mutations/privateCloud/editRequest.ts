@@ -159,6 +159,29 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
           editRequest.requestedProject
         );
       }
+
+       if (decisionStatus === DecisionStatus.Approved) {
+        console.log('who poke me??? 1')
+        await sendPrivateCloudNatsMessage(
+          editRequest.type,
+          editRequest.requestedProject,
+          editRequest.id,
+          project
+        );
+
+        if (editRequest.requestedProject.cluster === Cluster.Gold) {
+          const goldDrRequest = { ...editRequest };
+          goldDrRequest.requestedProject.cluster = Cluster.Golddr;
+          console.log('who poke me??? 2')
+          await sendPrivateCloudNatsMessage(
+            goldDrRequest.type,
+            goldDrRequest.requestedProject,
+            goldDrRequest.id,
+            project
+          );
+        }
+    }
+
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
@@ -170,23 +193,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
       throw e;
     }
 
-    if (decisionStatus === DecisionStatus.Approved) {
-      await sendPrivateCloudNatsMessage(
-        editRequest.type,
-        editRequest.requestedProject,
-        editRequest.id
-      );
-
-      if (editRequest.requestedProject.cluster === Cluster.Gold) {
-        const goldDrRequest = { ...editRequest };
-        goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-        await sendPrivateCloudNatsMessage(
-          goldDrRequest.type,
-          goldDrRequest.requestedProject,
-          goldDrRequest.id
-        );
-      }
-    }
+   
 
     return editRequest;
   };
