@@ -81,7 +81,12 @@ function message(
       project_name: requestedProject.name,
       account_coding: requestedProject.accountCoding,
       budgets: requestedProject.budget,
-
+      enterprise_support: {
+        prod: true,
+        test: false,
+        dev: false,
+        tools: false,
+      },
       requested_product_owner: {
         name: `${requestedProject.projectOwner.firstName} ${requestedProject.projectOwner.lastName}`,
         email: requestedProject.projectOwner.email,
