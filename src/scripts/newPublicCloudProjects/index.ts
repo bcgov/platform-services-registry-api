@@ -48,6 +48,7 @@ async function getUser(email) {
 async function createProject(projectData) {
   try {
     console.log('Creating project: ', projectData?.licence_plate);
+    
     const projectOwner = await getUser(
       projectData?.productOwner?.email || 'prabhu.manchineella@gov.bc.ca'
     );
@@ -127,8 +128,6 @@ async function main() {
         const data = await fs.readFile(projectJsonPath, 'utf-8');
 
         const projectData = await JSON.parse(data);
-        const user = await getUser(projectData?.productOwner?.email);
-        console.log('user: ', user);
 
         await createProject(projectData);
       }
