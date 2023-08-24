@@ -8,6 +8,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendRejectEmail } from '../../../ches/emailHandlersPrivate.js';
+import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -72,6 +73,14 @@ const privateCloudRequestDecision: MutationResolvers = async (
         project
       );
 
+      const users = [
+        request.requestedProject.projectOwner,
+        request.requestedProject.primaryTechnicalLead,
+        request.requestedProject?.secondaryTechnicalLead,
+      ].filter(Boolean);
+
+      Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+
       if (request.requestedProject.cluster === Cluster.Gold) {
         const goldDrRequest = { ...request };
         goldDrRequest.requestedProject.cluster = Cluster.Golddr;
@@ -86,7 +95,6 @@ const privateCloudRequestDecision: MutationResolvers = async (
     if (request.decisionStatus === RequestDecision.Rejected) {
       sendRejectEmail(request);
     }
-
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
