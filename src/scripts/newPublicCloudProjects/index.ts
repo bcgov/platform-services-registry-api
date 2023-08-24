@@ -5,7 +5,7 @@ import {
   PublicCloudProject,
   ProjectStatus,
 } from '@prisma/client';
-import { getIdirFromEmail } from '../../controllers/getIdirEmails.js';
+import { getIdirFromEmail } from '../../utils/getIdirFromEmail.js';
 
 const prisma = new PrismaClient();
 
@@ -48,7 +48,7 @@ async function getUser(email) {
 async function createProject(projectData) {
   try {
     console.log('Creating project: ', projectData?.licence_plate);
-    
+
     const projectOwner = await getUser(
       projectData?.productOwner?.email || 'prabhu.manchineella@gov.bc.ca'
     );

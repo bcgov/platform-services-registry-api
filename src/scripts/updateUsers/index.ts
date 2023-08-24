@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { PrismaClient } from '@prisma/client';
-import { getIdirFromEmail } from '../../controllers/getIdirEmails.js';
+import { getIdirFromEmail } from '../../utils/getIdirFromEmail.js';
 
 const prisma = new PrismaClient();
 
