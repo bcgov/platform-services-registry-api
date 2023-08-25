@@ -20,7 +20,8 @@
     "prisma-migrate-test": "dotenv -e .env.test -- npx prisma generate && dotenv -e .env.test -- npx prisma db push",
     "prisma-migrate-prod": "npx prisma generate && npx prisma db push",
     "add-existing-public-cloud-projects": "dotenv -e .env -- node ./dist/scripts/newPublicCloudProjects/index.js",
-    "update-users": "dotenv -e .env -- node ./dist/scripts/updateUsers/index.js"
+    "update-users": "dotenv -e .env -- node ./dist/scripts/updateUsers/index.js",
+    "update-creation-dates": "dotenv -e .env -- node ./dist/scripts/updateCreationDates/index.js"
   },
   "keywords": [],
   "author": "",
