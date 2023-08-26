@@ -22,6 +22,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
   }
 
   let request;
+  let currentProject;
 
   try {
     request = await prisma.privateCloudRequest.update({
@@ -54,23 +55,27 @@ const privateCloudRequestDecision: MutationResolvers = async (
       },
     });
 
-    const project = await prisma.privateCloudProject.findUnique({
-      where: {
-        id: request.projectId,
-      },
-      include: {
-        projectOwner: true,
-        primaryTechnicalLead: true,
-        secondaryTechnicalLead: true,
-      },
-    });
+    if (request.type !== 'CREATE') {
+      currentProject = await prisma.privateCloudProject.findUnique({
+        where: {
+          id: request.projectId,
+        },
+        include: {
+          projectOwner: true,
+          primaryTechnicalLead: true,
+          secondaryTechnicalLead: true,
+        },
+      });
+    } else {
+      currentProject = request.requestedProject;
+    }
 
     if (request.decisionStatus === RequestDecision.Approved) {
       await sendPrivateCloudNatsMessage(
         request.type,
         request.requestedProject,
         request.id,
-        project
+        currentProject
       );
 
       const users = [
@@ -88,7 +93,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
           goldDrRequest.type,
           goldDrRequest.requestedProject,
           goldDrRequest.id,
-          project
+          currentProject
         );
       }
     }
