@@ -117,7 +117,6 @@ export const sendProvisionedEmails = async (request) => {
 
 
 export const sendEditRequestEmails = async (editRequest) => {
-
   try {
     await chesService.send({
       bodyType: "html",
@@ -142,7 +141,6 @@ export const sendEditRequestEmails = async (editRequest) => {
   } catch (error) {
     console.error(error);
   }
-  // *** What about no quota change and no contact change?
 };
 
 export const sendRejectEmail = async (request) => {

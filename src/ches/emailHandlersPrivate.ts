@@ -64,6 +64,8 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
       !quotaChanged(project, requestedProject) &&
       contactChanged(project, requestedProject)
     ) {
+      console.log("generateEmailTemplatePrivateData",generateEmailTemplatePrivateData(requestedProject, project)
+      )
       await chesService.send({
         bodyType: "html",
         body: swig.renderFile(

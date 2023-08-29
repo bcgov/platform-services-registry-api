@@ -104,6 +104,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
           : undefined,
       };
 
+      
       const isQuotaChanged = !(
         JSON.stringify(args.productionQuota) ===
           JSON.stringify(project.productionQuota) &&
@@ -154,7 +155,15 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
       });
 
-      if (isQuotaChanged) {
+      const contactChanged = !(
+        editRequest.project.projectOwner.email === editRequest.requestedProject.projectOwner.email &&
+        editRequest.project.primaryTechnicalLead.email ===
+        editRequest.requestedProject.primaryTechnicalLead.email &&
+        editRequest.project.secondaryTechnicalLead?.email ===
+        editRequest.requestedProject.secondaryTechnicalLead?.email
+    );
+
+      if (isQuotaChanged||contactChanged) {
         await sendEditRequestEmails(
           editRequest.project,
           editRequest.requestedProject
