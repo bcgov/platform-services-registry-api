@@ -94,23 +94,23 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
         secondaryTechnicalLead: args.secondaryTechnicalLead
           ? {
-              connectOrCreate: {
-                where: {
-                  email: args.secondaryTechnicalLead.email,
-                },
-                create: args.secondaryTechnicalLead,
+            connectOrCreate: {
+              where: {
+                email: args.secondaryTechnicalLead.email,
               },
-            }
+              create: args.secondaryTechnicalLead,
+            },
+          }
           : undefined,
       };
 
-      
+
       const isQuotaChanged = !(
         JSON.stringify(args.productionQuota) ===
-          JSON.stringify(project.productionQuota) &&
+        JSON.stringify(project.productionQuota) &&
         JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
         JSON.stringify(args.developmentQuota) ===
-          JSON.stringify(project.developmentQuota) &&
+        JSON.stringify(project.developmentQuota) &&
         JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
       );
 
@@ -155,20 +155,11 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
       });
 
-      const contactChanged = !(
-        editRequest.project.projectOwner.email === editRequest.requestedProject.projectOwner.email &&
-        editRequest.project.primaryTechnicalLead.email ===
-        editRequest.requestedProject.primaryTechnicalLead.email &&
-        editRequest.project.secondaryTechnicalLead?.email ===
-        editRequest.requestedProject.secondaryTechnicalLead?.email
-    );
+      await sendEditRequestEmails(
+        editRequest.project,
+        editRequest.requestedProject
+      );
 
-      if (isQuotaChanged||contactChanged) {
-        await sendEditRequestEmails(
-          editRequest.project,
-          editRequest.requestedProject
-        );
-      }
 
       if (decisionStatus === DecisionStatus.Approved) {
         const users = [
