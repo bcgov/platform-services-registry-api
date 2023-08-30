@@ -3,7 +3,7 @@
     "rootDirs": ["src"],
     "baseUrl": "./src",
     "outDir": "dist",
-    "lib": ["es2021"],
+    "lib": ["es2021", "es5", "es6", "dom", "dom.iterable"],
     "target": "es2020",
     "module": "esnext",
     "moduleResolution": "node",

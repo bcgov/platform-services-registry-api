@@ -1,33 +1,42 @@
-import fs from 'fs/promises';
 import { PrismaClient } from '@prisma/client';
+import getIdirUpn from "../../utils/getIdirUpn.js";
+import {getIdirFromEmail} from "../../utils/getIdirFromEmail.js";
 
-const prisma = new PrismaClient(
-    {
-    datasources: {
-      db: {
-        url: 'mongodb+srv://challenge:uYuMturLtSasyUig@cluster0.v8ikp.mongodb.net/zhanna?retryWrites=true&w=majority',
-      },
-    },
-  }
-  );
+const prisma = new PrismaClient();
 
-  
 const users = await prisma.user.findMany({
-    // where: {
-    //     OR: [
-    //       {
-    //         idir: "",
-    //       },
-    //       {
-    //          upn: "",
-    //     },
-    //     ],}
+    where: {
+        OR: [
+            {
+                idir: "",
+            },
+            {
+                upn: "",
+            },
+        ],
+    }
 });
 
-  console.log(users)
+for(const user of users.slice(0,1)){
+  const [userData] = await getIdirFromEmail(user.email);
+
+  if (!userData) {
+    console.log('No user data found for email: ', user.email);
+    continue;
+  }
+
+  await prisma.user.update({
+    where: {
+      email: user.email.toLowerCase(),
+    },
+    data: {
+      idir: await getIdirUpn(userData.id),
+      upn: userData.userPrincipalName,
+    },
+  });
+}
 
 
   //db.collection.updateMany({}, {$set:{fieldName: "value"}})
-  //port-forward 'cluster0.v8ikp.mongodb.net/zhanna?retryWrites=true&w=majority'
-  //port-forward cluster0-shard-00-00.abcde.mongodb.net:27017
+
 
