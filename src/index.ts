@@ -28,6 +28,10 @@ import {
   getIdirEmails,
   getIdirPhoto,
   getRequestStatus,
+<<<<<<< HEAD
+=======
+  getIdir,
+>>>>>>> parent of a62fed7 (Revert "Merge pull request #63 from bcgov/upn-user")
 } from './controllers/index.js';
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
@@ -114,6 +118,8 @@ app.get('/api/v1/database-health-check', getDatabaseHealthCheck);
 app.get('/api/v1/getIdirEmails', getIdirEmails);
 
 app.get('/api/v1/getIdirPhoto', getIdirPhoto);
+
+app.get('/api/v1/getIdir', getIdir);
 
 app.post('/namespace', privateCloudProvisionerCallbackHandler);
 app.post('/public-cloud', publicCloudProvisionerCallbackHandler);
