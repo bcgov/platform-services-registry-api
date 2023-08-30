@@ -8,6 +8,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendRejectEmail } from '../../../ches/emailHandlersPublic.js';
+import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const publicCloudRequestDecision = async (
   _,
@@ -101,6 +102,14 @@ const publicCloudRequestDecision = async (
       request.requestedProject,
       project
     );
+
+    const users = [
+      request.requestedProject.projectOwner,
+      request.requestedProject.primaryTechnicalLead,
+      request.requestedProject?.secondaryTechnicalLead,
+    ].filter(Boolean);
+
+    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
   }
 
   if (request.decisionStatus === RequestDecision.Rejected) {

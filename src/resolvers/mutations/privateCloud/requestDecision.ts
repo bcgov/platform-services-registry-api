@@ -8,6 +8,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendRejectEmail } from '../../../ches/emailHandlersPrivate.js';
+import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const privateCloudRequestDecision: MutationResolvers = async (
   _,
@@ -21,6 +22,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
   }
 
   let request;
+  let currentProject;
 
   try {
     request = await prisma.privateCloudRequest.update({
@@ -52,6 +54,52 @@ const privateCloudRequestDecision: MutationResolvers = async (
         },
       },
     });
+
+    if (request.type !== 'CREATE') {
+      currentProject = await prisma.privateCloudProject.findUnique({
+        where: {
+          id: request.projectId,
+        },
+        include: {
+          projectOwner: true,
+          primaryTechnicalLead: true,
+          secondaryTechnicalLead: true,
+        },
+      });
+    } else {
+      currentProject = request.requestedProject;
+    }
+
+    if (request.decisionStatus === RequestDecision.Approved) {
+      await sendPrivateCloudNatsMessage(
+        request.type,
+        request.requestedProject,
+        request.id,
+        currentProject
+      );
+
+      const users = [
+        request.requestedProject.projectOwner,
+        request.requestedProject.primaryTechnicalLead,
+        request.requestedProject?.secondaryTechnicalLead,
+      ].filter(Boolean);
+
+      Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+
+      if (request.requestedProject.cluster === Cluster.Gold) {
+        const goldDrRequest = { ...request };
+        goldDrRequest.requestedProject.cluster = Cluster.Golddr;
+        await sendPrivateCloudNatsMessage(
+          goldDrRequest.type,
+          goldDrRequest.requestedProject,
+          goldDrRequest.id,
+          currentProject
+        );
+      }
+    }
+    if (request.decisionStatus === RequestDecision.Rejected) {
+      sendRejectEmail(request);
+    }
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2025') {
@@ -59,27 +107,6 @@ const privateCloudRequestDecision: MutationResolvers = async (
       }
     }
     throw e;
-  }
-
-  if (request.decisionStatus === RequestDecision.Approved) {
-    await sendPrivateCloudNatsMessage(
-      request.type,
-      request.requestedProject,
-      request.id
-    );
-
-    if (request.requestedProject.cluster === Cluster.Gold) {
-      const goldDrRequest = { ...request };
-      goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-      await sendPrivateCloudNatsMessage(
-        goldDrRequest.type,
-        goldDrRequest.requestedProject,
-        goldDrRequest.id
-      );
-    }
-  }
-  if (request.decisionStatus === RequestDecision.Rejected) {
-    sendRejectEmail(request);
   }
 
   return request;
