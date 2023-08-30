@@ -94,22 +94,23 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
         secondaryTechnicalLead: args.secondaryTechnicalLead
           ? {
-              connectOrCreate: {
-                where: {
-                  email: args.secondaryTechnicalLead.email,
-                },
-                create: args.secondaryTechnicalLead,
+            connectOrCreate: {
+              where: {
+                email: args.secondaryTechnicalLead.email,
               },
-            }
+              create: args.secondaryTechnicalLead,
+            },
+          }
           : undefined,
       };
 
+
       const isQuotaChanged = !(
         JSON.stringify(args.productionQuota) ===
-          JSON.stringify(project.productionQuota) &&
+        JSON.stringify(project.productionQuota) &&
         JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
         JSON.stringify(args.developmentQuota) ===
-          JSON.stringify(project.developmentQuota) &&
+        JSON.stringify(project.developmentQuota) &&
         JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
       );
 
@@ -154,12 +155,11 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
       });
 
-      if (isQuotaChanged) {
-        await sendEditRequestEmails(
-          editRequest.project,
-          editRequest.requestedProject
-        );
-      }
+      await sendEditRequestEmails(
+        editRequest.project,
+        editRequest.requestedProject
+      );
+
 
       if (decisionStatus === DecisionStatus.Approved) {
         const users = [
