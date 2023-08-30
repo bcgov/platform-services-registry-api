@@ -15,7 +15,7 @@ function getRequestStatus(id, licencePlate, cluster) {
         && response.data.metadata.labels['workflows.argoproj.io/phase'] === 'Running') {
         console.log(`Product with cluster - ${cluster}, licencePlate - ${licencePlate} id - ${id} - provisioning is still running`)
       }
-      else console.log(`Product with cluster - ${cluster}, licencePlate - ${licencePlate} id - ${id} - 
+      console.log(`Product with cluster - ${cluster}, licencePlate - ${licencePlate} id - ${id} - 
       workflows.argoproj.io/phase - ${response.data.metadata.labels['workflows.argoproj.io/phase']} - 
       workflows.argoproj.io/completed - ${response.data.metadata.labels['workflows.argoproj.io/completed']}`)
     })

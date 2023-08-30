@@ -1,5 +1,5 @@
-export const adminEmails = ["faisal.hamood@gov.bc.ca", "jason.leach@fullboar.ca", "oamar.kanji@gov.bc.ca"];
-export const adminPublicEmails = [];
+export const adminEmails = `${process.env.PRIVATE_ADMIN_EMAILS}`.split(',')
+export const adminPublicEmails = `${process.env.PUBLIC_ADMIN_EMAILS}`.split(',')
 
 export const ministriesNames = [
   {
