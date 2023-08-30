@@ -28,10 +28,7 @@ import {
   getIdirEmails,
   getIdirPhoto,
   getRequestStatus,
-<<<<<<< HEAD
-=======
   getIdir,
->>>>>>> parent of a62fed7 (Revert "Merge pull request #63 from bcgov/upn-user")
 } from './controllers/index.js';
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
