@@ -1,23 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import getIdirUpn from "../../utils/getIdirUpn.js";
-import {getIdirFromEmail} from "../../utils/getIdirFromEmail.js";
+import getIdirUpn from '../../utils/getIdirUpn.js';
+import { getIdirFromEmail } from '../../utils/getIdirFromEmail.js';
 
 const prisma = new PrismaClient();
 
-const users = await prisma.user.findMany({
-    where: {
-        OR: [
-            {
-                idir: "",
-            },
-            {
-                upn: "",
-            },
-        ],
-    }
-});
+const users = await prisma.user.findMany();
 
-for(const user of users.slice(0,1)){
+for (const user of users) {
   const [userData] = await getIdirFromEmail(user.email);
 
   if (!userData) {
@@ -35,8 +24,3 @@ for(const user of users.slice(0,1)){
     },
   });
 }
-
-
-  //db.collection.updateMany({}, {$set:{fieldName: "value"}})
-
-
