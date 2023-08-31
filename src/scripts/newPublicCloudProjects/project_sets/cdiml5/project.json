@@ -1,0 +1,25 @@
+{
+    "licence_plate":"cdiml5",
+    "project_name": "Research and Training",
+    "billing_group": "cdiml5",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "raghu.mohindru@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "raghu.mohindru@gov.bc.ca"
+      },
+    "account_coding": "034550316051565165503101"
+}

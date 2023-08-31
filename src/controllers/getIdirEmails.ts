@@ -1,4 +1,5 @@
-import { callMsGraph, getAccessToken } from "../msal/index.js";
+import { callMsGraph, getAccessToken } from '../msal/index.js';
+
 
 async function getIdirEmails(req, res) {
   const email = req.query.email;
@@ -13,12 +14,13 @@ async function getIdirEmails(req, res) {
 
     const response = await callMsGraph(url, accessToken);
     const data = await response.json();
-
     return res.json(data.value);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Error fetching users" });
+    return res.status(500).json({ error: 'Error fetching users' });
   }
 }
 
+
 export default getIdirEmails;
+

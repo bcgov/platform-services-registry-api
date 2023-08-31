@@ -1,0 +1,28 @@
+{
+    "licence_plate":"uux0vy",
+    "project_name": "Internationally Educated Nurses",
+    "billing_group": "uux0vy",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "pam.k.smith@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "vyas.sarangapani@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "wesley.kubo@gov.bc.ca"
+      },
+    "account_coding": "02666145440056331660X001"
+}

@@ -1,0 +1,28 @@
+{
+    "licence_plate":"ou8i4w",
+    "project_name": "Application Infrastructure DBA Team",
+    "billing_group": "ou8i4w",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "pam.k.smith@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "matthew.bystedt@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "mary.carrigan@gov.bc.ca"
+      },
+    "account_coding": "02666145440056331660X001"
+}

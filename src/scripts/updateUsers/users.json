@@ -1,0 +1,1168 @@
+[{
+  "_id": {
+    "$oid": "6440721f65a2db27928419fd"
+  },
+  "firstName": "Shane",
+  "lastName": "Passmore",
+  "email": "shane.passmore@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:39.151Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:39.151Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440721f65a2db2792841a01"
+  },
+  "firstName": "Steven",
+  "lastName": "Barre",
+  "email": "steven.barre@dxcas.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:39.375Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:39.375Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440721f65a2db2792841a08"
+  },
+  "firstName": "Olena",
+  "lastName": "Mitovska",
+  "email": "olena_mitovska@yahoo.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:39.687Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:39.687Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440721f65a2db2792841a0f"
+  },
+  "firstName": "Jam",
+  "lastName": "Hamidi",
+  "email": "jam.hamidi@maximusbc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:39.982Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:39.982Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722065a2db2792841a12"
+  },
+  "firstName": "Jason",
+  "lastName": "Aitchison",
+  "email": "itchison@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:40.103Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:40.103Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722065a2db2792841a15"
+  },
+  "firstName": "John",
+  "lastName": "McColl",
+  "email": "john.mccoll@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:40.229Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:40.229Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722065a2db2792841a19"
+  },
+  "firstName": "Morgan",
+  "lastName": "Thompson",
+  "email": "morgan.thompson@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:40.401Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:40.401Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722165a2db2792841a26"
+  },
+  "firstName": "Andre",
+  "lastName": "Lashley",
+  "email": "andre.lashley@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:41.004Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:41.004Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722165a2db2792841a37"
+  },
+  "firstName": "Will",
+  "lastName": "Sonnex",
+  "email": "will.sonnex@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:41.849Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:41.849Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722265a2db2792841a3f"
+  },
+  "firstName": "Jam",
+  "lastName": "Hamidi",
+  "email": "jam.hamidi@hibc.gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:42.211Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:42.211Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722265a2db2792841a50"
+  },
+  "firstName": "Neal",
+  "lastName": "Li",
+  "email": "neal.li@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:42.958Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:42.958Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722365a2db2792841a52"
+  },
+  "firstName": "Hart",
+  "lastName": "Bob",
+  "email": "bob.hart@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:43.041Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:43.041Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722365a2db2792841a5a"
+  },
+  "firstName": "Andrew",
+  "lastName": "Brennan",
+  "email": "andrew.brennan@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:43.379Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:43.379Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722365a2db2792841a5d"
+  },
+  "firstName": "Mark",
+  "lastName": "Walle",
+  "email": "mark.walle@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:43.526Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:43.526Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722365a2db2792841a67"
+  },
+  "firstName": "Graeme",
+  "lastName": "Godfrey",
+  "email": "graeme.godfrey@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:43.977Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:43.977Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722465a2db2792841a68"
+  },
+  "firstName": "Greg",
+  "lastName": "Hinterberger",
+  "email": "gerg.hinterberger@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:44.022Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:44.022Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722465a2db2792841a6d"
+  },
+  "firstName": "Greg",
+  "lastName": "Poirier",
+  "email": "greg.poirier@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:44.242Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:44.242Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722465a2db2792841a77"
+  },
+  "firstName": "Dan",
+  "lastName": "Darche",
+  "email": "dan.darche@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:44.669Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:44.669Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722465a2db2792841a78"
+  },
+  "firstName": "Dennis",
+  "lastName": "Cinco",
+  "email": "dennis.cinco@telus.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:44.712Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:44.712Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722465a2db2792841a7c"
+  },
+  "firstName": "Jason",
+  "lastName": "Leach",
+  "email": "jason.leach@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:44.887Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:44.887Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722565a2db2792841a85"
+  },
+  "firstName": "Arlen",
+  "lastName": "Tees",
+  "email": "arlen.tees@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:45.306Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:45.306Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722565a2db2792841a91"
+  },
+  "firstName": "Brian",
+  "lastName": "Kelsey",
+  "email": "kelsey.brian@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:45.836Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:45.836Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722565a2db2792841a92"
+  },
+  "firstName": "Patricia",
+  "lastName": "White",
+  "email": "patricia.white@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:45.889Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:45.889Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722665a2db2792841a9d"
+  },
+  "firstName": "Paul",
+  "lastName": "Dittaro",
+  "email": "pdittaro@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:46.377Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:46.377Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722665a2db2792841a9e"
+  },
+  "firstName": "Jay",
+  "lastName": "Douillard",
+  "email": "jdouillard@crd.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:46.421Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:46.421Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722665a2db2792841aa4"
+  },
+  "firstName": "Kendall",
+  "lastName": "OlsenMaier",
+  "email": "kendall@freshworks.io",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:46.717Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:46.717Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722765a2db2792841aab"
+  },
+  "firstName": "Online",
+  "lastName": "Twiss",
+  "email": "online.twiss@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:47.044Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:47.044Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722765a2db2792841ab5"
+  },
+  "firstName": "Mark",
+  "lastName": "Lise",
+  "email": "mark.1.lise@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:47.506Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:47.506Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722765a2db2792841aba"
+  },
+  "firstName": "Shankar",
+  "lastName": "Sethuraman",
+  "email": "shankar.sethuraman@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:47.737Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:47.737Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722765a2db2792841abf"
+  },
+  "firstName": "JAne",
+  "lastName": "Doe",
+  "email": "jane.doe@example.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:47.958Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:47.958Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722765a2db2792841ac0"
+  },
+  "firstName": "Shaun",
+  "lastName": "Bathgate",
+  "email": "shaun.bathgate@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:47.999Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:47.999Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722865a2db2792841ac5"
+  },
+  "firstName": "Sam",
+  "lastName": "Jack",
+  "email": "sam.jack@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:48.256Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:48.256Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722865a2db2792841ac8"
+  },
+  "firstName": "Michael",
+  "lastName": "Shire",
+  "email": "michael.shire@arctiq.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:48.389Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:48.389Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722965a2db2792841ad9"
+  },
+  "firstName": "George",
+  "lastName": "Walker",
+  "email": "george.walker@quartech.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:49.188Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:49.188Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722965a2db2792841adf"
+  },
+  "firstName": "Chris",
+  "lastName": "Evans",
+  "email": "christian.evans@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:49.459Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:49.459Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722965a2db2792841ae0"
+  },
+  "firstName": "Ian",
+  "lastName": "Watts",
+  "email": "ian@48thave.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:49.502Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:49.502Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722965a2db2792841ae8"
+  },
+  "firstName": "Aidan",
+  "lastName": "Cope",
+  "email": "aidan.cope@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:49.862Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:49.862Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722965a2db2792841aea"
+  },
+  "firstName": "Cameron",
+  "lastName": "Wilson",
+  "email": "cameron.wilson@nttdata.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:49.958Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:49.958Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841aeb"
+  },
+  "firstName": "Thor",
+  "lastName": "Wolpert",
+  "email": "thor@wolpert.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.001Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.001Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841aed"
+  },
+  "firstName": "Mike",
+  "lastName": "Ward",
+  "email": "mike.1.ward@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.101Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.101Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841aef"
+  },
+  "firstName": "virginia",
+  "lastName": "Vella",
+  "email": "virginia.vella@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.205Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.205Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841af7"
+  },
+  "firstName": "Warren",
+  "lastName": "Christian",
+  "email": "warren.christian@telus.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.564Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.564Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841af9"
+  },
+  "firstName": "Jason",
+  "lastName": "Sherman",
+  "email": "jason@usingtechnolo.gy",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.650Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.650Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841afd"
+  },
+  "firstName": "Jason",
+  "lastName": "Syrotuck",
+  "email": "jason.syrotuck@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.827Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.827Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722a65a2db2792841afe"
+  },
+  "firstName": "Simen",
+  "lastName": "Smaaberg",
+  "email": "simen@freshworks.io",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:50.869Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:50.869Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722b65a2db2792841b06"
+  },
+  "firstName": "Pankaj",
+  "lastName": "Kathuria",
+  "email": "pankaj.kathuria@cgi.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:51.230Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:51.230Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722b65a2db2792841b08"
+  },
+  "firstName": "Evan",
+  "lastName": "Lancaster",
+  "email": "elancaster@parcsystems.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:51.319Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:51.319Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722b65a2db2792841b0b"
+  },
+  "firstName": "Fahim",
+  "lastName": "Rabbani",
+  "email": "fahim.rabbani@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:51.453Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:51.453Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722b65a2db2792841b0d"
+  },
+  "firstName": "Shea",
+  "lastName": "Phillips",
+  "email": "shea.phillips@brightcoast.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:51.551Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:51.551Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722b65a2db2792841b13"
+  },
+  "firstName": "Mark",
+  "lastName": "Rosenabum",
+  "email": "bugbounty_anonull@protonmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:51.816Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:51.816Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b2e"
+  },
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "email": "billy.li.901@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.044Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.044Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b30"
+  },
+  "firstName": "Andriy",
+  "lastName": "Bolyachevets",
+  "email": "andriy.bolyachevetes@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.134Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.134Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b32"
+  },
+  "firstName": "Wade",
+  "lastName": "Barnes",
+  "email": "wade@neoterictech.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.228Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.228Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b37"
+  },
+  "firstName": "Victor",
+  "lastName": "Ameh",
+  "email": "victor.ameh@aot-technologies.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.469Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.469Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b39"
+  },
+  "firstName": "paul",
+  "lastName": "Dittaro",
+  "email": "paul@bit3.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.554Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.554Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b3a"
+  },
+  "firstName": "Daniel",
+  "lastName": "Haselhan",
+  "email": "daniel@bit3.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.596Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.596Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b41"
+  },
+  "firstName": "Killian",
+  "lastName": "Faussart",
+  "email": "killian.faussart@cgi.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.902Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.902Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722d65a2db2792841b43"
+  },
+  "firstName": "Payne",
+  "lastName": "Jones",
+  "email": "payne.jones@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:53.986Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:53.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722e65a2db2792841b46"
+  },
+  "firstName": "Rajpal",
+  "lastName": "Chauhan",
+  "email": "chauhanraj1000@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:54.118Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:54.118Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722e65a2db2792841b4c"
+  },
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "email": "w8896699@uvic.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:54.389Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:54.389Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722e65a2db2792841b4e"
+  },
+  "firstName": "Chris",
+  "lastName": "Walsh",
+  "email": "christoper.walsh@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:54.475Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:54.475Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722e65a2db2792841b4f"
+  },
+  "firstName": "Wade",
+  "lastName": "Barnes",
+  "email": "wade.barnes@quartech.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:54.526Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:54.526Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722e65a2db2792841b53"
+  },
+  "firstName": "Alexander",
+  "lastName": "Carmichael",
+  "email": "carmichael.alexander@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:54.721Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:54.721Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722f65a2db2792841b5f"
+  },
+  "firstName": "William",
+  "lastName": "Hutchison",
+  "email": "william.hutchison@dxcas.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:55.283Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:55.283Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722f65a2db2792841b60"
+  },
+  "firstName": "Shidhi",
+  "lastName": "Mohammad",
+  "email": "shidhimohammad@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:55.325Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:55.325Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440722f65a2db2792841b69"
+  },
+  "firstName": "Tyler",
+  "lastName": "DeJong",
+  "email": "tdejong@nhcweb.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T22:58:55.724Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T22:58:55.724Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440760b57e24e190972542e"
+  },
+  "firstName": "Rob",
+  "lastName": "Plasticviking",
+  "email": "rob@plasticviking.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T23:15:23.569Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T23:15:23.569Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440760f57e24e1909725430"
+  },
+  "firstName": "Mike",
+  "lastName": "Oxd",
+  "email": "mike@oxd.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T23:15:27.201Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T23:15:27.201Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440761b57e24e1909725442"
+  },
+  "firstName": "Young",
+  "lastName": "Chung",
+  "email": "young-jin.chung@dxc.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T23:15:39.939Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T23:15:39.939Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440761d57e24e1909725448"
+  },
+  "firstName": "Arlen",
+  "lastName": "Tees",
+  "email": "Arlen.Tees@gov.bc.ca",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T23:15:41.860Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T23:15:41.860Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6440763057e24e190972546d"
+  },
+  "firstName": "Test",
+  "lastName": "Test",
+  "email": "w8896699@example.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-19T23:16:00.025Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-19T23:16:00.025Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6441ac545e0d075add629f24"
+  },
+  "firstName": "Oamar",
+  "lastName": "Kanji",
+  "email": "oamarkanji@gmail.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-20T21:19:16.178Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-20T21:19:16.178Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6441ac585e0d075add629f25"
+  },
+  "firstName": "Test",
+  "lastName": "Abc",
+  "email": "test@abc.com",
+  "ministry": null,
+  "archived": false,
+  "created": {
+    "$date": "2023-04-20T21:19:20.538Z"
+  },
+  "lastSeen": {
+    "$date": "2023-04-20T21:19:20.538Z"
+  }
+}]

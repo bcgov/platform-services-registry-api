@@ -1,0 +1,25 @@
+{
+    "licence_plate":"bcbwlp",
+    "project_name": "Emergency Health Provider Registry",
+    "billing_group": "bcbwlp",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "Rebecca.Swan@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "vyas.sarangapani@gov.bc.ca"
+      },
+    "account_coding": "02666145440056331660x001"
+}
