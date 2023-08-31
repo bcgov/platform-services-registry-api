@@ -180,7 +180,6 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         if (editRequest.requestedProject.cluster === Cluster.Gold) {
           const goldDrRequest = { ...editRequest };
           goldDrRequest.requestedProject.cluster = Cluster.Golddr;
-          console.log('who poke me??? 2');
           await sendPrivateCloudNatsMessage(
             goldDrRequest.type,
             goldDrRequest.requestedProject,
