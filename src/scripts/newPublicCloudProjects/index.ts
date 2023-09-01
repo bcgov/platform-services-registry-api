@@ -6,6 +6,7 @@ import {
   ProjectStatus,
 } from '@prisma/client';
 import { getIdirFromEmail } from '../../utils/getIdirFromEmail.js';
+import getIdirUpn from '../../utils/getIdirUpn.js';
 
 const prisma = new PrismaClient();
 
@@ -35,11 +36,20 @@ async function getUser(email) {
     return undefined;
   }
 
+  const idir = await getIdirUpn(userData.id);
+
+  if (!idir) {
+    console.log('No IDIR found for user: ', email);
+    return undefined;
+  }
+
   const user = {
     email: userData.mail.toLowerCase(),
     firstName: userData.givenName,
     lastName: userData.surname,
     ministry: parseMinistryFromDisplayName(userData.displayName),
+    upn: userData.userPrincipalName,
+    idir: idir,
   };
 
   return user;
