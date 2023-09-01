@@ -11,7 +11,7 @@ import getIdirUpn from '../../utils/getIdirUpn.js';
 const prisma = new PrismaClient();
 
 const mainFolderPath =
-  '/Users/okanji/Desktop/platform-services-registry-api/src/scripts/newPublicCloudProjects/project_sets';
+  'src/scripts/newPublicCloudProjects/project_sets';
 
 const parseMinistryFromDisplayName = (displayName) => {
   if (displayName && displayName.length > 0) {
