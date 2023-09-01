@@ -24,13 +24,22 @@ const User = {
       })
       .privateCloudProjectSecondaryTechnicalLead(),
   isNew: async (user, _, { prisma }) => {
-    await prisma.user.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
         email: user.email,
       },
+      include: {
+        privateCloudProjectOwner: true,
+        privateCloudProjectPrimaryTechnicalLead: true,
+        privateCloudProjectSecondaryTechnicalLead: true,
+      },
     });
 
-    return !!user;
+    return (
+      result.privateCloudProjectOwner.length > 0 ||
+      result.privateCloudProjectPrimaryTechnicalLead.length > 0 ||
+      result.privateCloudProjectSecondaryTechnicalLead.length > 0
+    );
   },
 };
 
