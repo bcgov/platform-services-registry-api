@@ -8,6 +8,7 @@ const users = await prisma.user.findMany();
 
 for (const user of users) {
   const [userData] = await getIdirFromEmail(user.email);
+  
   if (!userData) {
     console.log('No user data found for email: ', user.email);
     continue;

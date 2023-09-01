@@ -15,8 +15,7 @@ const parseMinistryFromDisplayName = (displayName) => {
   }
 };
 
-const dataPath =
-  '/Users/okanji/Desktop/platform-services-registry-api/src/scripts/updateUsers/users.json';
+const dataPath ='./users.json';
 
 const data = await fs.readFile(dataPath, 'utf-8');
 
