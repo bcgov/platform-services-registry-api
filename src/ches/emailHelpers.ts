@@ -153,7 +153,7 @@ export const generateEmailTemplatePrivateData = (
                 ? requestedProject.testQuota.cpu.cpuRequests
                 : null,
         testQuotaMemoryRequested:
-            requestedProject.testQuota.memoryRequests !==
+            requestedProject.testQuota.memory.memoryRequests !==
                 project.testQuota.memory.memoryRequests
                 ? requestedProject.testQuota.memory.memoryRequests
                 : null,
@@ -241,9 +241,9 @@ export const generateEmailTemplatePublicData = (
         : { ...incomingProject };
 
 
-        const secondaryTechnicalLead = (!!project.secondaryTechnicalLead || !!requestedProject.secondaryTechnicalLead) && requestedProject.secondaryTechnicalLead?.id !== project.secondaryTechnicalLead?.id
+    const secondaryTechnicalLead = (!!project.secondaryTechnicalLead || !!requestedProject.secondaryTechnicalLead) && requestedProject.secondaryTechnicalLead?.id !== project.secondaryTechnicalLead?.id
         ? project.secondaryTechnicalLead : !!requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead : null;
-     const primaryTechnicalLead = project.primaryTechnicalLead;
+    const primaryTechnicalLead = project.primaryTechnicalLead;
     const projectOwner = project.projectOwner;
 
 
@@ -280,12 +280,12 @@ export const generateEmailTemplatePublicData = (
         BudgetProdReq: project.budget.prod,
         BudgetToolsReq: project.budget.tools,
         AccountCodingReq: project.accountCoding.replace(/(.{3})(.{5})(.{5})(.{4})(.{7})/g, "$1 $2 $3 $4 $5"),
-        isPOChanged: requestedProject.projectOwner.email !== project.projectOwner.email,        
+        isPOChanged: requestedProject.projectOwner.email !== project.projectOwner.email,
         POReq: requestedProject.projectOwner.email,
-        isPrimeTLChanged:requestedProject.primaryTechnicalLead.email!== project.primaryTechnicalLead.email,
-        PrimeTLReq:requestedProject.primaryTechnicalLead.email,
-        isSecTLChanged:requestedProject.secondaryTechnicalLead?requestedProject.secondaryTechnicalLead.email!== project.secondaryTechnicalLead.email:undefined,
-        SecTLReq:requestedProject.secondaryTechnicalLead?requestedProject.secondaryTechnicalLead.email:null,
+        isPrimeTLChanged: requestedProject.primaryTechnicalLead.email !== project.primaryTechnicalLead.email,
+        PrimeTLReq: requestedProject.primaryTechnicalLead.email,
+        isSecTLChanged: requestedProject.secondaryTechnicalLead?.email !== project.secondaryTechnicalLead?.email,
+        SecTLReq: requestedProject.secondaryTechnicalLead ? requestedProject.secondaryTechnicalLead.email : null,
         ...other,
     };
 };

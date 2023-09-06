@@ -408,7 +408,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ PrimeTLReq }}
+                                            {{ PriTLEmail }}
                                           </p>
                                         </div>
                                       </div>
@@ -419,7 +419,7 @@
                                 <![endif]-->
                               </div>
                               {% endif %} 
-                              {% if isSecTLChanged && SecTLEmail %}
+                              {% if isSecTLChanged %}
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -459,7 +459,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ SecTLReq }}
+                                            {{ SecTLEmail || "No Secondary Tech Lead" }}
                                           </p>
                                         </div>
                                       </div>
@@ -841,7 +841,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ PriTLEmail }}
+                                            {{ PrimeTLReq }}
                                           </p>
                                         </div>
                                       </div>
@@ -852,7 +852,7 @@
                                 <![endif]-->
                               </div>
                               {% endif %} 
-                              {% if isSecTLChanged && SecTLEmail %}
+                              {% if isSecTLChanged  %}
                               <div class="two-col"
                                 style="text-align:center;font-size:0;background-color: #ffffff;  ">
                                 <!--[if mso]>
@@ -892,7 +892,7 @@
                                             text-align:right;
                                             padding-right:10%;
                                             ">
-                                            {{ SecTLEmail }}
+                                            {{ SecTLReq || "No Secondary Tech Lead"}}
                                           </p>
                                         </div>
                                       </div>

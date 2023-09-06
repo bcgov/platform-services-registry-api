@@ -3,8 +3,7 @@ import { callMsGraph, getAccessToken } from '../msal/index.js';
 
 async function getIdirEmails(req, res) {
   const email = req.query.email;
-  const url = `https://graph.microsoft.com/v1.0/users?$filter=startswith(mail,'${email}')&$orderby=userPrincipalName&$count=true&$top=25`;
-
+  const url = `https://graph.microsoft.com/v1.0/users?$filter=startswith(mail,'${email}')and userType eq 'Member'&$orderby=userPrincipalName&$count=true&$top=25`;
   try {
     const accessToken = await getAccessToken();
 
