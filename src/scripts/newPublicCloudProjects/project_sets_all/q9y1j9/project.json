@@ -1,0 +1,28 @@
+{
+    "licence_plate":"q9y1j9",
+    "project_name": "BC E SUBSTANCES REPORTING BCER",
+    "billing_group": "q9y1j9",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "Kevin.Scott@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "daniel.smith@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "andrew.barnes@gov.bc.ca"
+      },
+    "account_coding": "026660724400563096600000"
+}

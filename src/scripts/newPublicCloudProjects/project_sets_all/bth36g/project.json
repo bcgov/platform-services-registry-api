@@ -1,0 +1,25 @@
+{
+    "licence_plate":"bth36g",
+    "project_name": "Mines Digital Services",
+    "billing_group": "bth36g",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "Colin.Squirrell@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "vyas.sarangapani@gov.bc.ca"
+      },
+    "account_coding": "057275822601263092704013"
+}

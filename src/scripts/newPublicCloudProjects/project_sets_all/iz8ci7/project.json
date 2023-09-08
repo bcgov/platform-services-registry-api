@@ -1,0 +1,25 @@
+{
+    "licence_plate":"iz8ci7",
+    "project_name": "CommonPaymentsProcessor",
+    "billing_group": "iz8ci7",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 10000,
+        "test": 10000,
+        "tools": 10000,
+        "prod": 10000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "karim.gillani@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "vyas.sarangapani@gov.bc.ca"
+      },
+    "account_coding": "112321023480563093200000"
+}
