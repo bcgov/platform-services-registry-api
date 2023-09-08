@@ -11,7 +11,7 @@ import getIdirUpn from '../../utils/getIdirUpn.js';
 const prisma = new PrismaClient();
 
 const mainFolderPath =
-  'src/scripts/newPublicCloudProjects/project_sets';
+  'src/scripts/newPublicCloudProjects/project_sets_all';
 
 const parseMinistryFromDisplayName = (displayName) => {
   if (displayName && displayName.length > 0) {
@@ -30,7 +30,6 @@ async function getUser(email) {
 
   const usersData = await getIdirFromEmail(email);
   const userData = usersData[0];
-
   if (!userData) {
     console.log('No user data found for email: ', email);
     return undefined;
@@ -126,7 +125,6 @@ async function createProject(projectData) {
 async function main() {
   try {
     const licensePlateFolders = await fs.readdir(mainFolderPath);
-
     for (const licensePlateFolder of licensePlateFolders) {
       const folderPath = path.join(mainFolderPath, licensePlateFolder);
 

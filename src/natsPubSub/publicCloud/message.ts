@@ -73,7 +73,7 @@ function message(
   requestedProject: PublicCloudRequestedProject,
   currentProject?: PublicCloudProject 
 ) {
-  return {
+ return{
     project_set_info: {
       licence_plate: requestedProject.licencePlate,
       ministry_name : requestedProject.ministry,
@@ -107,7 +107,7 @@ function message(
           name: `${requestedProject?.secondaryTechnicalLead?.firstName} ${requestedProject?.secondaryTechnicalLead?.lastName}`,
           email: requestedProject?.secondaryTechnicalLead?.email,
         },
-      ].filter((techLead) => techLead.email !== null),
+      ].filter((techLead) => techLead.email !== undefined),
       current_tech_leads: !currentProject
         ? null
         : [
@@ -119,7 +119,7 @@ function message(
               name: `${currentProject?.secondaryTechnicalLead?.firstName} ${currentProject?.secondaryTechnicalLead?.lastName}`,
               email: currentProject?.secondaryTechnicalLead?.email,
             },
-          ].filter((techLead) => techLead.email !== null),
+          ].filter((techLead) => techLead.email !== undefined),
     },
   };
 }
