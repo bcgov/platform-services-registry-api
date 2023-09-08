@@ -30,7 +30,6 @@ async function getUser(email) {
 
   const usersData = await getIdirFromEmail(email);
   const userData = usersData[0];
-  console.log("userData",userData)
   if (!userData) {
     console.log('No user data found for email: ', email);
     return undefined;
@@ -56,7 +55,6 @@ async function getUser(email) {
 }
 
 async function createProject(projectData) {
-  console.log("projectData",projectData)
   try {
     console.log('Creating project: ', projectData?.licence_plate);
 
@@ -127,7 +125,6 @@ async function createProject(projectData) {
 async function main() {
   try {
     const licensePlateFolders = await fs.readdir(mainFolderPath);
-console.log("licensePlateFolders",licensePlateFolders)
     for (const licensePlateFolder of licensePlateFolders) {
       const folderPath = path.join(mainFolderPath, licensePlateFolder);
 
