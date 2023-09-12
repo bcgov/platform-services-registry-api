@@ -20,17 +20,17 @@ export type Scalars = {
 
 export type Budget = {
   __typename?: 'Budget';
-  dev: Scalars['Int'];
-  prod: Scalars['Int'];
-  test: Scalars['Int'];
-  tools: Scalars['Int'];
+  dev: Scalars['Float'];
+  prod: Scalars['Float'];
+  test: Scalars['Float'];
+  tools: Scalars['Float'];
 };
 
 export type BudgetInput = {
-  dev: Scalars['Int'];
-  prod: Scalars['Int'];
-  test: Scalars['Int'];
-  tools: Scalars['Int'];
+  dev: Scalars['Float'];
+  prod: Scalars['Float'];
+  test: Scalars['Float'];
+  tools: Scalars['Float'];
 };
 
 export enum Cluster {
@@ -738,6 +738,7 @@ export type ResolversTypes = ResolversObject<{
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -776,6 +777,7 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -799,10 +801,10 @@ export type LowerCaseDirectiveArgs = { };
 export type LowerCaseDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = LowerCaseDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type BudgetResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Budget'] = ResolversParentTypes['Budget']> = ResolversObject<{
-  dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  tools?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  dev?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  prod?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  test?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  tools?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

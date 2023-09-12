@@ -276,17 +276,17 @@ type Quota {
 }
 
 type Budget {
-  prod: Int!
-  test: Int!
-  dev: Int!
-  tools: Int!
+  prod: Float!
+  test: Float!
+  dev: Float!
+  tools: Float!
 }
 
 input BudgetInput {
-  prod: Int!
-  test: Int!
-  dev: Int!
-  tools: Int!
+  prod: Float!
+  test: Float!
+  dev: Float!
+  tools: Float!
 }
 
 input FilterPrivateCloudProjectsInput {
