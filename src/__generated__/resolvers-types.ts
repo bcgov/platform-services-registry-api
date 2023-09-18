@@ -807,10 +807,10 @@ export type LowerCaseDirectiveArgs = { };
 export type LowerCaseDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = LowerCaseDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type BudgetResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Budget'] = ResolversParentTypes['Budget']> = ResolversObject<{
-  dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  tools?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  dev?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  prod?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  test?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  tools?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
