@@ -20,25 +20,17 @@ export type Scalars = {
 
 export type Budget = {
   __typename?: 'Budget';
-  dev: Scalars['Float'];
-  prod: Scalars['Float'];
-  test: Scalars['Float'];
-  tools: Scalars['Float'];
-};
-
-export type IsNew = {
-  __typename?: 'IsNew';
-  dev: Scalars['Boolean'];
-  prod: Scalars['Boolean'];
-  test: Scalars['Boolean'];
-  tools: Scalars['Boolean'];
+  dev: Scalars['Int'];
+  prod: Scalars['Int'];
+  test: Scalars['Int'];
+  tools: Scalars['Int'];
 };
 
 export type BudgetInput = {
-  dev: Scalars['Float'];
-  prod: Scalars['Float'];
-  test: Scalars['Float'];
-  tools: Scalars['Float'];
+  dev: Scalars['Int'];
+  prod: Scalars['Int'];
+  test: Scalars['Int'];
+  tools: Scalars['Int'];
 };
 
 export enum Cluster {
@@ -629,7 +621,7 @@ export type User = {
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   idir?: Maybe<Scalars['String']>;
-  isNew?: IsNew;
+  isNew?: Maybe<IsNew>;
   lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Scalars['String']>;
@@ -639,6 +631,12 @@ export type User = {
   publicCloudProjectOwner: Array<Maybe<PublicCloudProject>>;
   publicCloudProjectTechnicalLead: Array<Maybe<PublicCloudProject>>;
   upn?: Maybe<Scalars['String']>;
+};
+
+export type IsNew = {
+  __typename?: 'isNew';
+  private?: Maybe<Scalars['Boolean']>;
+  public?: Maybe<Scalars['Boolean']>;
 };
 
 export type PrivateCloudProjectsPaginatedOutput = {
@@ -746,7 +744,6 @@ export type ResolversTypes = ResolversObject<{
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -768,6 +765,7 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
+  isNew: ResolverTypeWrapper<IsNew>;
   privateCloudProjectsPaginatedOutput: ResolverTypeWrapper<PrivateCloudProjectsPaginatedOutput>;
   projectsPaginatedOutput: ResolverTypeWrapper<ProjectsPaginatedOutput>;
   publicCloudProjectsPaginatedOutput: ResolverTypeWrapper<PublicCloudProjectsPaginatedOutput>;
@@ -785,7 +783,6 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
-  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -799,6 +796,7 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String'];
   UpdateUserInput: UpdateUserInput;
   User: User;
+  isNew: IsNew;
   privateCloudProjectsPaginatedOutput: PrivateCloudProjectsPaginatedOutput;
   projectsPaginatedOutput: ProjectsPaginatedOutput;
   publicCloudProjectsPaginatedOutput: PublicCloudProjectsPaginatedOutput;
@@ -809,10 +807,10 @@ export type LowerCaseDirectiveArgs = { };
 export type LowerCaseDirectiveResolver<Result, Parent, ContextType = ContextValue, Args = LowerCaseDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type BudgetResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['Budget'] = ResolversParentTypes['Budget']> = ResolversObject<{
-  dev?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  prod?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  test?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  tools?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  dev?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  prod?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  test?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  tools?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -984,7 +982,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   idir?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isNew?: Resolver<Maybe<ResolversTypes['IsNew']>, ParentType, ContextType>;
+  isNew?: Resolver<Maybe<ResolversTypes['isNew']>, ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -994,6 +992,12 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   publicCloudProjectOwner?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   publicCloudProjectTechnicalLead?: Resolver<Array<Maybe<ResolversTypes['PublicCloudProject']>>, ParentType, ContextType>;
   upn?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type IsNewResolvers<ContextType = ContextValue, ParentType extends ResolversParentTypes['isNew'] = ResolversParentTypes['isNew']> = ResolversObject<{
+  private?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  public?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1028,6 +1032,7 @@ export type Resolvers<ContextType = ContextValue> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Quota?: QuotaResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  isNew?: IsNewResolvers<ContextType>;
   privateCloudProjectsPaginatedOutput?: PrivateCloudProjectsPaginatedOutputResolvers<ContextType>;
   projectsPaginatedOutput?: ProjectsPaginatedOutputResolvers<ContextType>;
   publicCloudProjectsPaginatedOutput?: PublicCloudProjectsPaginatedOutputResolvers<ContextType>;
