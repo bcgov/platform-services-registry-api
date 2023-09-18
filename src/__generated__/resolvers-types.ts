@@ -26,6 +26,14 @@ export type Budget = {
   tools: Scalars['Float'];
 };
 
+export type IsNew = {
+  __typename?: 'IsNew';
+  dev: Scalars['Boolean'];
+  prod: Scalars['Boolean'];
+  test: Scalars['Boolean'];
+  tools: Scalars['Boolean'];
+};
+
 export type BudgetInput = {
   dev: Scalars['Float'];
   prod: Scalars['Float'];
@@ -621,7 +629,7 @@ export type User = {
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   idir?: Maybe<Scalars['String']>;
-  isNew?: Maybe<Scalars['Boolean']>;
+  isNew?: IsNew;
   lastName?: Maybe<Scalars['String']>;
   lastSeen?: Maybe<Scalars['DateTime']>;
   ministry?: Maybe<Scalars['String']>;
@@ -976,7 +984,7 @@ export type UserResolvers<ContextType = ContextValue, ParentType extends Resolve
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   idir?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isNew?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  isNew?: Resolver<Maybe<ResolversTypes['IsNew']>, ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   lastSeen?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   ministry?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
