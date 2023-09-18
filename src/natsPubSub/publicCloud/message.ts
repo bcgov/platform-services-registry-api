@@ -107,7 +107,7 @@ function message(
           name: `${requestedProject?.secondaryTechnicalLead?.firstName} ${requestedProject?.secondaryTechnicalLead?.lastName}`,
           email: requestedProject?.secondaryTechnicalLead?.email,
         },
-      ].filter((techLead) => techLead.email !== undefined),
+      ].filter((techLead) => Boolean(techLead.email)),
       current_tech_leads: !currentProject
         ? null
         : [
@@ -119,7 +119,7 @@ function message(
               name: `${currentProject?.secondaryTechnicalLead?.firstName} ${currentProject?.secondaryTechnicalLead?.lastName}`,
               email: currentProject?.secondaryTechnicalLead?.email,
             },
-          ].filter((techLead) => techLead.email !== undefined),
+          ].filter((techLead) => Boolean(techLead.email)),
     },
   };
 }

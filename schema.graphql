@@ -126,6 +126,11 @@ enum Provider {
   AWS
 }
 
+type isNew {  
+  private: Boolean
+  public: Boolean
+}
+
 type PrivateCloudProject {
   id: ID!
   name: String!
@@ -211,7 +216,7 @@ type User {
   privateCloudProjectSecondaryTechnicalLead: [PrivateCloudProject]!
   publicCloudProjectOwner: [PublicCloudProject]!
   publicCloudProjectTechnicalLead: [PublicCloudProject]!
-  isNew: Boolean
+  isNew: isNew
 }
 
 input CommonComponentsInput {

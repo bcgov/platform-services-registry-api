@@ -83,6 +83,6 @@ export function sendPublicCloudNatsMessage(
     requestedProject,
     currentProject
   );
-
+  
   return sendNatsMessage(natsSubject, messageBody);
 }
