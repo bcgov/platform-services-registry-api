@@ -52,14 +52,9 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
           },
           ministry: 1,
           provider: 1,
-          productionQuota: 1,
-          testQuota: 1,
-          developmentQuota: 1,
-          toolsQuota: 1,
           requestHistory: 1,
           activeEditRequest: 1,
           count: 1,
-          // commonComponents: 1,
           lowerDescription: {
             $toLower: '$description',
           },
@@ -143,7 +138,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $match: {
-          status: { $regex: 'ACTIVE' },
+          status: 'ACTIVE',
           $and: [
             {
               $or: [
@@ -235,14 +230,9 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
           },
           ministry: 1,
           provider: 1,
-          productionQuota: 1,
-          testQuota: 1,
-          developmentQuota: 1,
-          toolsQuota: 1,
           requestHistory: 1,
           activeEditRequest: 1,
           count: 1,
-          // commonComponents: 1,
           lowerDescription: {
             $toLower: '$description',
           },
@@ -326,7 +316,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
       },
       {
         $match: {
-          status: { $regex: 'ACTIVE' },
+          status: 'ACTIVE',
           $and: [
             {
               $or: [
@@ -378,7 +368,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
   });
 
   const total = totalTmp.length > 0 ? totalTmp[0].count : 0;
-
+  console.log(projects)
   return {
     projects,
     total,

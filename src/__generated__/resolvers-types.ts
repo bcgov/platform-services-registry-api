@@ -182,6 +182,7 @@ export type Mutation = {
   privateCloudReProvisionProject?: Maybe<PrivateCloudProject>;
   privateCloudReProvisionRequest?: Maybe<PrivateCloudRequest>;
   privateCloudRequestDecision?: Maybe<PrivateCloudRequest>;
+  publicCloudProjectDeleteRequest: PrivateCloudRequest;
   publicCloudProjectEditRequest: PublicCloudRequest;
   publicCloudProjectRequest: PublicCloudRequest;
   publicCloudRequestDecision?: Maybe<PublicCloudRequest>;
@@ -246,8 +247,15 @@ export type MutationPrivateCloudRequestDecisionArgs = {
 };
 
 
+export type MutationPublicCloudProjectDeleteRequestArgs = {
+  licencePlate: Scalars['String'];
+  projectId: Scalars['ID'];
+  projectOwnerEmail: Scalars['EmailAddress'];
+};
+
+
 export type MutationPublicCloudProjectEditRequestArgs = {
-  accountCoding?: InputMaybe<Scalars['String']>;
+  accountCoding: Scalars['String'];
   budget: BudgetInput;
   description: Scalars['String'];
   ministry: Ministry;
@@ -744,6 +752,7 @@ export type ResolversTypes = ResolversObject<{
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -783,6 +792,7 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -845,7 +855,8 @@ export type MutationResolvers<ContextType = ContextValue, ParentType extends Res
   privateCloudReProvisionProject?: Resolver<Maybe<ResolversTypes['PrivateCloudProject']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionProjectArgs, 'projectId'>>;
   privateCloudReProvisionRequest?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudReProvisionRequestArgs, 'requestId'>>;
   privateCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PrivateCloudRequest']>, ParentType, ContextType, RequireFields<MutationPrivateCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
-  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'budget' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
+  publicCloudProjectDeleteRequest?: Resolver<ResolversTypes['PrivateCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectDeleteRequestArgs, 'licencePlate' | 'projectId' | 'projectOwnerEmail'>>;
+  publicCloudProjectEditRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectEditRequestArgs, 'accountCoding' | 'budget' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectId' | 'projectOwner'>>;
   publicCloudProjectRequest?: Resolver<ResolversTypes['PublicCloudRequest'], ParentType, ContextType, RequireFields<MutationPublicCloudProjectRequestArgs, 'budget' | 'description' | 'ministry' | 'name' | 'primaryTechnicalLead' | 'projectOwner' | 'provider'>>;
   publicCloudRequestDecision?: Resolver<Maybe<ResolversTypes['PublicCloudRequest']>, ParentType, ContextType, RequireFields<MutationPublicCloudRequestDecisionArgs, 'decision' | 'requestId'>>;
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType>;

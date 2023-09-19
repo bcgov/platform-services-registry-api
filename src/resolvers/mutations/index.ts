@@ -14,6 +14,7 @@ import privateCloudReProvisionProject from './privateCloud/reProvisionProject.js
 import publicCloudProjectRequest from './publicCloud/createRequest.js';
 import publicCloudRequestDecision from './publicCloud/requestDecision.js';
 import publicCloudProjectEditRequest from './publicCloud/editRequest.js';
+import publicCloudProjectDeleteRequest from './publicCloud/deleteRequest.js';
 
 import { createUser } from './users.js';
 
@@ -28,6 +29,7 @@ export default {
     publicCloudProjectRequest,
     publicCloudRequestDecision,
     publicCloudProjectEditRequest,
+    publicCloudProjectDeleteRequest,
     createUser,
   },
 };
