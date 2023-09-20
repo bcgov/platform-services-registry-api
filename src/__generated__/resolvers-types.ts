@@ -744,6 +744,7 @@ export type ResolversTypes = ResolversObject<{
   Environment: Environment;
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Ministry: Ministry;
@@ -783,6 +784,7 @@ export type ResolversParentTypes = ResolversObject<{
   EmailAddress: Scalars['EmailAddress'];
   FilterPrivateCloudProjectsInput: FilterPrivateCloudProjectsInput;
   FilterPublicCloudProjectsInput: FilterPublicCloudProjectsInput;
+  Float: Scalars['Float'];
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
