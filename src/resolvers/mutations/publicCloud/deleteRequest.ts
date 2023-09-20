@@ -5,8 +5,9 @@ import {
     DecisionStatus,
     MutationPublicCloudProjectDeleteRequestArgs,
   } from '../../../__generated__/resolvers-types.js';
-//   import { sendDeleteRequestEmails } from '../../../ches/emailHandlersPrivate.js';
+//   import { sendDeleteRequestEmails } from '../../../ches/emailHandlersPublic.js';
   import { Prisma, PublicCloudProject } from '@prisma/client';
+  import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 
   
   const publicCloudProjectDeleteRequest: MutationResolvers = async (
@@ -14,7 +15,7 @@ import {
     args: MutationPublicCloudProjectDeleteRequestArgs,
     { authRoles, authEmail, prisma }
   ) => {
-    let createRequest;
+    let deleteRequest;
   
     try {
       // Check if the user has inputed the correct arguments to delete a project
@@ -80,10 +81,10 @@ import {
   
       project.status = ProjectStatus.Inactive;
   
-      createRequest = await prisma.publicCloudRequest.create({
+      deleteRequest = await prisma.publicCloudRequest.create({
         data: {
           type: RequestType.Delete,
-          decisionStatus: DecisionStatus.Pending,
+          decisionStatus: DecisionStatus.Approved,
           active: true,
           createdByEmail: authEmail,
           licencePlate: project.licencePlate,
@@ -106,6 +107,12 @@ import {
           },
         },
       });
+      await sendPublicCloudNatsMessage(
+        deleteRequest.type,
+        deleteRequest.project,
+        deleteRequest.project,
+      );
+      // sendDeleteRequestEmails(deleteRequest.project);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
@@ -116,9 +123,7 @@ import {
       throw new Error('This project did not pass the deletion checks. ' + e);
     }
   
-    // sendDeleteRequestEmails(createRequest.project);
-  
-    return createRequest;
+    return deleteRequest;
   };
   
   export default publicCloudProjectDeleteRequest;

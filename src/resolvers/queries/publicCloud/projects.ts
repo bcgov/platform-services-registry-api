@@ -368,7 +368,7 @@ export const publicCloudProjectsPaginated = async (_, args, { prisma }) => {
   });
 
   const total = totalTmp.length > 0 ? totalTmp[0].count : 0;
-  console.log(projects)
+  
   return {
     projects,
     total,
