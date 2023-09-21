@@ -496,12 +496,17 @@ type Mutation {
     description: String!
     ministry: Ministry!
     budget: BudgetInput!
-    accountCoding: String
-    # commonComponents: CommonComponentsInput!
+    accountCoding: String!
     projectOwner: CreateUserInput!
     primaryTechnicalLead: CreateUserInput!
     secondaryTechnicalLead: CreateUserInput
   ): PublicCloudRequest! @auth
+
+  publicCloudProjectDeleteRequest(
+    projectId: ID!
+    licencePlate: String!
+    projectOwnerEmail: EmailAddress!
+  ): PrivateCloudRequest! @auth
 
   publicCloudRequestDecision(
     requestId: ID!

@@ -107,7 +107,7 @@ model PublicCloudRequest {
   licencePlate       String
   createdByEmail     String
   decisionMakerEmail String?
-  type               PublicCloudRequestType
+  type               RequestType
   decisionStatus     DecisionStatus
   humanComment       String?
   active             Boolean                     @default(true)
@@ -205,10 +205,11 @@ enum RequestType {
   DELETE
 }
 
-enum PublicCloudRequestType {
-  CREATE
-  EDIT
-}
+// enum PublicCloudRequestType {
+//   CREATE
+//   EDIT
+//   DELETE
+// }
 
 enum Ministry {
   AEST
