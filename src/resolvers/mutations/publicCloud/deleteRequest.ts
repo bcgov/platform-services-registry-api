@@ -5,7 +5,7 @@ import {
     DecisionStatus,
     MutationPublicCloudProjectDeleteRequestArgs,
   } from '../../../__generated__/resolvers-types.js';
-//   import { sendDeleteRequestEmails } from '../../../ches/emailHandlersPublic.js';
+  import { sendDeleteRequestEmails } from '../../../ches/emailHandlersPublic.js';
   import { Prisma, PublicCloudProject } from '@prisma/client';
   import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 
@@ -112,7 +112,7 @@ import {
         deleteRequest.project,
         deleteRequest.project,
       );
-      // sendDeleteRequestEmails(deleteRequest.project);
+      sendDeleteRequestEmails(deleteRequest.project);
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {

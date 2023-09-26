@@ -143,6 +143,32 @@ export const sendEditRequestEmails = async (editRequest) => {
   }
 };
 
+export const sendDeleteRequestEmails = async (project) => {
+
+
+  try {
+    await chesService.send({
+      bodyType: "html",
+      body: swig.renderFile(
+        "./src/ches/publicEmailTemplates/deletion-request-completion-email.html",
+        generateEmailTemplatePublicData(project, undefined)
+      ),
+      // to all project contacts when a product is deleted
+      to: [
+        project.projectOwner,
+        project.primaryTechnicalLead,
+        project.secondaryTechnicalLead,
+      ]
+        .filter(Boolean)
+        .map(({ email }) => email),
+      from: "Registry <cloud.pathfinder@gov.bc.ca>",
+      subject: "Your product deletion request has been completed",
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const sendRejectEmail = async (request) => {
   let { type, requestedProject, humanComment, project } =
     request;
@@ -174,7 +200,7 @@ export const sendRejectEmail = async (request) => {
       ]
         .filter(Boolean)
         .map(({ email }) => email),
-      from: "Registry <PlatformServicesTeam@gov.bc.ca>",
+      from: "Registry <cloud.pathfinder@gov.bc.ca>",
       subject: ` ${type === RequestType.Create
         ? "Provisioning"
         : type === RequestType.Edit
