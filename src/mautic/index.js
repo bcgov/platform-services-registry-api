@@ -1,19 +1,6 @@
 import { URLSearchParams } from "url";
 import axios from "axios";
 
-const SELECTEDCOMMUNICATIONS = [
-  {
-    segmentID: "1",
-    segmentName: "Platform Services Updates",
-    isChecked: true,
-  },
-];
-
-const suscribeData = (contactId) => ({
-  ContactId: contactId,
-  SegmentsAndIds: SELECTEDCOMMUNICATIONS,
-});
-
 const getToken = async () => {
   const url = process.env.MAUTIC_TOKEN_URL || "";
 
@@ -68,14 +55,22 @@ export const getContactId = async (email, token) => {
   }
 };
 
-export const subscribeUserToMautic = async (contactId, token) => {
+export const subscribeUserToMautic = async (user, token, cluster, platform) => {
+  const contactId = await getContactId(user.email, token);
   const mauticSubscriptionUrlBase =
     process.env.MAUTIC_SUBSSCRIPTION_API_URL || "";
 
   try {
     const response = await axios.post(
-      `${mauticSubscriptionUrlBase}/segments/contact/add`,
-      suscribeData(contactId),
+      `${mauticSubscriptionUrlBase}/segments/contact/cluster/add`,
+      {
+        ContactId: contactId,
+        platformName: platform,
+        clusterName: cluster,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email
+      },
       {
         headers: {
           Connection: "keep-alive",
@@ -92,11 +87,10 @@ export const subscribeUserToMautic = async (contactId, token) => {
   }
 };
 
-export const subscribeUserToMessages = async (email) => {
+export const subscribeUserToMessages = async (user, cluster, platform) => {
   try {
     const token = await getToken();
-    const contactId = await getContactId(email, token);
-    const response = await subscribeUserToMautic(contactId, token);
+    const response = await subscribeUserToMautic(user, token, cluster, platform);
 
     return response.status;
   } catch (error) {

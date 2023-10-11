@@ -109,7 +109,7 @@ const publicCloudRequestDecision = async (
       request.requestedProject?.secondaryTechnicalLead,
     ].filter(Boolean);
 
-    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+    Promise.all(users.map((user) => subscribeUserToMessages(user.email, "AWS", "Public")));
   }
 
   if (request.decisionStatus === RequestDecision.Rejected) {
