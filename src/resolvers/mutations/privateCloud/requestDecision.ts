@@ -84,7 +84,7 @@ const privateCloudRequestDecision: MutationResolvers = async (
         request.requestedProject?.secondaryTechnicalLead,
       ].filter(Boolean);
 
-      Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+      Promise.all(users.map((user) => subscribeUserToMessages(user, request.requestedProject.cluster, "Private")));
 
       if (request.requestedProject.cluster === Cluster.Gold) {
         const goldDrRequest = { ...request };

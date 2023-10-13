@@ -7,7 +7,6 @@ import {
 import {
   Prisma,
   PublicCloudRequest,
-  CommonComponents as CommonComponentsPrisma,
 } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlersPublic.js';
@@ -85,7 +84,6 @@ const publicCloudProjectEditRequest = async (
     status: project.status,
     licencePlate: project.licencePlate,
     accountCoding: args.accountCoding,
-    // commonComponents: args.commonComponents as CommonComponentsPrisma,
     created: project.created,
     projectOwner: {
       connectOrCreate: {
@@ -162,7 +160,7 @@ const publicCloudProjectEditRequest = async (
       args?.secondaryTechnicalLead,
     ].filter(Boolean);
 
-    Promise.all(users.map((user) => subscribeUserToMessages(user.email)));
+    Promise.all(users.map((user) => subscribeUserToMessages(user, "AWS", "Public")));
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {
