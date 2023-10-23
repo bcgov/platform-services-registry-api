@@ -24,6 +24,13 @@ export const quotaChanged = (project, requestedProject) => {
     );
 };
 
+export const budgetChanged = (project, requestedProject) => {
+    return !(
+        JSON.stringify(project.budget) ===
+        JSON.stringify(requestedProject.budget) 
+    );
+};
+
 export const contactChanged = (project, requestedProject) => {
     return !(
         requestedProject.projectOwner.email === project.projectOwner.email &&

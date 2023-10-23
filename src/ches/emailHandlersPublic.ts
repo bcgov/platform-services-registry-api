@@ -1,37 +1,37 @@
 import {
   generateEmailTemplatePublicData,
-} from "./emailHelpers.js"
-import chesService from "./index.js";
-import swig from "swig";
+  contactChanged,
+  budgetChanged,
+} from './emailHelpers.js';
+import chesService from './index.js';
+import swig from 'swig';
 import {
   RequestType,
   RequestDecision,
-} from "../__generated__/resolvers-types.js";
-import {
-  adminPublicEmails,
-} from "./emailConstants.js";
+} from '../__generated__/resolvers-types.js';
+import { adminPublicEmails } from './emailConstants.js';
 
 export const sendCreateRequestEmails = async (requestedProject) => {
   try {
     await chesService.send({
-      bodyType: "html",
+      bodyType: 'html',
       body: swig.renderFile(
-        "./src/ches/publicEmailTemplates/super-admin-request-email.html",
+        './src/ches/publicEmailTemplates/super-admin-request-email.html',
         generateEmailTemplatePublicData(undefined, requestedProject, {
-          requestType: "Provisioning",
+          requestType: 'Provisioning',
           isProvisioningRequest: true,
           isQuotaRequest: false,
         })
       ),
       //To the Super Admin. Sent with any type of request needing admin approval (provisioning, quota change, deletion).
       to: adminPublicEmails,
-      from: "Registry <cloud.pathfinder@gov.bc.ca>",
+      from: 'Registry <cloud.pathfinder@gov.bc.ca>',
       subject: `New Provisioning request in Registry waiting for your approval`,
     });
     await chesService.send({
-      bodyType: "html",
+      bodyType: 'html',
       body: swig.renderFile(
-        "./src/ches/publicEmailTemplates/create-request-received-email.html",
+        './src/ches/publicEmailTemplates/create-request-received-email.html',
         generateEmailTemplatePublicData(undefined, requestedProject)
       ),
       // To all project contacts. Sent when a new provisioning request has been submitted successfully.
@@ -42,7 +42,7 @@ export const sendCreateRequestEmails = async (requestedProject) => {
       ]
         .filter(Boolean)
         .map(({ email }) => email),
-      from: "Registry <cloud.pathfinder@gov.bc.ca>",
+      from: 'Registry <cloud.pathfinder@gov.bc.ca>',
       subject: `${requestedProject.name} provisioning request received`,
     });
   } catch (error) {
@@ -61,9 +61,9 @@ export const sendProvisionedEmails = async (request) => {
     if (decisionStatus === RequestDecision.Approved) {
       if (type === RequestType.Create) {
         await chesService.send({
-          bodyType: "html",
+          bodyType: 'html',
           body: swig.renderFile(
-            "./src/ches/publicEmailTemplates/provisioning-request-completion-email.html",
+            './src/ches/publicEmailTemplates/provisioning-request-completion-email.html',
             generateEmailTemplatePublicData(undefined, requestedProject, {
               consoleURL: `https://login.nimbus.cloud.gov.bc.ca/`,
               humanActionComment: humanComment || null,
@@ -77,16 +77,16 @@ export const sendProvisionedEmails = async (request) => {
           ]
             .filter(Boolean)
             .map(({ email }) => email),
-          from: "Registry <cloud.pathfinder@gov.bc.ca>",
+          from: 'Registry <cloud.pathfinder@gov.bc.ca>',
           subject:
-            "Your provisioning request for AWS Platform has been completed",
+            'Your provisioning request for AWS Platform has been completed',
         });
       }
       if (type === RequestType.Edit) {
         await chesService.send({
-          bodyType: "html",
+          bodyType: 'html',
           body: swig.renderFile(
-            "./src/ches/publicEmailTemplates/provisioning-request-completion-email.html",
+            './src/ches/publicEmailTemplates/provisioning-request-completion-email.html',
             generateEmailTemplatePublicData(project, requestedProject, {
               consoleURL: `https://login.nimbus.cloud.gov.bc.ca/`,
               humanActionComment: humanComment || null,
@@ -103,54 +103,60 @@ export const sendProvisionedEmails = async (request) => {
           ]
             .filter(Boolean)
             .map(({ email }) => email),
-          from: "Registry <cloud.pathfinder@gov.bc.ca>",
-          subject:
-            "Your product change request has been provisioned",
+          from: 'Registry <cloud.pathfinder@gov.bc.ca>',
+          subject: 'Your product change request has been provisioned',
         });
       }
-
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-
 export const sendEditRequestEmails = async (editRequest) => {
-  try {
-    await chesService.send({
-      bodyType: "html",
-      body: swig.renderFile(
-        "./src/ches/publicEmailTemplates/edit-request-received.html",
-        generateEmailTemplatePublicData(editRequest.requestedProject, editRequest.project)
-      ),
-      // For all project contacts. Sent when a new quota edit request is submitted successfully.
-      to: [
-        editRequest.project.projectOwner,
-        editRequest.project.primaryTechnicalLead,
-        editRequest.project.secondaryTechnicalLead,
-        editRequest.requestedProject?.projectOwner,
-        editRequest.requestedProject?.primaryTechnicalLead,
-        editRequest.requestedProject?.secondaryTechnicalLead,
-      ]
-        .filter(Boolean)
-        .map(({ email }) => email),
-      from: "Registry <cloud.pathfinder@gov.bc.ca>",
-      subject: `${editRequest.requestedProject.name} edit request received`,
-    });
-  } catch (error) {
-    console.error(error);
+
+  if (
+    contactChanged(editRequest.project, editRequest.requestedProject) ||
+    budgetChanged(editRequest.project, editRequest.requestedProject) ||
+    editRequest.project.accountCoding !==
+      editRequest.requestedProject.accountCoding
+  ) {
+    try {
+      await chesService.send({
+        bodyType: 'html',
+        body: swig.renderFile(
+          './src/ches/publicEmailTemplates/edit-request-received.html',
+          generateEmailTemplatePublicData(
+            editRequest.requestedProject,
+            editRequest.project
+          )
+        ),
+        // For all project contacts. Sent when a new quota edit request is submitted successfully.
+        to: [
+          editRequest.project.projectOwner,
+          editRequest.project.primaryTechnicalLead,
+          editRequest.project.secondaryTechnicalLead,
+          editRequest.requestedProject?.projectOwner,
+          editRequest.requestedProject?.primaryTechnicalLead,
+          editRequest.requestedProject?.secondaryTechnicalLead,
+        ]
+          .filter(Boolean)
+          .map(({ email }) => email),
+        from: 'Registry <cloud.pathfinder@gov.bc.ca>',
+        subject: `${editRequest.requestedProject.name} edit request received`,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
 export const sendDeleteRequestEmails = async (project) => {
-
-
   try {
     await chesService.send({
-      bodyType: "html",
+      bodyType: 'html',
       body: swig.renderFile(
-        "./src/ches/publicEmailTemplates/deletion-request-completion-email.html",
+        './src/ches/publicEmailTemplates/deletion-request-completion-email.html',
         generateEmailTemplatePublicData(project, undefined)
       ),
       // to all project contacts when a product is deleted
@@ -161,8 +167,8 @@ export const sendDeleteRequestEmails = async (project) => {
       ]
         .filter(Boolean)
         .map(({ email }) => email),
-      from: "Registry <cloud.pathfinder@gov.bc.ca>",
-      subject: "Your product deletion request has been completed",
+      from: 'Registry <cloud.pathfinder@gov.bc.ca>',
+      subject: 'Your product deletion request has been completed',
     });
   } catch (error) {
     console.error(error);
@@ -170,8 +176,7 @@ export const sendDeleteRequestEmails = async (project) => {
 };
 
 export const sendRejectEmail = async (request) => {
-  let { type, requestedProject, humanComment, project } =
-    request;
+  let { type, requestedProject, humanComment, project } = request;
 
   if (!project) {
     project = requestedProject;
@@ -179,16 +184,16 @@ export const sendRejectEmail = async (request) => {
 
   try {
     await chesService.send({
-      bodyType: "html",
+      bodyType: 'html',
       body: swig.renderFile(
-        "./src/ches/publicEmailTemplates/request-denial-email.html",
+        './src/ches/publicEmailTemplates/request-denial-email.html',
         generateEmailTemplatePublicData(project, requestedProject, {
           requestType:
             type === RequestType.Create
-              ? "Provisioning"
+              ? 'Provisioning'
               : type === RequestType.Edit
-                ? "Edit"
-                : "Deletion",
+              ? 'Edit'
+              : 'Deletion',
           humanActionComment: humanComment || null,
         })
       ),
@@ -200,13 +205,14 @@ export const sendRejectEmail = async (request) => {
       ]
         .filter(Boolean)
         .map(({ email }) => email),
-      from: "Registry <cloud.pathfinder@gov.bc.ca>",
-      subject: ` ${type === RequestType.Create
-        ? "Provisioning"
-        : type === RequestType.Edit
-          ? "Edit"
-          : "Deletion"
-        } request has been rejected`,
+      from: 'Registry <cloud.pathfinder@gov.bc.ca>',
+      subject: ` ${
+        type === RequestType.Create
+          ? 'Provisioning'
+          : type === RequestType.Edit
+          ? 'Edit'
+          : 'Deletion'
+      } request has been rejected`,
     });
   } catch (error) {
     console.error(error);
