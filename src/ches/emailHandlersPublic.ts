@@ -11,6 +11,11 @@ import {
 } from '../__generated__/resolvers-types.js';
 import { adminPublicEmails } from './emailConstants.js';
 
+const requestedChanges = (project, requestedProject) =>
+  contactChanged(project, requestedProject) ||
+  budgetChanged(project, requestedProject) ||
+  project.accountCoding !== requestedProject.accountCoding;
+
 export const sendCreateRequestEmails = async (requestedProject) => {
   try {
     await chesService.send({
@@ -82,7 +87,10 @@ export const sendProvisionedEmails = async (request) => {
             'Your provisioning request for AWS Platform has been completed',
         });
       }
-      if (type === RequestType.Edit) {
+      if (
+        type === RequestType.Edit &&
+        requestedChanges(project, requestedProject)
+      ) {
         await chesService.send({
           bodyType: 'html',
           body: swig.renderFile(
@@ -114,13 +122,7 @@ export const sendProvisionedEmails = async (request) => {
 };
 
 export const sendEditRequestEmails = async (editRequest) => {
-
-  if (
-    contactChanged(editRequest.project, editRequest.requestedProject) ||
-    budgetChanged(editRequest.project, editRequest.requestedProject) ||
-    editRequest.project.accountCoding !==
-      editRequest.requestedProject.accountCoding
-  ) {
+  if (requestedChanges(editRequest.project, editRequest.requestedProject)) {
     try {
       await chesService.send({
         bodyType: 'html',
