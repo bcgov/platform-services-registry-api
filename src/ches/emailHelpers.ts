@@ -17,7 +17,7 @@ export const isQuotaChanged = (project, requestedProject) => {
 
 export const checkIfProjectChanged = (project, requestedProject) =>
   isContactChanged(project, requestedProject) ||
-  isEqual(project.budget, requestedProject.budget) ||
+  !isEqual(project.budget, requestedProject.budget) ||
   project.accountCoding !== requestedProject.accountCoding;
 
 export const isContactChanged = (project, requestedProject) => {
@@ -107,7 +107,7 @@ export const generateEmailTemplatePrivateData = (
     consoleURLDevNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-dev`,
     consoleURLTestNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-test`,
     consoleURLToolNameSpace: `https://console.apps.${requestedProject.cluster}.devops.gov.bc.ca/topology/ns/${requestedProject.licencePlate}-tool`,
-    isProductionQuotaChanged: isEqual(
+    isProductionQuotaChanged: !!isEqual(
       project.productionQuota,
       requestedProject.productionQuota
     ),
@@ -126,7 +126,7 @@ export const generateEmailTemplatePrivateData = (
       project.productionQuota.storage.storageFile
         ? requestedProject.productionQuota.storage.storageFile
         : null,
-    isDevelopmentQuotaChanged: isEqual(
+    isDevelopmentQuotaChanged: !!isEqual(
       project.developmentQuota,
       requestedProject.developmentQuota
     ),
@@ -145,7 +145,7 @@ export const generateEmailTemplatePrivateData = (
       project.developmentQuota.storage.storageFile
         ? requestedProject.developmentQuota.storage.storageFile
         : null,
-    isTestQuotaChanged: isEqual(project.testQuota, requestedProject.testQuota),
+    isTestQuotaChanged: !!isEqual(project.testQuota, requestedProject.testQuota),
     testQuotaCPURequested:
       requestedProject.testQuota.cpu.cpuRequests !==
       project.testQuota.cpu.cpuRequests
@@ -161,7 +161,7 @@ export const generateEmailTemplatePrivateData = (
       project.testQuota.storage.storageFile
         ? requestedProject.testQuota.storage.storageFile
         : null,
-    isToolsQuotaChanged: isEqual(
+    isToolsQuotaChanged: !!isEqual(
       project.toolsQuota,
       requestedProject.toolsQuota
     ),
@@ -271,7 +271,7 @@ export const generateEmailTemplatePublicData = (
     SecTLGitHubOrIDIR: secondaryTechnicalLead
       ? secondaryTechnicalLead?.POIDIR
       : null,
-    isBudgetChanged: isEqual(requestedProject.budget, project.budget),
+    isBudgetChanged: !isEqual(requestedProject.budget, project.budget),
     isAccountCodingChanged:
       requestedProject.accountCoding !== project.accountCoding,
     BudgetDev: requestedProject.budget.dev,
