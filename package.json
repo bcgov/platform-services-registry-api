@@ -52,6 +52,7 @@
     "jsonwebtoken": "^9.0.0",
     "keycloak-connect": "^20.0.2",
     "keycloak-connect-graphql": "^0.7.0",
+    "lodash.isequal": "^4.5.0",
     "mongodb": "^4.13.0",
     "nats": "^2.6.1",
     "node-cron": "^3.0.2",

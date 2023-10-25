@@ -4,12 +4,10 @@ import {
   DecisionStatus,
   MutationPublicCloudProjectEditRequestArgs,
 } from '../../../__generated__/resolvers-types.js';
-import {
-  Prisma,
-  PublicCloudRequest,
-} from '@prisma/client';
+import { Prisma, PublicCloudRequest } from '@prisma/client';
 import { sendPublicCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlersPublic.js';
+import { checkIfProjectChanged } from '../../../ches/emailHelpers.js';
 import { subscribeUserToMessages } from '../../../mautic/index.js';
 
 const publicCloudProjectEditRequest = async (
@@ -19,6 +17,13 @@ const publicCloudProjectEditRequest = async (
 ) => {
   type PublicCloudEditRequest = Prisma.PublicCloudRequestGetPayload<{
     include: {
+      project: {
+        include: {
+          projectOwner: true;
+          primaryTechnicalLead: true;
+          secondaryTechnicalLead: true;
+        };
+      };
       requestedProject: {
         include: {
           projectOwner: true;
@@ -152,7 +157,10 @@ const publicCloudProjectEditRequest = async (
       },
     });
 
-    await sendEditRequestEmails(editRequest);
+    if (
+      checkIfProjectChanged(editRequest.project, editRequest.requestedProject)
+    )
+      await sendEditRequestEmails(editRequest);
 
     const users = [
       args.projectOwner,
@@ -160,7 +168,9 @@ const publicCloudProjectEditRequest = async (
       args?.secondaryTechnicalLead,
     ].filter(Boolean);
 
-    Promise.all(users.map((user) => subscribeUserToMessages(user, "AWS", "Public")));
+    Promise.all(
+      users.map((user) => subscribeUserToMessages(user, 'AWS', 'Public'))
+    );
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === 'P2002') {

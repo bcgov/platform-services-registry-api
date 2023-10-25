@@ -12,8 +12,8 @@ import {
   adminEmails,
 } from "./emailConstants.js";
 import {
-  quotaChanged,
-  contactChanged,
+  isQuotaChanged,
+  isContactChanged,
   generateEmailTemplatePrivateData,
 } from "./emailHelpers.js"
 
@@ -22,8 +22,8 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
   try {
     // *** Quota Changed and no Contact changed
     if (
-      quotaChanged(project, requestedProject) &&
-      !contactChanged(project, requestedProject)
+      isQuotaChanged(project, requestedProject) &&
+      !isContactChanged(project, requestedProject)
     ) {
         await chesService.send({
         bodyType: "html",
@@ -61,8 +61,8 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
     // *** No Quota changed and Project Contact Change
 
     if (
-      !quotaChanged(project, requestedProject) &&
-      contactChanged(project, requestedProject)
+      !isQuotaChanged(project, requestedProject) &&
+      isContactChanged(project, requestedProject)
     ) {
       await chesService.send({
         bodyType: "html",
@@ -88,8 +88,8 @@ export const sendEditRequestEmails = async (project, requestedProject) => {
     }
     // *** Quota changed and Project Contact Change
     if (
-      quotaChanged(project, requestedProject) &&
-      contactChanged(project, requestedProject)
+      isQuotaChanged(project, requestedProject) &&
+      isContactChanged(project, requestedProject)
     ) {
       await chesService.send({
         bodyType: "html",
@@ -246,7 +246,7 @@ export const sendProvisionedEmails = async (request) => {
         });
       }
 
-      if (type === RequestType.Edit && quotaChanged(project, requestedProject)) {
+      if (type === RequestType.Edit && isQuotaChanged(project, requestedProject)) {
         await chesService.send({
           bodyType: "html",
           body: swig.renderFile(
