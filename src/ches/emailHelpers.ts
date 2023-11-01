@@ -243,7 +243,7 @@ export const generateEmailTemplatePublicData = (
     (!!project.secondaryTechnicalLead ||
       !!requestedProject.secondaryTechnicalLead) &&
       requestedProject.secondaryTechnicalLead?.id !==
-      requestedProject.secondaryTechnicalLead?.id
+      project.secondaryTechnicalLead?.id
       ? requestedProject.secondaryTechnicalLead
       : !!project.secondaryTechnicalLead
         ? project.secondaryTechnicalLead
