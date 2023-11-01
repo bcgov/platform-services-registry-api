@@ -24,9 +24,9 @@ export const isContactChanged = (project, requestedProject) => {
   return !(
     requestedProject.projectOwner.email === project.projectOwner.email &&
     requestedProject.primaryTechnicalLead.email ===
-      project.primaryTechnicalLead.email &&
+    project.primaryTechnicalLead.email &&
     requestedProject.secondaryTechnicalLead?.email ===
-      project.secondaryTechnicalLead?.email
+    project.secondaryTechnicalLead?.email
   );
 };
 
@@ -45,12 +45,12 @@ export const generateEmailTemplatePrivateData = (
   const secondaryTechnicalLead =
     (!!project.secondaryTechnicalLead ||
       !!requestedProject.secondaryTechnicalLead) &&
-    requestedProject.secondaryTechnicalLead?.id !==
+      requestedProject.secondaryTechnicalLead?.id !==
       project.secondaryTechnicalLead?.id
       ? project.secondaryTechnicalLead
       : !!requestedProject.secondaryTechnicalLead
-      ? requestedProject.secondaryTechnicalLead
-      : null;
+        ? requestedProject.secondaryTechnicalLead
+        : null;
   const primaryTechnicalLead = project.primaryTechnicalLead;
   const projectOwner = project.projectOwner;
 
@@ -113,17 +113,17 @@ export const generateEmailTemplatePrivateData = (
     ),
     productionQuotaCPURequested:
       requestedProject.productionQuota.cpu.cpuRequests !==
-      project.productionQuota.cpu.cpuRequests
+        project.productionQuota.cpu.cpuRequests
         ? requestedProject.productionQuota.cpu.cpuRequests
         : null,
     productionQuotaMemoryRequested:
       requestedProject.productionQuota.memory.memoryRequests !==
-      project.productionQuota.memory.memoryRequests
+        project.productionQuota.memory.memoryRequests
         ? requestedProject.productionQuota.memory.memoryRequests
         : null,
     productionQuotaStorageRequested:
       requestedProject.productionQuota.storage.storageFile !==
-      project.productionQuota.storage.storageFile
+        project.productionQuota.storage.storageFile
         ? requestedProject.productionQuota.storage.storageFile
         : null,
     isDevelopmentQuotaChanged: !isEqual(
@@ -132,33 +132,33 @@ export const generateEmailTemplatePrivateData = (
     ),
     developmentQuotaCPURequested:
       requestedProject.developmentQuota.cpu.cpuRequests !==
-      project.developmentQuota.cpu.cpuRequests
+        project.developmentQuota.cpu.cpuRequests
         ? requestedProject.developmentQuota.cpu.cpuRequests
         : null,
     developmentQuotaMemoryRequested:
       requestedProject.developmentQuota.memory.memoryRequests !==
-      project.developmentQuota.memory.memoryRequests
+        project.developmentQuota.memory.memoryRequests
         ? requestedProject.developmentQuota.memory.memoryRequests
         : null,
     developmentQuotaStorageRequested:
       requestedProject.developmentQuota.storage.storageFile !==
-      project.developmentQuota.storage.storageFile
+        project.developmentQuota.storage.storageFile
         ? requestedProject.developmentQuota.storage.storageFile
         : null,
     isTestQuotaChanged: !isEqual(project.testQuota, requestedProject.testQuota),
     testQuotaCPURequested:
       requestedProject.testQuota.cpu.cpuRequests !==
-      project.testQuota.cpu.cpuRequests
+        project.testQuota.cpu.cpuRequests
         ? requestedProject.testQuota.cpu.cpuRequests
         : null,
     testQuotaMemoryRequested:
       requestedProject.testQuota.memory.memoryRequests !==
-      project.testQuota.memory.memoryRequests
+        project.testQuota.memory.memoryRequests
         ? requestedProject.testQuota.memory.memoryRequests
         : null,
     testQuotaStorageRequested:
       requestedProject.testQuota.storage.storageFile !==
-      project.testQuota.storage.storageFile
+        project.testQuota.storage.storageFile
         ? requestedProject.testQuota.storage.storageFile
         : null,
     isToolsQuotaChanged: !isEqual(
@@ -167,17 +167,17 @@ export const generateEmailTemplatePrivateData = (
     ),
     toolsQuotaCPURequested:
       requestedProject.toolsQuota.cpu.cpuRequests !==
-      project.toolsQuota.cpu.cpuRequests
+        project.toolsQuota.cpu.cpuRequests
         ? requestedProject.toolsQuota.cpu.cpuRequests
         : null,
     toolsQuotaMemoryRequested:
       requestedProject.toolsQuota.memory.memoryRequests !==
-      project.toolsQuota.memory.memoryRequests
+        project.toolsQuota.memory.memoryRequests
         ? requestedProject.toolsQuota.memory.memoryRequests
         : null,
     toolsQuotaStorageRequested:
       requestedProject.toolsQuota.storage.storageFile !==
-      project.toolsQuota.storage.storageFile
+        project.toolsQuota.storage.storageFile
         ? requestedProject.toolsQuota.storage.storageFile
         : null,
     productionQuotaCPUCurrent:
@@ -231,6 +231,7 @@ export const generateEmailTemplatePublicData = (
   incomingRequest,
   other = {}
 ) => {
+
   const project = incomingProject
     ? { ...incomingProject }
     : { ...incomingRequest };
@@ -241,14 +242,14 @@ export const generateEmailTemplatePublicData = (
   const secondaryTechnicalLead =
     (!!project.secondaryTechnicalLead ||
       !!requestedProject.secondaryTechnicalLead) &&
-    requestedProject.secondaryTechnicalLead?.id !==
-      project.secondaryTechnicalLead?.id
-      ? project.secondaryTechnicalLead
-      : !!requestedProject.secondaryTechnicalLead
+      requestedProject.secondaryTechnicalLead?.id !==
+      requestedProject.secondaryTechnicalLead?.id
       ? requestedProject.secondaryTechnicalLead
-      : null;
-  const primaryTechnicalLead = project.primaryTechnicalLead;
-  const projectOwner = project.projectOwner;
+      : !!project.secondaryTechnicalLead
+        ? project.secondaryTechnicalLead
+        : null;
+  const primaryTechnicalLead = requestedProject.primaryTechnicalLead;
+  const projectOwner = requestedProject.projectOwner;
 
   return {
     licencePlate: requestedProject.licencePlate,
@@ -292,16 +293,16 @@ export const generateEmailTemplatePublicData = (
     ),
     isPOChanged:
       requestedProject.projectOwner.email !== project.projectOwner.email,
-    POReq: requestedProject.projectOwner.email,
+    POReq: project.projectOwner.email,
     isPrimeTLChanged:
       requestedProject.primaryTechnicalLead.email !==
       project.primaryTechnicalLead.email,
-    PrimeTLReq: requestedProject.primaryTechnicalLead.email,
+    PrimeTLReq: project.primaryTechnicalLead.email,
     isSecTLChanged:
       requestedProject.secondaryTechnicalLead?.email !==
       project.secondaryTechnicalLead?.email,
-    SecTLReq: requestedProject.secondaryTechnicalLead
-      ? requestedProject.secondaryTechnicalLead.email
+    SecTLReq: project.secondaryTechnicalLead
+      ? project.secondaryTechnicalLead.email
       : null,
     ...other,
   };

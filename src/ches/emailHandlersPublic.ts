@@ -190,8 +190,8 @@ export const sendRejectEmail = async (request) => {
             type === RequestType.Create
               ? 'Provisioning'
               : type === RequestType.Edit
-              ? 'Edit'
-              : 'Deletion',
+                ? 'Edit'
+                : 'Deletion',
           humanActionComment: humanComment || null,
         })
       ),
@@ -204,13 +204,12 @@ export const sendRejectEmail = async (request) => {
         .filter(Boolean)
         .map(({ email }) => email),
       from: 'Registry <cloud.pathfinder@gov.bc.ca>',
-      subject: ` ${
-        type === RequestType.Create
+      subject: ` ${type === RequestType.Create
           ? 'Provisioning'
           : type === RequestType.Edit
-          ? 'Edit'
-          : 'Deletion'
-      } request has been rejected`,
+            ? 'Edit'
+            : 'Deletion'
+        } request has been rejected`,
     });
   } catch (error) {
     console.error(error);
