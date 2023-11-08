@@ -1,34 +1,78 @@
-export const transformCommonComponents = (originalComponents) =>
-  Object.keys(originalComponents).reduce((accumulator, key) => {
-    if (
-      typeof originalComponents[key] === 'string' ||
-      originalComponents[key] === null
-    ) {
-      accumulator[key] = {
-        planningToUse: originalComponents[key] === 'PLANNING_TO_USE',
-        implemented: false,
-      };
-    } else {
-      // Directly copy non-string and non-null values
-      accumulator[key] = originalComponents[key];
-    }
-    return accumulator;
-  }, {});
-
-export function revertCommonComponents(structured) {
-  return Object.keys(structured).reduce((accumulator, key) => {
-    const value = structured[key];
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      'planningToUse' in value
-    ) {
-      // Assume that if planningToUse is true, we don't care about the implemented flag.
-      accumulator[key] = value.planningToUse ? 'PLANNING_TO_USE' : 'NOT_USING';
-    } else {
-      // Directly copy non-object values
-      accumulator[key] = value;
-    }
-    return accumulator;
-  }, {});
+function tranformCommonComponentOption(original) {
+  if (original === undefined || original === null) {
+    return {
+      planningToUse: false,
+      implemented: false,
+    };
+  } else if (original === 'PLANNING_TO_USE') {
+    return {
+      planningToUse: true,
+      implemented: false,
+    };
+  } else if (original === 'IMPLEMENTED') {
+    return {
+      planningToUse: false,
+      implemented: true,
+    };
+  } else {
+    return {
+      planningToUse: false,
+      implemented: false,
+    };
+  }
 }
+
+export const transformCommonComponents = (originalComponents) => {
+  const commonComponentKeys = [
+    'addressAndGeolocation',
+    'workflowManagement',
+    'formDesignAndSubmission',
+    'identityManagement',
+    'paymentServices',
+    'documentManagement',
+    'endUserNotificationAndSubscription',
+    'publishing',
+    'businessIntelligence',
+    'other',
+    'noServices',
+  ];
+
+  const commonComponetsOptions = Object.fromEntries(
+    commonComponentKeys.map((key) => [
+      key,
+      tranformCommonComponentOption(originalComponents[key]),
+    ])
+  );
+
+  return {
+    ...commonComponetsOptions,
+    other: originalComponents.other || '',
+    noServices: originalComponents.noServices || true,
+  };
+};
+
+function reverseTransformCommonComponentOption(option) {
+  if (option.planningToUse) {
+    return 'PLANNING_TO_USE';
+  } else if (option.implemented) {
+    return 'IMPLEMENTED';
+  } else {
+    // If both are false, return null to signify neither option is selected
+    return null;
+  }
+}
+
+export const revertCommonComponents = (transformedComponents) => {
+  return Object.fromEntries(
+    Object.entries(transformedComponents).map(([key, value]) => {
+      // Handle the 'other' and 'noServices' keys separately if needed
+      if (key === 'other') {
+        return [key, value || null]; // Convert empty string back to null
+      } else if (key === 'noServices') {
+        return [key, value !== undefined ? value : false]; // Preserve boolean or default to false
+      }
+      // Reverse transform the common component options
+      return [key, reverseTransformCommonComponentOption(value)];
+    })
+  );
+};

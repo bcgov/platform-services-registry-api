@@ -1,32 +1,61 @@
 import { MongoClient } from 'mongodb';
-import { collect } from 'nats/lib/nats-base-client/util';
 
-export const transformCommonComponents = (originalComponents) =>
-  Object.keys(originalComponents).reduce((accumulator, key) => {
-    if (
-      (typeof originalComponents[key] === 'string' ||
-        originalComponents[key] === null) &&
-      key !== 'other'
-    ) {
-      accumulator[key] = {
-        planningToUse: originalComponents[key] === 'PLANNING_TO_USE',
-        implemented: false,
-      };
-    } else {
-      // Directly copy non-string and non-null values
-      accumulator[key] = originalComponents[key];
-    }
+function tranformCommonComponentOption(original) {
+  if (original === undefined || original === null) {
+    return {
+      planningToUse: false,
+      implemented: false,
+    };
+  } else if (original === 'PLANNING_TO_USE') {
+    return {
+      planningToUse: true,
+      implemented: false,
+    };
+  } else if (original === 'IMPLEMENTED') {
+    return {
+      planningToUse: false,
+      implemented: true,
+    };
+  } else {
+    return {
+      planningToUse: false,
+      implemented: false,
+    };
+  }
+}
 
-    accumulator['other'] === null
-      ? (accumulator['other'] = '')
-      : (accumulator['other'] = accumulator['other']);
+const transformCommonComponents = (originalComponents) => {
+  const commonComponentKeys = [
+    'addressAndGeolocation',
+    'workflowManagement',
+    'formDesignAndSubmission',
+    'identityManagement',
+    'paymentServices',
+    'documentManagement',
+    'endUserNotificationAndSubscription',
+    'publishing',
+    'businessIntelligence',
+    'other',
+    'noServices',
+  ];
 
-    return accumulator;
-  }, {});
+  const commonComponetsOptions = Object.fromEntries(
+    commonComponentKeys.map((key) => [
+      key,
+      tranformCommonComponentOption(originalComponents[key]),
+    ])
+  );
+
+  return {
+    ...commonComponetsOptions,
+    other: originalComponents.other || '',
+    noServices: originalComponents.noServices || true,
+  };
+};
 
 // Connection URL and Database Name
 const url = process.env.DATABASE_URL;
-const dbName = 'restore';
+const dbName = 'platsrv-registry-db';
 const collectionNames = ['PrivateCloudRequestedProject', 'PrivateCloudProject'];
 
 console.log('DATABASE_URL: ', url);
