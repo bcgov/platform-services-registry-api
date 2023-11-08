@@ -12,6 +12,7 @@ import {
 import generateLicensePlate from '../../../utils/generateLicencePlate.js';
 import { Prisma } from '@prisma/client';
 import { sendCreateRequestEmails } from '../../../ches/emailHandlersPrivate.js';
+import { transformCommonComponents } from '../../../utils/transformCommonComponents.js';
 
 const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'] =
   async (
@@ -19,7 +20,6 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
     args: MutationPrivateCloudProjectRequestArgs,
     { authRoles, authEmail, prisma }
   ) => {
-
     // Check if the user is allowed to create a project
     if (
       ![
@@ -60,7 +60,9 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
               ministry: args.ministry,
               status: ProjectStatus.Active,
               licencePlate: licencePlate,
-              commonComponents: args.commonComponents,
+              commonComponents: transformCommonComponents(
+                args.commonComponents
+              ),
               productionQuota: defaultQuota,
               testQuota: defaultQuota,
               toolsQuota: defaultQuota,

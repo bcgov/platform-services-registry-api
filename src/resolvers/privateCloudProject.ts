@@ -1,3 +1,5 @@
+import { revertCommonComponents } from '../utils/transformCommonComponents.js';
+
 const Project = {
   projectOwner: async (project, _, { prisma }) =>
     prisma.user.findUnique({
@@ -32,6 +34,8 @@ const Project = {
         projectId: project.id,
       },
     }),
+  commonComponents: async (project) =>
+    revertCommonComponents(project.commonComponents),
 };
 
 export default Project;
