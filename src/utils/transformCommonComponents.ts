@@ -1,3 +1,5 @@
+import { CommonComponents } from '@prisma/client';
+
 function tranformCommonComponentOption(original) {
   if (original === undefined || original === null) {
     return {
@@ -22,7 +24,7 @@ function tranformCommonComponentOption(original) {
   }
 }
 
-export const transformCommonComponents = (originalComponents) => {
+export const transformCommonComponents = (originalComponents: any) => {
   const commonComponentKeys = [
     'addressAndGeolocation',
     'workflowManagement',
@@ -33,8 +35,6 @@ export const transformCommonComponents = (originalComponents) => {
     'endUserNotificationAndSubscription',
     'publishing',
     'businessIntelligence',
-    'other',
-    'noServices',
   ];
 
   const commonComponetsOptions = Object.fromEntries(
@@ -44,11 +44,17 @@ export const transformCommonComponents = (originalComponents) => {
     ])
   );
 
-  return {
+  const isCommonComponentsUsed = !Object.values(commonComponetsOptions).some(
+    (value) => value.planningToUse || value.implemented
+  );
+
+  const newComponents = {
     ...commonComponetsOptions,
     other: originalComponents.other || '',
-    noServices: originalComponents.noServices || true,
-  };
+    noServices: isCommonComponentsUsed,
+  } as CommonComponents;
+
+  return newComponents;
 };
 
 function reverseTransformCommonComponentOption(option) {

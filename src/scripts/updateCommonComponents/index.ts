@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import { Prisma, CommonComponents } from '@prisma/client';
 
 function tranformCommonComponentOption(original) {
   if (original === undefined || original === null) {
@@ -24,7 +25,7 @@ function tranformCommonComponentOption(original) {
   }
 }
 
-const transformCommonComponents = (originalComponents) => {
+export const transformCommonComponents = (originalComponents: any) => {
   const commonComponentKeys = [
     'addressAndGeolocation',
     'workflowManagement',
@@ -35,8 +36,6 @@ const transformCommonComponents = (originalComponents) => {
     'endUserNotificationAndSubscription',
     'publishing',
     'businessIntelligence',
-    'other',
-    'noServices',
   ];
 
   const commonComponetsOptions = Object.fromEntries(
@@ -46,16 +45,22 @@ const transformCommonComponents = (originalComponents) => {
     ])
   );
 
-  return {
+  const isCommonComponentsUsed = !Object.values(commonComponetsOptions).some(
+    (value) => value.planningToUse || value.implemented
+  );
+
+  const newComponents = {
     ...commonComponetsOptions,
     other: originalComponents.other || '',
-    noServices: originalComponents.noServices || true,
-  };
-};
+    noServices: isCommonComponentsUsed,
+  } as CommonComponents;
 
+  return newComponents;
+};
 // Connection URL and Database Name
 const url = process.env.DATABASE_URL;
-const dbName = 'platsrv-registry-db';
+// const dbName = 'platsrv-registry-db';
+const dbName = 'oamar';
 const collectionNames = ['PrivateCloudRequestedProject', 'PrivateCloudProject'];
 
 console.log('DATABASE_URL: ', url);
@@ -64,39 +69,6 @@ console.log('DATABASE_URL: ', url);
 const client = new MongoClient(url);
 
 async function updateDocuments(collectionName) {
-  try {
-    // Connect the client to the server
-    await client.connect();
-    console.log('Connected successfully to server');
-
-    // Get the database and collection
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-
-    // Get all documents
-    const cursor = collection.find({}); // Adjust the find query as needed
-
-    console.log('Found documents:', await cursor.count());
-
-    // Iterate over the cursor
-    for await (const project of cursor) {
-      const commonComponents = transformCommonComponents(
-        project.commonComponents
-      );
-
-      // Update the document
-      await collection.updateOne(
-        { _id: project._id }, // Make sure to use the correct identifier field
-        { $set: { commonComponents } }
-      );
-    }
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-
-async function addUserRequestedProject(collectionName) {
   try {
     // Connect the client to the server
     await client.connect();
