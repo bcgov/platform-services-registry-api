@@ -60,7 +60,7 @@ export const transformCommonComponents = (originalComponents: any) => {
 // Connection URL and Database Name
 const url = process.env.DATABASE_URL;
 // const dbName = 'platsrv-registry-db';
-const dbName = 'oamar';
+const dbName = 'test-new-schema';
 const collectionNames = ['PrivateCloudRequestedProject', 'PrivateCloudProject'];
 
 console.log('DATABASE_URL: ', url);

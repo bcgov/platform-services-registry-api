@@ -130,6 +130,9 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
           requestedProject: {
             create: requestedProject,
           },
+          userRequestedProject: {
+            create: requestedProject,
+          },
           project: {
             connect: {
               id: args.projectId,

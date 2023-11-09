@@ -34,8 +34,11 @@ const Project = {
         projectId: project.id,
       },
     }),
-  commonComponents: async (project) =>
-    revertCommonComponents(project.commonComponents),
+  commonComponents: async (project) => {
+    const restult = revertCommonComponents(project.commonComponents);
+    console.log('restult: ', restult);
+    return restult;
+  },
 };
 
 export default Project;

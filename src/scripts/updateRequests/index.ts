@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 // Connection URL and Database Name
 const url = process.env.DATABASE_URL;
-const dbName = 'platsrv-registry-db';
+const dbName = 'test-new-schema';
 const collectionNames = ['PrivateCloudRequest', 'PublicCloudRequest'];
 
 console.log('DATABASE_URL: ', url);

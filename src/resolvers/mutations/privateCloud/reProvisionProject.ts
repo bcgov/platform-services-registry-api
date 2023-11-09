@@ -98,6 +98,9 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
           requestedProject: {
             create: requestedProject,
           },
+          userRequestedProject: {
+            create: requestedProject,
+          },
           project: {
             connect: {
               id: args.projectId,
