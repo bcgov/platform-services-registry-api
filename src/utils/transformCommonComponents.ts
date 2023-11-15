@@ -6,22 +6,26 @@ function tranformCommonComponentOption(original) {
       planningToUse: false,
       implemented: false,
     };
-  } else if (original === 'PLANNING_TO_USE') {
+  }
+
+  if (original === 'PLANNING_TO_USE') {
     return {
       planningToUse: true,
       implemented: false,
     };
-  } else if (original === 'IMPLEMENTED') {
+  }
+
+  if (original === 'IMPLEMENTED') {
     return {
       planningToUse: false,
       implemented: true,
     };
-  } else {
-    return {
-      planningToUse: false,
-      implemented: false,
-    };
   }
+
+  return {
+    planningToUse: false,
+    implemented: false,
+  };
 }
 
 export const transformCommonComponents = (originalComponents: any) => {
@@ -74,7 +78,9 @@ export const revertCommonComponents = (transformedComponents) => {
       // Handle the 'other' and 'noServices' keys separately if needed
       if (key === 'other') {
         return [key, value || null]; // Convert empty string back to null
-      } else if (key === 'noServices') {
+      }
+
+      if (key === 'noServices') {
         return [key, value !== undefined ? value : false]; // Preserve boolean or default to false
       }
       // Reverse transform the common component options

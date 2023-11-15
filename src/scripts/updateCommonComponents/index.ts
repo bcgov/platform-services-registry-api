@@ -1,62 +1,6 @@
 import { MongoClient } from 'mongodb';
-import { Prisma, CommonComponents } from '@prisma/client';
+import { transformCommonComponents } from '../../utils/transformCommonComponents';
 
-function tranformCommonComponentOption(original) {
-  if (original === undefined || original === null) {
-    return {
-      planningToUse: false,
-      implemented: false,
-    };
-  } else if (original === 'PLANNING_TO_USE') {
-    return {
-      planningToUse: true,
-      implemented: false,
-    };
-  } else if (original === 'IMPLEMENTED') {
-    return {
-      planningToUse: false,
-      implemented: true,
-    };
-  } else {
-    return {
-      planningToUse: false,
-      implemented: false,
-    };
-  }
-}
-
-export const transformCommonComponents = (originalComponents: any) => {
-  const commonComponentKeys = [
-    'addressAndGeolocation',
-    'workflowManagement',
-    'formDesignAndSubmission',
-    'identityManagement',
-    'paymentServices',
-    'documentManagement',
-    'endUserNotificationAndSubscription',
-    'publishing',
-    'businessIntelligence',
-  ];
-
-  const commonComponetsOptions = Object.fromEntries(
-    commonComponentKeys.map((key) => [
-      key,
-      tranformCommonComponentOption(originalComponents[key]),
-    ])
-  );
-
-  const isCommonComponentsUsed = !Object.values(commonComponetsOptions).some(
-    (value) => value.planningToUse || value.implemented
-  );
-
-  const newComponents = {
-    ...commonComponetsOptions,
-    other: originalComponents.other || '',
-    noServices: isCommonComponentsUsed,
-  } as CommonComponents;
-
-  return newComponents;
-};
 // Connection URL and Database Name
 const url = process.env.DATABASE_URL;
 // const dbName = 'platsrv-registry-db';
