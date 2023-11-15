@@ -25,7 +25,7 @@ async function updateDocuments(collectionName) {
     // Get all documents
     const cursor = collection.find({}); // Adjust the find query as needed
 
-    console.log('Found documents:', await cursor.count());
+    console.log('Found documents:', await collection.countDocuments());
 
     // Iterate over the cursor
     for await (const project of cursor) {
