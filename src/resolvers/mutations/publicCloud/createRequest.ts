@@ -88,6 +88,9 @@ const publicCloudProjectRequest = async (
     requestedProject: {
       create: requestedProject,
     },
+    userRequestedProject: {
+      create: requestedProject,
+    },
   };
 
   let createRequest: PublicCloudCreateRequest;

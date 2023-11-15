@@ -132,6 +132,9 @@ const publicCloudProjectEditRequest = async (
         id: args.projectId,
       },
     },
+    userRequestedProject: {
+      create: requestedProject,
+    },
   };
 
   let editRequest: PublicCloudEditRequest;

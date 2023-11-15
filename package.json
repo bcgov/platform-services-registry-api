@@ -22,7 +22,9 @@
     "add-existing-public-cloud-projects": "dotenv -e .env -- node ./dist/scripts/newPublicCloudProjects/index.js",
     "update-users": "dotenv -e .env -- node ./dist/scripts/updateUsers/index.js",
     "idir-upn-users-update": "dotenv -e .env -- node ./dist/scripts/idirUpnUserUpdate/index.js",
-    "update-creation-dates": "dotenv -e .env -- node ./dist/scripts/updateCreationDates/index.js"
+    "update-creation-dates": "dotenv -e .env -- node ./dist/scripts/updateCreationDates/index.js",
+    "update-common-components": "dotenv -e .env -- node ./dist/scripts/updateCommonComponents/index.js",
+    "update-requests": "dotenv -e .env -- node ./dist/scripts/updateRequests/index.js"
   },
   "keywords": [],
   "author": "",
