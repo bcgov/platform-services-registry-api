@@ -170,7 +170,8 @@ export enum Ministry {
   Pssg = 'PSSG',
   Sdpr = 'SDPR',
   Tca = 'TCA',
-  Tran = 'TRAN'
+  Tran = 'TRAN',
+  Hous = 'HOUS',
 }
 
 export type Mutation = {
