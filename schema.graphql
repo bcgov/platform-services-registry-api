@@ -55,6 +55,7 @@ enum Ministry {
   SDPR
   TCA
   TRAN
+  HOUS
 }
 
 enum Cluster {
