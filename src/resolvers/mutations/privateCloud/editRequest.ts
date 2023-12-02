@@ -9,7 +9,6 @@ import { Prisma, PrivateCloudRequest } from '@prisma/client';
 import { sendPrivateCloudNatsMessage } from '../../../natsPubSub/index.js';
 import { sendEditRequestEmails } from '../../../ches/emailHandlersPrivate.js';
 import { subscribeUserToMessages } from '../../../mautic/index.js';
-import { transformCommonComponents } from '../../../utils/transformCommonComponents.js';
 
 const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEditRequest'] =
   async (
@@ -70,11 +69,12 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         ministry: args.ministry,
         status: project.status,
         licencePlate: project.licencePlate,
-        commonComponents: transformCommonComponents(args.commonComponents),
+        commonComponents: args.commonComponents,
         productionQuota: args.productionQuota,
         testQuota: args.testQuota,
         toolsQuota: args.toolsQuota,
         developmentQuota: args.developmentQuota,
+        profileId: project.profileId || null,
         created: project.created,
         projectOwner: {
           connectOrCreate: {
@@ -94,22 +94,23 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         },
         secondaryTechnicalLead: args.secondaryTechnicalLead
           ? {
-              connectOrCreate: {
-                where: {
-                  email: args.secondaryTechnicalLead.email,
-                },
-                create: args.secondaryTechnicalLead,
+            connectOrCreate: {
+              where: {
+                email: args.secondaryTechnicalLead.email,
               },
-            }
+              create: args.secondaryTechnicalLead,
+            },
+          }
           : undefined,
       };
 
+
       const isQuotaChanged = !(
         JSON.stringify(args.productionQuota) ===
-          JSON.stringify(project.productionQuota) &&
+        JSON.stringify(project.productionQuota) &&
         JSON.stringify(args.testQuota) === JSON.stringify(project.testQuota) &&
         JSON.stringify(args.developmentQuota) ===
-          JSON.stringify(project.developmentQuota) &&
+        JSON.stringify(project.developmentQuota) &&
         JSON.stringify(args.toolsQuota) === JSON.stringify(project.toolsQuota)
       );
 
@@ -128,9 +129,6 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
           createdByEmail: authEmail,
           licencePlate: project.licencePlate,
           requestedProject: {
-            create: requestedProject,
-          },
-          userRequestedProject: {
             create: requestedProject,
           },
           project: {
@@ -162,6 +160,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
         editRequest.requestedProject
       );
 
+
       if (decisionStatus === DecisionStatus.Approved) {
         const users = [
           args.projectOwner,
@@ -169,11 +168,7 @@ const privateCloudProjectEditRequest: MutationResolvers['privateCloudProjectEdit
           args?.secondaryTechnicalLead,
         ].filter(Boolean);
 
-        Promise.all(
-          users.map((user) =>
-            subscribeUserToMessages(user, requestedProject.cluster, 'Private')
-          )
-        );
+        Promise.all(users.map((user) => subscribeUserToMessages(user, requestedProject.cluster, "Private")));
 
         await sendPrivateCloudNatsMessage(
           editRequest.type,

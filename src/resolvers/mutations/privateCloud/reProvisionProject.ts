@@ -59,6 +59,7 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
         testQuota: project.testQuota,
         toolsQuota: project.toolsQuota,
         developmentQuota: project.developmentQuota,
+        profileId: project.profileId || null,
         created: project.created,
         projectOwner: {
           connectOrCreate: {
@@ -96,9 +97,6 @@ const privateCloudReProvisionProject: MutationResolvers['privateCloudReProvision
           createdByEmail: authEmail,
           licencePlate: project.licencePlate,
           requestedProject: {
-            create: requestedProject,
-          },
-          userRequestedProject: {
             create: requestedProject,
           },
           project: {

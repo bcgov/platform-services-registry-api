@@ -12,7 +12,6 @@ import {
 import generateLicensePlate from '../../../utils/generateLicencePlate.js';
 import { Prisma } from '@prisma/client';
 import { sendCreateRequestEmails } from '../../../ches/emailHandlersPrivate.js';
-import { transformCommonComponents } from '../../../utils/transformCommonComponents.js';
 
 const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'] =
   async (
@@ -20,6 +19,7 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
     args: MutationPrivateCloudProjectRequestArgs,
     { authRoles, authEmail, prisma }
   ) => {
+
     // Check if the user is allowed to create a project
     if (
       ![
@@ -44,46 +44,6 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
 
     let createRequest;
 
-    const requestedProject = {
-      name: args.name,
-      description: args.description,
-      cluster: args.cluster,
-      ministry: args.ministry,
-      status: ProjectStatus.Active,
-      licencePlate: licencePlate,
-      commonComponents: transformCommonComponents(args.commonComponents),
-      productionQuota: defaultQuota,
-      testQuota: defaultQuota,
-      toolsQuota: defaultQuota,
-      developmentQuota: defaultQuota,
-      projectOwner: {
-        connectOrCreate: {
-          where: {
-            email: args.projectOwner.email,
-          },
-          create: args.projectOwner,
-        },
-      },
-      primaryTechnicalLead: {
-        connectOrCreate: {
-          where: {
-            email: args.primaryTechnicalLead.email,
-          },
-          create: args.primaryTechnicalLead,
-        },
-      },
-      secondaryTechnicalLead: args.secondaryTechnicalLead
-        ? {
-            connectOrCreate: {
-              where: {
-                email: args.secondaryTechnicalLead.email,
-              },
-              create: args.secondaryTechnicalLead,
-            },
-          }
-        : undefined,
-    };
-
     try {
       createRequest = await prisma.privateCloudRequest.create({
         data: {
@@ -92,14 +52,45 @@ const privateCloudProjectRequest: MutationResolvers['privateCloudProjectRequest'
           active: true,
           createdByEmail: authEmail,
           licencePlate,
-          userRequestedProject: {
-            create: {
-              ...requestedProject,
-            },
-          },
           requestedProject: {
             create: {
-              ...requestedProject,
+              name: args.name,
+              description: args.description,
+              cluster: args.cluster,
+              ministry: args.ministry,
+              status: ProjectStatus.Active,
+              licencePlate: licencePlate,
+              commonComponents: args.commonComponents,
+              productionQuota: defaultQuota,
+              testQuota: defaultQuota,
+              toolsQuota: defaultQuota,
+              developmentQuota: defaultQuota,
+              projectOwner: {
+                connectOrCreate: {
+                  where: {
+                    email: args.projectOwner.email,
+                  },
+                  create: args.projectOwner,
+                },
+              },
+              primaryTechnicalLead: {
+                connectOrCreate: {
+                  where: {
+                    email: args.primaryTechnicalLead.email,
+                  },
+                  create: args.primaryTechnicalLead,
+                },
+              },
+              secondaryTechnicalLead: args.secondaryTechnicalLead
+                ? {
+                    connectOrCreate: {
+                      where: {
+                        email: args.secondaryTechnicalLead.email,
+                      },
+                      create: args.secondaryTechnicalLead,
+                    },
+                  }
+                : undefined,
             },
           },
         },
