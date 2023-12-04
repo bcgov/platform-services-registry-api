@@ -34,22 +34,30 @@ export const userPrivateCloudProjects = (_, __, { prisma, user, authEmail }) =>
     },
   });
 
-export const userPrivateCloudProjectById = async (
-  _,
-  { projectId },
-  { prisma, user, authEmail }
-) =>
-  await prisma.privateCloudProject.findUnique({
+export const userPrivateCloudProjectById = (_, { projectId }, { prisma }) =>
+  prisma.privateCloudProject.findUnique({
     where: {
       id: projectId,
       status: 'ACTIVE',
-      OR: [
-        { projectOwner: { email: authEmail } },
-        { primaryTechnicalLead: { email: authEmail } },
-        { secondaryTechnicalLead: { email: authEmail } },
-      ],
     },
   });
+
+// export const userPrivateCloudProjectById = async (
+//   _,
+//   { projectId },
+//   { prisma, user, authEmail }
+// ) =>
+//   await prisma.privateCloudProject.findUnique({
+//     where: {
+//       id: projectId,
+//       status: 'ACTIVE',
+//       OR: [
+//         { projectOwner: { email: authEmail } },
+//         { primaryTechnicalLead: { email: authEmail } },
+//         { secondaryTechnicalLead: { email: authEmail } },
+//       ],
+//     },
+//   });
 
 export const userPrivateCloudProjectsByIds = async (
   _,

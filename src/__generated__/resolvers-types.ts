@@ -159,6 +159,7 @@ export enum Ministry {
   Fin = 'FIN',
   Flnr = 'FLNR',
   Hlth = 'HLTH',
+  Hous = 'HOUS',
   Irr = 'IRR',
   Jedc = 'JEDC',
   Lbr = 'LBR',
@@ -170,8 +171,7 @@ export enum Ministry {
   Pssg = 'PSSG',
   Sdpr = 'SDPR',
   Tca = 'TCA',
-  Tran = 'TRAN',
-  Hous = 'HOUS',
+  Tran = 'TRAN'
 }
 
 export type Mutation = {
@@ -1120,7 +1120,7 @@ export function FilterPublicCloudProjectsInputSchema(): yup.SchemaOf<FilterPubli
   })
 }
 
-export const MinistrySchema = yup.mixed().oneOf([Ministry.Aest, Ministry.Ag, Ministry.Agri, Ministry.Alc, Ministry.Bcpc, Ministry.Citz, Ministry.Dbc, Ministry.Eao, Ministry.Educ, Ministry.Embc, Ministry.Empr, Ministry.Env, Ministry.Fin, Ministry.Flnr, Ministry.Hlth, Ministry.Irr, Ministry.Jedc, Ministry.Lbr, Ministry.Ldb, Ministry.Mah, Ministry.Mcf, Ministry.Mmha, Ministry.Psa, Ministry.Pssg, Ministry.Sdpr, Ministry.Tca, Ministry.Tran]);
+export const MinistrySchema = yup.mixed().oneOf([Ministry.Aest, Ministry.Ag, Ministry.Agri, Ministry.Alc, Ministry.Bcpc, Ministry.Citz, Ministry.Dbc, Ministry.Eao, Ministry.Educ, Ministry.Embc, Ministry.Empr, Ministry.Env, Ministry.Fin, Ministry.Flnr, Ministry.Hlth, Ministry.Hous, Ministry.Irr, Ministry.Jedc, Ministry.Lbr, Ministry.Ldb, Ministry.Mah, Ministry.Mcf, Ministry.Mmha, Ministry.Psa, Ministry.Pssg, Ministry.Sdpr, Ministry.Tca, Ministry.Tran]);
 
 export const PlatformSchema = yup.mixed().oneOf([Platform.PrivateCloud, Platform.PublicCloud]);
 

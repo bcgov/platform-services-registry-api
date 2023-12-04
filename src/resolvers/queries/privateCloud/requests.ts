@@ -27,36 +27,47 @@ export const privateCloudRequestById = async (_, { requestId }, { prisma }) =>
 export const userPrivateCloudRequestById = async (
   _,
   { requestId },
-  { prisma, authEmail }
-) => {
-  console.log('authEmail', authEmail);
-  console.log('requestId', requestId);
-  return await prisma.privateCloudRequest.findUnique({
+  { prisma }
+) =>
+  await prisma.privateCloudRequest.findUnique({
     where: {
       id: requestId,
-      OR: [
-        {
-          requestedProject: {
-            OR: [
-              { projectOwner: { email: authEmail } },
-              { primaryTechnicalLead: { email: authEmail } },
-              { secondaryTechnicalLead: { email: authEmail } },
-            ],
-          },
-        },
-        {
-          project: {
-            OR: [
-              { projectOwner: { email: authEmail } },
-              { primaryTechnicalLead: { email: authEmail } },
-              { secondaryTechnicalLead: { email: authEmail } },
-            ],
-          },
-        },
-      ],
     },
   });
-};
+
+// export const userPrivateCloudRequestById = async (
+//   _,
+//   { requestId },
+//   { prisma, authEmail }
+// ) => {
+//   console.log('authEmail', authEmail);
+//   console.log('requestId', requestId);
+//   return await prisma.privateCloudRequest.findUnique({
+//     where: {
+//       id: requestId,
+//       OR: [
+//         {
+//           requestedProject: {
+//             OR: [
+//               { projectOwner: { email: authEmail } },
+//               { primaryTechnicalLead: { email: authEmail } },
+//               { secondaryTechnicalLead: { email: authEmail } },
+//             ],
+//           },
+//         },
+//         {
+//           project: {
+//             OR: [
+//               { projectOwner: { email: authEmail } },
+//               { primaryTechnicalLead: { email: authEmail } },
+//               { secondaryTechnicalLead: { email: authEmail } },
+//             ],
+//           },
+//         },
+//       ],
+//     },
+//   });
+// };
 
 export const userPrivateCloudRequests = (_, __, { prisma, authEmail }) => {
   return prisma.privateCloudRequest.findMany({
