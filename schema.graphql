@@ -127,7 +127,7 @@ enum Provider {
   AWS
 }
 
-type isNew {  
+type isNew {
   private: Boolean
   public: Boolean
 }
@@ -367,11 +367,11 @@ type Query {
 
   userPrivateCloudDeletionCheck(projectId: ID!): Boolean! @auth
   userPrivateCloudProjects: [PrivateCloudProject!]! @auth
-  userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject! @auth
+  userPrivateCloudProjectById(projectId: ID!): PrivateCloudProject!
   userPrivateCloudProjectsByIds(projectIds: [ID!]): PrivateCloudProject! @auth
 
   userPrivateCloudRequests: [PrivateCloudRequest!]! @auth
-  userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest! @auth
+  userPrivateCloudRequestById(requestId: ID!): PrivateCloudRequest!
   userPrivateCloudActiveRequests: [PrivateCloudRequest!]! @auth
   userPrivateCloudActiveRequestById(requestId: ID!): PrivateCloudRequest! @auth
   userPrivateCloudActiveRequestsByIds(requestIds: [ID!]): PrivateCloudRequest! @auth
