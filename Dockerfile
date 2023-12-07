@@ -14,4 +14,4 @@ RUN apk update && \
 
 EXPOSE 4000
 
-CMD ["--max-old-space-size=50", "./dist/index.js"]
+CMD ["./dist/index.js"]
