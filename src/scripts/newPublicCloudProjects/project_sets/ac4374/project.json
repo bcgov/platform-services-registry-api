@@ -1,0 +1,28 @@
+{
+    "licence_plate":"ac4374",
+    "project_name": "Cloud Pathfinder Test Project set",
+    "billing_group": "ac4374",
+    "provider": "AWS",
+    "budget": { 
+        "dev": 600,
+        "test": 600,
+        "tools": 600,
+        "prod": 2000
+     },
+    "enterprise_support": { 
+        "dev": "false",
+        "test": "false",
+        "tools": "false",
+        "prod": "true"
+     },           
+     "productOwner": {
+        "email": "olena.mitovska@gov.bc.ca"
+      },
+      "primaryTechnicalLeadId": {
+        "email": "warren.uniewski@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "max.wardle@gov.bc.ca"
+      },
+    "account_coding": "000000000000000000000000"
+}
