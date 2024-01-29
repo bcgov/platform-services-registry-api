@@ -11,7 +11,7 @@ import getIdirUpn from '../../utils/getIdirUpn.js';
 const prisma = new PrismaClient();
 
 const mainFolderPath =
-  'src/scripts/newPublicCloudProjects/project_sets_all';
+  'src/scripts/newPublicCloudProjects/project_sets';
 
 const parseMinistryFromDisplayName = (displayName) => {
   if (displayName && displayName.length > 0) {
