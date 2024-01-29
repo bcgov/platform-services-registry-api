@@ -1,13 +1,13 @@
 {
-  "licence_plate":"m9tvhw",
-  "project_name": "Cloud Pathfinder Test",
-  "billing_group": "m9tvhw",
+  "licence_plate":"eu9cfk",
+  "project_name": "Cloud Pathfinder test ci/cd",
+  "billing_group": "eu9cfk",
   "provider": "AWS",
   "budget": { 
-      "dev": 10000,
-      "test": 10000,
-      "tools": 10000,
-      "prod": 10000
+      "dev": 600,
+      "test": 600,
+      "tools": 600,
+      "prod": 2000
    },
   "enterprise_support": { 
       "dev": "false",
@@ -16,10 +16,14 @@
       "prod": "true"
    },           
    "productOwner": {
-      "email": "julian.subda@gov.bc.ca"
+      "email": "olena.mitovska@gov.bc.ca"
     },
     "primaryTechnicalLeadId": {
       "email": "warren.uniewski@gov.bc.ca"
     },
+    "secondaryTechnicalLeadId": {
+      "email": "prabhu.manchineella@gov.bc.ca"
+    },
   "account_coding": "000000000000000000000000"
 }
+

@@ -1,13 +1,13 @@
 {
-    "licence_plate":"j2i8lh",
-    "project_name": "Upgrade to 1.5.5 - LZ2",
-    "billing_group": "j2i8lh",
+    "licence_plate":"ac4374",
+    "project_name": "Cloud Pathfinder Test Project set",
+    "billing_group": "ac4374",
     "provider": "AWS",
     "budget": { 
-        "dev": 10000,
-        "test": 10000,
-        "tools": 10000,
-        "prod": 10000
+        "dev": 600,
+        "test": 600,
+        "tools": 600,
+        "prod": 2000
      },
     "enterprise_support": { 
         "dev": "false",
@@ -16,10 +16,13 @@
         "prod": "true"
      },           
      "productOwner": {
-        "email": "julian.subda@gov.bc.ca"
+        "email": "olena.mitovska@gov.bc.ca"
       },
       "primaryTechnicalLeadId": {
         "email": "warren.uniewski@gov.bc.ca"
+      },
+      "secondaryTechnicalLeadId": {
+        "email": "max.wardle@gov.bc.ca"
       },
     "account_coding": "000000000000000000000000"
 }
